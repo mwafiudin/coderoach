@@ -10,7 +10,7 @@ export const SiteSettings: GlobalConfig = {
     {
       name: 'navStatus',
       type: 'group',
-      admin: { description: 'Live status indicator in nav (e.g. "JKT · OPEN Q3").' },
+      admin: { description: 'Legacy: nav status badge (no longer rendered, kept for data continuity).' },
       fields: [
         { name: 'label', type: 'text', defaultValue: 'JKT · OPEN Q3' },
       ],
@@ -28,7 +28,12 @@ export const SiteSettings: GlobalConfig = {
       type: 'group',
       fields: [
         { name: 'tagline', type: 'textarea' },
-        { name: 'badge', type: 'text', defaultValue: 'JKT-1 · OPEN FOR Q3' },
+        {
+          name: 'badge',
+          type: 'text',
+          defaultValue: 'JKT-1 · OPEN FOR Q3',
+          admin: { description: 'Legacy: footer status badge (no longer rendered, kept for data continuity).' },
+        },
         {
           name: 'columns',
           type: 'array',

@@ -1,3 +1,6 @@
+import { OpsConsole } from './OpsConsole';
+import { OctagonMark } from './ui/OctagonMark';
+
 type HeroData = {
   pillText?: string | null;
   headline?: { lead?: string | null; accent?: string | null } | null;
@@ -12,64 +15,89 @@ type Client = { name: string };
 
 export function Hero({ data, clients }: { data: HeroData | null; clients: Client[] }) {
   return (
-    <section id="top" className="relative pt-24 overflow-hidden">
+    <section id="top" className="relative pt-16 lg:pt-20 overflow-hidden">
+      {/* Background grid */}
       <div
         className="absolute inset-0 opacity-55 pointer-events-none bg-cover bg-center"
         style={{ backgroundImage: 'url(/assets/bg-grid-clean.png)' }}
         data-hero-bg
       />
-      <div className="relative z-[2] text-center max-w-[1180px] mx-auto px-8">
-        {data?.pillText && (
-          <span className="inline-flex items-center gap-2.5 px-4 py-2 bg-paper-50 border border-paper-200 rounded-full font-mono text-xs font-medium tracking-wide text-ink shadow-sm animate-hero-in opacity-0" style={{ animationDelay: '60ms' }}>
-            <span className="w-[22px] h-[22px] rounded-full bg-ink" />
-            {data.pillText}
-          </span>
-        )}
-        {data?.headline && (
-          <h1 className="text-[clamp(48px,6.4vw,84px)] leading-[1.02] tracking-[-0.03em] font-bold mt-7 max-w-[14ch] mx-auto text-balance animate-hero-in opacity-0" style={{ animationDelay: '160ms' }}>
-            {data.headline.lead}{' '}
-            <span className="text-electric block">{data.headline.accent}</span>
-          </h1>
-        )}
-        {data?.lede && (
-          <p className="mt-6 max-w-[580px] mx-auto text-[19px] leading-[1.5] text-mist-600 animate-hero-in opacity-0" style={{ animationDelay: '280ms' }}>
-            {data.lede}
-          </p>
-        )}
-        <div className="flex gap-3 justify-center mt-9 flex-wrap animate-hero-in opacity-0" style={{ animationDelay: '380ms' }}>
-          {data?.ctaPrimary?.href && (
-            <a href={data.ctaPrimary.href} className="h-[52px] px-[22px] rounded-md bg-electric text-paper text-[15px] font-semibold inline-flex items-center gap-2 hover:bg-[#2562E0] transition-colors" data-cta-magnetic>
-              {data.ctaPrimary.label}
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12h14M13 5l7 7-7 7" />
-              </svg>
-            </a>
-          )}
-          {data?.ctaSecondary?.href && (
-            <a href={data.ctaSecondary.href} className="h-[52px] px-[22px] rounded-md bg-transparent text-ink border border-mist-400 text-[15px] font-semibold inline-flex items-center hover:bg-ink/[0.04] transition-colors">
-              {data.ctaSecondary.label}
-            </a>
-          )}
-        </div>
-        {data?.metaItems && data.metaItems.length > 0 && (
-          <div className="flex gap-3.5 justify-center items-center mt-10 flex-wrap font-mono text-xs tracking-wide text-mist-600 uppercase tabular animate-hero-in opacity-0" style={{ animationDelay: '480ms' }}>
-            {data.metaItems.map((item, i) => (
-              <span key={i} className="contents">
-                {i > 0 && <span className="text-mist-400">·</span>}
-                <span><b className="text-ink font-bold">{item.value}</b> {item.label}</span>
+
+      {/* Octagon watermark — bleeds off top-right */}
+      <div
+        aria-hidden
+        className="absolute -top-40 -right-40 lg:-right-48 text-mist-400 opacity-[0.08] pointer-events-none animate-octagon-drift"
+      >
+        <OctagonMark size={520} strokeWidth={1} />
+      </div>
+
+      {/* Main hero — split asymmetric */}
+      <div className="relative z-[2] max-w-[1180px] mx-auto px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-12 lg:gap-16 items-center">
+          {/* Left: text content */}
+          <div className="flex flex-col gap-6 lg:gap-7">
+            {data?.pillText && (
+              <span className="inline-flex items-center gap-2 px-4 py-2 bg-paper-50 border border-paper-200 rounded-full text-[12px] font-medium text-ink shadow-sm self-start animate-hero-in opacity-0" style={{ animationDelay: '60ms' }}>
+                <OctagonMark size={11} strokeWidth={1.6} className="text-electric shrink-0" />
+                {data.pillText}
               </span>
-            ))}
+            )}
+            {data?.headline && (
+              <h1 className="text-[clamp(40px,5.5vw,72px)] leading-[1.02] tracking-[-0.03em] font-bold max-w-[16ch] text-balance animate-hero-in opacity-0" style={{ animationDelay: '160ms' }}>
+                {data.headline.lead}{' '}
+                <span className="text-electric">{data.headline.accent}</span>
+              </h1>
+            )}
+            {data?.lede && (
+              <p className="max-w-[520px] text-[18px] leading-[1.55] text-mist-600 animate-hero-in opacity-0" style={{ animationDelay: '280ms' }}>
+                {data.lede}
+              </p>
+            )}
+            <div className="flex gap-3 flex-wrap mt-2 animate-hero-in opacity-0" style={{ animationDelay: '380ms' }}>
+              {data?.ctaPrimary?.href && (
+                <a href={data.ctaPrimary.href} className="h-[52px] px-[22px] rounded-md bg-electric text-paper text-[15px] font-semibold inline-flex items-center gap-2 hover:bg-[#2562E0] transition-colors" data-cta-magnetic>
+                  {data.ctaPrimary.label}
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M5 12h14M13 5l7 7-7 7" />
+                  </svg>
+                </a>
+              )}
+              {data?.ctaSecondary?.href && (
+                <a href={data.ctaSecondary.href} className="h-[52px] px-[22px] rounded-md bg-transparent text-ink border border-mist-400 text-[15px] font-semibold inline-flex items-center hover:bg-ink/[0.04] transition-colors">
+                  {data.ctaSecondary.label}
+                </a>
+              )}
+            </div>
+            {data?.metaItems && data.metaItems.length > 0 && (
+              <div className="flex gap-x-3.5 gap-y-2 items-center flex-wrap mt-4 text-[12px] tracking-[0.06em] text-mist-600 uppercase tabular animate-hero-in opacity-0" style={{ animationDelay: '480ms' }}>
+                {data.metaItems.map((item, i) => (
+                  <span key={i} className="contents">
+                    {i > 0 && (
+                      <span aria-hidden className="block w-px h-3.5 bg-mist-400/60" />
+                    )}
+                    <span>
+                      <b className="text-ink font-bold">{item.value}</b> {item.label}
+                    </span>
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
-        )}
+
+          {/* Right: Live Ops Console */}
+          <div className="animate-hero-in opacity-0" style={{ animationDelay: '600ms' }}>
+            <OpsConsole />
+          </div>
+        </div>
       </div>
 
       {/* Trusted-by marquee */}
       {clients.length > 0 && (
-        <div className="mt-20 pt-12 pb-14 border-t border-paper-200 bg-paper-50">
+        <div className="mt-16 lg:mt-24 pt-12 pb-14 border-t border-paper-200 bg-paper-50">
           <div className="max-w-[1180px] mx-auto px-8">
             <div className="flex items-baseline gap-3.5 flex-wrap mb-7 text-sm text-mist-600 leading-snug">
-              <span className="font-mono text-[11px] uppercase tracking-wider text-ink">
-                {data?.trustedBy?.label || '// TRUSTED BY 40+ OPERATORS'}
+              <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink">
+                Trusted by 40+ operators
               </span>
               <p className="m-0">{data?.trustedBy?.tagline}</p>
             </div>

@@ -1,23 +1,25 @@
 import { SectionHead } from './SectionHead';
 
-type Product = {
+type StudioProject = {
   id: string | number;
-  name: string;
-  tag: string;
-  blurb: string;
-  bullets: Array<{ bullet: string }>;
-  shippedYear?: string | null;
-  usage?: string | null;
-  link?: { label?: string | null; href?: string | null } | null;
-  vizType: 'laporta' | 'viralytics';
+  slug: string;
+  client: string; // product name
+  tagline: string;
+  publishedYear?: string | null;
+  studio?: {
+    vizType?: 'laporta' | 'viralytics' | 'none' | null;
+    usage?: string | null;
+    externalLink?: { label?: string | null; href?: string | null } | null;
+    bullets?: Array<{ bullet: string }> | null;
+  } | null;
 };
 
-export function Products({ items }: { items: Product[] }) {
+export function Products({ items }: { items: StudioProject[] }) {
   return (
     <section id="products" className="py-[120px] relative bg-paper-50 border-y border-paper-200">
       <div className="max-w-[1180px] mx-auto px-8">
         <SectionHead
-          marker="[ 03 / 06 ]"
+          marker="[ 03 / 07 ]"
           category="Products"
           description="Built by us, used by us"
           heading="We build products, not just project deliverables."
@@ -26,34 +28,50 @@ export function Products({ items }: { items: Product[] }) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-12 reveal-stagger">
           {items.map((p) => (
             <article key={p.id} className="bg-paper-50 border border-paper-200 rounded-2xl overflow-hidden flex flex-col shadow-[inset_0_1px_0_rgba(255,255,255,0.6)]">
-              <div className="h-[280px] relative bg-paper-100 border-b border-paper-200 overflow-hidden">
-                {p.vizType === 'laporta' ? <LaportaViz /> : <ViralyticsViz />}
-              </div>
+              <a href={`/work/${p.slug}`} className="h-[280px] relative bg-paper-100 border-b border-paper-200 overflow-hidden block group">
+                {p.studio?.vizType === 'laporta' ? <LaportaViz /> : p.studio?.vizType === 'viralytics' ? <ViralyticsViz /> : null}
+              </a>
               <div className="p-8 flex flex-col gap-4">
                 <div className="flex justify-between items-baseline">
-                  <h3 className="text-[36px] font-bold tracking-[-0.02em] m-0">{p.name}</h3>
-                  <span className="font-mono text-[11px] uppercase tracking-wider text-mist-600">[ {p.tag} ]</span>
+                  <h3 className="text-[36px] font-bold tracking-[-0.02em] m-0">
+                    <a href={`/work/${p.slug}`} className="hover:text-electric transition-colors">
+                      {p.client}
+                    </a>
+                  </h3>
+                  <span className="font-mono text-[11px] uppercase tracking-wider text-mist-600">[ STUDIO ]</span>
                 </div>
-                <p className="text-[15px] leading-[1.55] text-mist-600 m-0">{p.blurb}</p>
-                <ul className="list-none p-0 m-0 grid grid-cols-2 gap-x-4 gap-y-2 mt-2 mb-4">
-                  {p.bullets.map((b) => (
-                    <li key={b.bullet} className="text-sm flex gap-2 text-ink">
-                      <span className="text-mist-500">—</span>
-                      {b.bullet}
-                    </li>
-                  ))}
-                </ul>
-                <div className="border-t border-paper-200/60 pt-4 flex justify-between items-center">
-                  {(p.shippedYear || p.usage) && (
+                <p className="text-[15px] leading-[1.55] text-mist-600 m-0">{p.tagline}</p>
+                {p.studio?.bullets && p.studio.bullets.length > 0 && (
+                  <ul className="list-none p-0 m-0 grid grid-cols-2 gap-x-4 gap-y-2 mt-2 mb-4">
+                    {p.studio.bullets.map((b) => (
+                      <li key={b.bullet} className="text-sm flex gap-2 text-ink">
+                        <span className="text-mist-500">—</span>
+                        {b.bullet}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <div className="border-t border-paper-200/60 pt-4 flex justify-between items-center gap-4 flex-wrap">
+                  {(p.publishedYear || p.studio?.usage) && (
                     <span className="font-mono text-xs uppercase tracking-wider text-mist-600 tabular">
-                      [ // SHIPPED {p.shippedYear} {p.usage && `· ${p.usage}`} ]
+                      [ // SHIPPED {p.publishedYear} {p.studio?.usage && `· ${p.studio.usage}`} ]
                     </span>
                   )}
-                  {p.link?.href && (
-                    <a href={p.link.href} className="text-sm text-electric hover:underline">
-                      {p.link.label}
+                  <div className="flex items-center gap-4">
+                    <a href={`/work/${p.slug}`} className="text-sm text-mist-600 hover:text-electric">
+                      Case study →
                     </a>
-                  )}
+                    {p.studio?.externalLink?.href && (
+                      <a
+                        href={p.studio.externalLink.href}
+                        className="text-sm text-electric hover:underline"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {p.studio.externalLink.label}
+                      </a>
+                    )}
+                  </div>
                 </div>
               </div>
             </article>
@@ -69,7 +87,13 @@ function LaportaViz() {
     <div className="absolute inset-[18px] rounded-lg bg-paper-50 border border-paper-200 p-3.5 grid grid-cols-[1.4fr_1fr] grid-rows-[auto_1fr] gap-2.5 font-mono text-[11px] tabular">
       <div className="col-span-full flex justify-between text-mist-600 tracking-wide">
         <span>[ LAPORTA · OUTLET-04 ]</span>
-        <span className="text-electric animate-live-blink">● LIVE</span>
+        <span className="inline-flex items-center gap-1.5 text-[#5DD79A]">
+          <span className="relative flex w-1.5 h-1.5">
+            <span className="absolute inset-0 rounded-full bg-success animate-pulse-dot" />
+            <span className="relative w-1.5 h-1.5 rounded-full bg-success" />
+          </span>
+          LIVE
+        </span>
       </div>
       <div className="bg-paper-100 rounded-md relative overflow-hidden p-2.5">
         <svg viewBox="0 0 200 80" preserveAspectRatio="none" className="w-full h-full">
@@ -109,7 +133,13 @@ function ViralyticsViz() {
     <div className="absolute inset-[18px] rounded-lg bg-shadow-900 text-paper p-4 font-mono text-[11px] flex flex-col gap-2 overflow-hidden tabular">
       <div className="flex justify-between text-mist-500 tracking-wider">
         <span>[ AYANA-Q3 · 12/40 LIVE ]</span>
-        <span className="text-[#5DD79A] animate-live-blink">● TRACKING</span>
+        <span className="inline-flex items-center gap-1.5 text-[#5DD79A]">
+          <span className="relative flex w-1.5 h-1.5">
+            <span className="absolute inset-0 rounded-full bg-success animate-pulse-dot" />
+            <span className="relative w-1.5 h-1.5 rounded-full bg-success" />
+          </span>
+          TRACKING
+        </span>
       </div>
       {rows.map((r) => (
         <div key={r.av} className="grid grid-cols-[24px_1fr_60px_60px] gap-2.5 items-center px-2.5 py-2 bg-shadow-800 rounded">

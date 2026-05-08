@@ -1,10 +1,10 @@
 /**
  * Placeholder content seed.
  *
- * Run via: pnpm tsx src/lib/seed.ts
+ * Run via: npm run seed
  *
- * Idempotent — re-runnable; uses upsert pattern via findOne+update or create.
- * Requires DATABASE_URI + PAYLOAD_SECRET env vars.
+ * Idempotent — clears collections and recreates with placeholder data.
+ * Requires DATABASE_URI + PAYLOAD_SECRET env vars (loaded via --env-file=.env.local).
  */
 import { getPayload } from 'payload';
 import config from '../payload.config';
@@ -12,6 +12,20 @@ import config from '../payload.config';
 async function seed() {
   const payload = await getPayload({ config });
   console.log('🌱 Seeding placeholder content...\n');
+
+  // Helper: clear and recreate
+  async function reset(slug: any, docs: any[]) {
+    const existing = await payload.find({ collection: slug, limit: 200, overrideAccess: true });
+    for (const d of existing.docs) {
+      await payload.delete({ collection: slug, id: d.id, overrideAccess: true });
+    }
+    const created: any[] = [];
+    for (const data of docs) {
+      const doc = await payload.create({ collection: slug, data, overrideAccess: true });
+      created.push(doc);
+    }
+    return created;
+  }
 
   // ============ GLOBALS ============
 
@@ -47,6 +61,26 @@ async function seed() {
   });
   console.log('✓ Hero');
 
+  // Helper for Lexical paragraphs
+  const lexParagraphs = (paragraphs: string[]) => ({
+    root: {
+      type: 'root',
+      format: '',
+      indent: 0,
+      version: 1,
+      direction: 'ltr',
+      children: paragraphs.map((text) => ({
+        type: 'paragraph',
+        format: '',
+        indent: 0,
+        version: 1,
+        direction: 'ltr',
+        textFormat: 0,
+        children: [{ mode: 'normal', text, type: 'text', style: '', detail: 0, format: 0, version: 1 }],
+      })),
+    },
+  });
+
   await payload.updateGlobal({
     slug: 'studio',
     data: {
@@ -59,6 +93,31 @@ async function seed() {
         { num: '40', accent: '+', label: 'SHIPPED\nENGAGEMENTS' },
         { num: 'JKT', label: 'KEMANG\nJAKARTA' },
       ],
+      about: {
+        pageHeading: 'A studio that ships.',
+        pageLede:
+          "We're a small senior team running on a simple operating model — no juniors hidden behind senior bios, no agency layers, no surprise reveals. The person scoping your project is the person building it.",
+        mission:
+          'We exist to ship software that earns its place in your operations — built by senior engineers, opinionated when it matters, documented to outlast us.',
+        story: lexParagraphs([
+          'Coderoach started in 2022 as a side-project for two operators frustrated with how engineering work happens in Indonesia. Most agencies sell hours; most clients buy hours. The result: a system that rewards spending more time, not solving the problem faster.',
+          'We bet on a different model: project-scoped, outcome-priced, senior-only. No junior hand-offs. No timesheet babysitting. Two engineers can ship more, and ship better, than ten if the two are seniors and the ten are mostly translation layers.',
+          'Four years in, the bet has paid back. Forty engagements across six industries, two studio products in production (Laporta and Viralytics), and clients who come back for the next problem instead of the next pool of hours.',
+          "We're growing carefully — eleven humans, no plan to be twenty. Senior bench, no juniors, ops person who keeps Friday demos honest.",
+        ]),
+        workspace: {
+          address: 'Kemang, Jakarta Selatan, Indonesia',
+          hours: 'Mon–Fri · 09:00–18:00 WIB · async otherwise',
+          tagline: 'Walk-ins by appointment.',
+        },
+        timeline: [
+          { year: '2022', title: 'Founded as side-project', description: 'Two operators, one mission: ship without the agency tax.' },
+          { year: '2023', title: 'First five engagements', description: 'F&B and logistics. Project-scoped pricing model validated.' },
+          { year: '2024', title: 'Laporta shipped', description: '1.2K F&B outlets. First studio product in production.' },
+          { year: '2025', title: 'Viralytics shipped', description: '380 KOL campaigns. Second product, agency vertical.' },
+          { year: '2026', title: 'Forty engagements milestone', description: 'Eleven humans, four years, six industries.' },
+        ],
+      },
     },
   });
   console.log('✓ Studio');
@@ -68,7 +127,7 @@ async function seed() {
     data: {
       sectionMarker: 'Start a project',
       heading: { line1: 'Got something to ship?', line2Accent: "Let's talk." },
-      lede: 'We take on a small number of new engagements each quarter. Tell us what you\'re trying to ship — we read every brief and reply within 48 hours.',
+      lede: "We take on a small number of new engagements each quarter. Tell us what you're trying to ship — we read every brief and reply within 48 hours.",
       scopes: [
         { scope: 'Build' },
         { scope: 'Automate' },
@@ -100,21 +159,21 @@ async function seed() {
         badge: 'JKT-1 · OPEN FOR Q3',
         columns: [
           {
-            heading: 'WORK',
+            heading: 'NAVIGATE',
             links: [
-              { label: 'Case studies', href: '#work' },
-              { label: 'Services', href: '#services' },
-              { label: 'Process', href: '#process' },
-              { label: 'Products', href: '#products' },
+              { label: 'Services', href: '/#services' },
+              { label: 'Work', href: '/work' },
+              { label: 'Process', href: '/#process' },
+              { label: 'Field notes', href: '/notes' },
+              { label: 'FAQ', href: '/#faq' },
             ],
           },
           {
-            heading: 'COMPANY',
+            heading: 'STUDIO',
             links: [
-              { label: 'Studio', href: '#studio' },
-              { label: 'Field notes', href: '#' },
-              { label: 'Open roles', href: '#' },
+              { label: 'About', href: '/studio' },
               { label: 'Press kit', href: '#' },
+              { label: 'Open roles', href: '#' },
             ],
           },
           {
@@ -136,22 +195,25 @@ async function seed() {
   });
   console.log('✓ SiteSettings');
 
-  // ============ COLLECTIONS ============
+  await payload.updateGlobal({
+    slug: 'blog-settings',
+    data: {
+      archiveHero: {
+        sectionMarker: '[ FIELD NOTES / 01 ]',
+        heading: 'Notes from the studio.',
+        lede: 'Engineering, operating, and the bits in between.',
+      },
+      postsPerPage: 12,
+    },
+  });
+  console.log('✓ BlogSettings');
 
-  // Helper: clear and recreate a collection
-  async function reset(slug: any, docs: any[]) {
-    const existing = await payload.find({ collection: slug, limit: 100 });
-    for (const d of existing.docs) {
-      await payload.delete({ collection: slug, id: d.id });
-    }
-    for (const data of docs) {
-      await payload.create({ collection: slug, data });
-    }
-  }
+  // ============ SERVICES ============
 
-  await reset('services', [
+  const serviceDocs = await reset('services', [
     {
       order: 1,
+      slug: 'build',
       tag: 'BUILD',
       icon: 'build',
       title: 'Build',
@@ -159,9 +221,16 @@ async function seed() {
       blurb: 'Production software with the same rigor we use on our own products. Modern stack, opinionated architecture, designed to scale beyond the launch.',
       list: [{ item: 'Web applications' }, { item: 'Mobile apps (iOS, Android)' }, { item: 'Company websites' }, { item: 'Internal admin tools' }],
       stack: [{ tech: 'Next.js' }, { tech: 'React Native' }, { tech: 'Postgres' }, { tech: 'TypeScript' }],
+      heroLede: 'We design, build, and ship production software that earns its place in your operations. From greenfield products to internal tools that retire spreadsheets.',
+      pricingNote: 'Engagement starts at Rp 50jt. Project-scoped, no hourly billing.',
+      serviceFAQ: [
+        { question: 'Do you do mobile?', answer: 'Yes — React Native for cross-platform, native iOS/Android only when the use case demands it.' },
+        { question: 'Custom design or templates?', answer: 'Always custom. We\'re not a Figma-template shop.' },
+      ],
     },
     {
       order: 2,
+      slug: 'automate',
       tag: 'AUTOMATE',
       icon: 'automate',
       title: 'Automate',
@@ -169,9 +238,12 @@ async function seed() {
       blurb: "Most companies have someone copying data between spreadsheets at 2am. We replace that someone with a system that doesn't sleep.",
       list: [{ item: 'Workflow automation' }, { item: 'API integrations & pipelines' }, { item: 'Reporting automation' }, { item: 'Process digitization' }],
       stack: [{ tech: 'Node.js' }, { tech: 'Python' }, { tech: 'n8n' }, { tech: 'Webhooks' }],
+      heroLede: 'We replace manual ops work with reliable, observable automation. The kind of thing that ran on humans at 2am, now runs on code with audit logs.',
+      pricingNote: 'Engagement starts at Rp 30jt for scoped automation projects.',
     },
     {
       order: 3,
+      slug: 'intelligence',
       tag: 'INTELLIGENCE',
       icon: 'intelligence',
       title: 'Intelligence',
@@ -179,9 +251,12 @@ async function seed() {
       blurb: 'Anyone can build a dashboard. We build the data layer that makes decisions obvious — KPIs that matter, anomaly detection that fires, forecasts you can defend.',
       list: [{ item: 'Data warehouses & ETL' }, { item: 'Custom analytics dashboards' }, { item: 'Multi-platform ads analytics' }, { item: 'Forecasting & anomaly detection' }],
       stack: [{ tech: 'Postgres' }, { tech: 'BigQuery' }, { tech: 'Metabase' }, { tech: 'dbt' }],
+      heroLede: 'Data work that ends in better decisions, not prettier charts. We build pipelines, KPIs, anomaly detection — and the discipline to ignore what doesn\'t matter.',
+      pricingNote: 'Discovery starts at Rp 25jt. Stack & metric design billed separately.',
     },
     {
       order: 4,
+      slug: 'augment',
       tag: 'AUGMENT',
       icon: 'augment',
       title: 'Augment',
@@ -189,18 +264,32 @@ async function seed() {
       blurb: 'LLMs are infrastructure now. We integrate them where they actually move the needle — customer ops, internal search, content workflows.',
       list: [{ item: 'LLM integration & RAG' }, { item: 'Agentic workflows' }, { item: 'AI-powered internal tools' }, { item: 'Document processing' }],
       stack: [{ tech: 'Anthropic' }, { tech: 'OpenAI' }, { tech: 'LangChain' }, { tech: 'pgvector' }],
+      heroLede: 'We integrate LLMs where they pay back the latency cost — internal search, document processing, agentic ops. No chatbot demos.',
+      pricingNote: 'Pilot scope from Rp 40jt — expanded into production after measurable wins.',
     },
   ]);
-  console.log('✓ Services (4)');
+  console.log(`✓ Services (${serviceDocs.length})`);
 
-  await reset('cases', [
+  const serviceMap = Object.fromEntries(serviceDocs.map((s: any) => [s.slug, s.id]));
+
+  // ============ PROJECTS (cases + studio products) ============
+
+  await reset('projects', [
+    // Featured client case
     {
-      idx: '01',
+      order: 1,
+      slug: 'bumi-logistics',
+      kind: 'client',
       client: 'Bumi Logistics',
-      description: 'Replaced a 7-year-old console with a real-time dispatch platform.',
+      tagline: 'Replaced a 7-year-old console with a real-time dispatch platform.',
       meta: 'LOGISTICS · BUILD',
+      industry: 'logistics',
+      service: serviceMap.build,
+      pills: [{ pill: 'NEXT.JS' }, { pill: 'POSTGRES' }],
       featured: true,
       published: true,
+      publishedYear: '2026',
+      excerpt: 'Two engineers, eleven weeks, three thousand drivers in production from day one.',
       featuredDetails: {
         badgeLabel: '[ FEATURED · 2026 ]',
         shippedLabel: '[ ✓ SHIPPED ]',
@@ -226,42 +315,67 @@ async function seed() {
           ],
         },
         stack: [{ tech: 'NEXT.JS 15' }, { tech: 'POSTGRES' }, { tech: 'TEMPORAL' }, { tech: 'VERCEL' }],
-        caseStudyHref: '#',
       },
     },
-    { idx: '02', client: 'Kopi/Co Group', description: 'Multi-outlet F&B reporting, daily survival metrics, AI-assisted P&L.', meta: 'F&B · INTELLIGENCE', pills: [{ pill: 'BIGQUERY' }, { pill: 'METABASE' }], published: true },
-    { idx: '03', client: 'Senayan Studio', description: 'KOL contract automation, payment workflow, performance dashboards.', meta: 'AGENCY · AUTOMATE', pills: [{ pill: 'N8N' }, { pill: 'TIKTOK API' }], published: true },
-    { idx: '04', client: 'Adira Capital', description: 'Internal search + RAG layer over 28k policy docs for ops team.', meta: 'FINANCE · AUGMENT', pills: [{ pill: 'ANTHROPIC' }, { pill: 'PG-VECTOR' }], published: true },
-    { idx: '05', client: 'Halo Ventures', description: 'Portfolio operating console — KPI ingest from 14 portfolio cos.', meta: 'VC · BUILD', pills: [{ pill: 'REACT' }, { pill: 'POSTGRES' }], published: true },
-    { idx: '06', client: 'PT Citra Maju', description: 'Replaced 12hr manual report with 30-second daily ops dashboard.', meta: 'MANUFACTURING · INTELLIGENCE', pills: [{ pill: 'PYTHON' }, { pill: 'DBT' }], published: true },
+    // Other client cases
+    { order: 2, slug: 'kopi-co-group', kind: 'client', client: 'Kopi/Co Group', tagline: 'Multi-outlet F&B reporting, daily survival metrics, AI-assisted P&L.', meta: 'F&B · INTELLIGENCE', industry: 'fb', service: serviceMap.intelligence, pills: [{ pill: 'BIGQUERY' }, { pill: 'METABASE' }], published: true, publishedYear: '2025', excerpt: 'F&B data warehouse with daily ops dashboards. Survival metrics for 14 outlets in one place.' },
+    { order: 3, slug: 'senayan-studio', kind: 'client', client: 'Senayan Studio', tagline: 'KOL contract automation, payment workflow, performance dashboards.', meta: 'AGENCY · AUTOMATE', industry: 'agency', service: serviceMap.automate, pills: [{ pill: 'N8N' }, { pill: 'TIKTOK API' }], published: true, publishedYear: '2025', excerpt: 'End-to-end KOL operations: contract → payment → live performance, all automated.' },
+    { order: 4, slug: 'adira-capital', kind: 'client', client: 'Adira Capital', tagline: 'Internal search + RAG layer over 28k policy docs for ops team.', meta: 'FINANCE · AUGMENT', industry: 'finance', service: serviceMap.augment, pills: [{ pill: 'ANTHROPIC' }, { pill: 'PG-VECTOR' }], published: true, publishedYear: '2025', excerpt: 'AI-assisted policy search reducing ops research from hours to seconds.' },
+    { order: 5, slug: 'halo-ventures', kind: 'client', client: 'Halo Ventures', tagline: 'Portfolio operating console — KPI ingest from 14 portfolio cos.', meta: 'VC · BUILD', industry: 'vc', service: serviceMap.build, pills: [{ pill: 'REACT' }, { pill: 'POSTGRES' }], published: true, publishedYear: '2024', excerpt: 'One dashboard for portfolio metrics. Ingests directly from 14 different stacks.' },
+    { order: 6, slug: 'pt-citra-maju', kind: 'client', client: 'PT Citra Maju', tagline: 'Replaced 12hr manual report with 30-second daily ops dashboard.', meta: 'MANUFACTURING · INTELLIGENCE', industry: 'manufacturing', service: serviceMap.intelligence, pills: [{ pill: 'PYTHON' }, { pill: 'DBT' }], published: true, publishedYear: '2024', excerpt: 'From manual Excel reports to real-time ops visibility. ROI within Q1.' },
+    // Studio products
+    {
+      order: 10,
+      slug: 'laporta',
+      kind: 'studio',
+      client: 'Laporta',
+      tagline: 'Profit intelligence layer above your POS, for Indonesian F&B operators.',
+      meta: 'F&B OPS · STUDIO PRODUCT',
+      industry: 'fb',
+      pills: [{ pill: 'NEXT.JS' }, { pill: 'POSTGRES' }, { pill: 'METABASE' }],
+      published: true,
+      publishedYear: '2024',
+      excerpt: "For Indonesian F&B operators who outgrew spreadsheets but can't justify enterprise ERP.",
+      studio: {
+        vizType: 'laporta',
+        usage: '1.2K OUTLETS',
+        externalLink: { label: 'laporta.id →', href: 'https://laporta.id' },
+        bullets: [
+          { bullet: 'Outlet financial analysis' },
+          { bullet: 'Daily survival metrics' },
+          { bullet: 'AI-assisted P&L chat' },
+          { bullet: 'Multi-outlet aggregation' },
+        ],
+      },
+    },
+    {
+      order: 11,
+      slug: 'viralytics',
+      kind: 'studio',
+      client: 'Viralytics',
+      tagline: 'End-to-end KOL OS — sourcing, contracts, live performance.',
+      meta: 'KOL OS · STUDIO PRODUCT',
+      industry: 'agency',
+      pills: [{ pill: 'TIKTOK API' }, { pill: 'NODE.JS' }],
+      published: true,
+      publishedYear: '2025',
+      excerpt: 'KOL campaign management without spreadsheets. Sourcing → contract → live tracking in one workspace.',
+      studio: {
+        vizType: 'viralytics',
+        usage: '380 CAMPAIGNS',
+        externalLink: { label: 'viralytics.id →', href: 'https://viralytics.id' },
+        bullets: [
+          { bullet: 'KOL directory & sourcing' },
+          { bullet: 'Campaign administration' },
+          { bullet: 'Live performance dashboards' },
+          { bullet: 'TikTok & Meta API integrations' },
+        ],
+      },
+    },
   ]);
-  console.log('✓ Cases (6)');
+  console.log(`✓ Projects (8) — 6 client cases + 2 studio products`);
 
-  await reset('products', [
-    {
-      order: 1,
-      name: 'Laporta',
-      tag: 'F&B OPS',
-      blurb: "For Indonesian F&B operators who outgrew spreadsheets but can't justify enterprise ERP. Sits above your POS as a profit intelligence layer.",
-      bullets: [{ bullet: 'Outlet financial analysis' }, { bullet: 'Daily survival metrics' }, { bullet: 'AI-assisted P&L chat' }, { bullet: 'Multi-outlet aggregation' }],
-      shippedYear: '2024',
-      usage: '1.2K OUTLETS',
-      link: { label: 'laporta.id →', href: '#' },
-      vizType: 'laporta',
-    },
-    {
-      order: 2,
-      name: 'Viralytics',
-      tag: 'KOL OS',
-      blurb: 'End-to-end platform for KOL campaign management. From sourcing to contracts to live performance tracking, all in one workspace.',
-      bullets: [{ bullet: 'KOL directory & sourcing' }, { bullet: 'Campaign administration' }, { bullet: 'Live performance dashboards' }, { bullet: 'TikTok & Meta API integrations' }],
-      shippedYear: '2025',
-      usage: '380 CAMPAIGNS',
-      link: { label: 'viralytics.id →', href: '#' },
-      vizType: 'viralytics',
-    },
-  ]);
-  console.log('✓ Products (2)');
+  // ============ PROCESS / TENETS / FAQs / CLIENTS ============
 
   await reset('process-phases', [
     { order: 1, tag: 'PHASE 01', icon: 'discover', name: 'Discover', week: 'WK 0–1', what: 'We map the actual problem, not just the requested output. Stakeholder interviews, system audit, scope tightening.', deliv: 'Written brief · technical scope · success metrics' },
@@ -300,6 +414,96 @@ async function seed() {
     { order: 8, name: 'PT Citra Maju' },
   ]);
   console.log('✓ Clients (8)');
+
+  // ============ AUTHORS + POSTS ============
+
+  // Delete posts first (FK to authors) before resetting authors
+  const existingPosts = await payload.find({ collection: 'posts', limit: 200, overrideAccess: true });
+  for (const p of existingPosts.docs) {
+    await payload.delete({ collection: 'posts', id: p.id, overrideAccess: true });
+  }
+
+  const authorDocs = await reset('authors', [
+    { name: 'Wafi Udin', slug: 'wafi-udin', role: 'Co-founder · Engineering', bio: 'Builds operating systems for operators. 10y in production engineering across F&B and finance.' },
+    { name: 'Studio Editor', slug: 'studio-editor', role: 'Studio · Editorial', bio: 'House byline for studio-collective notes.' },
+  ]);
+  console.log(`✓ Authors (${authorDocs.length})`);
+
+  const wafi = (authorDocs[0] as any).id;
+  const editor = (authorDocs[1] as any).id;
+
+  // Helper: build a minimal Lexical root with paragraphs
+  const lex = (paragraphs: string[]) => ({
+    root: {
+      type: 'root',
+      format: '',
+      indent: 0,
+      version: 1,
+      direction: 'ltr',
+      children: paragraphs.map((text) => ({
+        type: 'paragraph',
+        format: '',
+        indent: 0,
+        version: 1,
+        direction: 'ltr',
+        textFormat: 0,
+        children: [{ mode: 'normal', text, type: 'text', style: '', detail: 0, format: 0, version: 1 }],
+      })),
+    },
+  });
+
+  await reset('posts', [
+    {
+      title: "Why we don't sell hours.",
+      slug: 'why-we-dont-sell-hours',
+      excerpt: 'Hourly billing optimizes for the wrong thing. Here\'s what we do instead — and why every Coderoach engagement is project-scoped.',
+      category: 'operating',
+      author: wafi,
+      publishedAt: '2026-04-22T09:00:00.000Z',
+      published: true,
+      featured: true,
+      tags: [{ tag: 'operations' }, { tag: 'pricing' }],
+      content: lex([
+        'Hourly billing is the default for most agencies. We\'ve never used it. Here\'s why.',
+        'When a vendor charges by the hour, the incentive structure rewards spending more time, not solving the problem faster. The buyer ends up policing timesheets instead of evaluating outcomes.',
+        'Project pricing flips the incentive. We propose a scope, agree on outcomes, and the team is rewarded for finishing earlier. Better outcome, less rework, no padding.',
+        'The trade-off: we have to be honest about scope upfront. That\'s where the 48-hour discovery comes in.',
+      ]),
+    },
+    {
+      title: 'Postgres for everything (until it isn\'t).',
+      slug: 'postgres-for-everything',
+      excerpt: 'When a single Postgres instance hits its limits, what comes next. A pragmatic walkthrough from the studio.',
+      category: 'engineering',
+      author: wafi,
+      publishedAt: '2026-04-08T09:00:00.000Z',
+      published: true,
+      tags: [{ tag: 'postgres' }, { tag: 'architecture' }, { tag: 'data' }],
+      content: lex([
+        'For our first hundred projects, Postgres covered every need: transactional, analytical, queue, search, even some vector work via pgvector.',
+        'When does that stop being enough? Three signals.',
+        'First, write contention on hot tables. Second, OLAP queries pegging the CPU your transactional workload depends on. Third, vector search on millions of embeddings — pgvector still works, but cost-per-query gets uncomfortable.',
+        'When we hit those, we add a specialized store — a Redis queue, a Clickhouse OLAP, a vector DB — but only for that one signal. The rest stays in Postgres.',
+      ]),
+    },
+    {
+      title: 'Notes on building Laporta in eleven months.',
+      slug: 'building-laporta-in-eleven-months',
+      excerpt: 'Eleven months from blank repo to 1.2K outlets. What we got right, what we\'d do differently, and what surprised us.',
+      category: 'studio',
+      author: editor,
+      publishedAt: '2026-03-15T09:00:00.000Z',
+      published: true,
+      tags: [{ tag: 'product' }, { tag: 'laporta' }, { tag: 'fb' }],
+      content: lex([
+        'Laporta started as a tool for our own coffee operator client. We thought we\'d ship it in three months. It took eleven.',
+        'What got right: P&L logic, multi-outlet aggregation, the AI-assisted query layer that lets ops ask plain-English questions.',
+        'What we\'d do differently: customer onboarding. We assumed F&B operators would self-serve. They don\'t. We rebuilt onboarding twice.',
+        'What surprised us: the most-used feature isn\'t the dashboard. It\'s the daily survival-metric SMS.',
+      ]),
+    },
+  ]);
+  console.log('✓ Posts (3)');
 
   console.log('\n✓ Seed complete. Visit /admin to log in & edit, or http://localhost:3000 to view.');
   process.exit(0);

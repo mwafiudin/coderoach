@@ -29,6 +29,7 @@ export const ProcessPhases: CollectionConfig = {
       name: 'deliv',
       type: 'text',
       required: true,
+      
       admin: { description: 'Deliverables line, e.g. "Source · docs · 30-day support"' },
     },
   ],

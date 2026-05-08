@@ -9,12 +9,13 @@ import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob';
 import { Users } from './collections/Users';
 import { Media } from './collections/Media';
 import { Services } from './collections/Services';
-import { Cases } from './collections/Cases';
-import { Products } from './collections/Products';
+import { Projects } from './collections/Projects';
 import { ProcessPhases } from './collections/ProcessPhases';
 import { Tenets } from './collections/Tenets';
 import { FAQs } from './collections/FAQs';
 import { Clients } from './collections/Clients';
+import { Posts } from './collections/Posts';
+import { Authors } from './collections/Authors';
 
 // Globals
 import { Hero } from './globals/Hero';
@@ -22,6 +23,7 @@ import { Studio } from './globals/Studio';
 import { Contact } from './globals/Contact';
 import { TopBar } from './globals/TopBar';
 import { SiteSettings } from './globals/SiteSettings';
+import { BlogSettings } from './globals/BlogSettings';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -41,21 +43,21 @@ export default buildConfig({
     Users,
     Media,
     Services,
-    Cases,
-    Products,
+    Projects,
     ProcessPhases,
     Tenets,
     FAQs,
     Clients,
+    Posts,
+    Authors,
   ],
-  globals: [Hero, Studio, Contact, TopBar, SiteSettings],
+  globals: [Hero, Studio, Contact, TopBar, SiteSettings, BlogSettings],
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
   db: postgresAdapter({
     pool: {
-      // Accept both DATABASE_URI (Payload convention) and DATABASE_URL (Vercel default)
       connectionString:
         process.env.DATABASE_URI ||
         process.env.POSTGRES_URL ||
