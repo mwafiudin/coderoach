@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+/* ============================================================
+   COLORS — direct port from Coderoach design system
+   ============================================================ */
+@theme {
+  --color-ink: #08090A;
+  --color-ink-950: #08090A;
+  --color-electric: #2C70FE;
+
+  --color-paper: #F4F7F5;
+  --color-paper-50: #FAFBFA;
+  --color-paper-100: #F4F7F5;
+  --color-paper-200: #E8ECEA;
+
+  --color-mist: #A7A2A9;
+  --color-mist-400: #C4C0C5;
+  --color-mist-500: #A7A2A9;
+  --color-mist-600: #7A767C;
+
+  --color-shadow: #222823;
+  --color-shadow-700: #3A4140;
+  --color-shadow-800: #222823;
+  --color-shadow-900: #13171A;
+
+  --color-success: #2BB673;
+  --color-warning: #F2A93B;
+  --color-error: #E5484D;
+
+  /* Font stacks */
+  --font-sans: var(--font-sans, "Satoshi"), "Inter", system-ui, sans-serif;
+  --font-mono: var(--font-mono, "JetBrains Mono"), "SF Mono", "Menlo", monospace;
+  --font-display: var(--font-sans, "Satoshi"), system-ui, sans-serif;
+
+  /* Custom easings */
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-emphasized: cubic-bezier(0.3, 0, 0, 1);
+  --ease-default: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+@layer base {
+  html, body {
+    background: var(--color-paper-100);
+    color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "ss01" 1;
+  }
+
+  body {
+    font-family: var(--font-sans);
+  }
+
+  a { color: inherit; text-decoration: none; }
+}
+
+/* ============================================================
+   POLISH ANIMATIONS — preserved from iter 5
+   Used as utilities in components or via @apply.
+   ============================================================ */
+@layer utilities {
+  /* Tabular numerics for any number-heavy element */
+  .tabular { font-variant-numeric: tabular-nums; }
+
+  /* Status dot pulse */
+  @keyframes pulseDot {
+    0%, 70%, 100% { box-shadow: 0 0 0 0 rgba(43, 182, 115, 0); }
+    35%           { box-shadow: 0 0 0 5px rgba(43, 182, 115, 0.45); }
+  }
+  .animate-pulse-dot { animation: pulseDot 2.6s var(--ease-out-quint) infinite; }
+
+  /* Hero entrance stagger */
+  @keyframes heroIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .animate-hero-in { animation: heroIn 760ms var(--ease-out-quint) forwards; }
+
+  /* SVG line draw (Laporta chart) */
+  @keyframes drawLine { to { stroke-dashoffset: 0; } }
+  .animate-draw-line {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: drawLine 1600ms var(--ease-out-quint) 320ms forwards;
+  }
+
+  /* LIVE indicator blink */
+  @keyframes liveBlink {
+    0%, 65%, 100% { opacity: 1; }
+    75%, 90%      { opacity: 0.35; }
+  }
+  .animate-live-blink { animation: liveBlink 2.4s var(--ease-default) infinite; }
+
+  /* FAQ open content slide */
+  @keyframes faqIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .animate-faq-in { animation: faqIn 320ms var(--ease-out-quint); }
+
+  /* Trusted-by marquee */
+  @keyframes marquee { to { transform: translateX(-50%); } }
+  .animate-marquee { animation: marquee 50s linear infinite; }
+
+  /* Section reveal stagger (IntersectionObserver-driven) */
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity 720ms var(--ease-out-quint), transform 720ms var(--ease-out-quint); }
+  .reveal.in { opacity: 1; transform: none; }
+  .reveal-stagger > * { opacity: 0; transform: translateY(10px); transition: opacity 640ms var(--ease-out-quint), transform 640ms var(--ease-out-quint); }
+  .reveal-stagger.in > * { opacity: 1; transform: none; }
+  .reveal-stagger.in > *:nth-child(1) { transition-delay: 0ms; }
+  .reveal-stagger.in > *:nth-child(2) { transition-delay: 80ms; }
+  .reveal-stagger.in > *:nth-child(3) { transition-delay: 160ms; }
+  .reveal-stagger.in > *:nth-child(4) { transition-delay: 240ms; }
+  .reveal-stagger.in > *:nth-child(5) { transition-delay: 320ms; }
+  .reveal-stagger.in > *:nth-child(6) { transition-delay: 400ms; }
+  .reveal-stagger.in > *:nth-child(7) { transition-delay: 480ms; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-pulse-dot, .animate-hero-in, .animate-draw-line,
+    .animate-live-blink, .animate-faq-in, .animate-marquee {
+      animation: none;
+    }
+    .reveal, .reveal-stagger > * { opacity: 1; transform: none; transition: none; }
+  }
+}

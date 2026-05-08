@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coderoach Studio — Engineering that thinks like an operator.</title>
+<link rel="icon" href="assets/coderoach_logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="colors_and_type.css">
+<link rel="stylesheet" href="styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="components.jsx"></script>
+<script type="text/babel">
+const { createRoot } = ReactDOM;
+const { useEffect } = React;
+
+function App() {
+  useEffect(() => {
+    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const finePointer = matchMedia('(pointer: fine)').matches;
+    const cleanups = [];
+
+    /* ---------- Section reveal stagger ---------- */
+    const targets = document.querySelectorAll(
+      '.section-head, .services, .work-list, .case-feature, .products, ' +
+      '.process, .studio-grid, .faq, .contact-card, .trusted-grid'
+    );
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('in');
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+    );
+    targets.forEach((el) => {
+      el.classList.add(el.children.length > 1 ? 'reveal-stagger' : 'reveal');
+      io.observe(el);
+    });
+    cleanups.push(() => io.disconnect());
+
+    if (reduceMotion) return () => cleanups.forEach((c) => c());
+
+    /* ---------- Spotlight cursor on dark cards ---------- */
+    const spotlights = document.querySelectorAll(
+      '.case-feature, .services .svc-card:nth-child(1)'
+    );
+    spotlights.forEach((el) => {
+      const handler = (e) => {
+        const r = el.getBoundingClientRect();
+        el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        el.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      };
+      el.addEventListener('pointermove', handler);
+      cleanups.push(() => el.removeEventListener('pointermove', handler));
+    });
+
+    /* ---------- Directional work-row hover ---------- */
+    document.querySelectorAll('.work-row').forEach((row) => {
+      const handler = (e) => {
+        const r = row.getBoundingClientRect();
+        const fromLeft = e.clientX - r.left < r.width / 2;
+        row.style.setProperty('--origin', fromLeft ? 'left' : 'right');
+      };
+      row.addEventListener('pointerenter', handler);
+      cleanups.push(() => row.removeEventListener('pointerenter', handler));
+    });
+
+    /* ---------- Magnetic primary CTA (hero only) ---------- */
+    if (finePointer) {
+      const cta = document.querySelector('.hero-cta .btn-primary');
+      if (cta) {
+        const onMove = (e) => {
+          const r = cta.getBoundingClientRect();
+          const x = (e.clientX - r.left - r.width / 2) * 0.18;
+          const y = (e.clientY - r.top - r.height / 2) * 0.22;
+          cta.style.transform = `translate(${x.toFixed(2)}px, ${y.toFixed(2)}px)`;
+        };
+        const onLeave = () => { cta.style.transform = ''; };
+        cta.addEventListener('pointermove', onMove);
+        cta.addEventListener('pointerleave', onLeave);
+        cleanups.push(() => {
+          cta.removeEventListener('pointermove', onMove);
+          cta.removeEventListener('pointerleave', onLeave);
+        });
+      }
+    }
+
+    /* ---------- Hero background parallax + Process scroll progress ---------- */
+    const heroBg = document.querySelector('.hero-bg');
+    const proc = document.querySelector('.process');
+    let raf = null;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        const y = scrollY;
+        if (heroBg && y < innerHeight * 1.5) {
+          heroBg.style.transform = `translateY(${(y * 0.18).toFixed(2)}px)`;
+        }
+        if (proc) {
+          const r = proc.getBoundingClientRect();
+          const total = r.height + innerHeight;
+          const passed = innerHeight - r.top;
+          const p = Math.max(0, Math.min(1, passed / total));
+          proc.style.setProperty('--progress', p.toFixed(3));
+          // map continuous progress to discrete phase classes (1..4)
+          const phase = Math.max(0, Math.min(4, Math.ceil(p * 4)));
+          proc.classList.remove('phase-1', 'phase-2', 'phase-3', 'phase-4');
+          if (phase > 0) proc.classList.add('phase-' + phase);
+        }
+        raf = null;
+      });
+    };
+    addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    cleanups.push(() => removeEventListener('scroll', onScroll));
+
+    return () => cleanups.forEach((c) => c());
+  }, []);
+
+  return (
+    <>
+      <TopBar />
+      <Nav />
+      <Hero />
+      <Services />
+      <Work />
+      <Products />
+      <Process />
+      <Studio />
+      <FAQ />
+      <Contact />
+      <Footer />
+    </>
+  );
+}
+createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
