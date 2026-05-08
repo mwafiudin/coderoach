@@ -55,7 +55,12 @@ export default buildConfig({
   },
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URI || '',
+      // Accept both DATABASE_URI (Payload convention) and DATABASE_URL (Vercel default)
+      connectionString:
+        process.env.DATABASE_URI ||
+        process.env.POSTGRES_URL ||
+        process.env.DATABASE_URL ||
+        '',
     },
   }),
   plugins: [
