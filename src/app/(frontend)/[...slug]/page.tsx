@@ -11,8 +11,7 @@ import { draftMode } from 'next/headers';
 import { SectionShell } from '../_components/detail/SectionShell';
 import { BlockRenderer } from '../_components/blocks/BlockRenderer';
 
-export const dynamic = 'force-static';
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 const RESERVED_SLUGS = new Set([
   'admin',

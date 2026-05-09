@@ -4,8 +4,7 @@ import type { Metadata } from 'next';
 import { SectionShell } from '../_components/detail/SectionShell';
 import { ProjectArchiveClient } from './ProjectArchiveClient';
 
-export const dynamic = 'force-static';
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Work — Coderoach Studio',

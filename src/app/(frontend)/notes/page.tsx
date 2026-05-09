@@ -7,8 +7,7 @@ import { PostCard } from '../_components/archive/PostCard';
 import { CompactPostRow } from '../_components/archive/CompactPostRow';
 import { Pagination } from '../_components/archive/Pagination';
 
-export const dynamic = 'force-static';
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Field Notes — Coderoach Studio',

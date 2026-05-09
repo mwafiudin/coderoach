@@ -12,8 +12,7 @@ import { BlockRenderer } from './_components/blocks/BlockRenderer';
 import { InteractionsClient } from './_components/InteractionsClient';
 import { BackToTop } from './_components/BackToTop';
 
-export const dynamic = 'force-static';
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
   const payload = await getPayload({ config });

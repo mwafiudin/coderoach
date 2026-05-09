@@ -10,8 +10,7 @@ import { Badge } from '../../_components/ui/Badge';
 import { Icon, type IconName } from '@/lib/icons';
 import { ServiceViz } from '../../_components/ui/ServiceViz';
 
-export const dynamic = 'force-static';
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export async function generateStaticParams() {
   try {

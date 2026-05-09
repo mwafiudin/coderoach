@@ -14,8 +14,7 @@ import { TOCSidebar } from '../../_components/detail/TOCSidebar';
 import { PrevNext } from '../../_components/detail/PrevNext';
 import { PayloadImage } from '../../_components/ui/PayloadImage';
 
-export const dynamic = 'force-static';
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 const CATEGORY_LABELS = {
   engineering: 'Engineering',

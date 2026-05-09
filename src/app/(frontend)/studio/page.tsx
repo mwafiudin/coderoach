@@ -9,8 +9,7 @@ import { Badge } from '../_components/ui/Badge';
 import { AnimatedCount } from '../_components/ui/AnimatedCount';
 import { PayloadImage } from '../_components/ui/PayloadImage';
 
-export const dynamic = 'force-static';
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Studio — Coderoach',

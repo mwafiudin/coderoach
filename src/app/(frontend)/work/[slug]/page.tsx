@@ -9,8 +9,7 @@ import { StudioProductDetail } from './StudioProductDetail';
 import { RelatedGrid } from '../../_components/detail/RelatedGrid';
 import { PrevNext } from '../../_components/detail/PrevNext';
 
-export const dynamic = 'force-static';
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export async function generateStaticParams() {
   try {
