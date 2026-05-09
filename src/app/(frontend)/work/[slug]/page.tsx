@@ -13,15 +13,20 @@ export const dynamic = 'force-static';
 export const revalidate = 60;
 
 export async function generateStaticParams() {
-  const payload = await getPayload({ config });
-  const { docs } = await payload.find({
-    collection: 'projects',
-    where: { _status: { equals: 'published' } },
-    limit: 1000,
-    depth: 0,
-    select: { slug: true },
-  });
-  return docs.map((d: any) => ({ slug: d.slug }));
+  try {
+    const payload = await getPayload({ config });
+    const { docs } = await payload.find({
+      collection: 'projects',
+      where: { _status: { equals: 'published' } },
+      limit: 1000,
+      depth: 0,
+      select: { slug: true },
+    });
+    return docs.map((d: any) => ({ slug: d.slug }));
+  } catch (err) {
+    console.warn('[projects] generateStaticParams: DB unavailable, deferring to runtime', err);
+    return [];
+  }
 }
 
 export async function generateMetadata({

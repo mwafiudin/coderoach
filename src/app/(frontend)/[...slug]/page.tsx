@@ -26,18 +26,25 @@ const RESERVED_SLUGS = new Set([
 ]);
 
 export async function generateStaticParams() {
-  const payload = await getPayload({ config });
-  const { docs } = await payload.find({
-    collection: 'pages',
-    where: { _status: { equals: 'published' } },
-    limit: 200,
-    depth: 0,
-    select: { slug: true },
-  });
-  return (docs as any[])
-    .map((d) => d.slug)
-    .filter((slug) => slug && slug !== 'home' && !RESERVED_SLUGS.has(slug))
-    .map((slug) => ({ slug: [slug] }));
+  // Build-time DB access can fail in environments without Postgres credentials
+  // (preview deploys, fresh forks). Fall back to dynamic rendering at runtime.
+  try {
+    const payload = await getPayload({ config });
+    const { docs } = await payload.find({
+      collection: 'pages',
+      where: { _status: { equals: 'published' } },
+      limit: 200,
+      depth: 0,
+      select: { slug: true },
+    });
+    return (docs as any[])
+      .map((d) => d.slug)
+      .filter((slug) => slug && slug !== 'home' && !RESERVED_SLUGS.has(slug))
+      .map((slug) => ({ slug: [slug] }));
+  } catch (err) {
+    console.warn('[pages] generateStaticParams: DB unavailable, deferring to runtime', err);
+    return [];
+  }
 }
 
 async function findPage(slugSegments: string[], draft = false) {

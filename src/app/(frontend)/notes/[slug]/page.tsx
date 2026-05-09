@@ -38,13 +38,20 @@ function formatDate(iso?: string | null): string {
 }
 
 export async function generateStaticParams() {
-  const payload = await getPayload({ config });
-  const { docs } = await payload.find({
-    collection: 'posts',
-    where: { _status: { equals: 'published' } },
-    limit: 1000,
-  });
-  return docs.map((d: any) => ({ slug: d.slug }));
+  try {
+    const payload = await getPayload({ config });
+    const { docs } = await payload.find({
+      collection: 'posts',
+      where: { _status: { equals: 'published' } },
+      limit: 1000,
+      depth: 0,
+      select: { slug: true },
+    });
+    return docs.map((d: any) => ({ slug: d.slug }));
+  } catch (err) {
+    console.warn('[posts] generateStaticParams: DB unavailable, deferring to runtime', err);
+    return [];
+  }
 }
 
 export async function generateMetadata({
