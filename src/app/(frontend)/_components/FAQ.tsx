@@ -1,5 +1,3 @@
-'use client';
-
 import { SectionHead } from './SectionHead';
 
 type FAQ = {
@@ -21,7 +19,7 @@ export function FAQ({ items }: { items: FAQ[] }) {
           marker="[ 07 / 07 ]"
           category="FAQ"
           description=""
-          heading="Things you're probably wondering."
+          heading="Pertanyaan yang biasanya muncul."
         />
         <div className="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-0">
           <div className="border-t border-ink lg:border-r-0 reveal-stagger">

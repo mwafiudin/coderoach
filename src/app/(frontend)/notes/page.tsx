@@ -7,8 +7,7 @@ import { PostCard } from '../_components/archive/PostCard';
 import { CompactPostRow } from '../_components/archive/CompactPostRow';
 import { Pagination } from '../_components/archive/Pagination';
 
-export const dynamic = 'force-static';
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Field Notes — Coderoach Studio',
@@ -29,11 +28,22 @@ export default async function NotesArchivePage({
 
   const { docs: posts, totalPages, totalDocs } = await payload.find({
     collection: 'posts',
-    where: { published: { equals: true } },
+    where: { _status: { equals: 'published' } },
     sort: '-publishedAt',
     limit: perPage,
     page,
     depth: 1,
+    select: {
+      slug: true,
+      title: true,
+      excerpt: true,
+      category: true,
+      author: true,
+      publishedAt: true,
+      readingTime: true,
+      coverImage: true,
+      featured: true,
+    },
   });
 
   // Editorial split: explicit-featured OR fallback to first post

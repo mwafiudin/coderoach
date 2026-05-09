@@ -1,4 +1,5 @@
 import { Badge } from '../ui/Badge';
+import { PayloadImage } from '../ui/PayloadImage';
 
 type Post = {
   id: string | number;
@@ -9,7 +10,7 @@ type Post = {
   author?: { name?: string | null } | string | number | null;
   publishedAt?: string | null;
   readingTime?: number | null;
-  coverImage?: { url?: string | null; alt?: string | null } | null;
+  coverImage?: any;
   featured?: boolean | null;
 };
 
@@ -47,10 +48,13 @@ export function PostCard({ post, featured = false }: { post: Post; featured?: bo
           ${featured ? 'lg:w-1/2 aspect-[16/10] lg:aspect-auto border-b lg:border-b-0 lg:border-r' : 'aspect-[16/10] border-b'}`}
       >
         {post.coverImage?.url ? (
-          <img
-            src={post.coverImage.url}
+          <PayloadImage
+            media={post.coverImage}
+            variant="card"
             alt={post.coverImage.alt || post.title}
+            sizesAttr={featured ? '(min-width: 1024px) 50vw, 100vw' : '(min-width: 768px) 33vw, 100vw'}
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            fill
           />
         ) : (
           <div

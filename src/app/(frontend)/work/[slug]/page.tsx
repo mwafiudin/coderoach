@@ -2,24 +2,30 @@ import { getPayload } from 'payload';
 import config from '@payload-config';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { draftMode } from 'next/headers';
 import { SectionShell } from '../../_components/detail/SectionShell';
 import { ClientCaseDetail } from './ClientCaseDetail';
 import { StudioProductDetail } from './StudioProductDetail';
 import { RelatedGrid } from '../../_components/detail/RelatedGrid';
 import { PrevNext } from '../../_components/detail/PrevNext';
 
-export const dynamic = 'force-static';
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export async function generateStaticParams() {
-  const payload = await getPayload({ config });
-  const { docs } = await payload.find({
-    collection: 'projects',
-    where: { published: { equals: true } },
-    limit: 1000,
-    overrideAccess: true,
-  });
-  return docs.map((d: any) => ({ slug: d.slug }));
+  try {
+    const payload = await getPayload({ config });
+    const { docs } = await payload.find({
+      collection: 'projects',
+      where: { _status: { equals: 'published' } },
+      limit: 1000,
+      depth: 0,
+      select: { slug: true },
+    });
+    return docs.map((d: any) => ({ slug: d.slug }));
+  } catch (err) {
+    console.warn('[projects] generateStaticParams: DB unavailable, deferring to runtime', err);
+    return [];
+  }
 }
 
 export async function generateMetadata({
@@ -53,6 +59,7 @@ export default async function ProjectDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const { isEnabled: isDraftMode } = await draftMode();
   const payload = await getPayload({ config });
 
   const { docs } = await payload.find({
@@ -60,6 +67,8 @@ export default async function ProjectDetailPage({
     where: { slug: { equals: slug } },
     limit: 1,
     depth: 2,
+    draft: isDraftMode,
+    overrideAccess: isDraftMode,
   });
   const project = docs[0] as any;
   if (!project) notFound();
@@ -70,7 +79,7 @@ export default async function ProjectDetailPage({
     where: {
       and: [
         { id: { not_equals: project.id } },
-        { published: { equals: true } },
+        { _status: { equals: 'published' } },
         {
           or: [
             ...(project.industry ? [{ industry: { equals: project.industry } }] : []),
@@ -92,7 +101,7 @@ export default async function ProjectDetailPage({
       collection: 'projects',
       where: {
         and: [
-          { published: { equals: true } },
+          { _status: { equals: 'published' } },
           { kind: { equals: project.kind } },
           { order: { less_than: currentOrder } },
         ],
@@ -104,7 +113,7 @@ export default async function ProjectDetailPage({
       collection: 'projects',
       where: {
         and: [
-          { published: { equals: true } },
+          { _status: { equals: 'published' } },
           { kind: { equals: project.kind } },
           { order: { greater_than: currentOrder } },
         ],

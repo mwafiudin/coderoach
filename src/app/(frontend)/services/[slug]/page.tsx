@@ -10,13 +10,22 @@ import { Badge } from '../../_components/ui/Badge';
 import { Icon, type IconName } from '@/lib/icons';
 import { ServiceViz } from '../../_components/ui/ServiceViz';
 
-export const dynamic = 'force-static';
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export async function generateStaticParams() {
-  const payload = await getPayload({ config });
-  const { docs } = await payload.find({ collection: 'services', limit: 100 });
-  return docs.map((d: any) => ({ slug: d.slug }));
+  try {
+    const payload = await getPayload({ config });
+    const { docs } = await payload.find({
+      collection: 'services',
+      limit: 100,
+      depth: 0,
+      select: { slug: true },
+    });
+    return docs.map((d: any) => ({ slug: d.slug }));
+  } catch (err) {
+    console.warn('[services] generateStaticParams: DB unavailable, deferring to runtime', err);
+    return [];
+  }
 }
 
 export async function generateMetadata({
@@ -60,7 +69,7 @@ export default async function ServiceDetailPage({
     const { docs: byService } = await payload.find({
       collection: 'projects',
       where: {
-        and: [{ service: { equals: service.id } }, { published: { equals: true } }],
+        and: [{ service: { equals: service.id } }, { _status: { equals: 'published' } }],
       },
       sort: 'order',
       limit: 4,

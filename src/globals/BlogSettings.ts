@@ -1,9 +1,11 @@
 import type { GlobalConfig } from 'payload';
+import { revalidateBlog } from '../lib/revalidate';
 
 export const BlogSettings: GlobalConfig = {
   slug: 'blog-settings',
   admin: { group: 'Site Content' },
   access: { read: () => true },
+  hooks: { afterChange: [revalidateBlog] },
   fields: [
     {
       name: 'archiveHero',

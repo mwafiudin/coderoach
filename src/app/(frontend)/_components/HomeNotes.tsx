@@ -12,14 +12,14 @@ export function HomeNotes({ posts }: { posts: Post[] }) {
           <SectionHead
             marker="[ 06 / 07 ]"
             category="Field Notes"
-            heading="Latest from the studio."
-            lede="Engineering, operating, and the bits in between."
+            heading="Catatan terbaru dari studio."
+            lede="Engineering, operating, dan hal-hal di antara keduanya."
           />
           <a
             href="/notes"
             className="text-[11px] font-semibold uppercase tracking-[0.18em] text-electric hover:underline self-start lg:self-auto whitespace-nowrap"
           >
-            View all notes →
+            Lihat semua →
           </a>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 reveal-stagger">

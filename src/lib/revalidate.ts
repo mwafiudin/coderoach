@@ -14,8 +14,11 @@ function safeRevalidate(path: string) {
   }
 }
 
-/** Revalidate the homepage on any content change. */
-export const revalidateHome: CollectionAfterChangeHook | GlobalAfterChangeHook = ({ doc }: any) => {
+/**
+ * Revalidate the homepage on any content change.
+ * Untyped on purpose — works for both Collection and Global afterChange hooks.
+ */
+export const revalidateHome = ({ doc }: any) => {
   safeRevalidate('/');
   return doc;
 };
@@ -39,5 +42,12 @@ export const revalidateService: CollectionAfterChangeHook = ({ doc }: any) => {
 export const revalidatePost: CollectionAfterChangeHook = ({ doc }: any) => {
   safeRevalidate('/notes');
   if (doc?.slug) safeRevalidate(`/notes/${doc.slug}`);
+  return doc;
+};
+
+/** Revalidate /notes archive (used by BlogSettings global). */
+export const revalidateBlog: GlobalAfterChangeHook = ({ doc }: any) => {
+  safeRevalidate('/');
+  safeRevalidate('/notes');
   return doc;
 };

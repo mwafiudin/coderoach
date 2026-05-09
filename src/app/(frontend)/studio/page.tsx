@@ -7,13 +7,13 @@ import { ProseRenderer } from '../_components/detail/ProseRenderer';
 import { Icon, type IconName } from '@/lib/icons';
 import { Badge } from '../_components/ui/Badge';
 import { AnimatedCount } from '../_components/ui/AnimatedCount';
+import { PayloadImage } from '../_components/ui/PayloadImage';
 
-export const dynamic = 'force-static';
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Studio — Coderoach',
-  description: 'A small senior team in Jakarta. Eleven humans, four years, forty engagements. Built to outlast the brief.',
+  description: 'Studio dev kecil dari Jakarta. Dua founder, remote-first — build, automate, ship intelligence.',
 };
 
 export default async function StudioPage() {
@@ -38,10 +38,10 @@ export default async function StudioPage() {
           <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-16 items-end">
             <div>
               <span className="font-mono text-xs font-medium tracking-wider text-mist-600 uppercase inline-flex items-center gap-2 tabular">
-                [ THE STUDIO ] <span className="text-mist-400">·</span> Who we are
+                [ THE STUDIO ] <span className="text-mist-400">·</span> Tim di balik Coderoach
               </span>
               <h1 className="text-[clamp(48px,7vw,88px)] font-bold tracking-[-0.025em] leading-[0.95] mt-6 max-w-[16ch] text-balance">
-                {studio?.about?.pageHeading || 'A studio that ships.'}
+                {studio?.about?.pageHeading || 'Studio kecil. Kerja serius.'}
               </h1>
             </div>
             {(studio?.about?.pageLede || studio?.lede) && (
@@ -168,7 +168,7 @@ export default async function StudioPage() {
                   Team
                 </span>
                 <h2 className="text-[clamp(32px,4vw,48px)] font-bold tracking-[-0.02em] leading-tight mt-2">
-                  Eleven humans. No juniors hidden.
+                  Dua founder. Yang scoping juga yang ngoding.
                 </h2>
               </div>
               <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-mist-500">
@@ -183,9 +183,12 @@ export default async function StudioPage() {
                 >
                   <div className="flex items-center gap-4 mb-4">
                     {a.avatar?.url ? (
-                      <img
-                        src={a.avatar.url}
+                      <PayloadImage
+                        media={a.avatar}
+                        variant="thumbnail"
                         alt={a.avatar.alt || a.name}
+                        width={48}
+                        height={48}
                         className="w-12 h-12 rounded-full object-cover bg-paper-200"
                       />
                     ) : (
@@ -239,10 +242,13 @@ export default async function StudioPage() {
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-12 items-center">
               <div className="aspect-[4/3] rounded-2xl bg-paper-100 border border-paper-200 overflow-hidden relative">
                 {studio.about.workspace.image?.url ? (
-                  <img
-                    src={studio.about.workspace.image.url}
-                    alt={studio.about.workspace.image.alt || 'Coderoach workspace'}
-                    className="w-full h-full object-cover"
+                  <PayloadImage
+                    media={studio.about.workspace.image}
+                    variant="hero"
+                    alt={studio.about.workspace.image.alt || 'Studio workspace'}
+                    sizesAttr="(min-width: 1024px) 40vw, 100vw"
+                    fill
+                    className="object-cover"
                   />
                 ) : (
                   <div
@@ -336,17 +342,17 @@ export default async function StudioPage() {
         <div className="max-w-[1180px] mx-auto px-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div>
             <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-mist-500">
-              Want to work with us?
+              Mau kerja bareng?
             </span>
             <p className="text-[28px] font-bold tracking-[-0.015em] mt-3 text-paper text-balance">
-              We take a small number of new engagements each quarter.
+              Kami ambil sedikit klien baru tiap kuartal supaya tiap proyek dapet attention penuh.
             </p>
           </div>
           <a
             href="/#contact"
             className="h-12 px-5 rounded-md bg-electric text-paper text-sm font-semibold inline-flex items-center hover:bg-[#2562E0] transition-colors"
           >
-            Start a 48-hour discovery →
+            Mulai brief proyek →
           </a>
         </div>
       </section>

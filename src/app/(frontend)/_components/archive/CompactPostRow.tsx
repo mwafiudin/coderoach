@@ -1,4 +1,5 @@
 import { Badge } from '../ui/Badge';
+import { PayloadImage } from '../ui/PayloadImage';
 
 type Post = {
   id: string | number;
@@ -38,10 +39,13 @@ export function CompactPostRow({ post }: { post: Post }) {
     >
       <div className="w-20 h-16 shrink-0 rounded-md overflow-hidden bg-paper-100 border border-paper-200 relative">
         {post.coverImage?.url ? (
-          <img
-            src={post.coverImage.url}
+          <PayloadImage
+            media={post.coverImage}
+            variant="thumbnail"
             alt={post.coverImage.alt || post.title}
+            sizesAttr="80px"
             className="absolute inset-0 w-full h-full object-cover transition-transform group-hover:scale-105 duration-500"
+            fill
           />
         ) : (
           <div

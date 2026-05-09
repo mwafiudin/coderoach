@@ -11,7 +11,11 @@ type HeroData = {
   trustedBy?: { label?: string | null; tagline?: string | null } | null;
 };
 
-type Client = { name: string };
+type Client = {
+  name: string;
+  logo?: { url?: string | null; alt?: string | null } | null;
+  website?: string | null;
+};
 
 export function Hero({ data, clients }: { data: HeroData | null; clients: Client[] }) {
   return (
@@ -97,18 +101,38 @@ export function Hero({ data, clients }: { data: HeroData | null; clients: Client
           <div className="max-w-[1180px] mx-auto px-8">
             <div className="flex items-baseline gap-3.5 flex-wrap mb-7 text-sm text-mist-600 leading-snug">
               <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink">
-                Trusted by 40+ operators
+                {data?.trustedBy?.label ?? 'Beberapa yang sudah kami bantu'}
               </span>
               <p className="m-0">{data?.trustedBy?.tagline}</p>
             </div>
             <div className="flex overflow-hidden [mask-image:linear-gradient(90deg,transparent,black_5%,black_95%,transparent)]">
               {[0, 1].map((track) => (
                 <div key={track} className="flex items-center gap-[72px] flex-shrink-0 pr-[72px] animate-marquee" aria-hidden={track === 1}>
-                  {clients.map((c, i) => (
-                    <div key={`${track}-${i}`} className="flex-shrink-0 font-sans font-bold text-[32px] tracking-[-0.02em] text-mist-500 hover:text-ink transition-colors whitespace-nowrap">
-                      {c.name}
-                    </div>
-                  ))}
+                  {clients.map((c, i) => {
+                    const inner = c.logo?.url ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={c.logo.url}
+                        alt={c.logo.alt || c.name}
+                        className="h-9 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity"
+                      />
+                    ) : (
+                      <span className="font-sans font-bold text-[32px] tracking-[-0.02em] text-mist-500 hover:text-ink transition-colors whitespace-nowrap">
+                        {c.name}
+                      </span>
+                    );
+                    return (
+                      <div key={`${track}-${i}`} className="flex-shrink-0">
+                        {c.website ? (
+                          <a href={c.website} target="_blank" rel="noopener noreferrer" aria-label={c.name}>
+                            {inner}
+                          </a>
+                        ) : (
+                          inner
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               ))}
             </div>

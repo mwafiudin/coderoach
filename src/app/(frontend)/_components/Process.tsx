@@ -6,7 +6,6 @@ type Phase = {
   tag: string;
   icon: IconName;
   name: string;
-  week: string;
   what: string;
   deliv: string;
 };
@@ -18,9 +17,9 @@ export function Process({ phases }: { phases: Phase[] }) {
         <SectionHead
           marker="[ 04 / 07 ]"
           category="Process"
-          description="How an engagement runs"
-          heading="From spec to system in four phases."
-          lede="Every engagement runs the same shape. Different scope, different stack — same shipping discipline."
+          description="Cara kami kerja"
+          heading="Dari brief ke produksi, empat fase."
+          lede="Setiap proyek jalan di pola yang sama. Scope beda, stack beda — disiplin shipping-nya konsisten."
         />
         <div
           className="grid grid-cols-1 md:grid-cols-4 relative pt-14 mt-14 [--progress:0]"
@@ -47,9 +46,8 @@ export function Process({ phases }: { phases: Phase[] }) {
                 style={{ top: '-39px', left: 0 }}
                 data-phase-dot={i + 1}
               />
-              <div className="flex justify-between font-mono text-[11px] tracking-wider tabular">
+              <div className="font-mono text-[11px] tracking-wider tabular">
                 <span className="text-mist-600">[ {p.tag} ]</span>
-                <span className="text-electric">{p.week}</span>
               </div>
               <div className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-paper-50 border border-paper-200 text-shadow-700 flex-shrink-0 mt-[18px]" data-phase-icon={i + 1}>
                 <Icon name={p.icon} size={20} />
@@ -57,7 +55,7 @@ export function Process({ phases }: { phases: Phase[] }) {
               <h4 className="text-[28px] font-bold tracking-[-0.015em] my-3.5 mt-3.5 mb-3">{p.name}</h4>
               <p className="text-sm text-mist-600 leading-[1.5] m-0 mb-4">{p.what}</p>
               <div className="bg-paper-50 border border-paper-200 rounded-md px-3 py-2.5 text-[13px] leading-[1.4]">
-                <span className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-mist-600 mb-1">You get</span>
+                <span className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-mist-600 mb-1">Kamu dapet</span>
                 {p.deliv}
               </div>
             </div>

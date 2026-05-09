@@ -1,9 +1,11 @@
 import type { GlobalConfig } from 'payload';
+import { revalidateHome } from '../lib/revalidate';
 
 export const Contact: GlobalConfig = {
   slug: 'contact',
   admin: { group: 'Site Content' },
   access: { read: () => true },
+  hooks: { afterChange: [revalidateHome] },
   fields: [
     { name: 'sectionMarker', type: 'text', defaultValue: 'Start a project' },
     {

@@ -2,20 +2,27 @@
 import { useState } from 'react';
 
 type NavData = {
-  navStatus?: { label?: string | null } | null;
+  siteName?: string | null;
+  logo?: { url?: string | null; alt?: string | null } | null;
   navCta?: { label?: string | null; href?: string | null } | null;
 };
 
 export function Nav({ data }: { data: NavData | null }) {
   const [open, setOpen] = useState(false);
+  const siteName = data?.siteName || 'Studio';
+  const logoUrl = data?.logo?.url || '/assets/coderoach_logo.svg';
+  // Split siteName into 2 lines if it has 2+ words (e.g. "Coderoach Studio" → "coderoach / studio").
+  const parts = siteName.trim().split(/\s+/);
+  const line1 = parts[0] ?? siteName;
+  const line2 = parts.slice(1).join(' ');
   return (
     <div className="sticky top-0 z-10 bg-paper-100/85 backdrop-blur-md border-b border-paper-200">
       <div className="max-w-[1180px] mx-auto px-8 h-[72px] flex items-center justify-between gap-8">
-        <a href="/" aria-label="Coderoach Studio — home" className="flex items-center gap-[10px]">
-          <img src="/assets/coderoach_logo.svg" alt="" className="h-8 w-auto" />
+        <a href="/" aria-label={`${siteName} — home`} className="flex items-center gap-[10px]">
+          <img src={logoUrl} alt="" className="h-8 w-auto" />
           <span className="flex flex-col leading-none tracking-[-0.02em] gap-[2px] text-ink">
-            <span className="font-sans text-[14px] font-semibold">coderoach</span>
-            <span className="font-sans text-[14px] font-normal">studio</span>
+            <span className="font-sans text-[14px] font-semibold lowercase">{line1}</span>
+            {line2 && <span className="font-sans text-[14px] font-normal lowercase">{line2}</span>}
           </span>
         </a>
         <div className={`flex gap-7 items-center ${open ? '' : 'max-md:hidden'}`}>

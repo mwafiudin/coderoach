@@ -1,4 +1,7 @@
 type FooterData = {
+  siteName?: string | null;
+  logo?: { url?: string | null; alt?: string | null } | null;
+  logoDark?: { url?: string | null; alt?: string | null } | null;
   footer?: {
     tagline?: string | null;
     badge?: string | null;
@@ -11,6 +14,13 @@ type FooterData = {
 };
 
 export function Footer({ data }: { data: FooterData | null }) {
+  const siteName = data?.siteName || 'Studio';
+  // Prefer logoDark for the dark footer; fall back to logo (auto-inverted) or static asset.
+  const logoUrl = data?.logoDark?.url || data?.logo?.url;
+  const useInvert = !data?.logoDark?.url;
+  const parts = siteName.trim().split(/\s+/);
+  const line1 = parts[0] ?? siteName;
+  const line2 = parts.slice(1).join(' ');
   return (
     <footer className="bg-ink text-paper pt-6 pb-7">
       <div className="max-w-[1180px] mx-auto px-8">
@@ -20,10 +30,18 @@ export function Footer({ data }: { data: FooterData | null }) {
         <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1fr] gap-12">
           <div>
             <div className="flex items-center gap-[10px] mb-[18px]">
-              <img src="/assets/coderoach_logo.svg" alt="" className="h-8 w-auto invert-[0.96]" />
+              {logoUrl ? (
+                <img
+                  src={logoUrl}
+                  alt=""
+                  className={`h-8 w-auto ${useInvert ? 'invert-[0.96]' : ''}`}
+                />
+              ) : (
+                <img src="/assets/coderoach_logo.svg" alt="" className="h-8 w-auto invert-[0.96]" />
+              )}
               <span className="flex flex-col leading-none tracking-[-0.02em] gap-[2px] text-paper">
-                <span className="font-sans text-[14px] font-semibold">coderoach</span>
-                <span className="font-sans text-[14px] font-normal">studio</span>
+                <span className="font-sans text-[14px] font-semibold lowercase">{line1}</span>
+                {line2 && <span className="font-sans text-[14px] font-normal lowercase">{line2}</span>}
               </span>
             </div>
             {data?.footer?.tagline && (

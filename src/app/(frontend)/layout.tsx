@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { JetBrains_Mono } from 'next/font/google';
+import { getPayload } from 'payload';
+import config from '@payload-config';
 import '../globals.css';
 
 const satoshi = localFont({
@@ -17,16 +19,48 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ['400', '500', '700'],
 });
 
-export const metadata: Metadata = {
-  title: 'Coderoach Studio — Engineering that thinks like an operator.',
-  description:
-    'Senior product engineering studio in Jakarta. We build software, automate workflows, and ship analytics for companies that need more than a vendor.',
-  icons: { icon: '/assets/coderoach_logo.svg' },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const fallbackName = process.env.NEXT_PUBLIC_SITE_NAME || 'Studio';
+  const fallbackDescription =
+    'A small dev studio. We build, automate, and ship intelligence — from company sites to internal tools.';
+  try {
+    const payload = await getPayload({ config });
+    const [siteSettings, hero] = await Promise.all([
+      payload.findGlobal({ slug: 'site-settings', depth: 1 }).catch(() => null) as Promise<any>,
+      payload.findGlobal({ slug: 'hero', depth: 0 }).catch(() => null) as Promise<any>,
+    ]);
+    const siteName = siteSettings?.siteName || fallbackName;
+    const tagline = hero?.headline
+      ? `${hero.headline.lead ?? ''} ${hero.headline.accent ?? ''}`.trim()
+      : '';
+    const description =
+      siteSettings?.siteDescription || tagline || fallbackDescription;
+    const title = tagline ? `${siteName} — ${tagline}` : siteName;
+    const faviconUrl = siteSettings?.favicon?.url;
+    const ogImageUrl = siteSettings?.ogImage?.url;
+    return {
+      title,
+      description,
+      icons: faviconUrl ? { icon: faviconUrl } : { icon: '/assets/coderoach_logo.svg' },
+      openGraph: {
+        title,
+        description,
+        siteName,
+        ...(ogImageUrl ? { images: [{ url: ogImageUrl }] } : {}),
+      },
+    };
+  } catch {
+    return {
+      title: fallbackName,
+      description: fallbackDescription,
+      icons: { icon: '/assets/coderoach_logo.svg' },
+    };
+  }
+}
 
 export default function FrontendLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${satoshi.variable} ${jetbrainsMono.variable}`}>
+    <html lang="id" className={`${satoshi.variable} ${jetbrainsMono.variable}`}>
       <body>{children}</body>
     </html>
   );

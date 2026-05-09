@@ -1,9 +1,11 @@
 import type { GlobalConfig } from 'payload';
+import { revalidateHome } from '../lib/revalidate';
 
 export const Studio: GlobalConfig = {
   slug: 'studio',
   admin: { group: 'Site Content' },
   access: { read: () => true },
+  hooks: { afterChange: [revalidateHome] },
   fields: [
     { name: 'sectionMarker', type: 'text', defaultValue: "Who you'll work with" },
     { name: 'heading', type: 'text', required: true },

@@ -39,7 +39,7 @@ export function Studio({ data, tenets }: { data: StudioData | null; tenets: Tene
             href="/studio"
             className="text-[11px] font-semibold uppercase tracking-[0.18em] text-electric hover:underline mt-6 inline-block"
           >
-            See the full studio →
+            Lihat selengkapnya →
           </a>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-20 mt-14 items-start">
@@ -63,18 +63,18 @@ export function Studio({ data, tenets }: { data: StudioData | null; tenets: Tene
               </div>
             )}
 
-            {/* Testimonial quote — pull from work testimonials, fallback */}
+            {/* Studio note — replaces testimonial until we have a real one to publish */}
             <figure className="pt-8 border-t border-shadow-700 mt-2">
               <blockquote className="text-[20px] leading-[1.4] text-paper m-0 font-medium tracking-[-0.005em] text-balance">
-                "Two engineers, eleven weeks, three thousand drivers in production from day one. Felt
-                more like a partnership than an engagement."
+                Dua founder, satu fokus: software yang bener-bener kepake. Yang scoping proyek kamu
+                adalah yang ngoding — gak ada layer agency, gak ada handoff ke junior.
               </blockquote>
               <figcaption className="mt-4 flex items-center gap-3">
                 <div className="w-7 h-7 rounded-full bg-gradient-to-br from-electric to-[#5DD79A] grid place-items-center text-paper text-[10px] font-bold">
-                  HP
+                  CR
                 </div>
                 <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-mist-500">
-                  Halim P. · COO, Bumi Logistics
+                  Coderoach Studio · Operating note
                 </span>
               </figcaption>
             </figure>
