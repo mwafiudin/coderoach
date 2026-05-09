@@ -4,12 +4,12 @@ export const ProcessPhases: CollectionConfig = {
   slug: 'process-phases',
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['order', 'tag', 'name', 'week'],
+    defaultColumns: ['order', 'tag', 'name'],
     group: 'Content',
   },
   access: { read: () => true },
   fields: [
-    { name: 'order', type: 'number', required: true, defaultValue: 0 },
+    { name: 'order', type: 'number', required: true, defaultValue: 0, index: true },
     { name: 'tag', type: 'text', required: true, admin: { description: 'e.g. "PHASE 01"' } },
     {
       name: 'icon',
@@ -23,13 +23,11 @@ export const ProcessPhases: CollectionConfig = {
       ],
     },
     { name: 'name', type: 'text', required: true },
-    { name: 'week', type: 'text', required: true, admin: { description: 'e.g. "WK 0–1", "FINAL WK"' } },
     { name: 'what', type: 'textarea', required: true },
     {
       name: 'deliv',
       type: 'text',
       required: true,
-      
       admin: { description: 'Deliverables line, e.g. "Source · docs · 30-day support"' },
     },
   ],

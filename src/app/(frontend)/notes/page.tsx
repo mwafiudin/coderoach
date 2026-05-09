@@ -29,11 +29,22 @@ export default async function NotesArchivePage({
 
   const { docs: posts, totalPages, totalDocs } = await payload.find({
     collection: 'posts',
-    where: { published: { equals: true } },
+    where: { _status: { equals: 'published' } },
     sort: '-publishedAt',
     limit: perPage,
     page,
     depth: 1,
+    select: {
+      slug: true,
+      title: true,
+      excerpt: true,
+      category: true,
+      author: true,
+      publishedAt: true,
+      readingTime: true,
+      coverImage: true,
+      featured: true,
+    },
   });
 
   // Editorial split: explicit-featured OR fallback to first post

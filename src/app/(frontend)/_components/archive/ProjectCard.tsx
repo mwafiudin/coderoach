@@ -1,4 +1,5 @@
 import { Badge } from '../ui/Badge';
+import { PayloadImage } from '../ui/PayloadImage';
 
 type Project = {
   id: string | number;
@@ -11,7 +12,7 @@ type Project = {
   publishedYear?: string | null;
   pills?: Array<{ pill: string }> | null;
   excerpt?: string | null;
-  coverImage?: { url?: string | null; alt?: string | null } | null;
+  coverImage?: any;
 };
 
 type Variant = 'default' | 'feature' | 'wide';
@@ -44,10 +45,13 @@ export function ProjectCard({ project, variant = 'default' }: { project: Project
         className={`${aspect} bg-paper-100 border-b border-paper-200 relative overflow-hidden ${imgSizeClass}`}
       >
         {project.coverImage?.url ? (
-          <img
-            src={project.coverImage.url}
+          <PayloadImage
+            media={project.coverImage}
+            variant="card"
             alt={project.coverImage.alt || project.client}
+            sizesAttr={variant === 'feature' ? '(min-width: 1024px) 55vw, 100vw' : '(min-width: 1024px) 33vw, 100vw'}
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            fill
           />
         ) : (
           <div className="absolute inset-0 grid place-items-center">

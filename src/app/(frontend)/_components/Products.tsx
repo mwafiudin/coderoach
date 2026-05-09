@@ -21,9 +21,9 @@ export function Products({ items }: { items: StudioProject[] }) {
         <SectionHead
           marker="[ 03 / 07 ]"
           category="Products"
-          description="Built by us, used by us"
-          heading="We build products, not just project deliverables."
-          lede="The hardest test of an engineering team isn't a client brief — it's their own product. Ours have to survive real users, real revenue, and real edge cases."
+          description="Bikinan kami sendiri"
+          heading="Produk yang kami bangun, kami pakai, kami pertahankan."
+          lede="Tes paling jujur buat tim engineering bukan brief klien — tapi produk sendiri. Yang harus survive sama user beneran, revenue beneran, dan edge case beneran."
         />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-12 reveal-stagger">
           {items.map((p) => (
@@ -57,19 +57,38 @@ export function Products({ items }: { items: StudioProject[] }) {
                       [ // SHIPPED {p.publishedYear} {p.studio?.usage && `· ${p.studio.usage}`} ]
                     </span>
                   )}
-                  <div className="flex items-center gap-4">
-                    <a href={`/work/${p.slug}`} className="text-sm text-mist-600 hover:text-electric">
-                      Case study →
+                  <div className="flex items-center gap-3">
+                    <a
+                      href={`/work/${p.slug}`}
+                      className="text-sm text-mist-600 hover:text-ink underline-offset-4 hover:underline"
+                    >
+                      Baca case study
                     </a>
                     {p.studio?.externalLink?.href && (
-                      <a
-                        href={p.studio.externalLink.href}
-                        className="text-sm text-electric hover:underline"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {p.studio.externalLink.label}
-                      </a>
+                      <>
+                        <span aria-hidden className="w-px h-3.5 bg-paper-200" />
+                        <a
+                          href={p.studio.externalLink.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="h-8 px-3 rounded-md border border-paper-200 bg-paper-50 text-ink text-[12px] font-semibold inline-flex items-center gap-1.5 hover:border-electric hover:text-electric transition-colors"
+                        >
+                          {p.studio.externalLink.label}
+                          <svg
+                            width="11"
+                            height="11"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.4"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            aria-hidden
+                          >
+                            <path d="M7 17L17 7M9 7h8v8" />
+                          </svg>
+                        </a>
+                      </>
                     )}
                   </div>
                 </div>

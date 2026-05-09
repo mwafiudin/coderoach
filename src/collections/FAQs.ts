@@ -9,7 +9,7 @@ export const FAQs: CollectionConfig = {
   },
   access: { read: () => true },
   fields: [
-    { name: 'order', type: 'number', required: true, defaultValue: 0 },
+    { name: 'order', type: 'number', required: true, defaultValue: 0, index: true },
     { name: 'question', type: 'text', required: true },
     { name: 'answer', type: 'textarea', required: true },
   ],

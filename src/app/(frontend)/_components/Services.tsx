@@ -21,9 +21,9 @@ export function Services({ items }: { items: Service[] }) {
         <SectionHead
           marker="[ 01 / 07 ]"
           category="Services"
-          description="What we build"
-          heading="Four ways we ship."
-          lede="We don't sell hours. We ship outcomes — products that earn their place in your operations."
+          description="Yang kami bangun"
+          heading="Empat cara kami bantu."
+          lede="Bukan jual jam — kami jual hasil. Build, automate, intelligence, augment. Pilih yang paling cocok sama masalah kamu."
         />
         {/* Sticky-stack of service cards. Each card pins at its own staggered top
             offset so as you scroll, cards build a deck-of-cards stack with the

@@ -32,9 +32,9 @@ export function Work({ cases }: { cases: Project[] }) {
         <SectionHead
           marker="[ 02 / 07 ]"
           category="Work"
-          description="Selected case studies"
-          heading="What we've shipped."
-          lede="Representative engagements from the last 18 months. Full case studies on request."
+          description="Beberapa proyek terpilih"
+          heading="Yang udah kami ship."
+          lede="Sebagian engagement yang sudah jalan — dari company website sampai data pipeline. Case study lengkap on request."
         />
 
         {featured?.featuredDetails && (
@@ -111,7 +111,7 @@ export function Work({ cases }: { cases: Project[] }) {
                 href={`/work/${featured.slug}`}
                 className="h-11 px-[18px] rounded-md bg-paper text-ink text-sm font-semibold inline-flex items-center gap-2 hover:bg-mist-400 transition-colors"
               >
-                Read the case study →
+                Baca case study →
               </a>
             </div>
             <div className="relative z-[1]">
@@ -146,10 +146,10 @@ export function Work({ cases }: { cases: Project[] }) {
           <>
             <div className="mt-14 mb-[18px] pb-3.5 border-b border-paper-200 flex items-baseline justify-between">
               <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-mist-600">
-                More engagements
+                Proyek lainnya
               </span>
               <a href="/work" className="text-[11px] font-semibold uppercase tracking-[0.18em] text-electric hover:underline">
-                View all →
+                Lihat semua →
               </a>
             </div>
             <div className="flex flex-col">

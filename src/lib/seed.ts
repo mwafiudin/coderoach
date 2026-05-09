@@ -33,9 +33,9 @@ async function seed() {
     slug: 'top-bar',
     data: {
       enabled: true,
-      tag: '[ // NOW BOOKING ]',
-      message: '2 engagement slots open for Q3 — discovery sprints through Jul 18.',
-      link: { label: 'Start a 48-hour discovery →', href: '#contact' },
+      tag: '[ // OPEN UNTUK PROJECT ]',
+      message: 'Slot 1–2 engagement baru kuartal ini — mulai dari diskusi 30 menit.',
+      link: { label: 'Mulai brief proyek →', href: '#contact' },
     },
   });
   console.log('✓ TopBar');
@@ -43,19 +43,19 @@ async function seed() {
   await payload.updateGlobal({
     slug: 'hero',
     data: {
-      pillText: 'Senior product engineering — built to outlast the brief',
-      headline: { lead: 'Engineering that thinks', accent: 'like an operator.' },
-      lede: 'We build software, automate workflows, and ship analytics for companies that need more than a vendor.',
-      ctaPrimary: { label: 'Start a 48-hour discovery', href: '#contact' },
-      ctaSecondary: { label: "See what we've shipped", href: '#work' },
+      pillText: 'Small studio · Founder-led · Berbasis di Jakarta',
+      headline: { lead: 'We build, automate,', accent: 'and ship intelligence.' },
+      lede: 'Studio dev kecil yang bantu kamu bikin software, automasi workflow, dan dashboard analitik — mulai dari company website sampai sistem internal yang dipake harian.',
+      ctaPrimary: { label: 'Mulai brief proyek', href: '#contact' },
+      ctaSecondary: { label: 'Lihat hasil kami', href: '#work' },
       metaItems: [
-        { value: '40+', label: 'operators shipped' },
-        { value: '4yr', label: 'studio, 11 humans' },
-        { value: '2 weeks', label: 'typical kickoff' },
+        { value: '3+', label: 'tahun jalan' },
+        { value: '10+', label: 'proyek shipped' },
+        { value: 'Remote', label: 'berbasis Jakarta' },
       ],
       trustedBy: {
-        label: '// TRUSTED BY 40+ OPERATORS',
-        tagline: 'Across Indonesia & SEA — F&B, logistics, finance, agencies.',
+        label: 'Beberapa yang sudah kami bantu',
+        tagline: 'Dari company website sampai dashboard analitik — F&B, marketing agency, dan brand lokal.',
       },
     },
   });
@@ -65,16 +65,16 @@ async function seed() {
   const lexParagraphs = (paragraphs: string[]) => ({
     root: {
       type: 'root',
-      format: '',
+      format: '' as const,
       indent: 0,
       version: 1,
-      direction: 'ltr',
+      direction: 'ltr' as const,
       children: paragraphs.map((text) => ({
         type: 'paragraph',
-        format: '',
+        format: '' as const,
         indent: 0,
         version: 1,
-        direction: 'ltr',
+        direction: 'ltr' as const,
         textFormat: 0,
         children: [{ mode: 'normal', text, type: 'text', style: '', detail: 0, format: 0, version: 1 }],
       })),
@@ -84,38 +84,38 @@ async function seed() {
   await payload.updateGlobal({
     slug: 'studio',
     data: {
-      sectionMarker: "Who you'll work with",
-      heading: 'A small senior team in Jakarta.',
-      lede: 'Coderoach is 11 humans — engineers, designers, and a single ops person who keeps the calendar honest. No juniors hidden behind senior bios. The person scoping your project is the person building it.',
+      sectionMarker: 'Tim di balik Coderoach',
+      heading: 'Tim kecil. Output yang serius.',
+      lede: 'Coderoach Studio dibangun oleh dua founder — kami sendiri yang scoping, ngoding, dan kirim hasil. Tanpa lapisan agency, tanpa proyek dilempar ke junior. Yang ngomong sama kamu adalah yang ngerjain.',
       stats: [
-        { num: '11', label: 'SENIORS\nNO JUNIORS' },
-        { num: '4', accent: 'yr', label: 'YEARS\nOPERATING' },
-        { num: '40', accent: '+', label: 'SHIPPED\nENGAGEMENTS' },
-        { num: 'JKT', label: 'KEMANG\nJAKARTA' },
+        { num: '2', label: 'FOUNDERS\nNO JUNIORS' },
+        { num: '3', accent: '+ yr', label: 'JALAN\nSEJAK 2022' },
+        { num: '10', accent: '+', label: 'PROYEK\nSHIPPED' },
+        { num: '100', accent: '%', label: 'REMOTE\nJAKARTA' },
       ],
       about: {
-        pageHeading: 'A studio that ships.',
+        pageHeading: 'Studio kecil. Kerja serius.',
         pageLede:
-          "We're a small senior team running on a simple operating model — no juniors hidden behind senior bios, no agency layers, no surprise reveals. The person scoping your project is the person building it.",
+          'Kami bukan agency, bukan freelancer biasa. Dua founder yang kerja langsung sama klien — dari brief sampai handoff. Kalau perlu lebih banyak tangan, kami kolaborasi sama jaringan engineer terpercaya.',
         mission:
-          'We exist to ship software that earns its place in your operations — built by senior engineers, opinionated when it matters, documented to outlast us.',
+          'Bantu bisnis dan operator Indonesia bikin software yang bener-bener dipake — bukan demo cantik yang stuck di Figma.',
         story: lexParagraphs([
-          'Coderoach started in 2022 as a side-project for two operators frustrated with how engineering work happens in Indonesia. Most agencies sell hours; most clients buy hours. The result: a system that rewards spending more time, not solving the problem faster.',
-          'We bet on a different model: project-scoped, outcome-priced, senior-only. No junior hand-offs. No timesheet babysitting. Two engineers can ship more, and ship better, than ten if the two are seniors and the ten are mostly translation layers.',
-          'Four years in, the bet has paid back. Forty engagements across six industries, two studio products in production (Laporta and Viralytics), and clients who come back for the next problem instead of the next pool of hours.',
-          "We're growing carefully — eleven humans, no plan to be twenty. Senior bench, no juniors, ops person who keeps Friday demos honest.",
+          'Coderoach Studio dimulai 2022 sebagai partnership dua engineer — Izzul dan Farrez — yang frustrasi sama gimana proyek software dikerjakan di banyak agency lokal. Banyak yang jual jam, banyak klien yang beli jam. Hasilnya: sistem yang reward orang yang spend lebih banyak waktu, bukan yang solve masalahnya.',
+          'Kami coba model berbeda: project-scoped, outcome-priced, founder-only. Gak ada hand-off ke junior. Gak ada timesheet babysitting. Dua orang yang ngerti bisa ship lebih banyak — dan ship lebih bagus — daripada sepuluh orang yang sebagian besarnya jadi layer terjemahan.',
+          'Beberapa tahun jalan, taruhan ini terbayar. Sederet company website yang diship, internal tools yang earn its place, satu studio product (Laporta) yang sekarang dipake di operasi F&B multi-cabang, dan beberapa data pipeline yang automate kerja yang dulu jam-jaman jadi menit-menitan.',
+          'Kami tetap kecil dengan sengaja. Dua founder — Izzul (Product & Frontend) dan Farrez (Backend & Infra). Yang scoping proyek kamu, dan yang ngoding-nya, akan selalu salah satu dari kami berdua.',
         ]),
         workspace: {
-          address: 'Kemang, Jakarta Selatan, Indonesia',
-          hours: 'Mon–Fri · 09:00–18:00 WIB · async otherwise',
-          tagline: 'Walk-ins by appointment.',
+          address: 'Remote · Berbasis Jakarta, Indonesia',
+          hours: 'Sen–Jum · 09:00–18:00 WIB · async di luar itu',
+          tagline: 'Diskusi via Meet atau WhatsApp.',
         },
         timeline: [
-          { year: '2022', title: 'Founded as side-project', description: 'Two operators, one mission: ship without the agency tax.' },
-          { year: '2023', title: 'First five engagements', description: 'F&B and logistics. Project-scoped pricing model validated.' },
-          { year: '2024', title: 'Laporta shipped', description: '1.2K F&B outlets. First studio product in production.' },
-          { year: '2025', title: 'Viralytics shipped', description: '380 KOL campaigns. Second product, agency vertical.' },
-          { year: '2026', title: 'Forty engagements milestone', description: 'Eleven humans, four years, six industries.' },
+          { year: '2022', title: 'Coderoach Studio dimulai', description: 'Dua engineer — Izzul dan Farrez — mulai ambil proyek bareng. Fokus: produk yang ship, bukan deliverable yang stuck.' },
+          { year: '2023', title: 'Klien pertama', description: 'Build company website untuk Uruzin, Tumtim Cookies, dan beberapa brand lokal. Operating model project-scoped tervalidasi.' },
+          { year: '2024', title: 'Laporta ship', description: 'Studio product pertama. Bridging SPV dan Accounting di operasi F&B multi-cabang — cut 50% budget salary accounting.' },
+          { year: '2025', title: 'Masuk ke Intelligence work', description: 'Bangun ads multiplatform dashboard untuk agency digital marketing. Cut 70% manual reporting workload, support 3x campaign growth.' },
+          { year: '2026', title: 'Versatile dev studio', description: 'Empat pintu masuk — Build, Automate, Intelligence, Augment — dengan disiplin shipping yang sama.' },
         ],
       },
     },
@@ -125,24 +125,24 @@ async function seed() {
   await payload.updateGlobal({
     slug: 'contact',
     data: {
-      sectionMarker: 'Start a project',
-      heading: { line1: 'Got something to ship?', line2Accent: "Let's talk." },
-      lede: "We take on a small number of new engagements each quarter. Tell us what you're trying to ship — we read every brief and reply within 48 hours.",
+      sectionMarker: 'Mulai proyek',
+      heading: { line1: 'Punya sesuatu yang mau dibangun?', line2Accent: 'Yuk ngobrol.' },
+      lede: 'Kami ambil sedikit klien baru tiap kuartal supaya tiap proyek dapet attention penuh. Cerita aja apa yang mau kamu kirim ke production — kami baca tiap brief dan balas dalam 48 jam.',
       scopes: [
         { scope: 'Build' },
         { scope: 'Automate' },
         { scope: 'Intelligence' },
         { scope: 'Augment' },
-        { scope: 'Not sure yet' },
+        { scope: 'Belum yakin' },
       ],
       formLabels: {
-        email: '[ // YOUR EMAIL ]',
-        scope: '[ // SCOPE ]',
-        brief: '[ // WHAT ARE YOU SHIPPING? ]',
-        submit: 'Send the brief →',
+        email: '[ // EMAIL KAMU ]',
+        scope: '[ // JENIS PROYEK ]',
+        brief: '[ // APA YANG MAU DIBANGUN? ]',
+        submit: 'Kirim brief →',
         emailFallback: 'hello@coderoach.studio',
       },
-      successHeading: 'Thanks — we got your brief.',
+      successHeading: 'Thanks — brief-nya udah masuk.',
     },
   });
   console.log('✓ Contact');
@@ -151,12 +151,12 @@ async function seed() {
     slug: 'site-settings',
     data: {
       siteName: 'Coderoach Studio',
-      siteDescription: 'Senior product engineering studio in Jakarta.',
-      navStatus: { label: 'JKT · OPEN Q3' },
-      navCta: { label: 'Start a discovery →', href: '#contact' },
+      siteDescription: 'Studio dev kecil dari Jakarta — build, automate, ship intelligence.',
+      navStatus: { label: 'OPEN · Q2 2026' },
+      navCta: { label: 'Mulai brief →', href: '#contact' },
       footer: {
-        tagline: 'Senior product and engineering. Jakarta, ID. Remote across SEA. Built to outlast the brief.',
-        badge: 'JKT-1 · OPEN FOR Q3',
+        tagline: 'Studio dev kecil yang bantu kamu bikin software, automasi workflow, dan dashboard yang beneran kepake. Remote-first, founder-led, berbasis di Jakarta.',
+        badge: 'OPEN · Q2 2026',
         columns: [
           {
             heading: 'NAVIGATE',
@@ -172,23 +172,23 @@ async function seed() {
             heading: 'STUDIO',
             links: [
               { label: 'About', href: '/studio' },
-              { label: 'Press kit', href: '#' },
-              { label: 'Open roles', href: '#' },
+              { label: 'Field notes', href: '/notes' },
+              { label: 'Mulai proyek', href: '/#contact' },
             ],
           },
           {
             heading: 'CONTACT',
             links: [
               { label: 'hello@coderoach.studio', href: 'mailto:hello@coderoach.studio' },
-              { label: '+62 21 555 0414', href: '#' },
-              { label: 'Kemang, Jakarta', href: '#' },
-              { label: '@coderoach.studio', href: '#' },
+              { label: '+62 813-3602-0915', href: 'https://wa.me/6281336020915' },
+              { label: 'Based in Jakarta', href: '#' },
+              { label: 'Remote-first', href: '#' },
             ],
           },
         ],
         metaLine: {
-          left: '[ © 2026 PT CODEROACH STUDIO ] · NPWP 04.567.891.2-345.000',
-          right: 'BUILT IN-HOUSE · NEXT.JS 15 · [ // BUILT TO OUTLAST THE BRIEF // ]',
+          left: '[ © 2026 CODEROACH STUDIO ]',
+          right: 'BUILT IN-HOUSE · NEXT.JS 15 · [ // BUILD · AUTOMATE · SHIP // ]',
         },
       },
     },
@@ -200,8 +200,8 @@ async function seed() {
     data: {
       archiveHero: {
         sectionMarker: '[ FIELD NOTES / 01 ]',
-        heading: 'Notes from the studio.',
-        lede: 'Engineering, operating, and the bits in between.',
+        heading: 'Catatan dari studio.',
+        lede: 'Engineering, operating, dan hal-hal di antara keduanya.',
       },
       postsPerPage: 12,
     },
@@ -217,15 +217,15 @@ async function seed() {
       tag: 'BUILD',
       icon: 'build',
       title: 'Build',
-      tagline: 'Web platforms, native apps, internal tools.',
-      blurb: 'Production software with the same rigor we use on our own products. Modern stack, opinionated architecture, designed to scale beyond the launch.',
-      list: [{ item: 'Web applications' }, { item: 'Mobile apps (iOS, Android)' }, { item: 'Company websites' }, { item: 'Internal admin tools' }],
+      tagline: 'Web, mobile, dan tools yang bener-bener kepake.',
+      blurb: 'Mulai dari company website sampai aplikasi internal. Modern stack, arsitektur yang waras, dan dokumentasi yang gak bikin tim selanjutnya pusing.',
+      list: [{ item: 'Company website' }, { item: 'Web application' }, { item: 'Mobile app (iOS, Android)' }, { item: 'Internal admin tools' }],
       stack: [{ tech: 'Next.js' }, { tech: 'React Native' }, { tech: 'Postgres' }, { tech: 'TypeScript' }],
-      heroLede: 'We design, build, and ship production software that earns its place in your operations. From greenfield products to internal tools that retire spreadsheets.',
-      pricingNote: 'Engagement starts at Rp 50jt. Project-scoped, no hourly billing.',
+      heroLede: 'Kami desain, bangun, dan ship software yang earn its place — bukan demo yang stuck di staging. Dari greenfield product sampai internal tools yang menggantikan spreadsheet.',
+      pricingNote: 'Project-scoped, gak per jam. Diskusi dulu untuk dapet quote yang akurat.',
       serviceFAQ: [
-        { question: 'Do you do mobile?', answer: 'Yes — React Native for cross-platform, native iOS/Android only when the use case demands it.' },
-        { question: 'Custom design or templates?', answer: 'Always custom. We\'re not a Figma-template shop.' },
+        { question: 'Bisa mobile?', answer: 'Bisa — React Native untuk cross-platform, native iOS/Android kalau use case-nya nuntut.' },
+        { question: 'Custom design atau template?', answer: 'Selalu custom. Kami bukan toko Figma template.' },
       ],
     },
     {
@@ -234,12 +234,12 @@ async function seed() {
       tag: 'AUTOMATE',
       icon: 'automate',
       title: 'Automate',
-      tagline: 'Workflows that ran on humans, now run on code.',
-      blurb: "Most companies have someone copying data between spreadsheets at 2am. We replace that someone with a system that doesn't sleep.",
-      list: [{ item: 'Workflow automation' }, { item: 'API integrations & pipelines' }, { item: 'Reporting automation' }, { item: 'Process digitization' }],
+      tagline: 'Workflow yang dulu jalan manual, sekarang jalan sendiri.',
+      blurb: 'Banyak tim masih copy-paste antar spreadsheet jam 2 pagi. Kami ganti orang itu dengan sistem yang gak butuh tidur — lengkap dengan audit log dan observability.',
+      list: [{ item: 'Workflow automation' }, { item: 'API integration & data pipeline' }, { item: 'Reporting automation' }, { item: 'Process digitization' }],
       stack: [{ tech: 'Node.js' }, { tech: 'Python' }, { tech: 'n8n' }, { tech: 'Webhooks' }],
-      heroLede: 'We replace manual ops work with reliable, observable automation. The kind of thing that ran on humans at 2am, now runs on code with audit logs.',
-      pricingNote: 'Engagement starts at Rp 30jt for scoped automation projects.',
+      heroLede: 'Otomasi yang reliable dan observable. Kerjaan ops yang dulu pegel dikerjain manual, sekarang jalan di code dengan audit log yang bisa di-trace.',
+      pricingNote: 'Project-scoped per scope automation. Discovery dulu sebelum quote.',
     },
     {
       order: 3,
@@ -247,12 +247,12 @@ async function seed() {
       tag: 'INTELLIGENCE',
       icon: 'intelligence',
       title: 'Intelligence',
-      tagline: 'Decisions, not dashboards.',
-      blurb: 'Anyone can build a dashboard. We build the data layer that makes decisions obvious — KPIs that matter, anomaly detection that fires, forecasts you can defend.',
-      list: [{ item: 'Data warehouses & ETL' }, { item: 'Custom analytics dashboards' }, { item: 'Multi-platform ads analytics' }, { item: 'Forecasting & anomaly detection' }],
-      stack: [{ tech: 'Postgres' }, { tech: 'BigQuery' }, { tech: 'Metabase' }, { tech: 'dbt' }],
-      heroLede: 'Data work that ends in better decisions, not prettier charts. We build pipelines, KPIs, anomaly detection — and the discipline to ignore what doesn\'t matter.',
-      pricingNote: 'Discovery starts at Rp 25jt. Stack & metric design billed separately.',
+      tagline: 'Data yang ngarah ke keputusan, bukan cuma chart cantik.',
+      blurb: 'Bikin dashboard itu gampang. Yang susah bikin data layer yang KPI-nya bener, anomali yang fire on time, dan insight yang berani dipake buat ambil keputusan.',
+      list: [{ item: 'Data warehouse & ETL' }, { item: 'Custom analytics dashboard' }, { item: 'Multi-platform ads analytics' }, { item: 'Forecasting & anomaly detection' }],
+      stack: [{ tech: 'BigQuery' }, { tech: 'Postgres' }, { tech: 'Looker Studio' }, { tech: 'Airflow' }],
+      heroLede: 'Dari API multi-platform sampai dashboard yang dipake harian — kami bangun pipeline-nya, bukan cuma chart-nya.',
+      pricingNote: 'Discovery dan scoping dulu. Tiap stack data beda biaya, kami transparan dari awal.',
     },
     {
       order: 4,
@@ -260,12 +260,12 @@ async function seed() {
       tag: 'AUGMENT',
       icon: 'augment',
       title: 'Augment',
-      tagline: 'Add intelligence to systems you already have.',
-      blurb: 'LLMs are infrastructure now. We integrate them where they actually move the needle — customer ops, internal search, content workflows.',
-      list: [{ item: 'LLM integration & RAG' }, { item: 'Agentic workflows' }, { item: 'AI-powered internal tools' }, { item: 'Document processing' }],
+      tagline: 'Tambah AI ke sistem yang udah jalan.',
+      blurb: 'LLM sekarang udah jadi infrastruktur. Kami integrasiin di tempat yang beneran moves the needle — internal search, document processing, agentic workflow.',
+      list: [{ item: 'LLM integration & RAG' }, { item: 'Agentic workflow' }, { item: 'AI internal tools' }, { item: 'Document processing' }],
       stack: [{ tech: 'Anthropic' }, { tech: 'OpenAI' }, { tech: 'LangChain' }, { tech: 'pgvector' }],
-      heroLede: 'We integrate LLMs where they pay back the latency cost — internal search, document processing, agentic ops. No chatbot demos.',
-      pricingNote: 'Pilot scope from Rp 40jt — expanded into production after measurable wins.',
+      heroLede: 'AI yang earn its place — bukan chatbot demo. Kami tambah intelligence ke alur kerja yang udah ada, di tempat yang latensi-nya kebayar dengan hasil.',
+      pricingNote: 'Pilot scope dulu, expand setelah ada hasil yang measurable.',
     },
   ]);
   console.log(`✓ Services (${serviceDocs.length})`);
@@ -275,78 +275,116 @@ async function seed() {
   // ============ PROJECTS (cases + studio products) ============
 
   await reset('projects', [
-    // Featured client case
+    // Featured studio product — Laporta
     {
       order: 1,
-      slug: 'bumi-logistics',
-      kind: 'client',
-      client: 'Bumi Logistics',
-      tagline: 'Replaced a 7-year-old console with a real-time dispatch platform.',
-      meta: 'LOGISTICS · BUILD',
-      industry: 'logistics',
-      service: serviceMap.build,
-      pills: [{ pill: 'NEXT.JS' }, { pill: 'POSTGRES' }],
-      featured: true,
-      published: true,
-      publishedYear: '2026',
-      excerpt: 'Two engineers, eleven weeks, three thousand drivers in production from day one.',
-      featuredDetails: {
-        badgeLabel: '[ FEATURED · 2026 ]',
-        shippedLabel: '[ ✓ SHIPPED ]',
-        metaLine: 'LOGISTICS · BUILD · 11 WEEKS · 2 ENGINEERS',
-        headline: 'Bumi Logistics — replaced a 7-year-old console with a real-time dispatch platform.',
-        description: 'Two engineers, eleven weeks, three thousand drivers in production from day one. No big-bang cutover — a parallel deploy, audited every Friday.',
-        metrics: [
-          { num: '38', accent: '%', label: 'FASTER DISPATCH' },
-          { num: '11', accent: 'w', label: 'TO PRODUCTION' },
-          { num: '2', accent: '×', label: 'FLEET CAPACITY' },
-        ],
-        codePanel: {
-          tag: '[ .TS ]',
-          path: 'apps/dispatch/route.ts',
-          lines: [
-            { line: '<span style="color:#C4C0C5">export async function</span> assign() {' },
-            { line: '&nbsp;&nbsp;<span style="color:#C4C0C5">const</span> fleet = <span style="color:#C4C0C5">await</span> live.fleet()' },
-            { line: '&nbsp;&nbsp;<span style="color:#C4C0C5">const</span> queue = <span style="color:#C4C0C5">await</span> live.queue()' },
-            { line: '&nbsp;&nbsp;<span style="color:#C4C0C5">const</span> plan&nbsp; = solve(fleet, queue)' },
-            { line: '&nbsp;&nbsp;<span style="color:#C4C0C5">await</span> emit(<span style="color:#2C70FE">"plan.ready"</span>, plan)' },
-            { line: '&nbsp;&nbsp;<span style="color:#C4C0C5">return</span> plan' },
-            { line: '}' },
-          ],
-        },
-        stack: [{ tech: 'NEXT.JS 15' }, { tech: 'POSTGRES' }, { tech: 'TEMPORAL' }, { tech: 'VERCEL' }],
-      },
-    },
-    // Other client cases
-    { order: 2, slug: 'kopi-co-group', kind: 'client', client: 'Kopi/Co Group', tagline: 'Multi-outlet F&B reporting, daily survival metrics, AI-assisted P&L.', meta: 'F&B · INTELLIGENCE', industry: 'fb', service: serviceMap.intelligence, pills: [{ pill: 'BIGQUERY' }, { pill: 'METABASE' }], published: true, publishedYear: '2025', excerpt: 'F&B data warehouse with daily ops dashboards. Survival metrics for 14 outlets in one place.' },
-    { order: 3, slug: 'senayan-studio', kind: 'client', client: 'Senayan Studio', tagline: 'KOL contract automation, payment workflow, performance dashboards.', meta: 'AGENCY · AUTOMATE', industry: 'agency', service: serviceMap.automate, pills: [{ pill: 'N8N' }, { pill: 'TIKTOK API' }], published: true, publishedYear: '2025', excerpt: 'End-to-end KOL operations: contract → payment → live performance, all automated.' },
-    { order: 4, slug: 'adira-capital', kind: 'client', client: 'Adira Capital', tagline: 'Internal search + RAG layer over 28k policy docs for ops team.', meta: 'FINANCE · AUGMENT', industry: 'finance', service: serviceMap.augment, pills: [{ pill: 'ANTHROPIC' }, { pill: 'PG-VECTOR' }], published: true, publishedYear: '2025', excerpt: 'AI-assisted policy search reducing ops research from hours to seconds.' },
-    { order: 5, slug: 'halo-ventures', kind: 'client', client: 'Halo Ventures', tagline: 'Portfolio operating console — KPI ingest from 14 portfolio cos.', meta: 'VC · BUILD', industry: 'vc', service: serviceMap.build, pills: [{ pill: 'REACT' }, { pill: 'POSTGRES' }], published: true, publishedYear: '2024', excerpt: 'One dashboard for portfolio metrics. Ingests directly from 14 different stacks.' },
-    { order: 6, slug: 'pt-citra-maju', kind: 'client', client: 'PT Citra Maju', tagline: 'Replaced 12hr manual report with 30-second daily ops dashboard.', meta: 'MANUFACTURING · INTELLIGENCE', industry: 'manufacturing', service: serviceMap.intelligence, pills: [{ pill: 'PYTHON' }, { pill: 'DBT' }], published: true, publishedYear: '2024', excerpt: 'From manual Excel reports to real-time ops visibility. ROI within Q1.' },
-    // Studio products
-    {
-      order: 10,
       slug: 'laporta',
       kind: 'studio',
       client: 'Laporta',
-      tagline: 'Profit intelligence layer above your POS, for Indonesian F&B operators.',
+      tagline: 'Profit intelligence layer di atas POS, untuk operator F&B Indonesia.',
       meta: 'F&B OPS · STUDIO PRODUCT',
       industry: 'fb',
+      service: serviceMap.build,
       pills: [{ pill: 'NEXT.JS' }, { pill: 'POSTGRES' }, { pill: 'METABASE' }],
-      published: true,
+      featured: true,
+      _status: 'published',
       publishedYear: '2024',
-      excerpt: "For Indonesian F&B operators who outgrew spreadsheets but can't justify enterprise ERP.",
+      excerpt: 'Bridging SPV dan Accounting di operasi F&B multi-cabang. Cut 50% budget salary accounting, cut waktu processing data, sistem yang scalable.',
+      featuredDetails: {
+        badgeLabel: '[ FEATURED · STUDIO PRODUCT ]',
+        shippedLabel: '[ ✓ SHIPPED ]',
+        metaLine: 'F&B OPS · STUDIO PRODUCT · MULTI-CABANG',
+        headline: 'Laporta — bridging SPV dan Accounting di operasi F&B multi-cabang.',
+        description: 'Aplikasi yang menyederhanakan alur data dari cabang ke head office. Petty Cash, Stock Opname, Waste, dan data non-POS lainnya diproses cepat lewat satu workflow — dimonitor langsung oleh Area Manager, Investor, dan Decision Maker. Dibangun untuk operator F&B Indonesia yang udah outgrow spreadsheet tapi belum cocok pake enterprise ERP.',
+        metrics: [
+          { num: '50', accent: '%', label: 'CUT BUDGET ACCOUNTING' },
+          { num: '↓', accent: '4×', label: 'WAKTU PROCESSING' },
+          { num: '∞', accent: '', label: 'SCALABLE MULTI-CABANG' },
+        ],
+        codePanel: {
+          tag: '[ .TS ]',
+          path: 'apps/laporta/sync.ts',
+          lines: [
+            { line: '<span style="color:#C4C0C5">export async function</span> syncOutlet() {' },
+            { line: '&nbsp;&nbsp;<span style="color:#C4C0C5">const</span> cash&nbsp; = <span style="color:#C4C0C5">await</span> outlet.pettyCash()' },
+            { line: '&nbsp;&nbsp;<span style="color:#C4C0C5">const</span> stock = <span style="color:#C4C0C5">await</span> outlet.stockOpname()' },
+            { line: '&nbsp;&nbsp;<span style="color:#C4C0C5">const</span> waste = <span style="color:#C4C0C5">await</span> outlet.waste()' },
+            { line: '&nbsp;&nbsp;<span style="color:#C4C0C5">const</span> book&nbsp; = ledger(cash, stock, waste)' },
+            { line: '&nbsp;&nbsp;<span style="color:#C4C0C5">await</span> push(<span style="color:#2C70FE">"hq.dashboard"</span>, book)' },
+            { line: '&nbsp;&nbsp;<span style="color:#C4C0C5">return</span> book' },
+            { line: '}' },
+          ],
+        },
+        stack: [{ tech: 'NEXT.JS' }, { tech: 'POSTGRES' }, { tech: 'METABASE' }, { tech: 'VERCEL' }],
+      },
       studio: {
         vizType: 'laporta',
-        usage: '1.2K OUTLETS',
-        externalLink: { label: 'laporta.id →', href: 'https://laporta.id' },
+        usage: 'F&B MULTI-CABANG',
+        externalLink: { label: 'laporta.id', href: 'https://laporta.id' },
         bullets: [
-          { bullet: 'Outlet financial analysis' },
-          { bullet: 'Daily survival metrics' },
-          { bullet: 'AI-assisted P&L chat' },
-          { bullet: 'Multi-outlet aggregation' },
+          { bullet: 'Petty Cash · Stock Opname · Waste' },
+          { bullet: 'Bridge SPV ↔ Accounting' },
+          { bullet: 'Dashboard Area Manager' },
+          { bullet: 'Multi-cabang aggregation' },
         ],
       },
+    },
+    // Real client work
+    {
+      order: 2,
+      slug: 'ads-multiplatform-dashboard',
+      kind: 'client',
+      client: 'Digital Marketing Agency',
+      tagline: 'Ads data warehouse — Meta, TikTok, Google Ads jadi satu source of truth.',
+      meta: 'AGENCY · INTELLIGENCE',
+      industry: 'agency',
+      service: serviceMap.intelligence,
+      pills: [{ pill: 'AIRFLOW' }, { pill: 'LOOKER STUDIO' }],
+      _status: 'published',
+      publishedYear: '2025',
+      excerpt: 'Reporting yang dulu manual 4 jam sehari, sekarang otomatis 30 menit. Tim ops bisa support 3x growth campaign tanpa nambah orang.',
+    },
+    {
+      order: 3,
+      slug: 'pt-raja-roti-cemerlang',
+      kind: 'client',
+      client: 'PT Raja Roti Cemerlang Tbk',
+      tagline: 'Company website + corporate page untuk perusahaan F&B publik.',
+      meta: 'F&B · BUILD',
+      industry: 'fb',
+      service: serviceMap.build,
+      pills: [{ pill: 'NEXT.JS' }, { pill: 'CMS' }],
+      _status: 'published',
+      publishedYear: '2025',
+      excerpt: 'Refresh company site dengan content management yang gampang dipake tim internal — tanpa harus minta tolong dev tiap update.',
+    },
+    {
+      order: 4,
+      slug: 'uruzin',
+      kind: 'client',
+      client: 'Uruzin',
+      tagline: 'Brand site dengan struktur konten yang gampang di-maintain.',
+      meta: 'BRAND · BUILD',
+      industry: 'other',
+      service: serviceMap.build,
+      pills: [{ pill: 'NEXT.JS' }, { pill: 'TAILWIND' }],
+      _status: 'published',
+      publishedYear: '2024',
+      excerpt: 'Brand site dengan struktur halaman yang fleksibel, performance yang ringan, dan editorial flow yang sesuai sama identitas brand.',
+    },
+    {
+      order: 5,
+      slug: 'tumtim-cookies',
+      kind: 'client',
+      client: 'Tumtim Cookies',
+      tagline: 'Company website lengkap dengan katalog produk dan order flow.',
+      meta: 'F&B · BUILD',
+      industry: 'fb',
+      service: serviceMap.build,
+      pills: [{ pill: 'NEXT.JS' }, { pill: 'CMS' }],
+      _status: 'published',
+      publishedYear: '2024',
+      excerpt: 'Site untuk brand cookies dengan katalog produk, order inquiry, dan tone yang sesuai sama brand voice mereka.',
     },
     {
       order: 11,
@@ -357,13 +395,13 @@ async function seed() {
       meta: 'KOL OS · STUDIO PRODUCT',
       industry: 'agency',
       pills: [{ pill: 'TIKTOK API' }, { pill: 'NODE.JS' }],
-      published: true,
+      _status: 'published',
       publishedYear: '2025',
-      excerpt: 'KOL campaign management without spreadsheets. Sourcing → contract → live tracking in one workspace.',
+      excerpt: 'KOL campaign management tanpa spreadsheet. Sourcing → contract → live tracking dalam satu workspace.',
       studio: {
         vizType: 'viralytics',
         usage: '380 CAMPAIGNS',
-        externalLink: { label: 'viralytics.id →', href: 'https://viralytics.id' },
+        externalLink: { label: 'viralytics.id', href: 'https://viralytics.id' },
         bullets: [
           { bullet: 'KOL directory & sourcing' },
           { bullet: 'Campaign administration' },
@@ -373,47 +411,48 @@ async function seed() {
       },
     },
   ]);
-  console.log(`✓ Projects (8) — 6 client cases + 2 studio products`);
+  console.log(`✓ Projects (6) — 1 featured studio product + 4 client cases + 1 studio product`);
 
   // ============ PROCESS / TENETS / FAQs / CLIENTS ============
 
   await reset('process-phases', [
-    { order: 1, tag: 'PHASE 01', icon: 'discover', name: 'Discover', week: 'WK 0–1', what: 'We map the actual problem, not just the requested output. Stakeholder interviews, system audit, scope tightening.', deliv: 'Written brief · technical scope · success metrics' },
-    { order: 2, tag: 'PHASE 02', icon: 'design', name: 'Design', week: 'WK 1–3', what: 'Wireframes, data models, system architecture. We design what we can defend in code, not just in Figma.', deliv: 'Clickable prototype · technical spec · ERD' },
-    { order: 3, tag: 'PHASE 03', icon: 'layers', name: 'Build', week: 'WK 3–N', what: 'Two-week sprints. Demos every Friday. No surprise reveals. Continuous deploy from day one.', deliv: 'Working software · deployed continuously' },
-    { order: 4, tag: 'PHASE 04', icon: 'handoff', name: 'Handoff', week: 'FINAL WK', what: "Documentation, training, source code, infra access. We're a phone call, not a dependency.", deliv: 'Source · docs · infra credentials · 30-day support' },
+    { order: 1, tag: 'PHASE 01', icon: 'discover', name: 'Discover', what: 'Kami petakan masalah sebenarnya, bukan cuma output yang diminta. Wawancara stakeholder, audit sistem yang jalan, scope yang ditighten.', deliv: 'Brief tertulis · technical scope · success metric' },
+    { order: 2, tag: 'PHASE 02', icon: 'design', name: 'Design', what: 'Wireframe, data model, system architecture. Kami desain yang bisa kami pertahankan di code, bukan cuma di Figma.', deliv: 'Clickable prototype · technical spec · ERD' },
+    { order: 3, tag: 'PHASE 03', icon: 'layers', name: 'Build', what: 'Sprint dua mingguan. Demo tiap akhir sprint. Gak ada kejutan di akhir. Continuous deploy dari hari pertama.', deliv: 'Working software · deploy berkala' },
+    { order: 4, tag: 'PHASE 04', icon: 'handoff', name: 'Handoff', what: 'Dokumentasi, training, source code, akses infra. Kami jadi telepon support, bukan dependency.', deliv: 'Source · docs · credential infra · support 30 hari' },
   ]);
   console.log('✓ ProcessPhases (4)');
 
   await reset('tenets', [
-    { order: 1, icon: 'users', title: 'Senior team only.', description: 'No junior hand-offs. Smaller team, fewer layers, fewer translation losses.' },
-    { order: 2, icon: 'voice', title: 'Opinionated, not obedient.', description: "We'll build what you ask for. We'll also tell you when what you asked for is the wrong thing." },
-    { order: 3, icon: 'shield', title: 'Built to outlast.', description: "Clean architecture, full handoff docs, no proprietary lock-in. We're a phone call, not a dependency." },
+    { order: 1, icon: 'users', title: 'Founder yang ngoding sendiri.', description: 'Yang scoping proyek kamu adalah yang ngoding-nya. Gak ada lapisan agency, gak ada handoff ke junior, gak ada terjemahan yang bocor di tengah jalan.' },
+    { order: 2, icon: 'voice', title: 'Opinionated, bukan obedient.', description: 'Kami akan bangun apa yang kamu minta. Tapi kalau ada cara yang lebih masuk akal untuk goal kamu, kami akan ngomong dari awal — bukan setelah proyek jalan.' },
+    { order: 3, icon: 'shield', title: 'Built to outlast.', description: 'Arsitektur bersih, dokumentasi handoff lengkap, gak ada vendor lock-in. Kami posisi sebagai partner support, bukan dependency permanen.' },
   ]);
   console.log('✓ Tenets (3)');
 
   await reset('faqs', [
-    { order: 1, question: 'How do you price?', answer: "Project-based, scoped per engagement. We don't sell hours; we sell outcomes. After a discovery call, you'll get a fixed-scope proposal with milestones and deliverables." },
-    { order: 2, question: 'Smallest project you take on?', answer: "Roughly Rp 50jt scope and up. Below that, we'll honestly tell you a freelancer is the better choice — and sometimes refer you to one." },
-    { order: 3, question: 'Do you do retainers?', answer: 'Yes, for ongoing product work after launch. Not for "pool of hours" engagements — those are how agencies and clients both lose.' },
-    { order: 4, question: 'Where are you based?', answer: 'Jakarta, Indonesia. We work with clients across Indonesia and SEA. Remote-first, on-site for kickoffs and major milestones.' },
-    { order: 5, question: 'What stack do you use?', answer: 'Pragmatic and modern: Next.js, React Native, Node.js, Python, PostgreSQL, Vercel, AWS. We pick stack to fit the problem, not to fit our resume.' },
-    { order: 6, question: 'Do you sign NDAs?', answer: 'Yes. Standard mutual NDA available before discovery calls.' },
-    { order: 7, question: 'What happens after launch?', answer: 'You own the code, the infrastructure, and the documentation. We can stay on retainer for ongoing work, or hand off cleanly to your in-house team. Your call.' },
+    { order: 1, question: 'Cara kalian price proyek gimana?', answer: 'Project-based per scope, bukan per jam. Setelah diskusi 30–60 menit di awal, kami kasih proposal dengan milestone dan deliverable yang jelas. Gak ada hourly billing, gak ada timesheet.' },
+    { order: 2, question: 'Proyek paling kecil yang kalian ambil?', answer: 'Untuk full project paling kecil mulai dari skala company website dengan struktur konten yang serius. Kalau scope-nya lebih kecil dari itu, kami biasanya rekomendasiin freelancer terpercaya — kadang kami refer langsung.' },
+    { order: 3, question: 'Bisa retainer?', answer: 'Bisa, untuk product yang udah live dan butuh continuous improvement. Tapi bukan model "pool of hours" — kami tetep scope per cycle.' },
+    { order: 4, question: 'Kalian based di mana?', answer: 'Remote-first, dengan dua founder berbasis di Jakarta. Klien bisa di mana aja di Indonesia atau SEA — kami biasa kerja via Meet, WhatsApp, atau on-site untuk kickoff dan milestone besar.' },
+    { order: 5, question: 'Stack apa yang kalian pakai?', answer: 'Pragmatis dan modern: Next.js, React Native, Node.js, Python, Postgres, BigQuery, Airflow, Anthropic/OpenAI. Stack disesuaiin sama problem, bukan sama resume kami.' },
+    { order: 6, question: 'Ada NDA?', answer: 'Iya, mutual NDA standar tersedia sebelum diskusi detail. Tinggal minta.' },
+    { order: 7, question: 'Setelah proyek selesai, gimana?', answer: 'Source code, infrastructure, dan dokumentasi semua jadi punya kamu. Kami bisa lanjut retainer untuk improvement berikutnya, atau handoff bersih ke tim internal kamu. Pilihan kamu, kami fleksibel.' },
   ]);
   console.log('✓ FAQs (7)');
 
+  // Trusted-by marquee — dummy/abstract names sampai ada client logo asset siap
   await reset('clients', [
-    { order: 1, name: 'Laporta' },
-    { order: 2, name: 'Viralytics' },
-    { order: 3, name: 'Bumi Logistics' },
-    { order: 4, name: 'Kopi/Co Group' },
-    { order: 5, name: 'Senayan Studio' },
-    { order: 6, name: 'Adira Capital' },
-    { order: 7, name: 'Halo Ventures' },
-    { order: 8, name: 'PT Citra Maju' },
+    { order: 1, name: 'Acme Co.' },
+    { order: 2, name: 'Studio Kanvas' },
+    { order: 3, name: 'Nara Group' },
+    { order: 4, name: 'Pendar Labs' },
+    { order: 5, name: 'Halu Brand' },
+    { order: 6, name: 'Bangsal' },
+    { order: 7, name: 'Kopi Kuat' },
+    { order: 8, name: 'Senja Studio' },
   ]);
-  console.log('✓ Clients (8)');
+  console.log('✓ Clients (8 dummy)');
 
   // ============ AUTHORS + POSTS ============
 
@@ -424,28 +463,28 @@ async function seed() {
   }
 
   const authorDocs = await reset('authors', [
-    { name: 'Wafi Udin', slug: 'wafi-udin', role: 'Co-founder · Engineering', bio: 'Builds operating systems for operators. 10y in production engineering across F&B and finance.' },
-    { name: 'Studio Editor', slug: 'studio-editor', role: 'Studio · Editorial', bio: 'House byline for studio-collective notes.' },
+    { name: 'M Izzul Haq W', slug: 'izzul-haq-w', role: 'Founder · Product & Frontend', bio: 'Founder Coderoach. Yang ngurus bisnis dan frontend. Suka case study yang impact-nya kelihatan di P&L, bukan cuma di dashboard.' },
+    { name: 'Farrez Al Hakim', slug: 'farrez-al-hakim', role: 'Co-founder · Backend & Infra', bio: 'Co-founder Coderoach. Backend, infrastruktur, data pipeline — yang biasanya gak kelihatan tapi nentuin sistemnya tahan lama atau enggak.' },
   ]);
   console.log(`✓ Authors (${authorDocs.length})`);
 
-  const wafi = (authorDocs[0] as any).id;
-  const editor = (authorDocs[1] as any).id;
+  const izzul = (authorDocs[0] as any).id;
+  const farrez = (authorDocs[1] as any).id;
 
   // Helper: build a minimal Lexical root with paragraphs
   const lex = (paragraphs: string[]) => ({
     root: {
       type: 'root',
-      format: '',
+      format: '' as const,
       indent: 0,
       version: 1,
-      direction: 'ltr',
+      direction: 'ltr' as const,
       children: paragraphs.map((text) => ({
         type: 'paragraph',
-        format: '',
+        format: '' as const,
         indent: 0,
         version: 1,
-        direction: 'ltr',
+        direction: 'ltr' as const,
         textFormat: 0,
         children: [{ mode: 'normal', text, type: 'text', style: '', detail: 0, format: 0, version: 1 }],
       })),
@@ -454,56 +493,171 @@ async function seed() {
 
   await reset('posts', [
     {
-      title: "Why we don't sell hours.",
-      slug: 'why-we-dont-sell-hours',
-      excerpt: 'Hourly billing optimizes for the wrong thing. Here\'s what we do instead — and why every Coderoach engagement is project-scoped.',
+      title: 'Kenapa kami gak jual jam.',
+      slug: 'kenapa-gak-jual-jam',
+      excerpt: 'Hourly billing optimize buat hal yang salah. Ini yang kami lakuin sebagai gantinya — dan kenapa tiap proyek Coderoach itu project-scoped.',
       category: 'operating',
-      author: wafi,
+      author: izzul,
       publishedAt: '2026-04-22T09:00:00.000Z',
-      published: true,
+      _status: 'published',
       featured: true,
       tags: [{ tag: 'operations' }, { tag: 'pricing' }],
       content: lex([
-        'Hourly billing is the default for most agencies. We\'ve never used it. Here\'s why.',
-        'When a vendor charges by the hour, the incentive structure rewards spending more time, not solving the problem faster. The buyer ends up policing timesheets instead of evaluating outcomes.',
-        'Project pricing flips the incentive. We propose a scope, agree on outcomes, and the team is rewarded for finishing earlier. Better outcome, less rework, no padding.',
-        'The trade-off: we have to be honest about scope upfront. That\'s where the 48-hour discovery comes in.',
+        'Hourly billing itu default-nya banyak agency. Kami belum pernah pakai. Ini alasannya.',
+        'Kalau vendor charge per jam, struktur insentifnya reward orang yang spend lebih banyak waktu, bukan yang solve masalahnya lebih cepat. Buyer akhirnya jadi police timesheet, bukan evaluasi outcome.',
+        'Project pricing balik insentifnya. Kami propose scope, sepakat sama outcome, dan tim di-reward kalau selesai lebih cepat. Outcome yang lebih bagus, less rework, gak ada padding.',
+        'Trade-off-nya: kami harus jujur soal scope dari awal. Itu fungsinya diskusi 30 menit di awal — supaya kedua sisi jelas sebelum mulai.',
       ]),
     },
     {
-      title: 'Postgres for everything (until it isn\'t).',
-      slug: 'postgres-for-everything',
-      excerpt: 'When a single Postgres instance hits its limits, what comes next. A pragmatic walkthrough from the studio.',
+      title: 'Postgres untuk semuanya (sampai gak bisa lagi).',
+      slug: 'postgres-untuk-semuanya',
+      excerpt: 'Kapan satu instance Postgres mulai gak cukup, dan apa yang berikutnya. Catatan pragmatis dari studio.',
       category: 'engineering',
-      author: wafi,
+      author: farrez,
       publishedAt: '2026-04-08T09:00:00.000Z',
-      published: true,
+      _status: 'published',
       tags: [{ tag: 'postgres' }, { tag: 'architecture' }, { tag: 'data' }],
       content: lex([
-        'For our first hundred projects, Postgres covered every need: transactional, analytical, queue, search, even some vector work via pgvector.',
-        'When does that stop being enough? Three signals.',
-        'First, write contention on hot tables. Second, OLAP queries pegging the CPU your transactional workload depends on. Third, vector search on millions of embeddings — pgvector still works, but cost-per-query gets uncomfortable.',
-        'When we hit those, we add a specialized store — a Redis queue, a Clickhouse OLAP, a vector DB — but only for that one signal. The rest stays in Postgres.',
+        'Untuk sebagian besar proyek di studio, Postgres cover hampir semua kebutuhan: transactional, analytical, queue, search, bahkan vector lewat pgvector.',
+        'Kapan itu mulai gak cukup? Tiga sinyal yang biasanya muncul.',
+        'Pertama, write contention di hot table. Kedua, query OLAP yang ngabisin CPU yang dipake transactional workload. Ketiga, vector search ke jutaan embedding — pgvector masih jalan, tapi cost-per-query mulai gak nyaman.',
+        'Kalau ketemu salah satunya, kami tambah specialized store untuk sinyal itu — Redis queue, Clickhouse OLAP, vector DB dedicated — tapi cuma untuk satu sinyal. Sisanya tetep di Postgres. Default tetep simple.',
       ]),
     },
     {
-      title: 'Notes on building Laporta in eleven months.',
-      slug: 'building-laporta-in-eleven-months',
-      excerpt: 'Eleven months from blank repo to 1.2K outlets. What we got right, what we\'d do differently, and what surprised us.',
+      title: 'Catatan dari bangun Laporta.',
+      slug: 'catatan-bangun-laporta',
+      excerpt: 'Laporta dimulai sebagai tool untuk satu klien F&B kami sendiri. Yang kami pikir 3 bulan, ternyata jadi proyek panjang yang ngajarin banyak hal soal operating F&B.',
       category: 'studio',
-      author: editor,
+      author: izzul,
       publishedAt: '2026-03-15T09:00:00.000Z',
-      published: true,
+      _status: 'published',
       tags: [{ tag: 'product' }, { tag: 'laporta' }, { tag: 'fb' }],
       content: lex([
-        'Laporta started as a tool for our own coffee operator client. We thought we\'d ship it in three months. It took eleven.',
-        'What got right: P&L logic, multi-outlet aggregation, the AI-assisted query layer that lets ops ask plain-English questions.',
-        'What we\'d do differently: customer onboarding. We assumed F&B operators would self-serve. They don\'t. We rebuilt onboarding twice.',
-        'What surprised us: the most-used feature isn\'t the dashboard. It\'s the daily survival-metric SMS.',
+        'Laporta dimulai sebagai tool untuk satu klien F&B kami sendiri. Kami pikir bisa ship 3 bulan. Ternyata jauh lebih lama dari itu.',
+        'Yang kami dapet bener: logic P&L, multi-outlet aggregation, alur Petty Cash → Stock Opname → Waste yang menjembatani SPV dan Accounting.',
+        'Yang akan kami lakuin beda kalau ngulang: customer onboarding. Kami asumsi operator F&B akan self-serve. Mereka enggak. Kami rebuild onboarding dua kali sebelum kepake.',
+        'Yang surprise: feature yang paling kepake bukan dashboard interaktif. Tapi ringkasan harian yang dikirim langsung ke decision maker — yang format-nya simpel dan bisa dibaca sambil naik motor.',
       ]),
     },
   ]);
   console.log('✓ Posts (3)');
+
+  // ============ PAGES (block-based) ============
+
+  /**
+   * Payload-fetched docs come back with internal `id` fields on nested arrays/groups.
+   * Reusing them in `create()` for a different doc would conflict, so strip recursively.
+   */
+  const stripIds = (val: any): any => {
+    if (Array.isArray(val)) return val.map(stripIds);
+    if (val && typeof val === 'object') {
+      const { id: _id, ...rest } = val;
+      const out: any = {};
+      for (const [k, v] of Object.entries(rest)) out[k] = stripIds(v);
+      return out;
+    }
+    return val;
+  };
+
+  // Reuse the studio global lede/heading + hero global as block defaults.
+  const heroGlobalRaw = await payload.findGlobal({ slug: 'hero', depth: 0 }).catch(() => null) as any;
+  const studioGlobalRaw = await payload.findGlobal({ slug: 'studio', depth: 0 }).catch(() => null) as any;
+  const contactGlobalRaw = await payload.findGlobal({ slug: 'contact', depth: 0 }).catch(() => null) as any;
+  const heroGlobal = stripIds(heroGlobalRaw);
+  const studioGlobal = stripIds(studioGlobalRaw);
+  const contactGlobal = stripIds(contactGlobalRaw);
+
+  const homeLayout = [
+    {
+      blockType: 'hero',
+      pillText: heroGlobal?.pillText,
+      headline: heroGlobal?.headline,
+      lede: heroGlobal?.lede,
+      ctaPrimary: heroGlobal?.ctaPrimary,
+      ctaSecondary: heroGlobal?.ctaSecondary,
+      metaItems: heroGlobal?.metaItems,
+      showOpsConsole: true,
+      showTrustedBy: true,
+      trustedBy: heroGlobal?.trustedBy,
+    },
+    { blockType: 'serviceList', heading: 'Empat cara kami bantu.', lede: 'Bukan jual jam — kami jual hasil.', source: 'all' },
+    { blockType: 'work', heading: "Yang udah kami ship.", lede: 'Sebagian engagement yang sudah jalan — dari company website sampai data pipeline.', showViewAllLink: true },
+    { blockType: 'products', heading: 'Produk yang kami bangun, kami pakai, kami pertahankan.', lede: 'Tes paling jujur buat tim engineering bukan brief klien — tapi produk sendiri.' },
+    { blockType: 'process', heading: 'Dari brief ke produksi, empat fase.', lede: 'Setiap proyek jalan di pola yang sama. Scope beda, stack beda — disiplin shipping-nya konsisten.' },
+    {
+      blockType: 'studio',
+      heading: studioGlobal?.heading,
+      lede: studioGlobal?.lede,
+      stats: studioGlobal?.stats,
+      pullQuote: {
+        quote: 'Dua founder, satu fokus: software yang bener-bener kepake. Yang scoping proyek kamu adalah yang ngoding — gak ada layer agency, gak ada handoff ke junior.',
+        attribution: 'Coderoach Studio · Operating note',
+      },
+      fullStudioLink: { label: 'Lihat selengkapnya →', href: '/studio' },
+    },
+    { blockType: 'notes', heading: 'Catatan terbaru dari studio.', lede: 'Engineering, operating, dan hal-hal di antara keduanya.', limit: 3, showViewAllLink: true },
+    { blockType: 'faq', heading: 'Pertanyaan yang biasanya muncul.', source: 'collection' },
+    {
+      blockType: 'contact',
+      sectionMarker: '[ CONTACT ]',
+      heading: contactGlobal?.heading,
+      lede: contactGlobal?.lede,
+      scopes: contactGlobal?.scopes,
+      formLabels: contactGlobal?.formLabels,
+      successHeading: contactGlobal?.successHeading,
+    },
+  ];
+
+  await reset('pages', [
+    {
+      title: 'Home',
+      slug: 'home',
+      _status: 'published',
+      seo: {
+        metaTitle: '',
+        metaDescription: '',
+      },
+      layout: homeLayout,
+    },
+    {
+      title: 'About',
+      slug: 'about',
+      _status: 'published',
+      seo: {
+        metaTitle: 'About — Coderoach Studio',
+        metaDescription: 'Studio kecil. Kerja serius. Dua founder, remote-first, build/automate/intelligence/augment.',
+      },
+      layout: [
+        {
+          blockType: 'hero',
+          pillText: 'About',
+          headline: { lead: 'Studio kecil.', accent: 'Kerja serius.' },
+          lede: 'Dua founder yang scoping, ngoding, dan kirim hasil sendiri. Tanpa lapisan agency, tanpa handoff ke junior.',
+          ctaPrimary: { label: 'Mulai diskusi', href: '/#contact' },
+          showOpsConsole: false,
+          showTrustedBy: false,
+        },
+        {
+          blockType: 'statsGrid',
+          eyebrow: 'Studio',
+          heading: 'Angka-angka yang kami pegang.',
+          stats: studioGlobal?.stats,
+        },
+        { blockType: 'studio', heading: studioGlobal?.heading, lede: studioGlobal?.lede, stats: studioGlobal?.stats },
+        {
+          blockType: 'ctaBanner',
+          eyebrow: 'Ready to ship?',
+          heading: 'Punya brief? Yuk ngobrol.',
+          description: 'Kami balas tiap brief dalam 48 jam.',
+          cta: { label: 'Mulai brief proyek →', href: '/#contact' },
+          tone: 'dark',
+        },
+      ],
+    },
+  ]);
+  console.log('✓ Pages (2) — home + about');
 
   console.log('\n✓ Seed complete. Visit /admin to log in & edit, or http://localhost:3000 to view.');
   process.exit(0);

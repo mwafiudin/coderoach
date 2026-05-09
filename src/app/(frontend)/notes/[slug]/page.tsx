@@ -2,6 +2,7 @@ import { getPayload } from 'payload';
 import config from '@payload-config';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { draftMode } from 'next/headers';
 import { SectionShell } from '../../_components/detail/SectionShell';
 import { Breadcrumbs } from '../../_components/detail/Breadcrumbs';
 import { ProseRenderer } from '../../_components/detail/ProseRenderer';
@@ -11,6 +12,7 @@ import { RelatedGrid } from '../../_components/detail/RelatedGrid';
 import { ReadingProgress } from '../../_components/detail/ReadingProgress';
 import { TOCSidebar } from '../../_components/detail/TOCSidebar';
 import { PrevNext } from '../../_components/detail/PrevNext';
+import { PayloadImage } from '../../_components/ui/PayloadImage';
 
 export const dynamic = 'force-static';
 export const revalidate = 60;
@@ -39,7 +41,7 @@ export async function generateStaticParams() {
   const payload = await getPayload({ config });
   const { docs } = await payload.find({
     collection: 'posts',
-    where: { published: { equals: true } },
+    where: { _status: { equals: 'published' } },
     limit: 1000,
   });
   return docs.map((d: any) => ({ slug: d.slug }));
@@ -79,6 +81,7 @@ export default async function PostDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const { isEnabled: isDraftMode } = await draftMode();
   const payload = await getPayload({ config });
 
   const { docs } = await payload.find({
@@ -86,6 +89,8 @@ export default async function PostDetailPage({
     where: { slug: { equals: slug } },
     limit: 1,
     depth: 2,
+    draft: isDraftMode,
+    overrideAccess: isDraftMode,
   });
   const post = docs[0] as any;
   if (!post) notFound();
@@ -96,7 +101,7 @@ export default async function PostDetailPage({
     where: {
       and: [
         { id: { not_equals: post.id } },
-        { published: { equals: true } },
+        { _status: { equals: 'published' } },
         { category: { equals: post.category } },
       ],
     },
@@ -112,7 +117,7 @@ export default async function PostDetailPage({
           collection: 'posts',
           where: {
             and: [
-              { published: { equals: true } },
+              { _status: { equals: 'published' } },
               { publishedAt: { less_than: post.publishedAt } },
             ],
           },
@@ -125,7 +130,7 @@ export default async function PostDetailPage({
           collection: 'posts',
           where: {
             and: [
-              { published: { equals: true } },
+              { _status: { equals: 'published' } },
               { publishedAt: { greater_than: post.publishedAt } },
             ],
           },
@@ -185,11 +190,15 @@ export default async function PostDetailPage({
         {post.coverImage?.url && (
           <section className="pb-12">
             <div className="max-w-[1180px] mx-auto px-8">
-              <div className="aspect-[16/9] rounded-2xl overflow-hidden bg-paper-100 border border-paper-200">
-                <img
-                  src={post.coverImage.url}
+              <div className="aspect-[16/9] rounded-2xl overflow-hidden bg-paper-100 border border-paper-200 relative">
+                <PayloadImage
+                  media={post.coverImage}
+                  variant="hero"
                   alt={post.coverImage.alt || post.title}
-                  className="w-full h-full object-cover"
+                  priority
+                  sizesAttr="(min-width: 1280px) 1180px, 100vw"
+                  fill
+                  className="object-cover"
                 />
               </div>
             </div>

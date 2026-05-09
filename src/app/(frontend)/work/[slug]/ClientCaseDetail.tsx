@@ -1,6 +1,7 @@
 import { Badge } from '../../_components/ui/Badge';
 import { Breadcrumbs } from '../../_components/detail/Breadcrumbs';
 import { ProseRenderer } from '../../_components/detail/ProseRenderer';
+import { PayloadImage } from '../../_components/ui/PayloadImage';
 
 type Project = any;
 
@@ -115,7 +116,13 @@ export function ClientCaseDetail({ project }: { project: Project }) {
               {project.gallery.map((g: any, i: number) => (
                 <figure key={i} className="rounded-lg overflow-hidden border border-paper-200 bg-paper-100">
                   {g.image?.url && (
-                    <img src={g.image.url} alt={g.image.alt || ''} className="w-full h-auto" />
+                    <PayloadImage
+                      media={g.image}
+                      variant="card"
+                      alt={g.image.alt || ''}
+                      sizesAttr="(min-width: 768px) 50vw, 100vw"
+                      className="w-full h-auto"
+                    />
                   )}
                   {g.caption && (
                     <figcaption className="px-4 py-3 font-mono text-xs uppercase tracking-wider text-mist-600 tabular">

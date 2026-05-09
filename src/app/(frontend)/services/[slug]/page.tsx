@@ -60,7 +60,7 @@ export default async function ServiceDetailPage({
     const { docs: byService } = await payload.find({
       collection: 'projects',
       where: {
-        and: [{ service: { equals: service.id } }, { published: { equals: true } }],
+        and: [{ service: { equals: service.id } }, { _status: { equals: 'published' } }],
       },
       sort: 'order',
       limit: 4,

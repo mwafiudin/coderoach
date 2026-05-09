@@ -1,7 +1,9 @@
+import { PayloadImage } from '../ui/PayloadImage';
+
 type Author = {
   name?: string | null;
   role?: string | null;
-  avatar?: { url?: string | null; alt?: string | null } | null;
+  avatar?: any;
 };
 
 const initials = (name?: string | null) =>
@@ -16,9 +18,12 @@ export function AuthorChip({ author }: { author: Author | null | undefined }) {
   return (
     <div className="inline-flex items-center gap-3">
       {author.avatar?.url ? (
-        <img
-          src={author.avatar.url}
+        <PayloadImage
+          media={author.avatar}
+          variant="thumbnail"
           alt={author.avatar.alt || author.name || ''}
+          width={36}
+          height={36}
           className="w-9 h-9 rounded-full object-cover bg-paper-200"
         />
       ) : (

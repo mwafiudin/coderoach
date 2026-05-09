@@ -1,9 +1,11 @@
 import type { GlobalConfig } from 'payload';
+import { revalidateHome } from '../lib/revalidate';
 
 export const Hero: GlobalConfig = {
   slug: 'hero',
   admin: { group: 'Site Content' },
   access: { read: () => true },
+  hooks: { afterChange: [revalidateHome] },
   fields: [
     { name: 'pillText', type: 'text', required: true },
     {

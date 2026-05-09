@@ -1,13 +1,6 @@
-import type { CollectionConfig, FieldHook } from 'payload';
+import type { CollectionConfig } from 'payload';
 import { revalidateService } from '../lib/revalidate';
-
-const slugify = (val?: string | null): string =>
-  (val || '')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '');
-
-const autoSlug: FieldHook = ({ value, data }) => value || slugify(data?.title);
+import { autoSlug } from '../lib/slugify';
 
 export const Services: CollectionConfig = {
   slug: 'services',
@@ -19,21 +12,34 @@ export const Services: CollectionConfig = {
   access: { read: () => true },
   hooks: { afterChange: [revalidateService] },
   fields: [
-    { name: 'order', type: 'number', required: true, defaultValue: 0 },
+    {
+      name: 'order',
+      type: 'number',
+      required: true,
+      defaultValue: 0,
+      index: true,
+      admin: { position: 'sidebar', description: 'Sort order in lists. Lower = earlier.' },
+    },
     {
       name: 'slug',
       type: 'text',
       required: true,
       unique: true,
       index: true,
-      hooks: { beforeValidate: [autoSlug] },
-      admin: { description: 'URL-safe identifier — drives /services/[slug] route.' },
+      hooks: { beforeValidate: [autoSlug('title')] },
+      admin: {
+        position: 'sidebar',
+        description: 'URL-safe identifier — drives /services/[slug] route.',
+      },
     },
     {
       name: 'tag',
       type: 'text',
       required: true,
-      admin: { description: 'Mono label, e.g. BUILD, AUTOMATE (kept English — short tech label).' },
+      admin: {
+        position: 'sidebar',
+        description: 'Mono label, e.g. BUILD, AUTOMATE (kept English — short tech label).',
+      },
     },
     {
       name: 'icon',
@@ -45,6 +51,7 @@ export const Services: CollectionConfig = {
         { label: 'Intelligence (bar chart)', value: 'intelligence' },
         { label: 'Augment (zap)', value: 'augment' },
       ],
+      admin: { position: 'sidebar' },
     },
     { name: 'title', type: 'text', required: true },
     { name: 'tagline', type: 'text', required: true, admin: { description: 'Short hook (homepage card).' } },

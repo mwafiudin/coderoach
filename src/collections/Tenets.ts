@@ -9,7 +9,7 @@ export const Tenets: CollectionConfig = {
   },
   access: { read: () => true },
   fields: [
-    { name: 'order', type: 'number', required: true, defaultValue: 0 },
+    { name: 'order', type: 'number', required: true, defaultValue: 0, index: true },
     {
       name: 'icon',
       type: 'select',

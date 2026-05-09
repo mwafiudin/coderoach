@@ -1,12 +1,5 @@
-import type { CollectionConfig, FieldHook } from 'payload';
-
-const slugify = (val?: string | null): string =>
-  (val || '')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '');
-
-const autoSlug: FieldHook = ({ value, data }) => value || slugify(data?.name);
+import type { CollectionConfig } from 'payload';
+import { autoSlug } from '../lib/slugify';
 
 export const Authors: CollectionConfig = {
   slug: 'authors',
@@ -24,7 +17,7 @@ export const Authors: CollectionConfig = {
       required: true,
       unique: true,
       index: true,
-      hooks: { beforeValidate: [autoSlug] },
+      hooks: { beforeValidate: [autoSlug('name')] },
     },
     { name: 'role', type: 'text', admin: { description: 'e.g. "Co-founder · Engineering"' } },
     { name: 'bio', type: 'textarea' },

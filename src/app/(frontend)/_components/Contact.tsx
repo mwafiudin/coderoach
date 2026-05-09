@@ -32,6 +32,9 @@ export function Contact({ data }: { data: ContactData | null }) {
   const [scope, setScope] = useState('');
   const [focused, setFocused] = useState<'email' | 'scope' | 'brief' | null>(null);
   const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [honeypot, setHoneypot] = useState('');
   const [now, setNow] = useState<Date | null>(null);
 
   useEffect(() => {
@@ -104,11 +107,53 @@ export function Contact({ data }: { data: ContactData | null }) {
             {/* Left — conversational prose form (with subtle electric rail for visual anchor) */}
             <form
               className="relative flex flex-col gap-9 lg:pl-8"
-              onSubmit={(e) => {
+              onSubmit={async (e) => {
                 e.preventDefault();
-                if (emailValid) setSent(true);
+                if (!emailValid || submitting) return;
+                setSubmitting(true);
+                setSubmitError(null);
+                try {
+                  const res = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      email,
+                      scope,
+                      brief,
+                      company_url: honeypot,
+                    }),
+                  });
+                  const json = await res.json().catch(() => ({}));
+                  if (res.ok && json?.ok) {
+                    setSent(true);
+                  } else {
+                    setSubmitError(json?.error || 'Gagal kirim. Coba lagi.');
+                  }
+                } catch {
+                  setSubmitError('Gagal kirim. Cek koneksi dan coba lagi.');
+                } finally {
+                  setSubmitting(false);
+                }
               }}
             >
+              {/* Honeypot — hidden from real users; bots that fill it get silently rejected */}
+              <input
+                type="text"
+                name="company_url"
+                tabIndex={-1}
+                autoComplete="off"
+                value={honeypot}
+                onChange={(e) => setHoneypot(e.target.value)}
+                aria-hidden
+                style={{
+                  position: 'absolute',
+                  left: '-9999px',
+                  width: 1,
+                  height: 1,
+                  opacity: 0,
+                  pointerEvents: 'none',
+                }}
+              />
               {/* Vertical accent rail */}
               <span
                 aria-hidden
@@ -117,7 +162,7 @@ export function Contact({ data }: { data: ContactData | null }) {
               {/* Brief — the main shipping ask */}
               <div className="flex flex-col gap-2">
                 <label htmlFor="brief" className="text-[15px] leading-[1.6] text-mist-400 font-medium">
-                  Hi <span className="text-paper">👋</span> — I'm shipping
+                  Hai <span className="text-paper">👋</span> — aku mau bangun
                 </label>
                 <textarea
                   id="brief"
@@ -126,7 +171,7 @@ export function Contact({ data }: { data: ContactData | null }) {
                   onChange={(e) => setBrief(e.target.value)}
                   onFocus={() => setFocused('brief')}
                   onBlur={() => setFocused(null)}
-                  placeholder="a real-time fleet dispatch console for 3,000 drivers…"
+                  placeholder="dashboard analitik buat tim performance marketing kami…"
                   className="block w-full text-[22px] leading-[1.4] bg-transparent border-0 border-b border-shadow-700 focus:border-electric outline-none resize-none transition-colors text-paper placeholder:text-mist-600 py-2 px-0 caret-electric font-medium tracking-[-0.01em]"
                 />
               </div>
@@ -135,7 +180,7 @@ export function Contact({ data }: { data: ContactData | null }) {
               {data?.scopes && data.scopes.length > 0 && (
                 <div className="flex flex-col gap-2.5">
                   <span className="text-[15px] leading-[1.6] text-mist-400 font-medium">
-                    Most likely it's a <span className="text-mist-600">…</span>
+                    Kemungkinan ini <span className="text-mist-600">…</span>
                   </span>
                   <div className="flex flex-wrap gap-2">
                     {data.scopes.map((s) => (
@@ -163,7 +208,7 @@ export function Contact({ data }: { data: ContactData | null }) {
               {/* Email — inline with prompt text */}
               <div className="flex items-baseline gap-3 flex-wrap">
                 <label htmlFor="email" className="text-[15px] leading-[1.6] text-mist-400 font-medium shrink-0">
-                  Reach me at
+                  Hubungi aku di
                 </label>
                 <input
                   id="email"
@@ -173,7 +218,7 @@ export function Contact({ data }: { data: ContactData | null }) {
                   onChange={(e) => setEmail(e.target.value)}
                   onFocus={() => setFocused('email')}
                   onBlur={() => setFocused(null)}
-                  placeholder="ops@yourcompany.id"
+                  placeholder="kamu@perusahaan.id"
                   className="flex-1 min-w-[200px] text-[22px] leading-[1.3] bg-transparent border-0 border-b border-shadow-700 focus:border-electric outline-none transition-colors text-paper placeholder:text-mist-600 py-2 px-0 caret-electric font-medium tracking-[-0.01em]"
                 />
               </div>
@@ -182,13 +227,18 @@ export function Contact({ data }: { data: ContactData | null }) {
               <div className="flex items-center gap-4 flex-wrap pt-4">
                 <button
                   type="submit"
-                  disabled={!emailValid}
+                  disabled={!emailValid || submitting}
                   className="h-[52px] px-[22px] rounded-md bg-electric text-paper text-[15px] font-semibold inline-flex items-center hover:bg-[#2562E0] active:scale-[0.98] transition-[background,transform] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-electric"
                 >
-                  {data?.formLabels?.submit ?? 'Send the brief →'}
+                  {submitting ? 'Mengirim…' : data?.formLabels?.submit ?? 'Kirim brief →'}
                 </button>
+                {submitError && (
+                  <span className="text-[12px] text-[#E5484D] font-medium">
+                    {submitError}
+                  </span>
+                )}
                 <span className="font-mono text-xs tracking-wide text-mist-600">
-                  // or write to{' '}
+                  // atau email langsung ke{' '}
                   <a
                     href={`mailto:${data?.formLabels?.emailFallback}`}
                     className="text-mist-400 border-b border-current pb-px hover:text-electric"
@@ -258,7 +308,7 @@ function BriefPreview({
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse-dot" aria-hidden />
             <span className="text-shadow-700 text-[10px] tracking-[0.18em] uppercase font-semibold">
-              Draft to coderoach studio
+              Draft buat coderoach studio
             </span>
           </div>
           <span className="text-shadow-700/60 text-[10px] tracking-wider tabular">
@@ -271,13 +321,13 @@ function BriefPreview({
           <LetterRow label="To" value="coderoach.studio" muted={false} />
           <LetterRow
             label="From"
-            value={email || 'awaiting…'}
+            value={email || 'menunggu…'}
             muted={!email}
             active={focused === 'email'}
           />
           <LetterRow
             label="Re"
-            value={scope || 'awaiting scope…'}
+            value={scope || 'pilih scope…'}
             muted={!scope}
             active={focused === 'scope'}
             accent={!!scope}
@@ -300,7 +350,7 @@ function BriefPreview({
             </p>
           ) : (
             <p className="text-mist-500 italic text-[15px] leading-[1.65] m-0">
-              Your brief will appear here, written as the studio will read it.
+              Brief kamu akan muncul di sini, persis seperti yang akan kami baca.
             </p>
           )}
         </div>
@@ -309,10 +359,10 @@ function BriefPreview({
         <div className="flex items-end justify-between gap-4 flex-wrap pt-5 border-t border-shadow-200">
           <div>
             <p className="text-shadow-700 text-[12px] m-0 mb-1 tracking-[0.04em]">
-              — sent from <span className="text-shadow-900 font-medium">{email || '…'}</span>
+              — dikirim dari <span className="text-shadow-900 font-medium">{email || '…'}</span>
             </p>
             <p className="text-mist-500 text-[10px] uppercase tracking-[0.18em] m-0">
-              {hasAny ? 'reply within 24h' : 'awaiting input'}
+              {hasAny ? 'balas dalam 48 jam' : 'menunggu input'}
             </p>
           </div>
           <div className="flex items-center gap-2.5 min-w-[140px]">
@@ -379,8 +429,8 @@ function SentState({ email, successHeading }: { email: string; successHeading?: 
         {successHeading}
       </h3>
       <p className="text-[15px] leading-[1.55] text-mist-500 m-0">
-        Sent from <span className="text-paper font-mono text-sm">{email}</span>.<br />
-        You'll hear back from a senior at the studio within 48 hours.
+        Dikirim dari <span className="text-paper font-mono text-sm">{email}</span>.<br />
+        Kami balas langsung dari salah satu founder dalam 48 jam.
       </p>
     </div>
   );

@@ -6,10 +6,29 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
   const payload = await getPayload({ config });
 
+  const slimSelect = { slug: true, updatedAt: true } as const;
+
   const [{ docs: projects }, { docs: services }, { docs: posts }] = await Promise.all([
-    payload.find({ collection: 'projects', where: { published: { equals: true } }, limit: 1000 }),
-    payload.find({ collection: 'services', limit: 100 }),
-    payload.find({ collection: 'posts', where: { published: { equals: true } }, limit: 1000 }),
+    payload.find({
+      collection: 'projects',
+      where: { _status: { equals: 'published' } },
+      limit: 1000,
+      depth: 0,
+      select: slimSelect,
+    }),
+    payload.find({
+      collection: 'services',
+      limit: 100,
+      depth: 0,
+      select: slimSelect,
+    }),
+    payload.find({
+      collection: 'posts',
+      where: { _status: { equals: 'published' } },
+      limit: 1000,
+      depth: 0,
+      select: { slug: true, updatedAt: true, publishedAt: true },
+    }),
   ]);
 
   const staticEntries: MetadataRoute.Sitemap = [

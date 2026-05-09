@@ -9,23 +9,23 @@ export default function NotFound() {
             [ 404 · NOT_FOUND ]
           </span>
           <h1 className="text-[clamp(48px,7vw,80px)] font-bold tracking-[-0.025em] leading-[1.05] mb-6">
-            Page not found.
+            Halaman gak ketemu.
           </h1>
           <p className="text-[18px] leading-[1.55] text-mist-600 mb-10 max-w-[480px] mx-auto text-pretty">
-            The URL you followed doesn't match anything we've shipped. It might have moved, or the link is wrong.
+            URL yang kamu buka gak match sama apapun yang kami ship. Mungkin pindah, mungkin link-nya salah ketik.
           </p>
           <div className="flex items-center justify-center gap-3 flex-wrap">
             <a
               href="/"
               className="h-12 px-5 rounded-md bg-electric text-paper text-sm font-semibold inline-flex items-center hover:bg-[#2562E0] transition-colors"
             >
-              ← Back to home
+              ← Balik ke home
             </a>
             <a
               href="/work"
               className="h-12 px-5 rounded-md bg-transparent text-ink border border-mist-400 text-sm font-semibold inline-flex items-center hover:bg-ink/[0.04] transition-colors"
             >
-              See our work
+              Lihat hasil kami
             </a>
           </div>
         </div>

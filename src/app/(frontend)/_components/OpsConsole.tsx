@@ -22,14 +22,14 @@ const CATEGORY_STYLES: Record<EventCategory, { color: string; label: string }> =
 
 const POOL: Omit<OpsEvent, 'id'>[] = [
   { category: 'build', subject: 'laporta@v4.2.1', status: '✓ shipped in 23s' },
-  { category: 'alert', subject: 'bumi-dispatch latency', status: '→ auto-resolved' },
-  { category: 'query', subject: 'adira-search', status: '+38% throughput' },
-  { category: 'trace', subject: 'viralytics campaigns', status: '380 active · 12 live' },
-  { category: 'ship', subject: 'senayan@v2.0', status: '✓ deployed ap-se-1' },
-  { category: 'build', subject: 'kopi-co-reports', status: '✓ shipped in 11s' },
-  { category: 'alert', subject: 'citra-maju cron', status: '→ escalated to ops' },
-  { category: 'query', subject: 'halo-portfolio kpis', status: 'refresh complete' },
-  { category: 'trace', subject: 'bumi-fleet routes', status: '3,221 drivers active' },
+  { category: 'alert', subject: 'sync queue latency', status: '→ auto-resolved' },
+  { category: 'query', subject: 'ads-warehouse refresh', status: '+38% throughput' },
+  { category: 'trace', subject: 'multi-cabang sync', status: '12 outlet · live' },
+  { category: 'ship', subject: 'company-site@v2.0', status: '✓ deployed ap-se-1' },
+  { category: 'build', subject: 'monthly-reports', status: '✓ shipped in 11s' },
+  { category: 'alert', subject: 'pipeline cron', status: '→ escalated to ops' },
+  { category: 'query', subject: 'p&l aggregator', status: 'refresh complete' },
+  { category: 'trace', subject: 'meta + tiktok pull', status: '3.2k rows synced' },
   { category: 'ship', subject: 'laporta@hotfix-4.2.2', status: '✓ rolled forward' },
 ];
 
