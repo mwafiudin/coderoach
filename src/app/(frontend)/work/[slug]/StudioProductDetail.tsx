@@ -96,7 +96,7 @@ export function StudioProductDetail({ project }: { project: Project }) {
           <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-12 items-center">
             <div>
               <div className="flex gap-2 mb-5">
-                <Badge variant="electric">[ STUDIO PRODUCT ]</Badge>
+                <Badge variant="electric">STUDIO PRODUCT</Badge>
                 {project.publishedYear && <Badge>{`SHIPPED ${project.publishedYear}`}</Badge>}
               </div>
               <h1 className="text-[clamp(48px,7vw,88px)] font-bold tracking-[-0.03em] leading-[0.95] mb-6">

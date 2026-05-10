@@ -26,10 +26,7 @@ export function Footer({ data }: { data: FooterData | null }) {
   return (
     <footer className="bg-ink text-paper pt-6 pb-7">
       <div className="max-w-[1180px] mx-auto px-8">
-        <div className="font-mono text-[11px] text-mist-700 tracking-[0.4em] whitespace-nowrap overflow-hidden mb-12 opacity-60">
-          · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · · ·
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1fr] gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1fr] gap-12 pt-12">
           <div>
             <div className="flex items-center gap-[10px] mb-[18px]">
               {logoUrl ? (

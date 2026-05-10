@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { formatChipLabel } from './chipLabel';
 
 type Tone = 'success' | 'error' | 'warning' | 'info';
 
@@ -100,7 +101,7 @@ export function StatusAlert({
             <span
               className={`h-6 px-2.5 rounded-full inline-flex items-center font-mono text-[10px] font-semibold uppercase tracking-[0.2em] tabular border ${t.chip} ${t.chipText}`}
             >
-              {badge}
+              {formatChipLabel(badge)}
             </span>
           </div>
         )}

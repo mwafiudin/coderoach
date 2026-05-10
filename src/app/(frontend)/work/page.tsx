@@ -7,8 +7,8 @@ import { ProjectArchiveClient } from './ProjectArchiveClient';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Work — Coderoach Studio',
-  description: 'Forty engagements across F&B, logistics, finance, and agency. Selected client cases and studio products.',
+  title: 'Work — Portfolio Coderoach Studio · Web, Automasi, Dashboard',
+  description: 'Portfolio Coderoach Studio — 40+ kolaborasi di F&B, logistik, finance, dan agency. Web development, otomasi workflow, dan dashboard analitik untuk bisnis Indonesia.',
 };
 
 export default async function WorkArchivePage() {

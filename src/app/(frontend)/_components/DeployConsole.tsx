@@ -9,15 +9,25 @@ type Line = {
   delay: number; // ms after open before this line appears
 };
 
-const buildLines = (email: string, scope: string): Line[] => [
-  { prompt: '$', text: 'init brief.session', status: 'info', delay: 0 },
-  { text: `→ env=production · scope=${scope || 'discovery'}`, status: 'info', delay: 220 },
-  { prompt: '$', text: `validate brief.email <${email || 'pending'}>`, status: 'info', delay: 440 },
-  { text: '✓ schema_ok', status: 'ok', delay: 700 },
-  { prompt: '$', text: 'POST /api/submissions', status: 'info', delay: 950 },
-  { text: '↳ encrypting payload · routing to ops queue', status: 'info', delay: 1200 },
-  { text: '✓ 200 OK · brief delivered to senior team', status: 'ok', delay: 1500 },
-];
+const buildLines = (email: string, scope: string): Line[] => {
+  const sessionId = `brf_${Math.random().toString(36).slice(2, 8)}`;
+  return [
+    { prompt: '$', text: 'init brief.session', status: 'info', delay: 0 },
+    { text: `→ session=${sessionId} · env=production`, status: 'info', delay: 280 },
+    { text: `→ scope=${scope || 'discovery'} · region=ap-se-1`, status: 'info', delay: 520 },
+    { prompt: '$', text: `validate brief.email <${email || 'pending'}>`, status: 'info', delay: 820 },
+    { text: '→ checking domain mx records...', status: 'info', delay: 1080 },
+    { text: '✓ schema_ok · email_verified', status: 'ok', delay: 1340 },
+    { prompt: '$', text: 'run sanitize.input', status: 'info', delay: 1620 },
+    { text: '→ stripping pii · normalizing whitespace', status: 'info', delay: 1880 },
+    { text: '✓ payload_clean (1.2kb)', status: 'ok', delay: 2160 },
+    { prompt: '$', text: 'POST /api/submissions', status: 'info', delay: 2480 },
+    { text: '↳ encrypting payload · aes-256-gcm', status: 'info', delay: 2780 },
+    { text: '↳ routing to ops queue · senior tier', status: 'info', delay: 3060 },
+    { text: '✓ 200 OK · brief delivered', status: 'ok', delay: 3340 },
+    { text: '✓ senior team notified · est. reply in 48h', status: 'ok', delay: 3620 },
+  ];
+};
 
 export function DeployConsole({
   open,

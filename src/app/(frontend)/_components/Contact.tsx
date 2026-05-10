@@ -34,7 +34,6 @@ export function Contact({ data }: { data: ContactData | null }) {
   const [brief, setBrief] = useState('');
   const [scope, setScope] = useState('');
   const [focused, setFocused] = useState<'email' | 'scope' | 'brief' | null>(null);
-  const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [honeypot, setHoneypot] = useState('');
@@ -130,10 +129,7 @@ export function Contact({ data }: { data: ContactData | null }) {
           )}
         </div>
 
-        {sent ? (
-          <SentState email={email} successHeading={data?.successHeading} />
-        ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-10 lg:gap-16 items-start reveal">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-10 lg:gap-16 items-start reveal">
             {/* Left — conversational prose form (with subtle electric rail for visual anchor) */}
             <form
               className="relative flex flex-col gap-9 lg:pl-8"
@@ -151,9 +147,10 @@ export function Contact({ data }: { data: ContactData | null }) {
                 }
                 setSubmitting(true);
                 setSubmitError(null);
-                // Keep the deploy console visible long enough for the streaming
-                // log to play out (~1.6s) — avoids a flash on fast networks.
-                const minVisible = new Promise<void>((r) => setTimeout(r, 1700));
+                // Keep the deploy console visible long enough for the full
+                // streaming log to play out (~3.8s) — avoids a flash on fast
+                // networks and lets the user feel the process happen.
+                const minVisible = new Promise<void>((r) => setTimeout(r, 3800));
                 try {
                   const fetchTask = fetch('/api/contact', {
                     method: 'POST',
@@ -179,7 +176,12 @@ export function Contact({ data }: { data: ContactData | null }) {
                       primaryLabel: 'Selesai',
                       onPrimary: () => {
                         setAlert(null);
-                        setSent(true);
+                        // Reset form to clean state — modal already confirmed delivery
+                        setEmail('');
+                        setScope('');
+                        setBrief('');
+                        setHoneypot('');
+                        setFocused(null);
                       },
                     });
                   } else {
@@ -374,7 +376,6 @@ export function Contact({ data }: { data: ContactData | null }) {
               now={now}
             />
           </div>
-        )}
       </div>
     </section>
   );
@@ -534,19 +535,3 @@ function LetterRow({
   );
 }
 
-function SentState({ email, successHeading }: { email: string; successHeading?: string | null }) {
-  return (
-    <div className="max-w-[720px] mx-auto bg-shadow-900 border border-shadow-700 rounded-2xl p-10 text-center">
-      <span className="h-6 px-2.5 rounded-full inline-flex items-center font-mono text-[11px] font-medium uppercase tracking-wider bg-success/[0.18] text-[#5DD79A] mb-4">
-        [ 200 OK · RECEIVED ]
-      </span>
-      <h3 className="text-[32px] font-bold tracking-[-0.02em] my-4 text-paper">
-        {successHeading}
-      </h3>
-      <p className="text-[15px] leading-[1.55] text-mist-500 m-0">
-        Dikirim dari <span className="text-paper font-mono text-sm">{email}</span>.<br />
-        Tim senior akan membalas brief Anda dalam 48 jam kerja.
-      </p>
-    </div>
-  );
-}

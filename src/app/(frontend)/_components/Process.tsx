@@ -18,8 +18,8 @@ export function Process({ phases }: { phases: Phase[] }) {
           marker="[ 04 / 07 ]"
           category="Process"
           description="Cara kami kerja"
-          heading="Dari brief ke produksi, empat fase."
-          lede="Setiap proyek jalan di pola yang sama. Scope beda, stack beda — disiplin shipping-nya konsisten."
+          heading="Brief to production, in four phases."
+          lede="Setiap proyek mengikuti pola yang sama. Scope berbeda, stack berbeda — disiplin shipping tetap konsisten."
         />
         <div
           className="grid grid-cols-1 md:grid-cols-4 relative pt-14 mt-14 [--progress:0]"

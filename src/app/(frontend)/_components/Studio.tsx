@@ -66,8 +66,8 @@ export function Studio({ data, tenets }: { data: StudioData | null; tenets: Tene
             {/* Studio note — replaces testimonial until we have a real one to publish */}
             <figure className="pt-8 border-t border-shadow-700 mt-2">
               <blockquote className="text-[20px] leading-[1.4] text-paper m-0 font-medium tracking-[-0.005em] text-balance">
-                Setiap engagement dikerjakan oleh engineer yang juga melakukan scoping. Tanpa
-                lapisan agency, tanpa hand-off ke junior, tanpa konteks yang hilang di tengah jalan.
+                Setiap proyek dikerjakan oleh engineer yang juga melakukan scoping. Tanpa lapisan
+                agency, tanpa hand-off ke junior, tanpa konteks yang hilang di tengah jalan.
               </blockquote>
               <figcaption className="mt-4 flex items-center gap-3">
                 <div className="w-7 h-7 rounded-full bg-gradient-to-br from-electric to-[#5DD79A] grid place-items-center text-paper text-[10px] font-bold">

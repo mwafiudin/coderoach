@@ -80,12 +80,13 @@ export function ProjectArchiveClient({ projects }: { projects: Project[] }) {
                 [ 02 / 06 ] <span className="text-mist-400">·</span> Work archive
               </span>
               <h1 className="text-[clamp(40px,5vw,72px)] leading-[1.02] tracking-[-0.025em] font-bold mt-5 max-w-[18ch] text-balance">
-                Forty engagements, six industries.
+                40+ kolaborasi, enam industri.
               </h1>
             </div>
             <p className="text-[18px] leading-[1.55] text-mist-600 max-w-[420px] lg:justify-self-end text-pretty">
-              Each one ships with the same operating shape: a senior engineering team, full handoff
-              documentation, and ownership transfer at completion. Filter to find work close to your problem.
+              Setiap proyek live dengan pola yang sama: tim engineer senior, dokumentasi handoff
+              yang lengkap, dan transfer ownership di akhir. Filter di bawah untuk menemukan proyek
+              yang dekat dengan masalah Anda.
             </p>
           </div>
 
@@ -93,7 +94,7 @@ export function ProjectArchiveClient({ projects }: { projects: Project[] }) {
           <div className="flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-6 pt-6 border-t border-paper-200">
             <FilterBar
               variant="segmented"
-              label="Filter"
+              label="Kategori"
               options={kindOptions}
               active={kindFilter}
               onChange={setKindFilter}
@@ -101,7 +102,7 @@ export function ProjectArchiveClient({ projects }: { projects: Project[] }) {
             <div className="hidden lg:block w-px h-6 bg-paper-200" aria-hidden />
             <FilterBar
               variant="chips"
-              label="Industry"
+              label="Industri"
               options={industryOptions}
               active={industryFilter}
               onChange={setIndustryFilter}

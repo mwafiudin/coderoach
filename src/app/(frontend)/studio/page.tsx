@@ -42,7 +42,7 @@ export default async function StudioPage() {
                 [ THE STUDIO ] <span className="text-mist-400">·</span> Tim di balik Coderoach
               </span>
               <h1 className="text-[clamp(48px,7vw,88px)] font-bold tracking-[-0.025em] leading-[0.95] mt-6 max-w-[16ch] text-balance">
-                {studio?.about?.pageHeading || 'Studio kecil. Kerja serius.'}
+                {studio?.about?.pageHeading || 'Studio engineering. Measured execution.'}
               </h1>
             </div>
             {(studio?.about?.pageLede || studio?.lede) && (
@@ -190,7 +190,7 @@ export default async function StudioPage() {
                   Team
                 </span>
                 <h2 className="text-[clamp(32px,4vw,48px)] font-bold tracking-[-0.02em] leading-tight mt-2">
-                  Tim inti. Yang scoping juga yang membangun.
+                  The core team. Same hands that scope, build.
                 </h2>
               </div>
               <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-mist-500">
@@ -319,23 +319,50 @@ export default async function StudioPage() {
         </section>
       )}
 
-      {/* CTA */}
+      {/* CTA — blueprint card with crosshairs + live status indicator */}
       <section className="py-20 bg-ink text-paper" data-theme="dark">
-        <div className="max-w-[1180px] mx-auto px-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-          <div>
-            <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-mist-500">
-              Tertarik berkolaborasi?
-            </span>
-            <p className="text-[28px] font-bold tracking-[-0.015em] mt-3 text-paper text-balance">
-              Kami menerima jumlah klien baru yang terbatas tiap kuartal agar tiap proyek mendapat perhatian penuh.
-            </p>
-          </div>
-          <a
-            href="/#contact"
-            className="h-12 px-5 rounded-md bg-electric text-paper text-sm font-semibold inline-flex items-center hover:bg-[#2562E0] transition-colors"
+        <div className="max-w-[1180px] mx-auto px-8">
+          <div
+            className="relative overflow-hidden rounded-2xl p-10 lg:p-14 bg-shadow-900/60 border border-shadow-700 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] flex flex-col lg:flex-row lg:items-center justify-between gap-10"
+            style={{
+              backgroundImage: `
+                linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px)
+              `,
+              backgroundSize: '36px 36px',
+              backgroundPosition: '-1px -1px',
+            }}
           >
-            Mulai brief proyek →
-          </a>
+            {/* Blueprint corner crosshairs */}
+            <div aria-hidden className="absolute top-3 left-3 w-3 h-3 border-l border-t border-paper/20" />
+            <div aria-hidden className="absolute top-3 right-3 w-3 h-3 border-r border-t border-paper/20" />
+            <div aria-hidden className="absolute bottom-3 left-3 w-3 h-3 border-l border-b border-paper/20" />
+            <div aria-hidden className="absolute bottom-3 right-3 w-3 h-3 border-r border-b border-paper/20" />
+
+            <div className="relative max-w-[680px]">
+              {/* Live status indicator */}
+              <div className="inline-flex items-center gap-2 mb-5 font-mono text-[10px] uppercase tracking-[0.2em] tabular text-mist-500">
+                <span className="relative flex w-2 h-2">
+                  <span className="absolute inset-0 rounded-full bg-[#5DD79A] animate-ping opacity-75" />
+                  <span className="relative w-2 h-2 rounded-full bg-[#5DD79A]" />
+                </span>
+                <span>OPEN · SLOT TERBATAS · Q2 2026</span>
+              </div>
+              <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-mist-500 block mb-3">
+                Tertarik berkolaborasi?
+              </span>
+              <p className="text-[clamp(28px,3.2vw,40px)] font-bold tracking-[-0.02em] leading-[1.15] text-paper text-balance m-0">
+                Kami menerima jumlah klien baru yang terbatas tiap kuartal agar tiap proyek mendapat perhatian penuh.
+              </p>
+            </div>
+
+            <a
+              href="/#contact"
+              className="relative h-12 px-5 rounded-md bg-electric text-paper text-sm font-semibold inline-flex items-center hover:bg-[#2562E0] active:scale-[0.98] transition-[background,transform] flex-shrink-0 shadow-[0_8px_24px_-8px_rgba(44,112,254,0.55)]"
+            >
+              Mulai brief proyek →
+            </a>
+          </div>
         </div>
       </section>
     </SectionShell>

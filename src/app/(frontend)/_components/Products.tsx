@@ -22,7 +22,7 @@ export function Products({ items }: { items: StudioProject[] }) {
           marker="[ 03 / 07 ]"
           category="Products"
           description="Produk in-house"
-          heading="Produk yang kami bangun, gunakan, dan pertahankan."
+          heading="Products we build, use, and maintain."
           lede="Ujian paling jujur untuk tim engineering bukan brief klien — melainkan produk sendiri yang harus survive di tangan user nyata, revenue nyata, dan edge case nyata."
         />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-12 reveal-stagger">
@@ -38,7 +38,7 @@ export function Products({ items }: { items: StudioProject[] }) {
                       {p.client}
                     </a>
                   </h3>
-                  <span className="font-mono text-[11px] uppercase tracking-wider text-mist-600">[ STUDIO ]</span>
+                  <span className="font-mono text-[11px] uppercase tracking-wider text-mist-600">STUDIO</span>
                 </div>
                 <p className="text-[15px] leading-[1.55] text-mist-600 m-0">{p.tagline}</p>
                 {p.studio?.bullets && p.studio.bullets.length > 0 && (
@@ -54,7 +54,7 @@ export function Products({ items }: { items: StudioProject[] }) {
                 <div className="border-t border-paper-200/60 pt-4 flex justify-between items-center gap-4 flex-wrap">
                   {(p.publishedYear || p.studio?.usage) && (
                     <span className="font-mono text-xs uppercase tracking-wider text-mist-600 tabular">
-                      [ // SHIPPED {p.publishedYear} {p.studio?.usage && `· ${p.studio.usage}`} ]
+                      LIVE {p.publishedYear} {p.studio?.usage && `· ${p.studio.usage}`}
                     </span>
                   )}
                   <div className="flex items-center gap-3">

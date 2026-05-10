@@ -59,7 +59,7 @@ export function CompactPostRow({ post }: { post: Post }) {
           variant={CATEGORY_VARIANTS[post.category as keyof typeof CATEGORY_VARIANTS]}
           className="self-start"
         >
-          [ {CATEGORY_LABELS[post.category as keyof typeof CATEGORY_LABELS].toUpperCase()} ]
+          {CATEGORY_LABELS[post.category as keyof typeof CATEGORY_LABELS].toUpperCase()}
         </Badge>
         <h3 className="text-[15px] font-bold tracking-[-0.01em] leading-tight m-0 group-hover:text-electric transition-colors line-clamp-2">
           {post.title}

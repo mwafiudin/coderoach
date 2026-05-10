@@ -66,7 +66,7 @@ export function PostCard({ post, featured = false }: { post: Post; featured?: bo
         )}
         <div className="absolute top-4 left-4">
           <Badge variant={CATEGORY_VARIANTS[post.category]}>
-            [ {CATEGORY_LABELS[post.category].toUpperCase()} ]
+            {CATEGORY_LABELS[post.category].toUpperCase()}
           </Badge>
         </div>
       </div>

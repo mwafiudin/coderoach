@@ -166,7 +166,7 @@ export default async function PostDetailPage({
             </div>
             <div className="flex items-center justify-center gap-3 mb-6">
               <Badge variant={CATEGORY_VARIANTS[post.category as keyof typeof CATEGORY_VARIANTS]}>
-                [ {CATEGORY_LABELS[post.category as keyof typeof CATEGORY_LABELS].toUpperCase()} ]
+                {CATEGORY_LABELS[post.category as keyof typeof CATEGORY_LABELS].toUpperCase()}
               </Badge>
               <span className="font-mono text-[11px] uppercase tracking-wider text-mist-600 tabular">
                 {formatDate(post.publishedAt)}

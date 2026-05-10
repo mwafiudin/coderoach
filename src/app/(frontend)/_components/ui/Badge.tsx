@@ -1,3 +1,5 @@
+import { formatChipLabel } from './chipLabel';
+
 type Variant = 'neutral' | 'electric' | 'success' | 'warning' | 'error' | 'dark';
 
 const STYLES: Record<Variant, string> = {
@@ -18,11 +20,16 @@ export function Badge({
   variant?: Variant;
   className?: string;
 }) {
+  const renderedLabel =
+    typeof children === 'string' || typeof children === 'number'
+      ? formatChipLabel(String(children))
+      : children;
+
   return (
     <span
       className={`h-6 px-2.5 rounded-full inline-flex items-center font-mono text-[11px] font-medium uppercase tracking-wider whitespace-nowrap ${STYLES[variant]} ${className}`}
     >
-      {children}
+      {renderedLabel}
     </span>
   );
 }

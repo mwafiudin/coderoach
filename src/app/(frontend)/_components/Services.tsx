@@ -22,7 +22,7 @@ export function Services({ items }: { items: Service[] }) {
           marker="[ 01 / 07 ]"
           category="Services"
           description="Yang kami bangun"
-          heading="Empat pintu masuk engagement."
+          heading="Four ways in."
           lede="Bukan menjual jam — kami menjual hasil yang terukur. Build, automate, intelligence, dan augment. Pilih yang paling sesuai dengan masalah Anda."
         />
         {/* Sticky-stack of service cards. Each card pins at its own staggered top
