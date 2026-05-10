@@ -84,20 +84,23 @@ export function ProjectArchiveClient({ projects }: { projects: Project[] }) {
               </h1>
             </div>
             <p className="text-[18px] leading-[1.55] text-mist-600 max-w-[420px] lg:justify-self-end text-pretty">
-              Each one ships with the same shape: a small senior team, no juniors hidden in bios, full handoff docs.
-              Filter to find work close to your problem.
+              Each one ships with the same operating shape: a senior engineering team, full handoff
+              documentation, and ownership transfer at completion. Filter to find work close to your problem.
             </p>
           </div>
 
-          {/* Filters */}
-          <div className="flex flex-col gap-4 pt-6 border-t border-paper-200">
+          {/* Filters — segmented control (primary) + chips (secondary) */}
+          <div className="flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-6 pt-6 border-t border-paper-200">
             <FilterBar
-              label="Kind"
+              variant="segmented"
+              label="Filter"
               options={kindOptions}
               active={kindFilter}
               onChange={setKindFilter}
             />
+            <div className="hidden lg:block w-px h-6 bg-paper-200" aria-hidden />
             <FilterBar
+              variant="chips"
               label="Industry"
               options={industryOptions}
               active={industryFilter}
@@ -111,13 +114,13 @@ export function ProjectArchiveClient({ projects }: { projects: Project[] }) {
       <section className="py-16">
         <div className="max-w-[1180px] mx-auto px-8">
           {filtered.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 reveal-stagger" style={{ gridAutoFlow: 'dense' }}>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 reveal-stagger items-stretch" style={{ gridAutoFlow: 'dense' }}>
               {filtered.map((p, i) => {
                 // Magazine pattern: index 0 = feature 2-col (lg), index 5 = wide 2-col, others default.
                 const span = i === 0 ? 'md:col-span-2 lg:col-span-2' : i === 5 ? 'md:col-span-2 lg:col-span-2' : '';
                 const variant = i === 0 ? 'feature' : i === 5 ? 'wide' : 'default';
                 return (
-                  <div key={p.id} className={span}>
+                  <div key={p.id} className={`${span} h-full`}>
                     <ProjectCard project={p} variant={variant} />
                   </div>
                 );

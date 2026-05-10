@@ -21,9 +21,9 @@ export function Products({ items }: { items: StudioProject[] }) {
         <SectionHead
           marker="[ 03 / 07 ]"
           category="Products"
-          description="Bikinan kami sendiri"
-          heading="Produk yang kami bangun, kami pakai, kami pertahankan."
-          lede="Tes paling jujur buat tim engineering bukan brief klien — tapi produk sendiri. Yang harus survive sama user beneran, revenue beneran, dan edge case beneran."
+          description="Produk in-house"
+          heading="Produk yang kami bangun, gunakan, dan pertahankan."
+          lede="Ujian paling jujur untuk tim engineering bukan brief klien — melainkan produk sendiri yang harus survive di tangan user nyata, revenue nyata, dan edge case nyata."
         />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-12 reveal-stagger">
           {items.map((p) => (

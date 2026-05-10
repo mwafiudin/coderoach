@@ -26,7 +26,7 @@ export function Studio({ data, tenets }: { data: StudioData | null; tenets: Tene
       className="py-[120px] bg-ink text-paper border-y border-shadow-700 relative overflow-hidden isolate"
     >
       {/* Animated dotted-surface background — anchored top, fades toward bottom (mask baked into component) */}
-      <StudioWaveBg className="opacity-35 -z-[2]" />
+      <StudioWaveBg className="opacity-55 -z-[2]" />
       <div className="max-w-[1180px] mx-auto px-8 relative z-[1]">
         <div className="reveal-stagger">
           <span className="font-mono text-xs font-medium tracking-wider uppercase inline-flex items-center gap-2 flex-wrap text-mist-500 tabular">
@@ -66,8 +66,8 @@ export function Studio({ data, tenets }: { data: StudioData | null; tenets: Tene
             {/* Studio note — replaces testimonial until we have a real one to publish */}
             <figure className="pt-8 border-t border-shadow-700 mt-2">
               <blockquote className="text-[20px] leading-[1.4] text-paper m-0 font-medium tracking-[-0.005em] text-balance">
-                Dua founder, satu fokus: software yang bener-bener kepake. Yang scoping proyek kamu
-                adalah yang ngoding — gak ada layer agency, gak ada handoff ke junior.
+                Setiap engagement dikerjakan oleh engineer yang juga melakukan scoping. Tanpa
+                lapisan agency, tanpa hand-off ke junior, tanpa konteks yang hilang di tengah jalan.
               </blockquote>
               <figcaption className="mt-4 flex items-center gap-3">
                 <div className="w-7 h-7 rounded-full bg-gradient-to-br from-electric to-[#5DD79A] grid place-items-center text-paper text-[10px] font-bold">

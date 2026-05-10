@@ -38,7 +38,7 @@ export function ProjectCard({ project, variant = 'default' }: { project: Project
   return (
     <a
       href={`/work/${project.slug}`}
-      className={`group relative flex flex-col bg-paper-50 border border-paper-200 rounded-2xl overflow-hidden hover:border-shadow-800 transition-all hover:-translate-y-0.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)] ${layout}`}
+      className={`group relative h-full flex flex-col bg-paper-50 border border-paper-200 rounded-2xl overflow-hidden hover:border-shadow-800 transition-all hover:-translate-y-0.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)] ${layout}`}
       data-spotlight
     >
       <div

@@ -18,16 +18,18 @@ const rateMap = new Map<string, RateRecord>();
 const WINDOW_MS = 10 * 60 * 1000;
 const MAX_PER_WINDOW = 5;
 
-function checkRate(ip: string): boolean {
+function checkRate(ip: string): { allowed: boolean; retryAfterSec: number } {
   const now = Date.now();
   const rec = rateMap.get(ip);
   if (!rec || now > rec.resetAt) {
     rateMap.set(ip, { count: 1, resetAt: now + WINDOW_MS });
-    return true;
+    return { allowed: true, retryAfterSec: 0 };
   }
-  if (rec.count >= MAX_PER_WINDOW) return false;
+  if (rec.count >= MAX_PER_WINDOW) {
+    return { allowed: false, retryAfterSec: Math.max(1, Math.ceil((rec.resetAt - now) / 1000)) };
+  }
   rec.count += 1;
-  return true;
+  return { allowed: true, retryAfterSec: 0 };
 }
 
 export async function POST(req: NextRequest) {
@@ -36,10 +38,17 @@ export async function POST(req: NextRequest) {
     req.headers.get('x-real-ip') ||
     'unknown';
 
-  if (!checkRate(ip)) {
+  const rate = checkRate(ip);
+  if (!rate.allowed) {
+    const minutes = Math.ceil(rate.retryAfterSec / 60);
     return NextResponse.json(
-      { ok: false, error: 'Terlalu banyak pengiriman. Coba lagi sebentar lagi.' },
-      { status: 429 },
+      {
+        ok: false,
+        code: 'rate_limited',
+        error: `Anda sudah mencapai batas ${MAX_PER_WINDOW} pengiriman dalam 10 menit terakhir. Coba lagi dalam ${minutes} menit, atau email langsung agar kami segera proses.`,
+        retryAfterSec: rate.retryAfterSec,
+      },
+      { status: 429, headers: { 'Retry-After': String(rate.retryAfterSec) } },
     );
   }
 
@@ -60,13 +69,13 @@ export async function POST(req: NextRequest) {
   const brief = String(body?.brief || '').trim();
 
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return NextResponse.json({ ok: false, error: 'Email tidak valid.' }, { status: 400 });
+    return NextResponse.json({ ok: false, code: 'invalid_email', error: 'Format email tidak valid. Pastikan menggunakan format email standar (mis. nama@perusahaan.com).' }, { status: 400 });
   }
   if (brief.length < 10) {
-    return NextResponse.json({ ok: false, error: 'Brief terlalu pendek (minimal 10 karakter).' }, { status: 400 });
+    return NextResponse.json({ ok: false, code: 'brief_too_short', error: 'Brief terlalu pendek. Minimal 10 karakter agar kami punya konteks awal yang cukup untuk merespons.' }, { status: 400 });
   }
   if (brief.length > 5000) {
-    return NextResponse.json({ ok: false, error: 'Brief terlalu panjang.' }, { status: 400 });
+    return NextResponse.json({ ok: false, code: 'brief_too_long', error: 'Brief terlalu panjang. Maksimal 5000 karakter.' }, { status: 400 });
   }
   const finalScope = ALLOWED_SCOPES.has(scope) ? scope : 'Other';
 
@@ -88,7 +97,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true });
   } catch (err: any) {
     return NextResponse.json(
-      { ok: false, error: 'Gagal menyimpan brief. Coba lagi atau email langsung.' },
+      { ok: false, code: 'server_error', error: 'Gagal menyimpan brief. Server sedang bermasalah — coba lagi sebentar lagi atau email langsung agar kami segera proses.' },
       { status: 500 },
     );
   }

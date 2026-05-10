@@ -55,7 +55,7 @@ export function Process({ phases }: { phases: Phase[] }) {
               <h4 className="text-[28px] font-bold tracking-[-0.015em] my-3.5 mt-3.5 mb-3">{p.name}</h4>
               <p className="text-sm text-mist-600 leading-[1.5] m-0 mb-4">{p.what}</p>
               <div className="bg-paper-50 border border-paper-200 rounded-md px-3 py-2.5 text-[13px] leading-[1.4]">
-                <span className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-mist-600 mb-1">Kamu dapet</span>
+                <span className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-mist-600 mb-1">Deliverable</span>
                 {p.deliv}
               </div>
             </div>

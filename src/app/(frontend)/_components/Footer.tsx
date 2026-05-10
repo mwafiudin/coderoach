@@ -1,3 +1,5 @@
+import { FooterCopyLink } from './FooterCopyLink';
+
 type FooterData = {
   siteName?: string | null;
   logo?: { url?: string | null; alt?: string | null } | null;
@@ -58,9 +60,11 @@ export function Footer({ data }: { data: FooterData | null }) {
               <ul className="list-none p-0 m-0 flex flex-col gap-2.5">
                 {col.links.map((l, j) => (
                   <li key={j}>
-                    <a href={l.href} className="text-sm text-paper hover:text-electric transition-colors">
-                      {l.label}
-                    </a>
+                    <FooterCopyLink
+                      href={l.href}
+                      label={l.label}
+                      className="text-sm text-paper hover:text-electric transition-colors"
+                    />
                   </li>
                 ))}
               </ul>

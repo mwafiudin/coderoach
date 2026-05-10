@@ -101,7 +101,7 @@ export function Hero({ data, clients }: { data: HeroData | null; clients: Client
           <div className="max-w-[1180px] mx-auto px-8">
             <div className="flex items-baseline gap-3.5 flex-wrap mb-7 text-sm text-mist-600 leading-snug">
               <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink">
-                {data?.trustedBy?.label ?? 'Beberapa yang sudah kami bantu'}
+                {data?.trustedBy?.label ?? 'Beberapa klien yang telah kami tangani'}
               </span>
               <p className="m-0">{data?.trustedBy?.tagline}</p>
             </div>

@@ -8,12 +8,13 @@ import { Icon, type IconName } from '@/lib/icons';
 import { Badge } from '../_components/ui/Badge';
 import { AnimatedCount } from '../_components/ui/AnimatedCount';
 import { PayloadImage } from '../_components/ui/PayloadImage';
+import { StudioTimeline } from '../_components/studio/StudioTimeline';
 
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Studio — Coderoach',
-  description: 'Studio dev kecil dari Jakarta. Dua founder, remote-first — build, automate, ship intelligence.',
+  description: 'Studio engineering dari Jakarta — build, automate, dan ship intelligence untuk bisnis Indonesia.',
 };
 
 export default async function StudioPage() {
@@ -55,29 +56,50 @@ export default async function StudioPage() {
           {studio?.stats && studio.stats.length > 0 && (
             <div className="grid grid-cols-2 md:grid-cols-4 md:grid-rows-2 gap-3 pt-12 mt-16 border-t border-paper-200">
               {studio.stats.map((s: any, i: number) => {
+                const isHero = i === 0;
                 // Bento sizing: 1st cell big (2x2), 2nd horizontal (2x1), 3rd & 4th compact
-                const span =
-                  i === 0
-                    ? 'md:col-span-2 md:row-span-2 bg-ink text-paper'
-                    : i === 1
-                      ? 'md:col-span-2 md:row-span-1 bg-paper-50 border border-paper-200'
-                      : 'md:col-span-1 md:row-span-1 bg-paper-50 border border-paper-200';
-                const numColor = i === 0 ? 'text-paper' : 'text-ink';
-                const labelColor = i === 0 ? 'text-mist-500' : 'text-mist-600';
-                const numSize = i === 0 ? 'text-[clamp(72px,9vw,128px)]' : 'text-[clamp(36px,4vw,52px)]';
+                const span = isHero
+                  ? 'md:col-span-2 md:row-span-2 bg-ink text-paper'
+                  : i === 1
+                    ? 'md:col-span-2 md:row-span-1 bg-paper-50 border border-paper-200'
+                    : 'md:col-span-1 md:row-span-1 bg-paper-50 border border-paper-200';
+                const numColor = isHero ? 'text-paper' : 'text-ink';
+                const labelColor = isHero ? 'text-mist-500' : 'text-mist-600';
+                const numSize = isHero ? 'text-[clamp(72px,9vw,128px)]' : 'text-[clamp(36px,4vw,52px)]';
                 return (
                   <div
                     key={i}
-                    className={`rounded-2xl p-7 flex flex-col justify-end gap-3 ${span} shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]`}
+                    className={`relative overflow-hidden rounded-2xl p-7 flex flex-col justify-end gap-3 ${span} shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]`}
+                    style={
+                      isHero
+                        ? {
+                            backgroundImage: `
+                              linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px)
+                            `,
+                            backgroundSize: '36px 36px',
+                            backgroundPosition: '-1px -1px',
+                          }
+                        : undefined
+                    }
                   >
+                    {/* Blueprint corner crosshairs — only on hero tile */}
+                    {isHero && (
+                      <>
+                        <div aria-hidden className="absolute top-3 left-3 w-3 h-3 border-l border-t border-paper/20" />
+                        <div aria-hidden className="absolute top-3 right-3 w-3 h-3 border-r border-t border-paper/20" />
+                        <div aria-hidden className="absolute bottom-3 left-3 w-3 h-3 border-l border-b border-paper/20" />
+                        <div aria-hidden className="absolute bottom-3 right-3 w-3 h-3 border-r border-b border-paper/20" />
+                      </>
+                    )}
                     <div
-                      className={`${numSize} font-bold leading-[0.95] tracking-[-0.03em] tabular ${numColor}`}
+                      className={`relative ${numSize} font-bold leading-[0.95] tracking-[-0.03em] tabular ${numColor}`}
                     >
                       <AnimatedCount value={s.num} />
                       {s.accent && <span className="text-electric">{s.accent}</span>}
                     </div>
                     <div
-                      className={`text-[11px] font-semibold uppercase tracking-[0.18em] leading-[1.5] whitespace-pre-line ${labelColor}`}
+                      className={`relative text-[11px] font-semibold uppercase tracking-[0.18em] leading-[1.5] whitespace-pre-line ${labelColor}`}
                     >
                       {s.label}
                     </div>
@@ -168,7 +190,7 @@ export default async function StudioPage() {
                   Team
                 </span>
                 <h2 className="text-[clamp(32px,4vw,48px)] font-bold tracking-[-0.02em] leading-tight mt-2">
-                  Dua founder. Yang scoping juga yang ngoding.
+                  Tim inti. Yang scoping juga yang membangun.
                 </h2>
               </div>
               <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-mist-500">
@@ -285,54 +307,14 @@ export default async function StudioPage() {
         </section>
       )}
 
-      {/* Timeline — alternating zig-zag with center spine */}
+      {/* Timeline — alternating zig-zag with scroll-driven progress + per-year artifact */}
       {studio?.about?.timeline && studio.about.timeline.length > 0 && (
         <section className="py-20">
           <div className="max-w-[1180px] mx-auto px-8">
             <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-mist-600 mb-16 block">
               Timeline
             </span>
-            <div className="relative">
-              {/* Center spine — desktop only */}
-              <div
-                aria-hidden
-                className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-paper-200 -translate-x-1/2"
-              />
-              <div className="flex flex-col gap-12 md:gap-16">
-                {(studio.about.timeline as any[]).map((t, i) => {
-                  const isRight = i % 2 === 1;
-                  return (
-                    <div
-                      key={i}
-                      className={`relative grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 items-center ${
-                        isRight ? 'md:[&>*:first-child]:order-2' : ''
-                      }`}
-                    >
-                      {/* Spine dot */}
-                      <div
-                        aria-hidden
-                        className="hidden md:block absolute left-1/2 top-1/2 w-3 h-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-electric border-2 border-paper-100 z-[1]"
-                      />
-                      {/* Content side */}
-                      <div className={`${isRight ? 'md:text-left md:pl-12' : 'md:text-right md:pr-12'}`}>
-                        <div className="text-[clamp(36px,4vw,56px)] font-bold tracking-[-0.025em] leading-none text-electric tabular mb-2">
-                          {t.year}
-                        </div>
-                        <h3 className="text-[20px] font-bold tracking-[-0.01em] leading-tight m-0 mb-2">
-                          {t.title}
-                        </h3>
-                        {t.description && (
-                          <p className="text-[15px] leading-[1.55] text-mist-600 m-0 max-w-[44ch] inline-block">
-                            {t.description}
-                          </p>
-                        )}
-                      </div>
-                      <div className="hidden md:block" />
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+            <StudioTimeline items={studio.about.timeline as any[]} />
           </div>
         </section>
       )}
@@ -342,10 +324,10 @@ export default async function StudioPage() {
         <div className="max-w-[1180px] mx-auto px-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div>
             <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-mist-500">
-              Mau kerja bareng?
+              Tertarik berkolaborasi?
             </span>
             <p className="text-[28px] font-bold tracking-[-0.015em] mt-3 text-paper text-balance">
-              Kami ambil sedikit klien baru tiap kuartal supaya tiap proyek dapet attention penuh.
+              Kami menerima jumlah klien baru yang terbatas tiap kuartal agar tiap proyek mendapat perhatian penuh.
             </p>
           </div>
           <a

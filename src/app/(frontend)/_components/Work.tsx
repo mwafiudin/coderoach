@@ -33,8 +33,8 @@ export function Work({ cases }: { cases: Project[] }) {
           marker="[ 02 / 07 ]"
           category="Work"
           description="Beberapa proyek terpilih"
-          heading="Yang udah kami ship."
-          lede="Sebagian engagement yang sudah jalan — dari company website sampai data pipeline. Case study lengkap on request."
+          heading="Engagement yang telah kami kirim."
+          lede="Sebagian engagement yang telah berjalan — dari company website hingga data pipeline. Case study lengkap tersedia atas permintaan."
         />
 
         {featured?.featuredDetails && (

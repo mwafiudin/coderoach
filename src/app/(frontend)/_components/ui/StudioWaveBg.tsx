@@ -47,7 +47,7 @@ export function StudioWaveBg({ className = '' }: { className?: string }) {
       ctx.clearRect(0, 0, width, height);
 
       const centerX = width / 2;
-      const horizon = height * 0.5;
+      const horizon = height * 0.22; // anchor wave activity near the top
       const tilt = 0.56; // y-axis compression for perspective
 
       const totalW = (AMOUNT_X - 1) * SEPARATION;
@@ -136,8 +136,8 @@ export function StudioWaveBg({ className = '' }: { className?: string }) {
       aria-hidden
       style={{
         // Anchor wave to top of section, gradually fade out toward bottom
-        maskImage: 'linear-gradient(to bottom, black 0%, black 28%, transparent 86%)',
-        WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 28%, transparent 86%)',
+        maskImage: 'linear-gradient(to bottom, black 0%, black 40%, transparent 78%)',
+        WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 40%, transparent 78%)',
       }}
       className={`absolute inset-0 w-full h-full pointer-events-none ${className}`}
     />
