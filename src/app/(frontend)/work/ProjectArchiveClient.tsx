@@ -80,7 +80,7 @@ export function ProjectArchiveClient({ projects }: { projects: Project[] }) {
                 [ 02 / 06 ] <span className="text-mist-400">·</span> Work archive
               </span>
               <h1 className="text-[clamp(40px,5vw,72px)] leading-[1.02] tracking-[-0.025em] font-bold mt-5 max-w-[18ch] text-balance">
-                40+ kolaborasi, enam industri.
+                40+ collaborations, six industries.
               </h1>
             </div>
             <p className="text-[18px] leading-[1.55] text-mist-600 max-w-[420px] lg:justify-self-end text-pretty">
@@ -147,23 +147,50 @@ export function ProjectArchiveClient({ projects }: { projects: Project[] }) {
         </div>
       </section>
 
-      {/* Footer CTA strip */}
+      {/* Footer CTA — blueprint card (light mode mirror of /studio CTA) */}
       <section className="py-20 bg-paper-50 border-t border-paper-200">
-        <div className="max-w-[1180px] mx-auto px-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-          <div>
-            <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-mist-600">
-              Don't see your industry?
-            </span>
-            <p className="text-[24px] font-bold tracking-[-0.015em] mt-2">
-              Tell us what you're shipping.
-            </p>
-          </div>
-          <a
-            href="/#contact"
-            className="h-12 px-5 rounded-md bg-electric text-paper text-sm font-semibold inline-flex items-center hover:bg-[#2562E0] transition-colors"
+        <div className="max-w-[1180px] mx-auto px-8">
+          <div
+            className="relative overflow-hidden rounded-2xl p-10 lg:p-14 bg-paper border border-paper-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_8px_24px_-12px_rgba(8,9,10,0.08)] flex flex-col lg:flex-row lg:items-center justify-between gap-10"
+            style={{
+              backgroundImage: `
+                linear-gradient(rgba(8,9,10,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(8,9,10,0.04) 1px, transparent 1px)
+              `,
+              backgroundSize: '36px 36px',
+              backgroundPosition: '-1px -1px',
+            }}
           >
-            Start a 48-hour discovery →
-          </a>
+            {/* Blueprint corner crosshairs */}
+            <div aria-hidden className="absolute top-3 left-3 w-3 h-3 border-l border-t border-ink/15" />
+            <div aria-hidden className="absolute top-3 right-3 w-3 h-3 border-r border-t border-ink/15" />
+            <div aria-hidden className="absolute bottom-3 left-3 w-3 h-3 border-l border-b border-ink/15" />
+            <div aria-hidden className="absolute bottom-3 right-3 w-3 h-3 border-r border-b border-ink/15" />
+
+            <div className="relative max-w-[680px]">
+              {/* Live status indicator */}
+              <div className="inline-flex items-center gap-2 mb-5 font-mono text-[10px] uppercase tracking-[0.2em] tabular text-mist-600">
+                <span className="relative flex w-2 h-2">
+                  <span className="absolute inset-0 rounded-full bg-[#5DD79A] animate-ping opacity-75" />
+                  <span className="relative w-2 h-2 rounded-full bg-[#5DD79A]" />
+                </span>
+                <span>OPEN · ALL INDUSTRIES WELCOME</span>
+              </div>
+              <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-mist-600 block mb-3">
+                Don't see your industry?
+              </span>
+              <p className="text-[clamp(28px,3.2vw,40px)] font-bold tracking-[-0.02em] leading-[1.15] text-ink text-balance m-0">
+                Tell us what you're shipping.
+              </p>
+            </div>
+
+            <a
+              href="/#contact"
+              className="relative h-12 px-5 rounded-md bg-electric text-paper text-sm font-semibold inline-flex items-center hover:bg-[#2562E0] active:scale-[0.98] transition-[background,transform] flex-shrink-0 shadow-[0_8px_24px_-8px_rgba(44,112,254,0.4)]"
+            >
+              Start a 48-hour discovery →
+            </a>
+          </div>
         </div>
       </section>
     </main>
