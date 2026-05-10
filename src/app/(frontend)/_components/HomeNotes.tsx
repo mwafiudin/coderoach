@@ -12,8 +12,8 @@ export function HomeNotes({ posts }: { posts: Post[] }) {
           <SectionHead
             marker="[ 06 / 07 ]"
             category="Field Notes"
-            heading="Catatan terbaru dari studio."
-            lede="Engineering, operating, dan hal-hal di antara keduanya."
+            heading="Latest from the studio."
+            lede="Engineering, operasional, dan hal-hal di antara keduanya."
           />
           <a
             href="/notes"

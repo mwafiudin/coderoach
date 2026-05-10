@@ -1,5 +1,6 @@
 import { Badge } from '../ui/Badge';
 import { PayloadImage } from '../ui/PayloadImage';
+import { formatChipLabel } from '../ui/chipLabel';
 
 type Project = {
   id: string | number;
@@ -38,7 +39,7 @@ export function ProjectCard({ project, variant = 'default' }: { project: Project
   return (
     <a
       href={`/work/${project.slug}`}
-      className={`group relative flex flex-col bg-paper-50 border border-paper-200 rounded-2xl overflow-hidden hover:border-shadow-800 transition-all hover:-translate-y-0.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)] ${layout}`}
+      className={`group relative h-full flex flex-col bg-paper-50 border border-paper-200 rounded-2xl overflow-hidden hover:border-shadow-800 transition-all hover:-translate-y-0.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)] ${layout}`}
       data-spotlight
     >
       <div
@@ -56,13 +57,13 @@ export function ProjectCard({ project, variant = 'default' }: { project: Project
         ) : (
           <div className="absolute inset-0 grid place-items-center">
             <span className="font-mono text-mist-400 text-xs tracking-wider uppercase tabular">
-              [ {project.kind === 'client' ? 'CLIENT CASE' : 'STUDIO PRODUCT'} ]
+              {formatChipLabel(project.kind === 'client' ? 'CLIENT CASE' : 'STUDIO PRODUCT')}
             </span>
           </div>
         )}
         <div className="absolute top-4 left-4 z-[1]">
           <Badge variant={project.kind === 'studio' ? 'electric' : 'neutral'}>
-            {project.kind === 'studio' ? '[ STUDIO ]' : '[ CLIENT ]'}
+            {project.kind === 'studio' ? 'STUDIO' : 'CLIENT'}
           </Badge>
         </div>
         {project.publishedYear && (

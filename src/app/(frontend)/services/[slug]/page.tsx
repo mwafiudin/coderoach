@@ -95,7 +95,7 @@ export default async function ServiceDetailPage({
           <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-16 items-start">
             <div>
               <div className="flex items-center gap-3 mb-6">
-                <Badge variant="electric">[ // {service.tag} ]</Badge>
+                <Badge variant="electric">{service.tag}</Badge>
               </div>
               <h1 className="text-[clamp(48px,7vw,88px)] font-bold tracking-[-0.03em] leading-[0.95] mb-6">
                 {service.title}
@@ -187,7 +187,7 @@ export default async function ServiceDetailPage({
         <section className="py-16 bg-paper-50 border-y border-paper-200">
           <div className="max-w-[1180px] mx-auto px-8">
             <h2 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-mist-600 mb-10">
-              How we run a {service.title} engagement
+              Cara kami menjalankan proyek {service.title}
             </h2>
             <ProseRenderer data={service.richContent} />
           </div>

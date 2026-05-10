@@ -1,4 +1,5 @@
 import { SectionHead } from './SectionHead';
+import { formatChipLabel } from './ui/chipLabel';
 
 type Project = {
   id: string | number;
@@ -25,6 +26,7 @@ type Project = {
 export function Work({ cases }: { cases: Project[] }) {
   const featured = cases.find((c) => c.featured);
   const list = cases.filter((c) => !c.featured);
+  const featuredBadgeLabel = formatChipLabel(featured?.featuredDetails?.badgeLabel);
 
   return (
     <section id="work" className="py-[120px] relative">
@@ -33,8 +35,8 @@ export function Work({ cases }: { cases: Project[] }) {
           marker="[ 02 / 07 ]"
           category="Work"
           description="Beberapa proyek terpilih"
-          heading="Yang udah kami ship."
-          lede="Sebagian engagement yang sudah jalan — dari company website sampai data pipeline. Case study lengkap on request."
+          heading="Work we've shipped."
+          lede="Sebagian proyek yang telah berjalan — dari company website sampai data pipeline. Case study lengkap tersedia atas permintaan."
         />
 
         {featured?.featuredDetails && (
@@ -67,15 +69,15 @@ export function Work({ cases }: { cases: Project[] }) {
             />
             <div className="relative z-[1]">
               <div className="flex gap-2 flex-wrap mb-4">
-                {featured.featuredDetails.badgeLabel && (
+                {featuredBadgeLabel && (
                   <span className="h-6 px-2.5 rounded-full inline-flex items-center font-mono text-[11px] font-medium uppercase tracking-wider bg-paper/[0.08] border border-paper/[0.08] text-paper">
-                    {featured.featuredDetails.badgeLabel}
+                    {featuredBadgeLabel}
                   </span>
                 )}
                 {featured.featuredDetails.shippedLabel && (
                   <span className="h-6 px-2.5 rounded-full inline-flex items-center gap-1.5 font-mono text-[11px] font-medium uppercase tracking-wider bg-success/[0.14] border border-[#5DD79A]/30 text-[#5DD79A]">
                     <span className="w-1.5 h-1.5 rounded-full bg-success" aria-hidden />
-                    Shipped
+                    {formatChipLabel(featured.featuredDetails.shippedLabel)}
                   </span>
                 )}
               </div>
@@ -133,7 +135,7 @@ export function Work({ cases }: { cases: Project[] }) {
                 <div className="flex gap-2 flex-wrap mt-6">
                   {featured.featuredDetails.stack.map((s) => (
                     <span key={s.tech} className="h-6 px-2.5 rounded-full inline-flex items-center font-mono text-[11px] font-medium uppercase tracking-wider bg-mist-400/[0.18] text-paper">
-                      {s.tech}
+                      {formatChipLabel(s.tech)}
                     </span>
                   ))}
                 </div>
@@ -186,7 +188,7 @@ export function Work({ cases }: { cases: Project[] }) {
                   <span className="flex gap-1.5 flex-wrap">
                     {c.pills?.map((p) => (
                       <span key={p.pill} className="h-6 px-2.5 rounded-full inline-flex items-center font-mono text-[11px] font-medium uppercase tracking-wider bg-mist-400/30 text-ink">
-                        {p.pill}
+                        {formatChipLabel(p.pill)}
                       </span>
                     ))}
                   </span>

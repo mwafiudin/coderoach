@@ -10,8 +10,8 @@ import { Pagination } from '../_components/archive/Pagination';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Field Notes — Coderoach Studio',
-  description: 'Notes from the studio. Engineering, operating, and the bits in between.',
+  title: 'Field Notes — Coderoach Studio · Engineering & Operations Notes',
+  description: 'Notes from Coderoach Studio — engineering, operasi, dan praktik membangun software yang dipakai harian. Postgres, Next.js, otomasi, dan studi kasus produk.',
 };
 
 export default async function NotesArchivePage({

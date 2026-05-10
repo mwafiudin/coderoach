@@ -1,6 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { DeployConsole } from './DeployConsole';
+import { StatusAlert } from './ui/StatusAlert';
+import { useToast } from './ui/Toast';
 
 type ContactData = {
   sectionMarker?: string | null;
@@ -31,11 +34,22 @@ export function Contact({ data }: { data: ContactData | null }) {
   const [brief, setBrief] = useState('');
   const [scope, setScope] = useState('');
   const [focused, setFocused] = useState<'email' | 'scope' | 'brief' | null>(null);
-  const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [honeypot, setHoneypot] = useState('');
   const [now, setNow] = useState<Date | null>(null);
+  const [alert, setAlert] = useState<{
+    open: boolean;
+    tone: 'success' | 'error' | 'warning' | 'info';
+    badge?: string;
+    title: string;
+    message?: string;
+    primaryLabel?: string;
+    secondaryLabel?: string;
+    onSecondary?: () => void;
+    onPrimary?: () => void;
+  } | null>(null);
+  const toast = useToast();
 
   useEffect(() => {
     setNow(new Date());
@@ -55,6 +69,21 @@ export function Contact({ data }: { data: ContactData | null }) {
       data-theme="dark"
       className="relative overflow-hidden pt-[120px] pb-24 isolate"
     >
+      <DeployConsole open={submitting} email={email} scope={scope} />
+      {alert && (
+        <StatusAlert
+          open={alert.open}
+          tone={alert.tone}
+          badge={alert.badge}
+          title={alert.title}
+          message={alert.message}
+          primaryLabel={alert.primaryLabel}
+          onPrimary={alert.onPrimary || (() => setAlert(null))}
+          secondaryLabel={alert.secondaryLabel}
+          onSecondary={alert.onSecondary}
+          onClose={() => setAlert(null)}
+        />
+      )}
       <div className="absolute inset-0 -z-[2] bg-ink pointer-events-none" />
       {/* Hero bg — atmospheric halftone image, anchored right */}
       <div
@@ -100,20 +129,30 @@ export function Contact({ data }: { data: ContactData | null }) {
           )}
         </div>
 
-        {sent ? (
-          <SentState email={email} successHeading={data?.successHeading} />
-        ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-10 lg:gap-16 items-start reveal">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-10 lg:gap-16 items-start reveal">
             {/* Left — conversational prose form (with subtle electric rail for visual anchor) */}
             <form
               className="relative flex flex-col gap-9 lg:pl-8"
               onSubmit={async (e) => {
                 e.preventDefault();
-                if (!emailValid || submitting) return;
+                if (submitting) return;
+                // Client-side validation — show toast for quick fixes
+                if (!emailValid) {
+                  toast.warning('Email belum valid', 'Pastikan format email-nya benar — mis. nama@perusahaan.com.');
+                  return;
+                }
+                if (brief.trim().length < 10) {
+                  toast.warning('Brief terlalu pendek', 'Tuliskan minimal 10 karakter agar kami punya konteks awal.');
+                  return;
+                }
                 setSubmitting(true);
                 setSubmitError(null);
+                // Keep the deploy console visible long enough for the full
+                // streaming log to play out (~3.8s) — avoids a flash on fast
+                // networks and lets the user feel the process happen.
+                const minVisible = new Promise<void>((r) => setTimeout(r, 3800));
                 try {
-                  const res = await fetch('/api/contact', {
+                  const fetchTask = fetch('/api/contact', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -123,16 +162,89 @@ export function Contact({ data }: { data: ContactData | null }) {
                       company_url: honeypot,
                     }),
                   });
+                  const [res] = await Promise.all([fetchTask, minVisible]);
                   const json = await res.json().catch(() => ({}));
+                  setSubmitting(false);
                   if (res.ok && json?.ok) {
-                    setSent(true);
+                    setAlert({
+                      open: true,
+                      tone: 'success',
+                      badge: '[ 200 OK · DELIVERED ]',
+                      title: 'Brief Anda sudah masuk.',
+                      message:
+                        'Tim senior akan membaca brief dan membalas dalam 48 jam kerja. Kami akan menghubungi via email yang Anda kirim.',
+                      primaryLabel: 'Selesai',
+                      onPrimary: () => {
+                        setAlert(null);
+                        // Reset form to clean state — modal already confirmed delivery
+                        setEmail('');
+                        setScope('');
+                        setBrief('');
+                        setHoneypot('');
+                        setFocused(null);
+                      },
+                    });
                   } else {
-                    setSubmitError(json?.error || 'Gagal kirim. Coba lagi.');
+                    const code = json?.code as string | undefined;
+                    const errMsg = json?.error || 'Gagal kirim. Coba lagi sebentar lagi atau email langsung.';
+                    setSubmitError(errMsg);
+                    if (code === 'rate_limited') {
+                      setAlert({
+                        open: true,
+                        tone: 'warning',
+                        badge: '[ 429 · RATE LIMITED ]',
+                        title: 'Pengiriman terlalu sering.',
+                        message: errMsg,
+                        primaryLabel: 'Mengerti',
+                        secondaryLabel: 'Email langsung',
+                        onSecondary: () => {
+                          window.location.href = `mailto:${data?.formLabels?.emailFallback || 'hello@coderoach.studio'}`;
+                          setAlert(null);
+                        },
+                      });
+                    } else if (code === 'invalid_email' || code === 'brief_too_short' || code === 'brief_too_long') {
+                      setAlert({
+                        open: true,
+                        tone: 'warning',
+                        badge: '[ 400 · VALIDATION ]',
+                        title: 'Brief belum siap dikirim.',
+                        message: errMsg,
+                        primaryLabel: 'Perbaiki',
+                      });
+                    } else {
+                      setAlert({
+                        open: true,
+                        tone: 'error',
+                        badge: '[ 500 · SERVER ERROR ]',
+                        title: 'Pengiriman gagal.',
+                        message: errMsg,
+                        primaryLabel: 'Coba lagi',
+                        secondaryLabel: 'Email langsung',
+                        onSecondary: () => {
+                          window.location.href = `mailto:${data?.formLabels?.emailFallback || 'hello@coderoach.studio'}`;
+                          setAlert(null);
+                        },
+                      });
+                    }
                   }
                 } catch {
-                  setSubmitError('Gagal kirim. Cek koneksi dan coba lagi.');
-                } finally {
+                  await minVisible;
                   setSubmitting(false);
+                  setSubmitError('Gagal kirim. Cek koneksi dan coba lagi.');
+                  setAlert({
+                    open: true,
+                    tone: 'error',
+                    badge: '[ NETWORK ERROR ]',
+                    title: 'Tidak bisa terhubung ke server.',
+                    message:
+                      'Cek koneksi internet Anda lalu coba kirim lagi. Kalau masih bermasalah, kirim brief langsung via email.',
+                    primaryLabel: 'Coba lagi',
+                    secondaryLabel: 'Email langsung',
+                    onSecondary: () => {
+                      window.location.href = `mailto:${data?.formLabels?.emailFallback || 'hello@coderoach.studio'}`;
+                      setAlert(null);
+                    },
+                  });
                 }
               }}
             >
@@ -171,7 +283,7 @@ export function Contact({ data }: { data: ContactData | null }) {
                   onChange={(e) => setBrief(e.target.value)}
                   onFocus={() => setFocused('brief')}
                   onBlur={() => setFocused(null)}
-                  placeholder="dashboard analitik buat tim performance marketing kami…"
+                  placeholder="dashboard analitik untuk tim performance marketing kami…"
                   className="block w-full text-[22px] leading-[1.4] bg-transparent border-0 border-b border-shadow-700 focus:border-electric outline-none resize-none transition-colors text-paper placeholder:text-mist-600 py-2 px-0 caret-electric font-medium tracking-[-0.01em]"
                 />
               </div>
@@ -218,7 +330,7 @@ export function Contact({ data }: { data: ContactData | null }) {
                   onChange={(e) => setEmail(e.target.value)}
                   onFocus={() => setFocused('email')}
                   onBlur={() => setFocused(null)}
-                  placeholder="kamu@perusahaan.id"
+                  placeholder="anda@perusahaan.id"
                   className="flex-1 min-w-[200px] text-[22px] leading-[1.3] bg-transparent border-0 border-b border-shadow-700 focus:border-electric outline-none transition-colors text-paper placeholder:text-mist-600 py-2 px-0 caret-electric font-medium tracking-[-0.01em]"
                 />
               </div>
@@ -227,10 +339,15 @@ export function Contact({ data }: { data: ContactData | null }) {
               <div className="flex items-center gap-4 flex-wrap pt-4">
                 <button
                   type="submit"
-                  disabled={!emailValid || submitting}
-                  className="h-[52px] px-[22px] rounded-md bg-electric text-paper text-[15px] font-semibold inline-flex items-center hover:bg-[#2562E0] active:scale-[0.98] transition-[background,transform] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-electric"
+                  disabled={submitting}
+                  aria-disabled={!emailValid || brief.trim().length < 10}
+                  className={`h-[52px] px-[22px] rounded-md bg-electric text-paper text-[15px] font-semibold inline-flex items-center hover:bg-[#2562E0] active:scale-[0.98] transition-[background,transform] disabled:cursor-not-allowed disabled:hover:bg-electric ${
+                    !emailValid || brief.trim().length < 10 ? 'opacity-60' : ''
+                  } ${submitting ? 'opacity-40' : ''}`}
                 >
-                  {submitting ? 'Mengirim…' : data?.formLabels?.submit ?? 'Kirim brief →'}
+                  {submitting
+                    ? 'Deploying…'
+                    : data?.formLabels?.submit ?? 'Kirim brief →'}
                 </button>
                 {submitError && (
                   <span className="text-[12px] text-[#E5484D] font-medium">
@@ -259,7 +376,6 @@ export function Contact({ data }: { data: ContactData | null }) {
               now={now}
             />
           </div>
-        )}
       </div>
     </section>
   );
@@ -350,7 +466,7 @@ function BriefPreview({
             </p>
           ) : (
             <p className="text-mist-500 italic text-[15px] leading-[1.65] m-0">
-              Brief kamu akan muncul di sini, persis seperti yang akan kami baca.
+              Brief Anda akan muncul di sini, persis seperti yang akan kami baca.
             </p>
           )}
         </div>
@@ -419,19 +535,3 @@ function LetterRow({
   );
 }
 
-function SentState({ email, successHeading }: { email: string; successHeading?: string | null }) {
-  return (
-    <div className="max-w-[720px] mx-auto bg-shadow-900 border border-shadow-700 rounded-2xl p-10 text-center">
-      <span className="h-6 px-2.5 rounded-full inline-flex items-center font-mono text-[11px] font-medium uppercase tracking-wider bg-success/[0.18] text-[#5DD79A] mb-4">
-        [ 200 OK · RECEIVED ]
-      </span>
-      <h3 className="text-[32px] font-bold tracking-[-0.02em] my-4 text-paper">
-        {successHeading}
-      </h3>
-      <p className="text-[15px] leading-[1.55] text-mist-500 m-0">
-        Dikirim dari <span className="text-paper font-mono text-sm">{email}</span>.<br />
-        Kami balas langsung dari salah satu founder dalam 48 jam.
-      </p>
-    </div>
-  );
-}

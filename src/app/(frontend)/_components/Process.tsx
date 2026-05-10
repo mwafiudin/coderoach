@@ -18,8 +18,8 @@ export function Process({ phases }: { phases: Phase[] }) {
           marker="[ 04 / 07 ]"
           category="Process"
           description="Cara kami kerja"
-          heading="Dari brief ke produksi, empat fase."
-          lede="Setiap proyek jalan di pola yang sama. Scope beda, stack beda — disiplin shipping-nya konsisten."
+          heading="Brief to production, in four phases."
+          lede="Setiap proyek mengikuti pola yang sama. Scope berbeda, stack berbeda — disiplin shipping tetap konsisten."
         />
         <div
           className="grid grid-cols-1 md:grid-cols-4 relative pt-14 mt-14 [--progress:0]"
@@ -55,7 +55,7 @@ export function Process({ phases }: { phases: Phase[] }) {
               <h4 className="text-[28px] font-bold tracking-[-0.015em] my-3.5 mt-3.5 mb-3">{p.name}</h4>
               <p className="text-sm text-mist-600 leading-[1.5] m-0 mb-4">{p.what}</p>
               <div className="bg-paper-50 border border-paper-200 rounded-md px-3 py-2.5 text-[13px] leading-[1.4]">
-                <span className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-mist-600 mb-1">Kamu dapet</span>
+                <span className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-mist-600 mb-1">Deliverable</span>
                 {p.deliv}
               </div>
             </div>

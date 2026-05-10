@@ -4,6 +4,7 @@ import { JetBrains_Mono } from 'next/font/google';
 import { getPayload } from 'payload';
 import config from '@payload-config';
 import '../globals.css';
+import { ToastProvider } from './_components/ui/Toast';
 
 const satoshi = localFont({
   src: '../../../public/fonts/Satoshi-Variable.ttf',
@@ -61,7 +62,9 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function FrontendLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="id" className={`${satoshi.variable} ${jetbrainsMono.variable}`}>
-      <body>{children}</body>
+      <body>
+        <ToastProvider>{children}</ToastProvider>
+      </body>
     </html>
   );
 }
