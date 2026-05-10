@@ -214,7 +214,7 @@ async function seed() {
     {
       order: 1,
       slug: 'build',
-      tag: 'BUILD',
+      tag: 'ENGINEERING',
       icon: 'build',
       title: 'Build',
       tagline: 'Web, mobile, dan tools yang benar-benar dipakai.',
@@ -245,7 +245,7 @@ async function seed() {
     {
       order: 2,
       slug: 'automate',
-      tag: 'AUTOMATE',
+      tag: 'OPERATIONS',
       icon: 'automate',
       title: 'Automate',
       tagline: 'Workflow yang dulu manual, kini berjalan otomatis.',
@@ -272,7 +272,7 @@ async function seed() {
     {
       order: 3,
       slug: 'intelligence',
-      tag: 'INTELLIGENCE',
+      tag: 'ANALYTICS',
       icon: 'intelligence',
       title: 'Intelligence',
       tagline: 'Data yang mengarahkan keputusan, bukan sekadar chart.',
@@ -301,7 +301,7 @@ async function seed() {
     {
       order: 4,
       slug: 'augment',
-      tag: 'AUGMENT',
+      tag: 'AI · LLM',
       icon: 'augment',
       title: 'Augment',
       tagline: 'Menambahkan AI ke sistem yang sudah berjalan.',
