@@ -6,20 +6,24 @@
 import type { AreaId } from './questions';
 import type { Band, Phase, ServiceClass } from './scoring';
 
-export const PHASE_COPY: Record<Phase, { title: string; key: string }> = {
+export const PHASE_COPY: Record<Phase, { name: string; title: string; key: string }> = {
   1: {
+    name: 'Ingatan',
     title: 'Fase Ingatan',
     key: 'Bisnis Anda berjalan di kepala Anda. AI belum bisa membantu — belum ada yang bisa dibaca.',
   },
   2: {
+    name: 'Chat',
     title: 'Fase Chat',
     key: 'Datanya ada, berserakan di ratusan grup WA. Kalau ditanya, harus scroll.',
   },
   3: {
+    name: 'Spreadsheet',
     title: 'Fase Spreadsheet',
     key: 'Anda sudah mencatat. Tapi setiap laporan masih butuh satu orang yang menyusunnya.',
   },
   4: {
+    name: 'Sistem',
     title: 'Fase Sistem',
     key: 'Data Anda sudah bisa dibaca mesin. AI tinggal disambungkan.',
   },
@@ -136,4 +140,123 @@ export const ACTIONS: Record<string, string> = {
   G2: 'Arahkan semua lead dari internet ke satu nomor atau inbox bersama, bukan ke WA pribadi.', // REVIEW
   G3: 'Mulai bulan ini, tanyakan dan catat dari mana setiap pelanggan baru datang: iklan, Google, atau referral.', // REVIEW
   H2: 'Satukan data penjualan dan biaya per produk atau layanan di satu tempat, sebelum memikirkan AI.', // REVIEW
+};
+
+/* ------------------------------------------------------------------ */
+/* Interface copy. Tone follows the site: short sentences, no          */
+/* exclamation marks, no emoji. Drafts are marked REVIEW.              */
+/* ------------------------------------------------------------------ */
+
+export const LANDING_COPY = {
+  // SEO carries the searched words ("siap pakai AI", "sistem operasional bisnis", "bisnis masih manual").
+  metaTitle: 'Bisnis Anda siap pakai AI? Cek sistem operasionalnya dalam 5 menit', // REVIEW
+  metaDescription:
+    'Assessment gratis untuk bisnis yang masih banyak manual. Lihat di mana data operasional Anda hidup, fase bisnis Anda, dan tiga area yang perlu dirapikan sebelum pakai AI.', // REVIEW
+  marker: '[ OPSSCORE ] · Cek operasional bisnis', // REVIEW
+  headline: {
+    lead: 'Bisnis Anda siap pakai AI?', // REVIEW
+    accent: 'Cek dulu di mana datanya hidup.', // REVIEW
+  },
+  lede: 'AI itu langkah ketiga, bukan pertama. Urutannya tercatat, tersistem, baru AI. OpsScore memetakan di mana data operasional bisnis Anda hidup sekarang: di kepala, di chat, di spreadsheet, atau di sistem.', // REVIEW
+  getTitle: 'Yang Anda dapat', // REVIEW
+  get: [
+    'Fase bisnis Anda: Ingatan, Chat, Spreadsheet, atau Sistem.', // REVIEW
+    'Skor untuk delapan area, dari penjualan sampai keuangan.', // REVIEW
+    'Tiga area prioritas, masing-masing dengan satu langkah konkret. Bisa disimpan sebagai PDF.', // REVIEW
+  ],
+  meta: ['27 pertanyaan', '±5 menit', 'Gratis'], // REVIEW
+  cta: 'Mulai cek',
+  phasesTitle: 'Empat fase yang diukur', // REVIEW
+  phaseRange: (from: number, to: number) => `${from}–${to}`,
+};
+
+export const QUIZ_COPY = {
+  brand: 'OpsScore',
+  introMarker: '[ OPSSCORE ] · 27 pertanyaan · ±5 menit', // REVIEW
+  instruction: 'Jawab sesuai yang benar-benar terjadi, bukan yang seharusnya.',
+  start: 'Mulai',
+  lastResult: 'Lihat hasil terakhir Anda', // REVIEW
+  resumeTitle: 'Anda pernah mulai cek ini.', // REVIEW
+  resumeBody: 'Jawaban Anda tersimpan di perangkat ini.', // REVIEW
+  resume: (area: string) => `Lanjutkan dari ${area}`,
+  restart: 'Mulai ulang',
+  back: 'Kembali',
+  next: 'Lanjut',
+  nextArea: (area: string) => `Lanjut ke ${area}`,
+  seeResult: 'Lihat hasil',
+  multiHint: 'Boleh pilih lebih dari satu.', // REVIEW
+  areaCount: (index: number, total: number) => `Area ${index} dari ${total}`,
+  questionCount: (index: number, total: number) => `${index}/${total}`,
+  feedbackMarker: 'Skor area', // REVIEW
+  tapHint: 'Ketuk di mana saja untuk lanjut', // REVIEW
+  scoring: 'Menghitung hasil', // REVIEW
+  errorTitle: 'Hasil belum bisa dihitung.', // REVIEW
+  errorBody: 'Cek koneksi internet, lalu coba lagi. Jawaban Anda tetap tersimpan.', // REVIEW
+  retry: 'Coba lagi',
+  progressLabel: 'Progres per area', // REVIEW
+};
+
+export const RESULT_COPY = {
+  metaTitle: 'Hasil OpsScore', // REVIEW
+  marker: '[ OPSSCORE ] · Hasil', // REVIEW
+  scoreLabel: 'OpsScore bisnis Anda',
+  outOf: '/100',
+  phaseOf: (phase: number) => `Fase ${phase} dari 4`,
+  areasTitle: 'Skor per area', // REVIEW
+  stockSkipped: 'Stok tidak dihitung karena bisnis Anda tidak pegang stok fisik.', // REVIEW
+  incompleteTitle: 'Assessment ini belum selesai.', // REVIEW
+  incompleteBody: 'Jawaban yang tersimpan di perangkat Anda bisa dilanjutkan.', // REVIEW
+  continueQuiz: 'Lanjutkan cek', // REVIEW
+};
+
+export const GATE_COPY = {
+  marker: '[ REPORT LENGKAP ]', // REVIEW
+  title: 'Buka report lengkap', // REVIEW
+  intro: 'Report lengkap dan versi PDF-nya kami buka setelah ini. Kami hubungi lewat WA hanya kalau Anda mau.',
+  fields: {
+    name: 'Nama',
+    phone: 'Nomor WhatsApp',
+    brand: 'Nama brand atau usaha',
+    industry: 'Bidang usaha',
+    employees: 'Jumlah karyawan',
+    revenue: 'Omset per bulan',
+  },
+  placeholders: {
+    name: 'Nama Anda', // REVIEW
+    phone: '08xxxxxxxxxx',
+    brand: 'Nama usaha', // REVIEW
+  },
+  selectPlaceholder: 'Pilih', // REVIEW
+  consent: 'Saya setuju dihubungi Coderoach lewat WhatsApp tentang hasil ini.', // REVIEW
+  submit: 'Buka report lengkap', // REVIEW
+  submitting: 'Membuka report', // REVIEW
+  errors: {
+    required: 'Wajib diisi.', // REVIEW
+    phone: 'Nomor WA diawali 08, 10–13 digit.', // REVIEW
+    consent: 'Centang persetujuan untuk lanjut.', // REVIEW
+    server: 'Belum bisa dikirim. Coba lagi sebentar.', // REVIEW
+    rateLimited: 'Terlalu banyak percobaan. Coba lagi beberapa menit lagi.', // REVIEW
+  },
+};
+
+export const REPORT_COPY = {
+  prioritiesTitle: (count: number) => (count === 3 ? 'Tiga area prioritas' : 'Area prioritas'), // REVIEW
+  noPriorities: 'Tidak ada area yang perlu diprioritaskan. Semua area operasional sudah rapi.', // REVIEW
+  scoreOf: (score: number) => `${score}/100`,
+  marker: '[ REPORT ]', // REVIEW
+  actionLabel: 'Mulai dari sini', // REVIEW
+  classTitle: 'Yang kami sarankan', // REVIEW
+  savePdf: 'Simpan PDF',
+};
+
+export const PRINT_COPY = {
+  metaTitle: 'Report OpsScore', // REVIEW
+  documentTitle: 'Report OpsScore',
+  preparedFor: 'Disusun untuk', // REVIEW
+  session: 'Sesi',
+  footerUrl: 'coderoach.id/opsscore',
+  briefUrl: 'coderoach.id/#contact', // REVIEW
+  print: 'Simpan PDF',
+  back: 'Kembali ke report', // REVIEW
+  hint: 'Di jendela cetak, pilih Simpan sebagai PDF.', // REVIEW
 };

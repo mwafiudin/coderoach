@@ -204,6 +204,12 @@ export function totalScore(areas: AreaScores): number {
 export const phaseFor = (total: number): Phase =>
   (PHASE_THRESHOLDS.find((t) => total >= t.from) ?? PHASE_THRESHOLDS[PHASE_THRESHOLDS.length - 1]).phase;
 
+/** Inclusive total range for a phase, e.g. phase 2 → 25–49. */
+export function phaseRange(phase: Phase) {
+  const index = PHASE_THRESHOLDS.findIndex((t) => t.phase === phase);
+  return { from: PHASE_THRESHOLDS[index].from, to: index === 0 ? 100 : PHASE_THRESHOLDS[index - 1].from - 1 };
+}
+
 export const bandFor = (score: number): Band =>
   score >= BAND_HIGH_FROM ? 'high' : score >= BAND_MID_FROM ? 'mid' : 'low';
 

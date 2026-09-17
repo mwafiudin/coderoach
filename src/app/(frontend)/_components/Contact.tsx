@@ -37,6 +37,8 @@ export function Contact({ data }: { data: ContactData | null }) {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [honeypot, setHoneypot] = useState('');
+  // Set when the visitor arrives from an OpsScore report (/?hasil_id=…#contact).
+  const [hasilId, setHasilId] = useState<string | null>(null);
   const [now, setNow] = useState<Date | null>(null);
   const [alert, setAlert] = useState<{
     open: boolean;
@@ -50,6 +52,15 @@ export function Contact({ data }: { data: ContactData | null }) {
     onPrimary?: () => void;
   } | null>(null);
   const toast = useToast();
+
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get('hasil_id');
+    setHasilId(id);
+    // The streamed homepage does not jump to #contact on load, so do it for OpsScore visitors.
+    if (id && window.location.hash === '#contact') {
+      document.getElementById('contact')?.scrollIntoView({ behavior: 'instant' });
+    }
+  }, []);
 
   useEffect(() => {
     setNow(new Date());
@@ -160,6 +171,7 @@ export function Contact({ data }: { data: ContactData | null }) {
                       scope,
                       brief,
                       company_url: honeypot,
+                      hasil_id: hasilId ?? undefined,
                     }),
                   });
                   const [res] = await Promise.all([fetchTask, minVisible]);

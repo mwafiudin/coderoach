@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPayload } from 'payload';
 import config from '@payload-config';
+import { findSession } from '@/lib/opsscore/api';
 
 const ALLOWED_SCOPES = new Set([
   'Build',
@@ -78,9 +79,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: false, code: 'brief_too_long', error: 'Brief terlalu panjang. Maksimal 5000 karakter.' }, { status: 400 });
   }
   const finalScope = ALLOWED_SCOPES.has(scope) ? scope : 'Other';
+  const hasilId = typeof body?.hasil_id === 'string' ? body.hasil_id : '';
 
   try {
     const payload = await getPayload({ config });
+    // Brief sent from an OpsScore report: link it, but never fail the brief over a bad id.
+    const assessment = hasilId ? await findSession(payload, hasilId).catch(() => null) : null;
     await payload.create({
       collection: 'submissions',
       data: {
@@ -91,6 +95,7 @@ export async function POST(req: NextRequest) {
         referrer: req.headers.get('referer') || '',
         submittedAt: new Date().toISOString(),
         status: 'new',
+        ...(assessment ? { assessmentSession: assessment.id } : {}),
       },
       overrideAccess: true,
     });

@@ -23,6 +23,8 @@ export const Submissions: CollectionConfig = {
         const to = process.env.RESEND_TO_EMAIL;
         if (!to) return doc; // Email disabled in env — fail silently.
         const subject = `New brief from ${doc.email}${doc.scope ? ` · ${doc.scope}` : ''}`;
+        const assessmentId =
+          typeof doc.assessmentSession === 'object' ? doc.assessmentSession?.id : doc.assessmentSession;
         const html = `
           <div style="font-family: ui-sans-serif, system-ui, sans-serif; max-width: 600px;">
             <h2 style="margin: 0 0 16px;">New contact form submission</h2>
@@ -32,6 +34,7 @@ export const Submissions: CollectionConfig = {
             <pre style="white-space: pre-wrap; background: #f5f5f5; padding: 12px; border-radius: 6px; font-family: inherit; margin: 0;">${escapeHtml(doc.brief || '')}</pre>
             ${doc.referrer ? `<p style="margin: 16px 0 4px; color: #666; font-size: 12px;"><strong>Referrer:</strong> ${escapeHtml(doc.referrer)}</p>` : ''}
             ${doc.userAgent ? `<p style="margin: 0 0 4px; color: #666; font-size: 12px;"><strong>User agent:</strong> ${escapeHtml(doc.userAgent)}</p>` : ''}
+            ${assessmentId ? `<p style="margin: 0 0 4px; color: #666; font-size: 12px;"><strong>OpsScore:</strong> ${process.env.NEXT_PUBLIC_SERVER_URL || ''}/admin/collections/assessment-sessions/${escapeHtml(assessmentId)}</p>` : ''}
             <p style="margin: 16px 0 0; color: #666; font-size: 12px;">View in admin: ${process.env.NEXT_PUBLIC_SERVER_URL || ''}/admin/collections/submissions/${doc.id}</p>
           </div>
         `;
@@ -84,6 +87,16 @@ export const Submissions: CollectionConfig = {
     },
     { name: 'userAgent', type: 'text', admin: { position: 'sidebar', readOnly: true } },
     { name: 'referrer', type: 'text', admin: { position: 'sidebar', readOnly: true } },
+    {
+      name: 'assessmentSession',
+      type: 'relationship',
+      relationTo: 'assessment-sessions',
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+        description: 'Set when the brief was sent from an OpsScore report.',
+      },
+    },
     { name: 'notes', type: 'textarea', admin: { description: 'Internal notes (admin only).' } },
   ],
 };

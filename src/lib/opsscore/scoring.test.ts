@@ -9,6 +9,7 @@ import {
   bandFor,
   missingAnswers,
   phaseFor,
+  phaseRange,
   priorities,
   questionScore,
   sanitizeAnswers,
@@ -115,6 +116,11 @@ describe('step 2 & 3 — area scores, total, phase', () => {
 
   test('phase boundaries', () => {
     assert.deepEqual([0, 24, 25, 49, 50, 74, 75, 100].map(phaseFor), [1, 1, 2, 2, 3, 3, 4, 4]);
+  });
+
+  test('phase ranges', () => {
+    assert.deepEqual(phaseRange(1), { from: 0, to: 24 });
+    assert.deepEqual(phaseRange(4), { from: 75, to: 100 });
   });
 
   test('copy bands', () => {
