@@ -168,6 +168,6 @@ Variabel `web`: `DATABASE_URI` (`${{Postgres.DATABASE_URL}}`), `NEXT_PUBLIC_SERV
 - [ ] Baca semua baris `// REVIEW` di `copy.ts`, termasuk 22 kalimat tindakan.
 - [ ] Cocokkan angka sub-industri di `INDUSTRY_FACTS` (Fashion, Kriya, Kuliner) dengan PDF BPS Profil IMK 2024 dan Statistik Penyediaan Makanan dan Minuman 2024.
 - [ ] Putuskan setiap `TODO(decision)` (lihat `rg "TODO\(decision\)" src`).
-- [ ] Isi `NEXT_PUBLIC_GA4_ID` dan `NEXT_PUBLIC_META_PIXEL_ID` di Vercel, lalu cek event di DebugView dan Test Events.
+- [ ] Isi `NEXT_PUBLIC_GA4_ID` dan `NEXT_PUBLIC_META_PIXEL_ID` di variabel service `web` Railway, deploy ulang, lalu cek event di DebugView dan Test Events.
 - [ ] Uji di Safari iOS dan Chrome Android, termasuk "Simpan sebagai PDF" dan "Bagikan → Cetak".
 - [ ] Putuskan tautan ke `/opsscore` di navigasi atau footer.
