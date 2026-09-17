@@ -102,9 +102,10 @@ export default function OpsScoreLandingPage() {
                     <span className="font-mono text-[11px] tracking-wider text-mist-600 tabular">
                       [ {LANDING_COPY.phaseRange(from, to)} ]
                     </span>
-                    <h3 className="text-[24px] font-bold tracking-[-0.015em] mt-3 mb-2">
+                    <h3 className="text-[24px] font-bold tracking-[-0.015em] mt-3 mb-0">
                       {PHASE_COPY[phase].title}
                     </h3>
+                    <p className="mt-0.5 mb-2 text-[15px] font-semibold text-mist-600">{PHASE_COPY[phase].nickname}</p>
                     <p className="text-[15px] leading-[1.55] text-mist-600 m-0 text-pretty">
                       {PHASE_COPY[phase].key}
                     </p>

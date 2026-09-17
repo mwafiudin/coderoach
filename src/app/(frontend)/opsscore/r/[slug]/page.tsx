@@ -9,6 +9,7 @@ import { SHARE_CTA_QUERY, ogImagePath, productPath } from '@/lib/opsscore/config
 import { PHASE_COPY, RESULT_COPY, SHARE_COPY } from '@/lib/opsscore/copy';
 import type { Scores } from '@/lib/opsscore/scoring';
 import { AreaScoreList } from '../../_components/AreaScoreList';
+import { PersonaHero } from '../../_components/PersonaHero';
 import { PhaseLadder } from '../../_components/PhaseLadder';
 
 export const dynamic = 'force-dynamic';
@@ -35,7 +36,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const scores = await findSharedScores(slug);
   if (!scores) return { robots: { index: false, follow: false } };
   const phase = PHASE_COPY[scores.phase];
-  const title = SHARE_COPY.metaTitle(phase.title);
+  const title = SHARE_COPY.metaTitle(`${phase.title} · ${phase.nickname}`);
   const images = [{ url: ogImagePath(scores.phase), width: 1200, height: 630, alt: phase.title }];
   return {
     metadataBase: process.env.NEXT_PUBLIC_SERVER_URL ? new URL(process.env.NEXT_PUBLIC_SERVER_URL) : undefined,
@@ -51,7 +52,6 @@ export default async function SharedResultPage({ params }: { params: Promise<{ s
   const { slug } = await params;
   const scores = await findSharedScores(slug);
   if (!scores) notFound();
-  const phase = PHASE_COPY[scores.phase];
 
   return (
     <SectionShell>
@@ -76,13 +76,7 @@ export default async function SharedResultPage({ params }: { params: Promise<{ s
                 </span>
                 <span className="text-[18px] text-mist-600 tabular">{RESULT_COPY.outOf}</span>
               </div>
-              <p className="mt-8 mb-0 font-mono text-xs uppercase tracking-wider text-electric tabular">
-                {RESULT_COPY.phaseOf(scores.phase)}
-              </p>
-              <h1 className="text-[clamp(36px,5vw,56px)] leading-[1.02] tracking-[-0.025em] font-bold mt-2 mb-0">
-                {phase.title}
-              </h1>
-              <p className="mt-4 mb-0 text-[18px] leading-[1.55] text-mist-600 max-w-[520px] text-pretty">{phase.key}</p>
+              <PersonaHero phase={scores.phase} className="mt-8" />
               <PhaseLadder phase={scores.phase} className="mt-8 max-w-[520px]" animate />
               <div className="mt-10 flex flex-col gap-3">
                 <a

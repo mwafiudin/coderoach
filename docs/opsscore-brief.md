@@ -11,6 +11,8 @@
 > - Lima pertanyaan terpanjang (A4, B3, C2, F1, H2) dipendekkan; detailnya pindah ke kotak contoh. Id dan opsi tidak berubah (bagian 4).
 > - Gate dipindah ke depan hasil: setelah quiz, pengunjung melihat pratinjau hasil yang terkunci, lalu skor, fase, dan report terbuka setelah nomor WA diisi (bagian 2 dan 8).
 > - Kartu skor per bagian memakai adegan animasi yang menggambarkan kata kunci bagian; kondisi adegan mengikuti skor (bagian 7).
+> - Fase jadi persona dengan julukan, kekuatan, penghambat, dan ilustrasi animasi: The Juggler (Si Paling Hafal), The Connector (Si Paling Fast Response), The Organizer (Si Paling Excel), The Autopilot (Si Paling Siap AI) (bagian 5 dan 6).
+> - Report ditambah tiga saran: langkah naik fase yang dihitung dari rumus skor, quick win minggu ini, dan rencana 30-60-90 hari (bagian 6).
 > - Hasil menampilkan benchmark "Gambaran kompetisi": estimasi rata-rata usaha sebidang dari data publik, diganti rata-rata asli setelah 30 usaha sebidang; kartu skor bagian diberi fakta sekilas (bagian 6 dan 7).
 >
 > Bagian yang berubah ditandai *(revisi)*.
@@ -175,12 +177,12 @@ Skoring deterministik, dihitung di server saat sesi diselesaikan, disimpan bersa
 | ai | 0.5 |
 | web | 0 |
 
-| Total | Fase | Nama |
-| --- | --- | --- |
-| 0–24 | 1 | Fase Ingatan |
-| 25–49 | 2 | Fase Chat |
-| 50–74 | 3 | Fase Spreadsheet |
-| 75–100 | 4 | Fase Sistem |
+| Total | Fase | Nama *(revisi: persona)* | Data hidup di |
+| --- | --- | --- | --- |
+| 0–24 | 1 | The Juggler · Si Paling Hafal | kepala |
+| 25–49 | 2 | The Connector · Si Paling Fast Response | chat |
+| 50–74 | 3 | The Organizer · Si Paling Excel | spreadsheet |
+| 75–100 | 4 | The Autopilot · Si Paling Siap AI | sistem |
 
 **Langkah 4 — 3 area prioritas.** Untuk tiap area (kecuali `ai`, `owner`, `web`): `prioritas = (100 − skor_area) × bobot_dampak × bobot_volume`.
 
@@ -203,16 +205,22 @@ Uji rumus ini dengan 5 profil sintetis sebelum rilis: warung 3 orang, outlet F&B
 
 ## 6. Isi report & copy
 
-Report punya urutan tetap: fase → tiga area prioritas (masing-masing: skor, kalimat diagnosis, satu tindakan konkret) → kelas layanan yang disarankan → CTA. Copy hidup di `copy.ts`, dipilih berdasarkan skor area: rendah (< 40), sedang (40–74), tinggi (≥ 75). Kalimat tinggi wajib mengakui area sudah rapi.
+Report punya urutan tetap: fase → tiga area prioritas (masing-masing: skor, kalimat diagnosis, satu tindakan konkret) → *(revisi)* langkah naik fase → quick win minggu ini → rencana 30-60-90 hari → kelas layanan yang disarankan → CTA. Copy hidup di `copy.ts`, dipilih berdasarkan skor area: rendah (< 40), sedang (40–74), tinggi (≥ 75). Kalimat tinggi wajib mengakui area sudah rapi.
 
-**Copy fase** (judul + satu kalimat kunci, tampil di hasil ringkas dan di halaman share):
+**Copy fase** *(revisi: persona)* — nama persona, julukan, kalimat kunci, kekuatan, dan yang menahan. Tampil di hasil, halaman share, landing, PDF, dan gambar share; di hasil dan share disertai ilustrasi animasi persona (The Juggler memainkan bola "kas", "stok", "order" yang sesekali jatuh; The Connector kehilangan angka di chat yang terus ter-scroll; The Organizer menyalin sel ke laporan; The Autopilot mengalirkan data ke dashboard dan AI):
 
-| Fase | Judul | Kalimat kunci |
-| --- | --- | --- |
-| 1 | Fase Ingatan | Bisnis Anda berjalan di kepala Anda. AI belum bisa membantu — belum ada yang bisa dibaca. |
-| 2 | Fase Chat | Datanya ada, berserakan di ratusan grup WA. Kalau ditanya, harus scroll. |
-| 3 | Fase Spreadsheet | Anda sudah mencatat. Tapi setiap laporan masih butuh satu orang yang menyusunnya. |
-| 4 | Fase Sistem | Data Anda sudah bisa dibaca mesin. AI tinggal disambungkan. |
+| Fase | Persona | Kalimat kunci | Kekuatan | Yang menahan |
+| --- | --- | --- | --- | --- |
+| 1 | The Juggler · Si Paling Hafal | Bisnis Anda berjalan di kepala Anda. AI belum bisa membantu — belum ada yang bisa dibaca. | Anda hafal detail bisnis dan bisa memutuskan dengan cepat. | Semuanya bergantung pada ingatan Anda. Kalau Anda berhenti, bisnis ikut berhenti. |
+| 2 | The Connector · Si Paling Fast Response | Datanya ada, berserakan di ratusan grup WA. Kalau ditanya, harus scroll. | Tim responsif dan koordinasi jalan cepat lewat chat. | Angka penting tenggelam di ratusan pesan dan harus dicari dengan scroll. |
+| 3 | The Organizer · Si Paling Excel | Anda sudah mencatat. Tapi setiap laporan masih butuh satu orang yang menyusunnya. | Data sudah tercatat rapi dan bisa dicari. | Setiap laporan masih disalin dan disusun dengan tangan. |
+| 4 | The Autopilot · Si Paling Siap AI | Data Anda sudah bisa dibaca mesin. AI tinggal disambungkan. | Data mengalir sendiri dan bisa dibaca mesin. | Tinggal satu langkah: sambungkan AI ke data Anda. |
+
+*(revisi)* **Saran setelah prioritas.**
+
+- **Langkah naik fase** (`plan.ts`): berulang kali pilih satu jawaban yang, kalau naik satu tingkat, paling menaikkan total (jawaban skala di kepala atau chat langsung ke spreadsheet), sampai fase berikutnya tercapai atau tiga langkah terpakai. Tiap langkah menampilkan kalimat tindakan pertanyaannya (`ACTIONS`) dan tambahan poinnya, plus ringkasan "skor naik dari 42 ke 50 dan masuk The Organizer". Tidak tampil di fase 4.
+- **Quick win minggu ini**: satu tindakan murah per area yang skornya di bawah 75, terlemah dulu, maksimal empat, dengan label usaha (mudah/sedang) dan biaya.
+- **Rencana 30-60-90 hari**: tiga langkah per fase (mis. fase 2: keluarkan dari chat → tetapkan standar → sambungkan), menyebut dua area prioritas teratas.
 
 **Mini-feedback per area** (tampil di quiz setelah seksi selesai, dan dipakai ulang sebagai diagnosis di report):
 
@@ -289,7 +297,7 @@ UTM (`utm_source/medium/campaign/content/term`) dan `fbclid`/`gclid` dibaca di l
 
 ## 9. PDF, halaman share & admin
 
-**PDF** di MVP = `window.print()` pada route `/print` dengan stylesheet cetak khusus: A4, 2 halaman maksimal, tanpa navigasi, tanpa tombol, warna aman untuk cetak hitam-putih (skor area sebagai bar dengan pola, bukan hanya warna). Header berisi logo Coderoach, nama brand pengisi, tanggal. Footer: `coderoach.id/opsscore` dan nomor sesi. Uji di Chrome Android "Simpan sebagai PDF" dan Safari iOS "Bagikan → Cetak" — dua jalur ini yang paling sering dipakai.
+**PDF** di MVP = `window.print()` pada route `/print` dengan stylesheet cetak khusus: A4, 2 halaman maksimal, tanpa navigasi, tanpa tombol, warna aman untuk cetak hitam-putih (skor area sebagai bar dengan pola, bukan hanya warna). Header berisi logo Coderoach, nama brand pengisi, tanggal. *(revisi)* Isi PDF juga memuat persona dengan kekuatan dan penghambatnya, satu baris benchmark, langkah naik fase, dan rencana 30-60-90 hari; tetap 2 halaman. Footer: `coderoach.id/opsscore` dan nomor sesi. Uji di Chrome Android "Simpan sebagai PDF" dan Safari iOS "Bagikan → Cetak" — dua jalur ini yang paling sering dipakai.
 
 **Halaman share** `/r/[slug]`: judul fase, kalimat kunci fase, 8 bar skor area, satu CTA "Cek bisnis Anda". Tidak ada nama, brand, omset, atau area prioritas — cukup untuk membuat penasaran, tidak cukup untuk mempermalukan pengisi kalau dibagikan ke grup. Meta tag OG statis per fase (4 gambar OG, bukan dinamis). Tombol "Bagikan hasil" di report memakai Web Share API dengan fallback salin link.
 

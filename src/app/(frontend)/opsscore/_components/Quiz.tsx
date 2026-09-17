@@ -37,6 +37,7 @@ import { track } from '@/lib/opsscore/track';
 import { AnimatedCount } from '../../_components/ui/AnimatedCount';
 import { OctagonMark } from '../../_components/ui/OctagonMark';
 import { ScoreBar } from './ScoreBar';
+import { SCENE_PANEL_GRID } from './scene-engine';
 import { SectionScene } from './SectionScene';
 
 const STORAGE_KEY = `opsscore.quiz.v${INSTRUMENT_VERSION}`;
@@ -1148,13 +1149,6 @@ function FeedbackScreen({
     </div>
   );
 }
-
-// A faint blueprint grid behind the scene, echoing the site's grid backgrounds.
-const SCENE_PANEL_GRID: CSSProperties = {
-  backgroundImage:
-    'linear-gradient(rgba(244,247,245,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(244,247,245,0.04) 1px, transparent 1px)',
-  backgroundSize: '20px 20px',
-};
 
 /** Log lines play out while the result is computed, in the style of the site's deploy console. */
 function ScoringConsole({ answered, areas }: { answered: number; areas: number }) {

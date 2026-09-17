@@ -12,6 +12,8 @@ Brief dan aturan skor: [`opsscore-brief.md`](./opsscore-brief.md). Dokumen ini m
 | Bobot, ambang fase, aturan prioritas dan kelas layanan | `src/lib/opsscore/scoring.ts` |
 | Semua teks: fase, feedback, tindakan, fakta sekilas, benchmark, landing, quiz, gate, report, admin | `src/lib/opsscore/copy.ts` |
 | Estimasi benchmark per bidang, ambang 30 sesi | `src/lib/opsscore/benchmark.ts` |
+| Langkah naik fase, pilihan quick win dan area rencana 90 hari | `src/lib/opsscore/plan.ts` |
+| Adegan animasi: kartu skor bagian, persona di hasil | `_components/SectionScene.tsx`, `PhaseScene.tsx`, `scene-engine.ts` |
 | Nama produk, slug, `INSTRUMENT_VERSION` | `src/lib/opsscore/config.ts` |
 | Route publik | `src/app/(frontend)/opsscore/` |
 | API sesi, gate, CSV | `src/app/(frontend)/api/opsscore/` |
@@ -88,7 +90,7 @@ Apa yang terjadi setelah versi naik:
 1. Tambahkan pertanyaan di `QUESTIONS` (`questions.ts`), di dalam blok area yang benar. Urutan di array = urutan di quiz; urutan area dan bagian mengikuti `SECTIONS` (`flow.ts`).
 2. Untuk `single`, tulis opsi dari skor 0 ke skor tertinggi. Jumlah opsi menentukan skor maksimum.
 3. `id` pertanyaan dan `id` opsi yang sudah dipakai jangan diganti. Itu yang tersimpan di `answers`, dan admin memakainya untuk menampilkan label.
-4. Pertanyaan berskor wajib punya kalimat tindakan di `ACTIONS` (`copy.ts`); test akan gagal kalau belum.
+4. Pertanyaan berskor wajib punya kalimat tindakan di `ACTIONS` (`copy.ts`); test akan gagal kalau belum. Kalimat yang sama dipakai di "Langkah naik fase".
 5. Naikkan `INSTRUMENT_VERSION`, perbarui test jumlah pertanyaan di `scoring.test.ts`, lalu jalankan `npm test`.
 6. Cek layar pertanyaan baru di ukuran 360×640 tanpa scroll.
 

@@ -8,26 +8,49 @@ import type { SectionId } from './flow';
 import type { AreaId } from './questions';
 import type { Band, Phase, ServiceClass } from './scoring';
 
-export const PHASE_COPY: Record<Phase, { name: string; title: string; key: string }> = {
+/**
+ * The four phases as personas: an English name with an Indonesian nickname, what the stage does well,
+ * and what holds it back. `name` is the short label on the phase ladder; `data` says where data lives.
+ */
+export const PHASE_COPY: Record<
+  Phase,
+  { name: string; title: string; nickname: string; data: string; key: string; strength: string; blocker: string }
+> = {
   1: {
-    name: 'Ingatan',
-    title: 'Fase Ingatan',
+    name: 'Juggler',
+    title: 'The Juggler', // REVIEW
+    nickname: 'Si Paling Hafal', // REVIEW
+    data: 'data di kepala',
     key: 'Bisnis Anda berjalan di kepala Anda. AI belum bisa membantu — belum ada yang bisa dibaca.',
+    strength: 'Anda hafal detail bisnis dan bisa memutuskan dengan cepat.', // REVIEW
+    blocker: 'Semuanya bergantung pada ingatan Anda. Kalau Anda berhenti, bisnis ikut berhenti.', // REVIEW
   },
   2: {
-    name: 'Chat',
-    title: 'Fase Chat',
+    name: 'Connector',
+    title: 'The Connector', // REVIEW
+    nickname: 'Si Paling Fast Response', // REVIEW
+    data: 'data di chat',
     key: 'Datanya ada, berserakan di ratusan grup WA. Kalau ditanya, harus scroll.',
+    strength: 'Tim responsif dan koordinasi jalan cepat lewat chat.', // REVIEW
+    blocker: 'Angka penting tenggelam di ratusan pesan dan harus dicari dengan scroll.', // REVIEW
   },
   3: {
-    name: 'Spreadsheet',
-    title: 'Fase Spreadsheet',
+    name: 'Organizer',
+    title: 'The Organizer', // REVIEW
+    nickname: 'Si Paling Excel', // REVIEW
+    data: 'data di spreadsheet',
     key: 'Anda sudah mencatat. Tapi setiap laporan masih butuh satu orang yang menyusunnya.',
+    strength: 'Data sudah tercatat rapi dan bisa dicari.', // REVIEW
+    blocker: 'Setiap laporan masih disalin dan disusun dengan tangan.', // REVIEW
   },
   4: {
-    name: 'Sistem',
-    title: 'Fase Sistem',
+    name: 'Autopilot',
+    title: 'The Autopilot', // REVIEW
+    nickname: 'Si Paling Siap AI', // REVIEW
+    data: 'data di sistem',
     key: 'Data Anda sudah bisa dibaca mesin. AI tinggal disambungkan.',
+    strength: 'Data mengalir sendiri dan bisa dibaca mesin.', // REVIEW
+    blocker: 'Tinggal satu langkah: sambungkan AI ke data Anda.', // REVIEW
   },
 };
 
@@ -246,6 +269,8 @@ export const RESULT_COPY = {
   scoreLabelFor: (brand?: string | null) => (brand ? `OpsScore ${brand}` : 'OpsScore bisnis Anda'), // REVIEW
   outOf: '/100',
   phaseOf: (phase: number) => `Fase ${phase} dari 4`,
+  strengthLabel: 'Kekuatan', // REVIEW
+  blockerLabel: 'Yang menahan', // REVIEW
   areasTitle: 'Skor per area', // REVIEW
   stockSkipped: 'Stok tidak dihitung karena bisnis Anda tidak pegang stok fisik.', // REVIEW
   incompleteTitle: 'Assessment ini belum selesai.', // REVIEW
@@ -377,6 +402,109 @@ export const BENCHMARK_SOURCES = [
     url: 'https://60decibels.com/insights/indonesian-mses/',
   },
 ];
+
+/** Report suggestions (brief §6): the next phase, quick wins, and a 30-60-90 day plan. */
+export const PLAN_COPY = {
+  nextMarker: 'Langkah naik fase', // REVIEW
+  nextTitle: (persona: string) => `Cara naik ke ${persona}`, // REVIEW
+  nextSummary: (count: number, from: number, to: number, persona: string, reached: boolean) => {
+    const steps = `${['', 'satu', 'dua', 'tiga'][count] ?? count} langkah`;
+    return reached
+      ? `Dengan ${steps} ini, skor Anda naik dari ${from} ke ${to} dan masuk ${persona}.`
+      : `Dengan ${steps} ini, skor Anda naik dari ${from} ke ${to}, mendekati ${persona}.`;
+  }, // REVIEW
+  points: (gain: number) => `+${gain} poin`,
+  nextNote: 'Dihitung dengan rumus skor OpsScore: jawaban mana yang paling menaikkan skor kalau naik satu tingkat.', // REVIEW
+  quickMarker: 'Quick win', // REVIEW
+  quickTitle: 'Bisa dikerjakan minggu ini', // REVIEW
+  effort: { mudah: 'Mudah', sedang: 'Sedang' }, // REVIEW
+  cost: { gratis: 'Gratis', aplikasi: 'Biaya aplikasi' }, // REVIEW
+  roadmapMarker: 'Rencana 30-60-90 hari', // REVIEW
+  roadmapTitle: 'Tiga bulan ke depan', // REVIEW
+  days: (days: number) => `${days} hari`,
+  /** Used when no area needs naming, e.g. every area is already tidy. */
+  fallbackNoun: 'data operasional Anda', // REVIEW
+};
+
+/** One cheap action per area for "Bisa dikerjakan minggu ini", with effort and cost labels. */
+export const QUICK_WINS: Record<AreaId, { text: string; effort: 'mudah' | 'sedang'; cost: 'gratis' | 'aplikasi' }> = {
+  sales: {
+    text: 'Buat satu Google Sheet berisi nama prospek, tanggal kontak, dan tanggal follow-up berikutnya. Isi setiap sore.', // REVIEW
+    effort: 'mudah',
+    cost: 'gratis',
+  },
+  ops: {
+    text: 'Ganti laporan harian di grup WA dengan satu Google Form berisi lima kolom wajib.', // REVIEW
+    effort: 'mudah',
+    cost: 'gratis',
+  },
+  finance: {
+    text: 'Pisahkan rekening usaha dan pribadi, lalu catat kas masuk dan keluar setiap hari di satu tempat.', // REVIEW
+    effort: 'sedang',
+    cost: 'gratis',
+  },
+  stock: {
+    text: 'Hitung ulang 20 barang paling laku minggu ini, dan tulis sebab setiap selisihnya.', // REVIEW
+    effort: 'sedang',
+    cost: 'gratis',
+  },
+  people: {
+    text: 'Tulis SOP satu halaman untuk tiga pekerjaan yang paling sering ditanyakan tim.', // REVIEW
+    effort: 'mudah',
+    cost: 'gratis',
+  },
+  owner: {
+    text: 'Catat pertanyaan tim selama tiga hari, lalu jadikan lima yang paling sering sebagai satu dokumen jawaban.', // REVIEW
+    effort: 'mudah',
+    cost: 'gratis',
+  },
+  web: {
+    text: 'Buat Google Business Profile, dan arahkan tombol WhatsApp ke nomor admin, bukan nomor pribadi.', // REVIEW
+    effort: 'mudah',
+    cost: 'gratis',
+  },
+  ai: {
+    text: 'Kumpulkan data penjualan tiga bulan terakhir per produk atau layanan ke satu file.', // REVIEW
+    effort: 'sedang',
+    cost: 'gratis',
+  },
+};
+
+/** How the 30-60-90 day plan names an area inside a sentence; no "dan", since the plan joins two with it. */
+export const AREA_NOUNS: Record<AreaId, string> = {
+  sales: 'catatan prospek', // REVIEW
+  ops: 'laporan harian', // REVIEW
+  finance: 'catatan kas', // REVIEW
+  stock: 'catatan stok', // REVIEW
+  people: 'SOP tim', // REVIEW
+  owner: 'angka keputusan', // REVIEW
+  web: 'lead dari internet', // REVIEW
+  ai: 'data penjualan per produk', // REVIEW
+};
+
+/** Three steps per phase; `first` and `second` are the areas from AREA_NOUNS. */
+export const ROADMAP: Record<Phase, Array<{ days: 30 | 60 | 90; title: string; body: (first: string, second: string) => string }>> = {
+  1: [
+    { days: 30, title: 'Keluarkan dari kepala', body: (first) => `Tulis ${first} di satu spreadsheet bersama, meski formatnya masih sederhana.` }, // REVIEW
+    { days: 60, title: 'Biasakan tim', body: (first, second) => `Biasakan tim memakai format yang sama untuk ${first} dan ${second} setiap hari.` }, // REVIEW
+    { days: 90, title: 'Pilih sistemnya', body: () => 'Pindahkan format yang sudah jalan ke aplikasi atau sistem, supaya laporan tersusun sendiri.' }, // REVIEW
+  ],
+  2: [
+    { days: 30, title: 'Keluarkan dari chat', body: (first) => `Pindahkan ${first} dari grup chat ke satu format isian bersama.` }, // REVIEW
+    { days: 60, title: 'Tetapkan standar', body: (first, second) => `Tetapkan format baku untuk ${first} dan ${second}, lalu pastikan dipakai setiap hari.` }, // REVIEW
+    { days: 90, title: 'Sambungkan', body: () => 'Sambungkan isian itu ke satu sistem yang merangkum angkanya tanpa disusun ulang.' }, // REVIEW
+  ],
+  3: [
+    { days: 30, title: 'Hapus salin-tempel', body: (first) => `Jadikan ${first} satu sumber data, bukan beberapa file yang disalin ulang.` }, // REVIEW
+    { days: 60, title: 'Dashboard otomatis', body: (first, second) => `Buat dashboard untuk ${first} dan ${second} yang terisi sendiri dari sumber data itu.` }, // REVIEW
+    { days: 90, title: 'Siapkan AI', body: () => 'Sistemkan alurnya dari awal sampai akhir, lalu uji AI untuk pertanyaan bisnis yang paling sering.' }, // REVIEW
+  ],
+  4: [
+    { days: 30, title: 'Pilih pertanyaannya', body: () => 'Pilih satu pertanyaan bisnis yang paling sering diajukan, dan pastikan datanya lengkap.' }, // REVIEW
+    { days: 60, title: 'Uji asisten AI', body: (first) => `Uji asisten AI yang menjawab dari ${first}, dengan satu tim sebagai pengguna pertama.` }, // REVIEW
+    { days: 90, title: 'Otomatiskan', body: () => 'Otomatiskan laporan rutin, dan pantau jawaban AI setiap minggu.' }, // REVIEW
+  ],
+};
 
 export const REPORT_COPY = {
   prioritiesTitle: (count: number) => (count === 3 ? 'Tiga area prioritas' : 'Area prioritas'), // REVIEW
