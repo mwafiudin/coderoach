@@ -12,17 +12,19 @@ type Field = 'phone' | 'consent';
 type Errors = Partial<Record<Field, keyof typeof GATE_COPY.errors>>;
 
 /**
- * The gate. Name, business, industry, revenue, and team size were collected during the quiz,
- * so the last thing asked is WhatsApp and consent.
+ * The gate, shown before any result. Name, business, industry, revenue, and team size were collected
+ * during the quiz, so the last thing asked is WhatsApp and consent.
  */
 export function GateForm({
   sessionId,
   phase,
   revenueBand,
+  className = '',
 }: {
   sessionId: string;
   phase: number;
   revenueBand?: string | null;
+  className?: string;
 }) {
   const router = useRouter();
   const [phone, setPhone] = useState('');
@@ -76,7 +78,7 @@ export function GateForm({
   };
 
   return (
-    <form noValidate onSubmit={onSubmit} className="relative flex flex-col gap-5 max-w-[480px]">
+    <form noValidate onSubmit={onSubmit} className={`relative flex flex-col gap-5 max-w-[480px] ${className}`}>
       <input
         type="text"
         name="company_url"

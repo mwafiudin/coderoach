@@ -37,6 +37,7 @@ import { track } from '@/lib/opsscore/track';
 import { AnimatedCount } from '../../_components/ui/AnimatedCount';
 import { OctagonMark } from '../../_components/ui/OctagonMark';
 import { ScoreBar } from './ScoreBar';
+import { SectionScene } from './SectionScene';
 
 const STORAGE_KEY = `opsscore.quiz.v${INSTRUMENT_VERSION}`;
 const LAST_RESULT_KEY = 'opsscore.lastResult';
@@ -575,6 +576,7 @@ export function Quiz() {
       content = (
         <FeedbackScreen
           chip={chip}
+          section={step.section}
           title={SECTION_LABELS[step.section]}
           scores={step.areas.map((area) => ({ area, score: areaScore(area, answers) ?? 0 }))}
           nextLabel={nextSection ? QUIZ_COPY.nextUp(SECTION_LABELS[nextSection]) : QUIZ_COPY.seeResult}
@@ -1040,6 +1042,7 @@ function ChoiceScreen({
 
 function FeedbackScreen({
   chip,
+  section,
   title,
   scores,
   nextLabel,
@@ -1047,6 +1050,7 @@ function FeedbackScreen({
   onNext,
 }: {
   chip: React.ReactNode;
+  section: SectionId;
   title: string;
   scores: Array<{ area: AreaId; score: number }>;
   nextLabel: string;
@@ -1054,33 +1058,28 @@ function FeedbackScreen({
   onNext: () => void;
 }) {
   const [only] = scores;
+  const sceneScores = Object.fromEntries(scores.map(({ area, score }) => [area, score]));
   return (
     // Tapping anywhere continues (brief §7); the footer buttons stay for keyboard and screen readers.
     <div className="flex flex-col cursor-pointer" onClick={onNext}>
       {chip}
-      <div className="mt-4 sm:mt-5 relative overflow-hidden rounded-2xl bg-ink text-paper px-5 py-5 sm:px-8 sm:py-7 shadow-[0_30px_60px_-30px_rgba(8,9,10,0.65)]">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-[0.22] bg-no-repeat"
-          style={{
-            backgroundImage: 'url(/assets/texture-halftone-dark.png)',
-            backgroundPosition: 'right -20% center',
-            backgroundSize: '90% auto',
-          }}
-        />
-        <p className="relative m-0 font-mono text-[11px] uppercase tracking-wider text-mist-500">
-          [ {QUIZ_COPY.feedbackMarker} ]
-        </p>
+      <div className="mt-4 sm:mt-5 relative overflow-hidden rounded-2xl bg-ink text-paper px-5 pt-4 pb-5 sm:px-8 sm:pt-6 sm:pb-7 shadow-[0_30px_60px_-30px_rgba(8,9,10,0.65)]">
+        <SectionScene section={section} scores={sceneScores} className="block w-full h-[72px] sm:h-[104px]" />
+        {/* The chip above already names a combined section, so its card gives the room to the area rows. */}
         <h1
           ref={headingRef}
           tabIndex={-1}
-          className="relative mt-2 text-[26px] sm:text-[36px] leading-[1.08] tracking-[-0.025em] font-bold outline-none"
+          className={
+            scores.length === 1
+              ? 'relative mt-3 text-[26px] sm:text-[36px] leading-[1.08] tracking-[-0.025em] font-bold outline-none'
+              : 'sr-only'
+          }
         >
           {title}
         </h1>
         {scores.length === 1 ? (
           <>
-            <div className="relative mt-5 flex items-baseline gap-2">
+            <div className="relative mt-4 sm:mt-5 flex items-baseline gap-2">
               <span className="text-[64px] sm:text-[80px] font-bold leading-none tracking-[-0.04em] tabular">
                 <AnimatedCount value={String(only.score)} duration={700} />
               </span>
@@ -1098,7 +1097,7 @@ function FeedbackScreen({
           // Combined section: one row per scoring area, revealed one after the other.
           <ul className="relative list-none p-0 m-0 mt-3 flex flex-col divide-y divide-shadow-700">
             {scores.map(({ area, score }, i) => (
-              <li key={area} className="py-3.5 first:pt-1 last:pb-0">
+              <li key={area} className="py-3 first:pt-1 last:pb-0">
                 <div className="flex items-baseline justify-between gap-3">
                   <h2 className="m-0 text-[15px] sm:text-[18px] font-semibold text-paper/90">{AREA_LABELS[area]}</h2>
                   <span className="shrink-0 text-[34px] sm:text-[44px] font-bold leading-none tracking-[-0.03em] tabular">
@@ -1106,9 +1105,9 @@ function FeedbackScreen({
                     <span className="ml-1 text-[12px] font-normal tracking-normal text-mist-500">/100</span>
                   </span>
                 </div>
-                <ScoreBar value={score} className="mt-2.5" animate index={i * 4} tone="dark" />
+                <ScoreBar value={score} className="mt-2" animate index={i * 4} tone="dark" />
                 <p
-                  className="ops-fade-up mt-2.5 mb-0 text-[14px] sm:text-[16px] leading-[1.45] text-paper/85 text-pretty"
+                  className="ops-fade-up mt-2 mb-0 text-[14px] sm:text-[16px] leading-[1.45] text-paper/85 text-pretty"
                   style={{ '--ops-delay': `${450 + i * 250}ms` } as CSSProperties}
                 >
                   {AREA_FEEDBACK[area][bandFor(score)]}
@@ -1118,7 +1117,7 @@ function FeedbackScreen({
           </ul>
         )}
       </div>
-      <p className="mt-3 sm:mt-4 mb-0 text-[13px] font-semibold text-ink inline-flex items-center gap-2">
+      <p className="mt-2.5 sm:mt-4 mb-0 text-[13px] font-semibold text-ink inline-flex items-center gap-2">
         {nextLabel}
         <Arrow />
       </p>

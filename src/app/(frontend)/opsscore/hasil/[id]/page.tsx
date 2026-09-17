@@ -10,6 +10,7 @@ import { GATE_COPY, PHASE_COPY, RESULT_COPY } from '@/lib/opsscore/copy';
 import type { Scores } from '@/lib/opsscore/scoring';
 import { AreaScoreList } from '../../_components/AreaScoreList';
 import { GateForm } from '../../_components/GateForm';
+import { LockedDetails, LockedScore } from '../../_components/LockedResult';
 import { PhaseLadder } from '../../_components/PhaseLadder';
 import { Report } from '../../_components/Report';
 import { CompleteTracker } from '../../_components/Trackers';
@@ -61,6 +62,48 @@ export default async function OpsScoreResultPage({ params }: { params: Promise<{
   });
   const lead = docs[0];
 
+  // The gate comes first: until WhatsApp is given, the page shows a locked preview and no scores.
+  if (session.status !== 'gated') {
+    return (
+      <SectionShell>
+        <CompleteTracker sessionId={session.id} phase={scores.phase} total={scores.total} />
+        <main>
+          <section className="relative overflow-hidden pt-10 lg:pt-16 pb-16 lg:pb-24">
+            <div
+              aria-hidden
+              className="absolute inset-0 opacity-40 pointer-events-none bg-cover bg-center"
+              style={{ backgroundImage: 'url(/assets/bg-grid-clean.png)' }}
+            />
+            {/* Phones read title → locked score → form → what unlocks; desktop keeps the preview on the right. */}
+            <div className="relative max-w-[1180px] mx-auto px-8 flex flex-col gap-8 lg:grid lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:gap-x-20 lg:gap-y-6">
+              <header className="lg:col-start-1 lg:row-start-1">
+                <span className="font-mono text-xs font-medium tracking-wider text-mist-600 uppercase tabular">
+                  {RESULT_COPY.marker}
+                </span>
+                <h1 className="text-[clamp(36px,5vw,56px)] leading-[1.02] tracking-[-0.025em] font-bold mt-4 mb-0 text-balance">
+                  {GATE_COPY.title(lead?.brand)}
+                </h1>
+              </header>
+              <div className="contents lg:flex lg:flex-col lg:gap-10 lg:col-start-2 lg:row-start-1 lg:row-span-2">
+                <LockedScore brand={lead?.brand} className="order-2 lg:order-none" />
+                <LockedDetails areas={scores.areas} className="order-4 lg:order-none" />
+              </div>
+              <div className="order-3 lg:order-none lg:col-start-1 lg:row-start-2">
+                <p className="m-0 text-[17px] leading-[1.55] text-mist-600 max-w-[460px] text-pretty">{GATE_COPY.intro}</p>
+                <GateForm
+                  sessionId={session.id}
+                  phase={scores.phase}
+                  revenueBand={lead?.revenueBand}
+                  className="mt-6"
+                />
+              </div>
+            </div>
+          </section>
+        </main>
+      </SectionShell>
+    );
+  }
+
   return (
     <SectionShell>
       <CompleteTracker sessionId={session.id} phase={scores.phase} total={scores.total} />
@@ -106,26 +149,7 @@ export default async function OpsScoreResultPage({ params }: { params: Promise<{
           </div>
         </section>
 
-        {session.status === 'gated' ? (
-          <Report sessionId={session.id} shareSlug={session.shareSlug} scores={scores} />
-        ) : (
-          <section className="py-16 lg:py-24 bg-paper-50 border-b border-paper-200">
-            <div className="max-w-[1180px] mx-auto px-8 grid grid-cols-1 lg:grid-cols-[1fr_1.25fr] gap-10 lg:gap-20">
-              <div>
-                <span className="font-mono text-xs font-medium tracking-wider text-mist-600 uppercase tabular">
-                  {GATE_COPY.marker}
-                </span>
-                <h2 className="text-[clamp(32px,4vw,48px)] leading-[1.05] tracking-[-0.025em] font-bold mt-4 mb-0">
-                  {GATE_COPY.title}
-                </h2>
-                <p className="mt-4 mb-0 text-[17px] leading-[1.55] text-mist-600 max-w-[460px] text-pretty">
-                  {GATE_COPY.intro}
-                </p>
-              </div>
-              <GateForm sessionId={session.id} phase={scores.phase} revenueBand={lead?.revenueBand} />
-            </div>
-          </section>
-        )}
+        <Report sessionId={session.id} shareSlug={session.shareSlug} scores={scores} />
       </main>
     </SectionShell>
   );

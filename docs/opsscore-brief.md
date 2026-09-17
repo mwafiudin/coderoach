@@ -9,6 +9,8 @@
 > - Setiap pertanyaan punya satu contoh atau analogi di bawahnya, dan layar pembuka menjelaskan skala "di mana data hidup" (bagian 4 dan 7).
 > - Quiz dikelompokkan jadi 6 bagian: Intro, Penjualan & prospek, Operasional & stok, Keuangan & kas, Tim & peran owner, Digitalisasi & AI. Skor dan report tetap per 8 area (bagian 7).
 > - Lima pertanyaan terpanjang (A4, B3, C2, F1, H2) dipendekkan; detailnya pindah ke kotak contoh. Id dan opsi tidak berubah (bagian 4).
+> - Gate dipindah ke depan hasil: setelah quiz, pengunjung melihat pratinjau hasil yang terkunci, lalu skor, fase, dan report terbuka setelah nomor WA diisi (bagian 2 dan 8).
+> - Kartu skor per bagian memakai adegan animasi yang menggambarkan kata kunci bagian; kondisi adegan mengikuti skor (bagian 7).
 >
 > Bagian yang berubah ditandai *(revisi)*.
 
@@ -58,26 +60,27 @@ MVP dikerjakan dalam tiga milestone berurutan (detail di bagian 11); yang di kol
 
 Gate diletakkan setelah hasil ringkas tampil, bukan sebelum quiz: pengunjung sudah investasi 5 menit dan sudah melihat fasenya sebelum diminta nomor WA.
 
+*(revisi)* Gate kini tampil sebelum hasil. Selama quiz pengunjung sudah melihat skor tiap bagian, jadi di akhir mereka melihat pratinjau yang terkunci (skor buram, tangga fase tanpa penanda, daftar isi report, bar area buram) dan membuka semuanya dengan nomor WA. Risikonya, sebagian pengunjung pergi tanpa hasil; bandingkan gate rate dengan completion rate setelah rilis.
+
 *(revisi)* Profil usaha tidak lagi diminta di gate. Nama dan nama usaha dibuka di awal quiz (bagian Intro), lalu bidang usaha, omset, dan jumlah karyawan masing-masing jadi layar pembuka bagian yang relevan. Gate tinggal nomor WA dan persetujuan.
 
 ```mermaid
 flowchart LR
   A[Ads / organik / SEO] --> B[/opsscore<br/>landing/]
   B --> C[/opsscore/mulai<br/>Intro + quiz 27 soal/]
-  C --> D[Hasil ringkas<br/>skor + fase]
-  D --> E[Gate<br/>nomor WA]
-  E --> F[/opsscore/hasil/id<br/>report lengkap + PDF/]
+  C --> D[Pratinjau terkunci<br/>+ gate nomor WA]
+  D --> F[/opsscore/hasil/id<br/>skor, fase, report + PDF/]
   F --> G[Follow-up manual<br/>dari admin]
   G --> H[Brief / discovery]
 ```
 
-Hasil ringkas (D) tampil tanpa gate; report lengkap (F) dan tombol PDF hanya setelah gate terisi.
+*(revisi)* Sebelum gate terisi, `/opsscore/hasil/[id]` hanya menampilkan pratinjau terkunci (D). Skor, fase, skor area, report lengkap, dan tombol PDF (F) tampil setelah gate.
 
 | Route | Isi | Akses |
 | --- | --- | --- |
 | `/opsscore` | Landing: headline, 3 bullet apa yang didapat, durasi ±5 menit, CTA "Mulai cek" | Publik, terindeks |
 | `/opsscore/mulai` | Quiz; state di client, autosave ke localStorage + session di DB | Publik, noindex |
-| `/opsscore/hasil/[id]` | Hasil ringkas → gate → report lengkap. `id` = UUID sesi, tidak bisa ditebak | Publik via link, noindex |
+| `/opsscore/hasil/[id]` | *(revisi)* Pratinjau terkunci + gate → hasil dan report lengkap. `id` = UUID sesi, tidak bisa ditebak | Publik via link, noindex |
 | `/opsscore/r/[slug]` | Halaman share publik: skor + fase saja, tanpa nama, WA, brand, omset | Publik, boleh terindeks, ada CTA "Cek bisnismu" |
 | `/opsscore/hasil/[id]/print` | Versi cetak report; dipanggil `window.print()` dari tombol "Simpan PDF" | Sama dengan `/hasil/[id]` |
 | `/admin/opsscore` | Daftar lead + detail per sesi | Terproteksi (lihat bagian 9) |
@@ -236,6 +239,7 @@ Mobile-first: mayoritas pengunjung datang dari ads di ponsel. Tiap layar harus s
 - Memilih opsi pada `scale`/`single`/`branch` langsung lanjut ke pertanyaan berikutnya setelah jeda 250 ms; `multi` dan `volume` butuh tombol "Lanjut". Selalu ada tombol "Kembali".
 - Progress ditampilkan per bagian, bukan per pertanyaan. *(revisi)* Ada 6 bagian: Intro (nama, nama usaha), Penjualan & prospek (sales), Operasional & stok (ops + stock), Keuangan & kas (finance), Tim & peran owner (people + owner), Digitalisasi & AI (web + ai). Area yang berdekatan digabung supaya quiz terasa lebih pendek; skor, prioritas, dan report tetap per 8 area. Kalau D0 = Tidak, bagian Operasional & stok tetap ada tanpa D1–D2 dan tanpa skor stok.
 - Setelah pertanyaan terakhir tiap bagian, satu layar mini-feedback: nama bagian, lalu untuk tiap area di bagian itu nama area, skor 0–100 sebagai bar, dan kalimat dari `copy.ts` (bagian 6); di bawahnya "Berikutnya: \[bagian berikutnya\]" dan tombol Lanjut *(revisi)*. Layar ini boleh dilewati dengan tap di mana saja.
+- *(revisi)* Kepala kartu skor berisi adegan animasi kecil yang menggambarkan kata kunci bagian, dan kondisinya mengikuti skor: prospek bocor dari corong (Penjualan), laporan lapangan telat dan angka stok berubah-ubah (Operasional & stok), grafik arus kas terputus dan uang jatuh jadi "selisih?" (Keuangan), pertanyaan tim menumpuk di owner atau mengalir ke sistem (Tim & peran owner), pengunjung website hilang di WA pribadi atau masuk CRM yang terbaca AI (Digitalisasi & AI). Di bagian gabungan, tiap elemen mengikuti skor areanya sendiri. SVG biasa tanpa library; gambar diam untuk `prefers-reduced-motion`.
 - Autosave: jawaban dan profil disimpan ke localStorage tiap perubahan, dan disinkronkan diam-diam ke DB tiap satu bagian selesai serta saat tab disembunyikan atau ditutup *(revisi)*. Pengunjung tidak diberi tahu. Buka ulang `/opsscore/mulai` dengan sesi tersimpan → tawarkan "Lanjutkan dari \[bagian\]" atau "Mulai ulang".
 - Tidak ada timer. *(revisi)* Transisi dan umpan balik pilihan maksimal ±300 ms. Animasi sampai ±1 detik hanya boleh di momen skor dan hasil: skor area menghitung naik, konsol "menghitung hasil" (±1,5 detik), dan reveal halaman hasil. Semua animasi mati untuk `prefers-reduced-motion`, tanpa library animasi.
 - Motion yang disetujui *(revisi)*: transisi geser keluar-masuk dengan opsi muncul berurutan; kartu mengecil saat ditekan, border menyala, centang muncul dengan pegas kecil, getar halus di Android; ikon skala bergerak saat dipilih; progress terisi halus dan berdenyut saat bagian selesai; nomor WA terformat otomatis dengan centang saat valid dan tombol menyala saat siap; sapaan setelah nama; skor area menghitung naik; konsol menghitung hasil; reveal hasil (skor naik, penanda tangga fase bergeser, bar area terisi bergantian); kartu report muncul saat di-scroll dengan kotak "Mulai dari sini" disorot.
@@ -249,7 +253,7 @@ Definisi selesai untuk quiz: pengujian manual di Safari iOS dan Chrome Android, 
 
 ## 8. Gate, data model & tracking
 
-**Gate** tampil setelah hasil ringkas, sebagai satu form pendek di halaman yang sama. *(revisi)* Field: nomor WA (wajib, validasi `08xxxxxxxxxx` 10–13 digit, dinormalisasi ke `62…`) dan checkbox persetujuan dihubungi via WA (wajib). Tanpa email. Nama, nama brand/usaha, bidang usaha (Produksi/Manufaktur, Distribusi, Jasa, Retail, Kuliner, Fashion, Kriya, Lainnya), jumlah karyawan (1–5, 6–10, 11–20, 21–50, 51–100, > 100), dan omset per bulan (< 50 jt, 50–100 jt, 100–200 jt, 200–400 jt, 400–800 jt, > 800 jt) dikumpulkan di dalam quiz (bagian 4). Copy di atas form: "Report lengkap dan versi PDF-nya kami buka setelah ini. Kami hubungi lewat WA hanya kalau Anda mau."
+**Gate** *(revisi)* tampil sebelum hasil, di samping pratinjau yang terkunci, sebagai satu form pendek. *(revisi)* Field: nomor WA (wajib, validasi `08xxxxxxxxxx` 10–13 digit, dinormalisasi ke `62…`) dan checkbox persetujuan dihubungi via WA (wajib). Tanpa email. Nama, nama brand/usaha, bidang usaha (Produksi/Manufaktur, Distribusi, Jasa, Retail, Kuliner, Fashion, Kriya, Lainnya), jumlah karyawan (1–5, 6–10, 11–20, 21–50, 51–100, > 100), dan omset per bulan (< 50 jt, 50–100 jt, 100–200 jt, 200–400 jt, 400–800 jt, > 800 jt) dikumpulkan di dalam quiz (bagian 4). *(revisi)* Judul "Hasil {brand} sudah siap"; copy di atas form: "Isi nomor WhatsApp untuk membuka skor, fase, dan report lengkapnya. Kami hubungi lewat WA hanya kalau Anda mau."
 
 **Data model** (asumsi Supabase/Postgres; kalau repo sudah punya DB lain, ikuti yang ada — bagian 10):
 
@@ -267,7 +271,7 @@ RLS: insert/update sesi lewat route handler server dengan service key, bukan dar
 | `assessment_view` | Landing dimuat | utm |
 | `assessment_start` | Klik mulai | session\_id |
 | `assessment_area_done` | *(revisi)* Layar skor bagian tampil, sekali per area di bagian itu. `index` mengikuti urutan tampil (stok 3, keuangan 4), jadi selalu naik sepanjang quiz | area, index |
-| `assessment_complete` | Hasil ringkas tampil | fase, total |
+| `assessment_complete` | *(revisi)* Halaman hasil terkunci tampil setelah quiz | fase, total |
 | `assessment_gate_submit` | Gate terkirim (Meta: `Lead`) | fase, revenue\_band |
 | `assessment_pdf` | Klik simpan PDF | fase |
 | `assessment_cta_brief` | Klik CTA brief | fase, kelas |
