@@ -3,11 +3,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Icon } from '@/lib/icons';
+import { captureAttribution } from '@/lib/opsscore/attribution';
 import { INSTRUMENT_VERSION, productPath } from '@/lib/opsscore/config';
 import { AREA_FEEDBACK, QUIZ_COPY } from '@/lib/opsscore/copy';
 import { buildSteps, progressAreas, stepKey, type Step } from '@/lib/opsscore/flow';
 import { AREA_LABELS, QUESTION_BY_ID, type AreaId, type Question } from '@/lib/opsscore/questions';
 import { areaScore, bandFor, isAnswered, sanitizeAnswers, type Answers } from '@/lib/opsscore/scoring';
+import { track } from '@/lib/opsscore/track';
 import { ScoreBar } from './ScoreBar';
 
 const STORAGE_KEY = `opsscore.quiz.v${INSTRUMENT_VERSION}`;
@@ -89,8 +91,9 @@ export function Quiz() {
   const step: Step | undefined = steps[index];
   const areas = useMemo(() => progressAreas(answers), [answers]);
 
-  // Restore saved progress once.
+  // Restore saved progress once. Ads may link here directly, so attribution is captured here too.
   useEffect(() => {
+    captureAttribution();
     const saved = readStorage<Saved>(STORAGE_KEY);
     setLastResult(readStorage<string>(LAST_RESULT_KEY));
     const savedAnswers = sanitizeAnswers(saved?.answers);
@@ -197,7 +200,11 @@ export function Quiz() {
       void finish();
       return;
     }
-    if (next.kind === 'feedback') void syncAnswers();
+    if (next.kind === 'feedback') {
+      void syncAnswers();
+      const areaIndex = progressAreas(answersRef.current).findIndex((a) => a.id === next.area) + 1;
+      track('assessment_area_done', { area: next.area, index: areaIndex });
+    }
     setDirection(1);
     setCurrent(stepKey(next));
   }, [finish, syncAnswers]);
@@ -252,7 +259,7 @@ export function Quiz() {
     setDirection(1);
     setCurrent(stepKey(buildSteps({})[0]));
     setScreen('step');
-    void ensureSession();
+    void ensureSession().then((id) => track('assessment_start', { session_id: id }));
   }, [ensureSession]);
 
   // Intro after "Kembali" on the first question: keep what was already answered.

@@ -15,3 +15,9 @@ export const PRODUCT_NAME = 'OpsScore';
 export const INSTRUMENT_VERSION = 1;
 
 export const productPath = (path = '') => `/${PRODUCT_SLUG}${path}`;
+
+/** Query string on the share page CTA, so visits from shared results are attributable. */
+export const SHARE_CTA_QUERY = '?utm_source=opsscore_share&utm_medium=referral';
+
+/** Static share images per phase, rendered by scripts/opsscore-og.ts. */
+export const ogImagePath = (phase: number) => `/assets/opsscore/og-fase-${phase}.png`;

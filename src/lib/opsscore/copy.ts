@@ -260,3 +260,82 @@ export const PRINT_COPY = {
   back: 'Kembali ke report', // REVIEW
   hint: 'Di jendela cetak, pilih Simpan sebagai PDF.', // REVIEW
 };
+
+export const SHARE_COPY = {
+  button: 'Bagikan hasil', // REVIEW
+  copied: 'Link tersalin', // REVIEW
+  copyPrompt: 'Salin link ini', // REVIEW
+  shareTitle: 'Hasil OpsScore', // REVIEW
+  shareText: 'Ini fase operasional bisnis kami menurut OpsScore.', // REVIEW
+  metaTitle: (phaseTitle: string) => `${phaseTitle} — hasil OpsScore`, // REVIEW
+  marker: '[ OPSSCORE ] · Hasil yang dibagikan', // REVIEW
+  scoreLabel: 'OpsScore bisnis ini', // REVIEW
+  cta: 'Cek bisnis Anda',
+  ctaNote: '27 pertanyaan, ±5 menit, gratis.', // REVIEW
+};
+
+/** Admin view (/admin/opsscore) — internal, read by the Coderoach team. */
+export const ADMIN_COPY = {
+  navGroup: 'OpsScore',
+  navLink: 'Leads & funnel',
+  title: 'OpsScore',
+  funnelTitle: (days: number) => `${days} hari terakhir`,
+  started: 'Mulai',
+  completed: 'Selesai',
+  gated: 'Isi gate',
+  completionRate: 'Completion rate',
+  gateRate: 'Gate conversion',
+  filters: {
+    qualified: 'Omset ≥ 50 jt',
+    phase: 'Fase',
+    status: 'Status',
+    all: 'Semua',
+    apply: 'Terapkan',
+    reset: 'Reset',
+  },
+  exportCsv: 'Ekspor CSV',
+  leadsCount: (count: number) => `${count} lead`,
+  empty: 'Belum ada lead untuk filter ini.',
+  columns: {
+    date: 'Tanggal',
+    name: 'Nama',
+    brand: 'Brand',
+    phone: 'WA',
+    industry: 'Bidang',
+    employees: 'Karyawan',
+    revenue: 'Omset',
+    phase: 'Fase',
+    total: 'Total',
+    priorities: 'Prioritas',
+    serviceClass: 'Kelas',
+    intent: 'Intent (H3)',
+    source: 'Sumber',
+    status: 'Status',
+    detail: 'Detail',
+  },
+  openDetail: 'Buka',
+  direct: 'langsung',
+  back: '← Semua lead',
+  detailTitle: 'Detail sesi',
+  sessionMeta: 'Sesi',
+  leadTitle: 'Kontak',
+  noLead: 'Belum mengisi gate.',
+  scoresTitle: 'Skor',
+  answersTitle: 'Jawaban mentah',
+  instrumentVersion: (version: number) => `Instrumen v${version}`,
+  statusSaving: 'Menyimpan…',
+  statusError: 'Gagal menyimpan',
+  followup: {
+    new: 'Baru',
+    contacted: 'Sudah dihubungi',
+    qualified: 'Terkualifikasi',
+    not_fit: 'Tidak cocok',
+    converted: 'Converted',
+  } as Record<string, string>,
+  sessionStatus: {
+    started: 'Mulai',
+    completed: 'Selesai',
+    gated: 'Isi gate',
+  } as Record<string, string>,
+  notFound: 'Sesi tidak ditemukan.',
+};

@@ -41,3 +41,30 @@ export function parseAttributionCookie(value: string | undefined): Attribution {
     return {};
   }
 }
+
+const readCookie = (name: string) =>
+  document.cookie
+    .split('; ')
+    .find((part) => part.startsWith(`${name}=`))
+    ?.slice(name.length + 1);
+
+/**
+ * Browser only. Stores UTM params and click ids from the current URL, plus an external referrer.
+ * A new campaign visit overwrites the cookie; a later organic visit does not erase a paid one.
+ */
+export function captureAttribution(): Attribution {
+  const params = new URLSearchParams(window.location.search);
+  const fromUrl = sanitizeAttribution(Object.fromEntries(ATTRIBUTION_KEYS.map((key) => [key, params.get(key)])));
+  const referrer =
+    document.referrer && !document.referrer.startsWith(window.location.origin) ? document.referrer : undefined;
+  const existing = parseAttributionCookie(readCookie(ATTRIBUTION_COOKIE));
+
+  if (!Object.keys(fromUrl).length && (!referrer || Object.keys(existing).length)) return existing;
+
+  const value = sanitizeAttribution({ ...fromUrl, referrer });
+  const secure = window.location.protocol === 'https:' ? '; Secure' : '';
+  document.cookie = `${ATTRIBUTION_COOKIE}=${encodeURIComponent(JSON.stringify(value))}; Max-Age=${
+    ATTRIBUTION_MAX_AGE_DAYS * 24 * 60 * 60
+  }; Path=/; SameSite=Lax${secure}`;
+  return value;
+}

@@ -52,9 +52,14 @@ export default buildConfig({
         Logo: '@/components/admin/Logo',
         Icon: '@/components/admin/Icon',
       },
+      afterNavLinks: ['@/components/admin/OpsScoreNavLink'],
       views: {
         dashboard: {
           Component: '@/components/admin/Dashboard',
+        },
+        opsscore: {
+          Component: '@/components/admin/OpsScoreView',
+          path: '/opsscore',
         },
       },
     },

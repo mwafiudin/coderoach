@@ -11,6 +11,7 @@ import { AreaScoreList } from '../../_components/AreaScoreList';
 import { GateForm } from '../../_components/GateForm';
 import { PhaseLadder } from '../../_components/PhaseLadder';
 import { Report } from '../../_components/Report';
+import { CompleteTracker } from '../../_components/Trackers';
 
 export const dynamic = 'force-dynamic';
 
@@ -52,6 +53,7 @@ export default async function OpsScoreResultPage({ params }: { params: Promise<{
 
   return (
     <SectionShell>
+      <CompleteTracker sessionId={session.id} phase={scores.phase} total={scores.total} />
       <main>
         <section className="relative overflow-hidden pt-12 lg:pt-16 pb-14 lg:pb-20 border-b border-paper-200">
           <div
@@ -95,7 +97,7 @@ export default async function OpsScoreResultPage({ params }: { params: Promise<{
         </section>
 
         {session.status === 'gated' ? (
-          <Report sessionId={session.id} scores={scores} />
+          <Report sessionId={session.id} shareSlug={session.shareSlug} scores={scores} />
         ) : (
           <section className="py-16 lg:py-24 bg-paper-50 border-b border-paper-200">
             <div className="max-w-[1180px] mx-auto px-8 grid grid-cols-1 lg:grid-cols-[1fr_1.25fr] gap-10 lg:gap-20">
@@ -110,7 +112,7 @@ export default async function OpsScoreResultPage({ params }: { params: Promise<{
                   {GATE_COPY.intro}
                 </p>
               </div>
-              <GateForm sessionId={session.id} />
+              <GateForm sessionId={session.id} phase={scores.phase} />
             </div>
           </section>
         )}

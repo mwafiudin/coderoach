@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { GATE_COPY } from '@/lib/opsscore/copy';
 import { normalizePhone } from '@/lib/opsscore/phone';
 import { EMPLOYEE_OPTIONS, INDUSTRY_OPTIONS, REVENUE_OPTIONS, type Option } from '@/lib/opsscore/questions';
+import { track } from '@/lib/opsscore/track';
 import { JUST_GATED_KEY } from './RevealReport';
 
 type Field = 'name' | 'phone' | 'brand' | 'industry' | 'employees' | 'revenue' | 'consent';
@@ -13,7 +14,7 @@ type Errors = Partial<Record<Field, keyof typeof GATE_COPY.errors>>;
 const inputClass =
   'block w-full h-12 px-3.5 rounded-md border bg-paper-100 text-[15px] text-ink placeholder:text-mist-500 outline-none transition-colors focus:border-electric';
 
-export function GateForm({ sessionId }: { sessionId: string }) {
+export function GateForm({ sessionId, phase }: { sessionId: string; phase: number }) {
   const router = useRouter();
   const [values, setValues] = useState({ name: '', phone: '', brand: '', industry: '', employees: '', revenue: '' });
   const [consent, setConsent] = useState(false);
@@ -60,6 +61,7 @@ export function GateForm({ sessionId }: { sessionId: string }) {
       });
       const body = await res.json().catch(() => ({}));
       if (res.ok && body.ok) {
+        track('assessment_gate_submit', { fase: phase, revenue_band: values.revenue });
         try {
           sessionStorage.setItem(JUST_GATED_KEY, sessionId);
         } catch {}
