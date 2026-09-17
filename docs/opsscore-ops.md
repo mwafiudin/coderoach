@@ -108,7 +108,7 @@ Butuh Google Chrome. Kalau Chrome tidak di lokasi default macOS, set `CHROME_PAT
 
 ## Tracking
 
-Isi di environment (Vercel dan `.env.local`):
+Isi di environment (variabel service `web` Railway dan `.env.local`):
 
 ```
 NEXT_PUBLIC_GA4_ID=G-XXXXXXXXXX
