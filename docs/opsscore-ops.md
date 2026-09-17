@@ -142,9 +142,24 @@ Halaman hasil membandingkan skor pengisi dengan rata-rata usaha sebidang ("Gamba
 - Sesi uji atau internal: buka lead-nya di **OpsScore → Assessment leads** dan centang **Exclude from benchmark**.
 - Mengubah estimasi: edit `ESTIMATES` di `benchmark.ts`. Fakta per bidang ada di `INDUSTRY_FACTS`, fakta sekilas di kartu skor quiz di `SECTION_FACTS`, sumber di `BENCHMARK_SOURCES` (semuanya `copy.ts`). Setiap angka baru harus bisa ditunjukkan sumbernya.
 
+## Deploy (Railway)
+
+Situs berjalan di project Railway **coderoach-web** (workspace Coderoach):
+
+| Service | Isi |
+| --- | --- |
+| `web` | Deploy otomatis dari branch `main` di GitHub. Build `npm run build`, start `npm run start`, healthcheck `/opsscore` (`railway.json`). Volume di `/app/media` untuk upload Media. |
+| `Postgres` | PostgreSQL 18, hanya jaringan privat (tanpa akses publik). |
+
+Variabel `web`: `DATABASE_URI` (`${{Postgres.DATABASE_URL}}`), `NEXT_PUBLIC_SERVER_URL` (`https://${{RAILWAY_PUBLIC_DOMAIN}}`), `NEXT_PUBLIC_SITE_NAME`, `PAYLOAD_SECRET`, `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `RESEND_TO_EMAIL`, dan opsional `NEXT_PUBLIC_GA4_ID` serta `NEXT_PUBLIC_META_PIXEL_ID`. Variabel `NEXT_PUBLIC_*` dibaca saat build, jadi redeploy setelah mengubahnya.
+
+- Membuka database dari laptop: `railway connect Postgres` (lewat SSH, butuh SSH key terdaftar di Railway). Untuk operasi panjang seperti restore, jalankan perintahnya di dalam container: `cat file.dump | railway ssh --service Postgres -- 'pg_restore -U postgres -d railway ...'`.
+- Build Next.js membaca data dari database, jadi build gagal kalau `DATABASE_URI` atau `PAYLOAD_SECRET` belum ada.
+
 ## Database
 
-- Skema DB production saat ini diperbarui lewat dev push Payload (menjalankan `npm run dev` dengan `DATABASE_URI` production). Migrasi di `src/migrations/` untuk fork template yang memakai `npm run migrate`.
+- Data dipindah dari Neon ke Postgres Railway pada 2026-09-17 (skema `public` saja; skema `neon_auth` milik Neon tidak dipakai aplikasi).
+- Skema DB diperbarui lewat dev push Payload, bukan migrasi: tabel `payload_migrations` hanya berisi baris `dev`. Jangan jalankan `npm run migrate` di production tanpa menandai migrasi lama sebagai sudah jalan; Payload akan memperingatkan kehilangan data. Untuk perubahan skema, jalankan `npm run dev` dengan `DATABASE_URI` yang mengarah ke database production (lewat `railway connect Postgres --tunnel-only`), atau pindah ke migrasi.
 - Menghapus sesi di admin (**OpsScore → Assessment sessions**) ikut menghapus lead-nya.
 
 ## Sebelum rilis
