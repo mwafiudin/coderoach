@@ -55,6 +55,10 @@ export function buildSteps(answers: Answers): Step[] {
   return steps;
 }
 
+/** Scoring areas in the order their scores are shown. Tracking numbers areas by this order. */
+export const shownAreas = (steps: Step[]): AreaId[] =>
+  steps.flatMap((step) => (step.kind === 'feedback' ? step.areas : []));
+
 /** The section of the furthest saved answer, in quiz order (stock is asked before finance). */
 export function lastAnsweredSection(answers: Answers): SectionId | null {
   const last = buildSteps(answers).findLast((step) => step.kind === 'question' && answers[step.id] !== undefined);

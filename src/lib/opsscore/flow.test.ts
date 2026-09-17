@@ -4,7 +4,15 @@ import { dirname, join } from 'node:path';
 import { describe, test } from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { PRODUCT_SLUG } from './config';
-import { SECTIONS, buildSteps, closesSection, lastAnsweredSection, progressSections, stepKey } from './flow';
+import {
+  SECTIONS,
+  buildSteps,
+  closesSection,
+  lastAnsweredSection,
+  progressSections,
+  shownAreas,
+  stepKey,
+} from './flow';
 import { normalizePhone } from './phone';
 import { formatPhoneInput, isProfileAnswered, sanitizeProfile } from './profile';
 import { QUESTION_BY_ID, promptFor } from './questions';
@@ -49,6 +57,12 @@ describe('quiz flow', () => {
     const steps = buildSteps({ D0: 'ya' });
     const closing = steps.flatMap((step, i) => (closesSection(steps, i) ? [stepKey(step)] : []));
     assert.deepEqual(closing, ['p:brand', 'q:A4', 'q:D2', 'q:C4', 'q:F3', 'q:H3']);
+  });
+
+  test('tracking numbers areas in the order their scores are shown', () => {
+    const shown = (answers: Record<string, string>) => shownAreas(buildSteps(answers)).join(' ');
+    assert.equal(shown({ D0: 'ya' }), 'sales ops stock finance people owner web ai');
+    assert.equal(shown({ D0: 'tidak' }), 'sales ops finance people owner web ai');
   });
 
   test('stopped-at follows quiz order, where stock comes before finance', () => {

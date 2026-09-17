@@ -266,7 +266,7 @@ RLS: insert/update sesi lewat route handler server dengan service key, bukan dar
 | --- | --- | --- |
 | `assessment_view` | Landing dimuat | utm |
 | `assessment_start` | Klik mulai | session\_id |
-| `assessment_area_done` | *(revisi)* Layar skor bagian tampil, sekali per area di bagian itu | area, index |
+| `assessment_area_done` | *(revisi)* Layar skor bagian tampil, sekali per area di bagian itu. `index` mengikuti urutan tampil (stok 3, keuangan 4), jadi selalu naik sepanjang quiz | area, index |
 | `assessment_complete` | Hasil ringkas tampil | fase, total |
 | `assessment_gate_submit` | Gate terkirim (Meta: `Lead`) | fase, revenue\_band |
 | `assessment_pdf` | Klik simpan PDF | fase |

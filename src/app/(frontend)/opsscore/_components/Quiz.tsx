@@ -11,6 +11,7 @@ import {
   buildSteps,
   closesSection,
   progressSections,
+  shownAreas,
   stepKey,
   type SectionId,
   type Step,
@@ -349,8 +350,9 @@ export function Quiz() {
     if (closesSection(list, i)) void save();
     if (next.kind === 'feedback') {
       // Events stay per scoring area (brief §8), even though the quiz shows them per section.
-      const scored = AREAS.filter((a) => !isAreaSkipped(a.id, answersRef.current)).map((a) => a.id);
-      for (const area of next.areas) track('assessment_area_done', { area, index: scored.indexOf(area) + 1 });
+      // The index follows the order areas are shown in, so it keeps rising through a funnel.
+      const shown = shownAreas(list);
+      for (const area of next.areas) track('assessment_area_done', { area, index: shown.indexOf(area) + 1 });
     }
     void transition(1, () => setCurrent(stepKey(next)));
   }, [finish, save, transition]);

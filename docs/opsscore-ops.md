@@ -116,7 +116,7 @@ Tanpa ID, script tidak dimuat dan semua event diam-diam dilewati. Di mode dev se
 | --- | --- | --- |
 | `assessment_view` | Landing dimuat | utm_source, utm_medium, utm_campaign |
 | `assessment_start` | Klik Mulai di quiz | session_id |
-| `assessment_area_done` | Layar skor bagian tampil, sekali per area di bagian itu | area, index |
+| `assessment_area_done` | Layar skor bagian tampil, sekali per area di bagian itu. `index` mengikuti urutan tampil (stok 3, keuangan 4; tanpa stok, keuangan 3) | area, index |
 | `assessment_complete` | Hasil ringkas tampil (sekali per sesi) | fase, total |
 | `assessment_gate_submit` | Gate terkirim — di Meta dikirim sebagai `Lead` | fase, revenue_band |
 | `assessment_pdf` | Klik Simpan PDF | fase |
