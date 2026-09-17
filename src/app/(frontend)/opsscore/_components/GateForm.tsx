@@ -4,19 +4,28 @@ import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { GATE_COPY } from '@/lib/opsscore/copy';
 import { normalizePhone } from '@/lib/opsscore/phone';
-import { EMPLOYEE_OPTIONS, INDUSTRY_OPTIONS, REVENUE_OPTIONS, type Option } from '@/lib/opsscore/questions';
+import { formatPhoneInput } from '@/lib/opsscore/profile';
 import { track } from '@/lib/opsscore/track';
 import { JUST_GATED_KEY } from './RevealReport';
 
-type Field = 'name' | 'phone' | 'brand' | 'industry' | 'employees' | 'revenue' | 'consent';
+type Field = 'phone' | 'consent';
 type Errors = Partial<Record<Field, keyof typeof GATE_COPY.errors>>;
 
-const inputClass =
-  'block w-full h-12 px-3.5 rounded-md border bg-paper-100 text-[15px] text-ink placeholder:text-mist-500 outline-none transition-colors focus:border-electric';
-
-export function GateForm({ sessionId, phase }: { sessionId: string; phase: number }) {
+/**
+ * The gate. Name, business, industry, revenue, and team size were collected during the quiz,
+ * so the last thing asked is WhatsApp and consent.
+ */
+export function GateForm({
+  sessionId,
+  phase,
+  revenueBand,
+}: {
+  sessionId: string;
+  phase: number;
+  revenueBand?: string | null;
+}) {
   const router = useRouter();
-  const [values, setValues] = useState({ name: '', phone: '', brand: '', industry: '', employees: '', revenue: '' });
+  const [phone, setPhone] = useState('');
   const [consent, setConsent] = useState(false);
   const [honeypot, setHoneypot] = useState('');
   const [errors, setErrors] = useState<Errors>({});
@@ -24,44 +33,34 @@ export function GateForm({ sessionId, phase }: { sessionId: string; phase: numbe
   const [submitting, setSubmitting] = useState(false);
   const [refreshing, startRefresh] = useTransition();
 
-  const set = (field: keyof typeof values) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setValues((v) => ({ ...v, [field]: e.target.value }));
-    setErrors((prev) => ({ ...prev, [field]: undefined }));
-  };
-
-  const validate = (): Errors => {
-    const next: Errors = {};
-    if (!values.name.trim()) next.name = 'required';
-    if (!values.phone.trim()) next.phone = 'required';
-    else if (!normalizePhone(values.phone)) next.phone = 'phone';
-    if (!values.brand.trim()) next.brand = 'required';
-    if (!values.industry) next.industry = 'required';
-    if (!values.employees) next.employees = 'required';
-    if (!values.revenue) next.revenue = 'required';
-    if (!consent) next.consent = 'consent';
-    return next;
-  };
+  const phoneValid = Boolean(normalizePhone(phone));
+  const ready = phoneValid && consent;
+  const busy = submitting || refreshing;
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (submitting) return;
-    const found = validate();
+    if (busy) return;
+    const found: Errors = {};
+    if (!phone.trim()) found.phone = 'required';
+    else if (!phoneValid) found.phone = 'phone';
+    if (!consent) found.consent = 'consent';
     setErrors(found);
     setFormError(null);
     if (Object.keys(found).length) {
       document.getElementById(`gate-${Object.keys(found)[0]}`)?.focus();
       return;
     }
+
     setSubmitting(true);
     try {
       const res = await fetch(`/api/opsscore/sessions/${sessionId}/gate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...values, consent, company_url: honeypot }),
+        body: JSON.stringify({ phone, consent, company_url: honeypot }),
       });
       const body = await res.json().catch(() => ({}));
       if (res.ok && body.ok) {
-        track('assessment_gate_submit', { fase: phase, revenue_band: values.revenue });
+        track('assessment_gate_submit', { fase: phase, revenue_band: revenueBand });
         try {
           sessionStorage.setItem(JUST_GATED_KEY, sessionId);
         } catch {}
@@ -76,10 +75,8 @@ export function GateForm({ sessionId, phase }: { sessionId: string; phase: numbe
     setSubmitting(false);
   };
 
-  const busy = submitting || refreshing;
-
   return (
-    <form noValidate onSubmit={onSubmit} className="relative grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-5">
+    <form noValidate onSubmit={onSubmit} className="relative flex flex-col gap-5 max-w-[480px]">
       <input
         type="text"
         name="company_url"
@@ -90,51 +87,43 @@ export function GateForm({ sessionId, phase }: { sessionId: string; phase: numbe
         aria-hidden
         className="absolute -left-[9999px] w-px h-px opacity-0 pointer-events-none"
       />
-      <TextField id="name" label={GATE_COPY.fields.name} error={errors.name}>
-        <input
-          id="gate-name"
-          type="text"
-          autoComplete="name"
-          placeholder={GATE_COPY.placeholders.name}
-          value={values.name}
-          onChange={set('name')}
-          aria-invalid={Boolean(errors.name)}
-          aria-describedby={errors.name ? 'gate-name-error' : undefined}
-          className={`${inputClass} ${errors.name ? 'border-error' : 'border-paper-200'}`}
-        />
-      </TextField>
-      <TextField id="phone" label={GATE_COPY.fields.phone} error={errors.phone}>
-        <input
-          id="gate-phone"
-          type="tel"
-          inputMode="tel"
-          autoComplete="tel"
-          placeholder={GATE_COPY.placeholders.phone}
-          value={values.phone}
-          onChange={set('phone')}
-          aria-invalid={Boolean(errors.phone)}
-          aria-describedby={errors.phone ? 'gate-phone-error' : undefined}
-          className={`${inputClass} tabular ${errors.phone ? 'border-error' : 'border-paper-200'}`}
-        />
-      </TextField>
-      <TextField id="brand" label={GATE_COPY.fields.brand} error={errors.brand} wide>
-        <input
-          id="gate-brand"
-          type="text"
-          autoComplete="organization"
-          placeholder={GATE_COPY.placeholders.brand}
-          value={values.brand}
-          onChange={set('brand')}
-          aria-invalid={Boolean(errors.brand)}
-          aria-describedby={errors.brand ? 'gate-brand-error' : undefined}
-          className={`${inputClass} ${errors.brand ? 'border-error' : 'border-paper-200'}`}
-        />
-      </TextField>
-      <SelectField id="industry" label={GATE_COPY.fields.industry} options={INDUSTRY_OPTIONS} value={values.industry} onChange={set('industry')} error={errors.industry} wide />
-      <SelectField id="employees" label={GATE_COPY.fields.employees} options={EMPLOYEE_OPTIONS} value={values.employees} onChange={set('employees')} error={errors.employees} />
-      <SelectField id="revenue" label={GATE_COPY.fields.revenue} options={REVENUE_OPTIONS} value={values.revenue} onChange={set('revenue')} error={errors.revenue} />
 
-      <div className="sm:col-span-2">
+      <div>
+        <label htmlFor="gate-phone" className="block text-[13px] font-semibold text-ink mb-1.5">
+          {GATE_COPY.phoneLabel}
+        </label>
+        <div className="relative">
+          <input
+            id="gate-phone"
+            type="tel"
+            inputMode="tel"
+            autoComplete="tel"
+            placeholder={GATE_COPY.phonePlaceholder}
+            value={phone}
+            onChange={(e) => {
+              setPhone(formatPhoneInput(e.target.value));
+              setErrors((prev) => ({ ...prev, phone: undefined }));
+            }}
+            aria-invalid={Boolean(errors.phone)}
+            aria-describedby={errors.phone ? 'gate-phone-error' : undefined}
+            className={`block w-full h-14 pl-4 pr-12 rounded-md border bg-paper-100 text-[18px] tabular tracking-[0.01em] text-ink placeholder:text-mist-500 outline-none transition-[border-color,box-shadow] duration-200 focus:shadow-[0_0_0_3px_rgba(44,112,254,0.14)] ${
+              errors.phone ? 'border-error' : phoneValid ? 'border-success' : 'border-paper-200 focus:border-electric'
+            }`}
+          />
+          {phoneValid && (
+            <span className="absolute right-3.5 top-1/2 -translate-y-1/2" aria-hidden>
+              <span className="ops-pop w-6 h-6 rounded-full bg-success text-paper grid place-items-center">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg>
+              </span>
+            </span>
+          )}
+        </div>
+        {errors.phone && <FieldError id="gate-phone-error">{GATE_COPY.errors[errors.phone]}</FieldError>}
+      </div>
+
+      <div>
         <label htmlFor="gate-consent" className="flex items-start gap-3 cursor-pointer">
           <input
             id="gate-consent"
@@ -153,11 +142,16 @@ export function GateForm({ sessionId, phase }: { sessionId: string; phase: numbe
         {errors.consent && <FieldError id="gate-consent-error">{GATE_COPY.errors[errors.consent]}</FieldError>}
       </div>
 
-      <div className="sm:col-span-2 flex flex-col gap-3 pt-1">
+      <div className="flex flex-col gap-3 pt-1">
         <button
           type="submit"
           disabled={busy}
-          className="self-start h-[52px] px-[22px] rounded-md bg-electric text-paper text-[15px] font-semibold inline-flex items-center gap-2 hover:bg-[#2562E0] transition-colors disabled:opacity-60 disabled:cursor-wait"
+          aria-disabled={!ready}
+          className={`self-start h-[52px] px-[22px] rounded-md text-[15px] font-semibold inline-flex items-center gap-2 transition-[background-color,color,box-shadow,transform] duration-200 disabled:cursor-wait ${
+            ready
+              ? 'bg-electric text-paper shadow-[0_10px_28px_-12px_rgba(44,112,254,0.75)] hover:bg-[#2562E0] active:scale-[0.98]'
+              : 'bg-paper-200 text-mist-600'
+          }`}
         >
           {busy ? GATE_COPY.submitting : GATE_COPY.submit}
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -171,76 +165,6 @@ export function GateForm({ sessionId, phase }: { sessionId: string; phase: numbe
         )}
       </div>
     </form>
-  );
-}
-
-function TextField({
-  id,
-  label,
-  error,
-  wide,
-  children,
-}: {
-  id: Field;
-  label: string;
-  error?: keyof typeof GATE_COPY.errors;
-  wide?: boolean;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className={wide ? 'sm:col-span-2' : undefined}>
-      <label htmlFor={`gate-${id}`} className="block text-[13px] font-semibold text-ink mb-1.5">
-        {label}
-      </label>
-      {children}
-      {error && <FieldError id={`gate-${id}-error`}>{GATE_COPY.errors[error]}</FieldError>}
-    </div>
-  );
-}
-
-function SelectField({
-  id,
-  label,
-  options,
-  value,
-  onChange,
-  error,
-  wide,
-}: {
-  id: Field;
-  label: string;
-  options: Option[];
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  error?: keyof typeof GATE_COPY.errors;
-  wide?: boolean;
-}) {
-  return (
-    <TextField id={id} label={label} error={error} wide={wide}>
-      <select
-        id={`gate-${id}`}
-        value={value}
-        onChange={onChange}
-        aria-invalid={Boolean(error)}
-        aria-describedby={error ? `gate-${id}-error` : undefined}
-        className={`${inputClass} appearance-none pr-10 bg-no-repeat bg-[right_0.9rem_center] bg-[length:14px] ${
-          value ? '' : 'text-mist-500'
-        } ${error ? 'border-error' : 'border-paper-200'}`}
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237A767C' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E\")",
-        }}
-      >
-        <option value="" disabled>
-          {GATE_COPY.selectPlaceholder}
-        </option>
-        {options.map((o) => (
-          <option key={o.id} value={o.id} className="text-ink">
-            {o.label}
-          </option>
-        ))}
-      </select>
-    </TextField>
   );
 }
 

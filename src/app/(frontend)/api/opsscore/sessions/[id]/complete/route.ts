@@ -1,12 +1,13 @@
 import type { NextRequest } from 'next/server';
 import { getPayload } from 'payload';
 import config from '@payload-config';
-import { SESSIONS, findSession, json, rateLimited, readJson } from '@/lib/opsscore/api';
+import { SESSIONS, findSession, json, rateLimited, readJson, upsertLead } from '@/lib/opsscore/api';
+import { sanitizeProfile } from '@/lib/opsscore/profile';
 import { missingAnswers, sanitizeAnswers, scoreAnswers } from '@/lib/opsscore/scoring';
 
 /**
- * Scores a finished quiz on the server. Accepts the final answers in the body so the last area does
- * not depend on a separate save. Gated sessions keep their result.
+ * Scores a finished quiz on the server. Takes the final answers and profile in the body so the last
+ * section does not depend on a separate save. Team size is known by now, so the service class is final.
  */
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const limited = rateLimited(req, 'opsscore:complete', 30);
@@ -27,7 +28,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     const missing = missingAnswers(answers);
     if (missing.length) return json({ ok: false, code: 'incomplete', missing }, 422);
 
-    const scores = scoreAnswers(answers);
+    const lead = await upsertLead(payload, id, sanitizeProfile(body.profile));
+    const scores = scoreAnswers(answers, { employees: lead?.employees ?? undefined });
     await payload.update({
       collection: SESSIONS,
       id,

@@ -4,25 +4,63 @@ import { dirname, join } from 'node:path';
 import { describe, test } from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { PRODUCT_SLUG } from './config';
-import { buildSteps, progressAreas, stepKey } from './flow';
+import { buildSteps, closesSection, progressSections, stepKey } from './flow';
 import { normalizePhone } from './phone';
+import { formatPhoneInput, isProfileAnswered, sanitizeProfile } from './profile';
+import { QUESTION_BY_ID, promptFor } from './questions';
 
 describe('quiz flow', () => {
-  test('27 questions and 8 feedback screens when the business holds stock', () => {
-    const steps = buildSteps({ D0: 'ya' });
-    assert.equal(steps.filter((s) => s.kind === 'question').length, 27);
-    assert.equal(steps.filter((s) => s.kind === 'feedback').length, 8);
-    assert.equal(stepKey(steps[0]), 'q:A1');
-    assert.equal(stepKey(steps[4]), 'f:sales');
-    assert.equal(stepKey(steps[steps.length - 1]), 'f:ai');
+  const keys = (answers: Record<string, string>) => buildSteps(answers).map(stepKey);
+
+  test('opens with name and business name, then weaves profile questions into their sections', () => {
+    const steps = keys({ D0: 'ya' });
+    assert.deepEqual(steps.slice(0, 4), ['p:name', 'p:brand', 'p:industry', 'q:A1']);
+    assert.equal(steps.indexOf('p:revenue') + 1, steps.indexOf('q:C1'));
+    assert.equal(steps.indexOf('p:employees') + 1, steps.indexOf('q:E1'));
+    assert.equal(steps.length, 27 + 5 + 8);
+    assert.equal(steps[steps.length - 1], 'f:ai');
+    assert.ok(!steps.includes('p:phone'));
   });
 
   test('D0 = Tidak drops D1, D2, the stock feedback, and stock from progress', () => {
-    const steps = buildSteps({ D0: 'tidak' }).map(stepKey);
+    const steps = keys({ D0: 'tidak' });
     assert.ok(steps.includes('q:D0'));
     assert.ok(!steps.includes('q:D1') && !steps.includes('q:D2') && !steps.includes('f:stock'));
-    assert.equal(progressAreas({ D0: 'tidak' }).length, 7);
-    assert.equal(progressAreas({}).length, 8);
+    assert.equal(progressSections({ D0: 'tidak' }).length, 8);
+    assert.deepEqual(progressSections({}).map((s) => s.id).slice(0, 2), ['kenalan', 'sales']);
+  });
+
+  test('saves silently whenever a section closes', () => {
+    const steps = buildSteps({ D0: 'ya' });
+    const closing = steps.flatMap((step, i) => (closesSection(steps, i) ? [stepKey(step)] : []));
+    assert.deepEqual(closing.slice(0, 3), ['p:brand', 'q:A4', 'q:B4']);
+    assert.equal(closing.length, 1 + 8);
+    assert.equal(closing[closing.length - 1], 'q:H3');
+  });
+});
+
+describe('profile', () => {
+  test('keeps valid fields only, so partial saves never wipe data', () => {
+    assert.deepEqual(
+      sanitizeProfile({ name: '  Wati  ', brand: 'x', industry: 'jasa', revenue: 'lots', employees: '21-50', evil: 1 }),
+      { name: 'Wati', industry: 'jasa', employees: '21-50' },
+    );
+    assert.equal(isProfileAnswered('brand', { brand: 'Kopi Senja' }), true);
+    assert.equal(isProfileAnswered('brand', { brand: ' ' }), false);
+  });
+
+  test('formats WhatsApp numbers while typing', () => {
+    assert.equal(formatPhoneInput('081234567890'), '0812-3456-7890');
+    assert.equal(formatPhoneInput('+62 812 345'), '0812-345');
+    assert.equal(formatPhoneInput('0812'), '0812');
+    assert.equal(formatPhoneInput('08123456789012345'), '0812-3456-78901');
+  });
+
+  test('service businesses get Jasa wording for A4 and H2', () => {
+    const a4 = QUESTION_BY_ID.A4;
+    assert.notEqual(promptFor(a4, 'jasa'), a4.prompt);
+    assert.equal(promptFor(a4, 'kuliner'), a4.prompt);
+    assert.equal(promptFor(QUESTION_BY_ID.A1, 'jasa'), QUESTION_BY_ID.A1.prompt);
   });
 });
 

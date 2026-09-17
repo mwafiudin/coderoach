@@ -3,7 +3,8 @@
  */
 import { randomBytes } from 'node:crypto';
 import { NextResponse, type NextRequest } from 'next/server';
-import type { Payload } from 'payload';
+import type { Payload, RequiredDataFromCollectionSlug } from 'payload';
+import type { Profile } from './profile';
 
 export const SESSIONS = 'assessment-sessions' as const;
 export const LEADS = 'assessment-leads' as const;
@@ -70,3 +71,48 @@ export async function findSession(payload: Payload, id: string) {
 }
 
 export const truncate = (value: string | null | undefined, max = 500) => (value || '').slice(0, max);
+
+type LeadData = RequiredDataFromCollectionSlug<'assessment-leads'>;
+
+/**
+ * Creates or updates the one lead for a session. Only fields present in `profile`/`contact` are written,
+ * so a partial save never clears what an earlier section stored.
+ */
+export async function upsertLead(
+  payload: Payload,
+  sessionId: string,
+  profile: Profile,
+  contact: { phoneE164?: string; consentAt?: string } = {},
+) {
+  const data: Partial<LeadData> = {
+    ...(profile.name ? { name: profile.name } : {}),
+    ...(profile.brand ? { brand: profile.brand } : {}),
+    ...(profile.industry ? { industry: profile.industry as LeadData['industry'] } : {}),
+    ...(profile.employees ? { employees: profile.employees as LeadData['employees'] } : {}),
+    ...(profile.revenue ? { revenueBand: profile.revenue as LeadData['revenueBand'] } : {}),
+    ...contact,
+  };
+  const find = () =>
+    payload
+      .find({ collection: LEADS, where: { session: { equals: sessionId } }, limit: 1, depth: 0, overrideAccess: true })
+      .then((result) => result.docs[0] ?? null);
+
+  const existing = await find();
+  if (!Object.keys(data).length) return existing;
+  if (existing) {
+    return payload.update({ collection: LEADS, id: existing.id, data, overrideAccess: true, depth: 0 });
+  }
+  try {
+    return await payload.create({
+      collection: LEADS,
+      data: { session: sessionId, followupStatus: 'new', ...data },
+      overrideAccess: true,
+      depth: 0,
+    });
+  } catch (err) {
+    // Two saves raced (e.g. section end and tab close); the unique index let one through.
+    const winner = await find();
+    if (!winner) throw err;
+    return payload.update({ collection: LEADS, id: winner.id, data, overrideAccess: true, depth: 0 });
+  }
+}

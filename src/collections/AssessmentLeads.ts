@@ -6,8 +6,10 @@ const isAdmin: Access = ({ req }) => Boolean(req.user);
 const toSelect = (options: Option[]) => options.map((o) => ({ label: o.label, value: o.id }));
 
 /**
- * Contact details from the OpsScore gate — one per session, written only by the gate route handler.
- * Kept apart from AssessmentSessions so the public share page never touches personal data.
+ * Profile and contact details for one OpsScore session, filled in as the quiz goes: name and business
+ * name first, industry/revenue/team size inside their sections, WhatsApp and consent at the gate.
+ * Fields are optional because a visitor can stop anywhere. Written only by the /api/opsscore route
+ * handlers; kept apart from AssessmentSessions so the public share page never touches personal data.
  */
 export const AssessmentLeads: CollectionConfig = {
   slug: 'assessment-leads',
@@ -16,7 +18,7 @@ export const AssessmentLeads: CollectionConfig = {
     group: 'OpsScore',
     useAsTitle: 'brand',
     defaultColumns: ['brand', 'name', 'phoneE164', 'revenueBand', 'followupStatus', 'createdAt'],
-    description: 'Leads from the OpsScore gate. Follow up manually over WhatsApp.',
+    description: 'Profiles and contacts from OpsScore. Only rows with a WhatsApp number can be followed up.',
   },
   access: {
     read: isAdmin,
@@ -34,28 +36,25 @@ export const AssessmentLeads: CollectionConfig = {
       index: true,
       admin: { readOnly: true },
     },
-    { name: 'name', type: 'text', required: true },
+    { name: 'name', type: 'text' },
     {
       name: 'phoneE164',
       type: 'text',
-      required: true,
       index: true,
       admin: { description: 'Normalised to 62… (no plus sign), ready for wa.me links.' },
     },
-    { name: 'brand', type: 'text', required: true },
-    { name: 'industry', type: 'select', required: true, options: toSelect(INDUSTRY_OPTIONS) },
-    { name: 'employees', type: 'select', required: true, options: toSelect(EMPLOYEE_OPTIONS) },
+    { name: 'brand', type: 'text' },
+    { name: 'industry', type: 'select', options: toSelect(INDUSTRY_OPTIONS) },
+    { name: 'employees', type: 'select', options: toSelect(EMPLOYEE_OPTIONS) },
     {
       name: 'revenueBand',
       type: 'select',
-      required: true,
       index: true,
       options: toSelect(REVENUE_OPTIONS),
     },
     {
       name: 'consentAt',
       type: 'date',
-      required: true,
       admin: { readOnly: true, date: { displayFormat: 'yyyy-MM-dd HH:mm' } },
     },
     {

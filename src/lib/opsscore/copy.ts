@@ -185,21 +185,55 @@ export const QUIZ_COPY = {
   nextArea: (area: string) => `Lanjut ke ${area}`,
   seeResult: 'Lihat hasil',
   multiHint: 'Boleh pilih lebih dari satu.', // REVIEW
-  areaCount: (index: number, total: number) => `Area ${index} dari ${total}`,
+  sectionCount: (index: number, total: number) => `Bagian ${index} dari ${total}`, // REVIEW
   questionCount: (index: number, total: number) => `${index}/${total}`,
   feedbackMarker: 'Skor area', // REVIEW
   tapHint: 'Ketuk di mana saja untuk lanjut', // REVIEW
   scoring: 'Menghitung hasil', // REVIEW
+  console: {
+    command: 'opsscore run',
+    read: (count: number) => `membaca ${count} jawaban`, // REVIEW
+    areas: (count: number) => `menghitung ${count} area`, // REVIEW
+    phase: 'fase ditentukan', // REVIEW
+    priorities: 'menyusun prioritas', // REVIEW
+    done: 'report siap', // REVIEW
+  },
   errorTitle: 'Hasil belum bisa dihitung.', // REVIEW
   errorBody: 'Cek koneksi internet, lalu coba lagi. Jawaban Anda tetap tersimpan.', // REVIEW
   retry: 'Coba lagi',
   progressLabel: 'Progres per area', // REVIEW
 };
 
+/** Profile screens inside the quiz. Name and business name open it; the rest open their sections. */
+export const PROFILE_COPY = {
+  name: {
+    prompt: 'Siapa nama Anda?', // REVIEW
+    placeholder: 'Nama Anda', // REVIEW
+  },
+  brand: {
+    greeting: (firstName: string) => `Halo, ${firstName}.`, // REVIEW
+    prompt: 'Apa nama usaha Anda?', // REVIEW
+    placeholder: 'Nama brand atau usaha', // REVIEW
+  },
+  industry: {
+    prompt: (brand?: string) => (brand ? `${brand} bergerak di bidang apa?` : 'Bisnis Anda bergerak di bidang apa?'), // REVIEW
+  },
+  revenue: {
+    prompt: (brand?: string) =>
+      brand ? `Kira-kira berapa omset ${brand} per bulan?` : 'Kira-kira berapa omset bisnis Anda per bulan?', // REVIEW
+    hint: 'Hanya untuk mengelompokkan hasil. Tidak tampil di report.', // REVIEW
+  },
+  employees: {
+    prompt: (brand?: string) =>
+      brand ? `Berapa orang di tim ${brand} sekarang?` : 'Berapa orang di tim Anda sekarang?', // REVIEW
+  },
+};
+
 export const RESULT_COPY = {
   metaTitle: 'Hasil OpsScore', // REVIEW
   marker: '[ OPSSCORE ] · Hasil', // REVIEW
   scoreLabel: 'OpsScore bisnis Anda',
+  scoreLabelFor: (brand?: string | null) => (brand ? `OpsScore ${brand}` : 'OpsScore bisnis Anda'), // REVIEW
   outOf: '/100',
   phaseOf: (phase: number) => `Fase ${phase} dari 4`,
   areasTitle: 'Skor per area', // REVIEW
@@ -213,20 +247,8 @@ export const GATE_COPY = {
   marker: '[ REPORT LENGKAP ]', // REVIEW
   title: 'Buka report lengkap', // REVIEW
   intro: 'Report lengkap dan versi PDF-nya kami buka setelah ini. Kami hubungi lewat WA hanya kalau Anda mau.',
-  fields: {
-    name: 'Nama',
-    phone: 'Nomor WhatsApp',
-    brand: 'Nama brand atau usaha',
-    industry: 'Bidang usaha',
-    employees: 'Jumlah karyawan',
-    revenue: 'Omset per bulan',
-  },
-  placeholders: {
-    name: 'Nama Anda', // REVIEW
-    phone: '08xxxxxxxxxx',
-    brand: 'Nama usaha', // REVIEW
-  },
-  selectPlaceholder: 'Pilih', // REVIEW
+  phoneLabel: 'Nomor WhatsApp',
+  phonePlaceholder: '0812-3456-7890',
   consent: 'Saya setuju dihubungi Coderoach lewat WhatsApp tentang hasil ini.', // REVIEW
   submit: 'Buka report lengkap', // REVIEW
   submitting: 'Membuka report', // REVIEW
@@ -287,6 +309,7 @@ export const ADMIN_COPY = {
   gateRate: 'Gate conversion',
   filters: {
     qualified: 'Omset ≥ 50 jt',
+    withPhone: 'Sudah isi WA',
     phase: 'Fase',
     status: 'Status',
     all: 'Semua',
@@ -308,6 +331,7 @@ export const ADMIN_COPY = {
     total: 'Total',
     priorities: 'Prioritas',
     serviceClass: 'Kelas',
+    progress: 'Progres',
     intent: 'Intent (H3)',
     source: 'Sumber',
     status: 'Status',
@@ -319,7 +343,13 @@ export const ADMIN_COPY = {
   detailTitle: 'Detail sesi',
   sessionMeta: 'Sesi',
   leadTitle: 'Kontak',
-  noLead: 'Belum mengisi gate.',
+  noLead: 'Belum mengisi profil.',
+  progress: {
+    gated: 'Isi WA',
+    completed: 'Selesai, belum isi WA',
+    stoppedAt: (section: string) => `Berhenti di ${section}`,
+  },
+  noPhone: 'Belum isi WA',
   scoresTitle: 'Skor',
   answersTitle: 'Jawaban mentah',
   instrumentVersion: (version: number) => `Instrumen v${version}`,

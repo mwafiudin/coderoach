@@ -170,6 +170,96 @@
 }
 
 /* ============================================================
+   OPSSCORE MOTION — quiz, results, and report (docs/opsscore-brief.md §7).
+   Question transitions run in JS (Web Animations API); everything here is CSS.
+   All of it is switched off for prefers-reduced-motion.
+   ============================================================ */
+@layer utilities {
+  @keyframes opsFadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+  }
+  .ops-fade-up { animation: opsFadeUp 420ms var(--ease-out-quint) both; animation-delay: var(--ops-delay, 0ms); }
+
+  /* Check badge on a picked option or a valid phone number */
+  @keyframes opsPop {
+    0% { opacity: 0; transform: scale(0.5); }
+    70% { opacity: 1; transform: scale(1.12); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  .ops-pop { animation: opsPop 220ms var(--ease-out-quint) both; }
+
+  /* Score bars fill from the left; --ops-i staggers a list */
+  @keyframes opsBarFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  .ops-bar-fill {
+    transform-origin: left center;
+    animation: opsBarFill 700ms var(--ease-out-quint) both;
+    animation-delay: calc(var(--ops-i, 0) * 60ms + var(--ops-delay, 0ms));
+  }
+
+  /* Progress segment of the section that was just finished */
+  @keyframes opsPulse {
+    0% { box-shadow: 0 0 0 0 rgba(44, 112, 254, 0.55); }
+    100% { box-shadow: 0 0 0 6px rgba(44, 112, 254, 0); }
+  }
+  .ops-pulse { animation: opsPulse 650ms var(--ease-out-quint) 1; }
+
+  /* Phase ladder marker slides from Ingatan to the result (end position is set inline) */
+  @keyframes opsLadder { from { transform: translateX(0); } }
+  .ops-ladder-marker { animation: opsLadder 900ms var(--ease-out-quint) 250ms both; }
+
+  /* Scoring console lines */
+  @keyframes opsLineIn {
+    from { opacity: 0; transform: translateX(-4px); }
+    to { opacity: 1; transform: none; }
+  }
+  .ops-line-in { animation: opsLineIn 200ms var(--ease-out-quint) both; }
+
+  /* "Mulai dari sini" box lights up once its report card is revealed */
+  @keyframes opsHighlight {
+    from { background-color: rgba(44, 112, 254, 0.14); border-color: rgba(44, 112, 254, 0.45); }
+  }
+  .reveal-stagger.in .ops-highlight { animation: opsHighlight 1200ms var(--ease-out-quint) 500ms both; }
+  /* Bars inside a list or card that is not revealed yet wait for it */
+  .reveal-stagger:not(.in) .ops-bar-fill { animation-play-state: paused; }
+  /* The area list has eight rows; the site's stagger stops at seven */
+  .reveal-stagger.in > *:nth-child(8) { transition-delay: 560ms; }
+
+  /* Scale icons come alive when picked */
+  @keyframes opsDraw { from { stroke-dashoffset: var(--ops-dash, 24); } to { stroke-dashoffset: 0; } }
+  @keyframes opsRise {
+    from { opacity: 0.2; transform: translateY(3px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes opsIconPop {
+    0% { transform: scale(0.6); }
+    70% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+  }
+  .ops-icon.is-on * { transform-box: fill-box; transform-origin: center; }
+  .ops-icon[data-icon='head'].is-on path:last-of-type { --ops-dash: 10; stroke-dasharray: 10; animation: opsDraw 300ms var(--ease-out-quint) both; }
+  .ops-icon[data-icon='chat'].is-on line { --ops-dash: 8; stroke-dasharray: 8; animation: opsDraw 220ms var(--ease-out-quint) both; }
+  .ops-icon[data-icon='chat'].is-on line:nth-of-type(2) { animation-delay: 90ms; }
+  .ops-icon[data-icon='sheet'].is-on line { --ops-dash: 18; stroke-dasharray: 18; animation: opsDraw 220ms var(--ease-out-quint) both; }
+  .ops-icon[data-icon='sheet'].is-on line:nth-of-type(2) { animation-delay: 60ms; }
+  .ops-icon[data-icon='sheet'].is-on line:nth-of-type(3) { animation-delay: 120ms; }
+  .ops-icon[data-icon='app'].is-on rect { animation: opsIconPop 240ms var(--ease-out-quint) both; }
+  .ops-icon[data-icon='app'].is-on rect:nth-of-type(2) { animation-delay: 40ms; }
+  .ops-icon[data-icon='app'].is-on rect:nth-of-type(3) { animation-delay: 80ms; }
+  .ops-icon[data-icon='app'].is-on rect:nth-of-type(4) { animation-delay: 120ms; }
+  .ops-icon[data-icon='system'].is-on :is(ellipse, path) { animation: opsRise 260ms var(--ease-out-quint) both; }
+  .ops-icon[data-icon='system'].is-on path:nth-of-type(1) { animation-delay: 60ms; }
+  .ops-icon[data-icon='system'].is-on path:nth-of-type(2) { animation-delay: 120ms; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ops-fade-up, .ops-pop, .ops-bar-fill, .ops-pulse, .ops-ladder-marker, .ops-line-in,
+    .reveal-stagger.in .ops-highlight, .ops-icon.is-on * {
+      animation: none !important;
+    }
+  }
+}
+
+/* ============================================================
    PROSE STYLES — for Lexical-rendered content
    Used in /work/[slug] richContent + /notes/[slug] content
    ============================================================ */

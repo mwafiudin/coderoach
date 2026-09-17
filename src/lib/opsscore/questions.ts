@@ -25,6 +25,8 @@ export type Question = {
   area: AreaId;
   type: QuestionType;
   prompt: string;
+  /** Wording for service businesses (industry = Jasa), where "product" does not fit. */
+  promptJasa?: string;
   options: Option[];
   /** False for questions that are stored but never scored (H1 is segmentation). */
   scored: boolean;
@@ -99,17 +101,22 @@ export const QUESTIONS: Question[] = [
     ],
     scored: false,
   },
-  single(
-    'A4',
-    'sales',
-    'Kalau Anda tanya “siapa pelanggan yang 3 bulan lalu beli tapi sekarang hilang?”, jawabannya datang dalam:',
-    [
-      { id: 'tidak-bisa', label: 'Nggak bisa dijawab' },
-      { id: 'hari', label: 'Berhari-hari, disusun manual' },
-      { id: 'jam', label: 'Beberapa jam' },
-      { id: 'detik', label: 'Detik' },
-    ],
-  ),
+  {
+    ...single(
+      'A4',
+      'sales',
+      'Kalau Anda tanya “siapa pelanggan yang 3 bulan lalu beli tapi sekarang hilang?”, jawabannya datang dalam:',
+      [
+        { id: 'tidak-bisa', label: 'Nggak bisa dijawab' },
+        { id: 'hari', label: 'Berhari-hari, disusun manual' },
+        { id: 'jam', label: 'Beberapa jam' },
+        { id: 'detik', label: 'Detik' },
+      ],
+    ),
+    // REVIEW
+    promptJasa:
+      'Kalau Anda tanya “siapa klien yang 3 bulan lalu masih pakai jasa Anda tapi sekarang hilang?”, jawabannya datang dalam:',
+  },
 
   // B — Operasional harian
   scale('B1', 'ops', 'Laporan harian dari lapangan (outlet, tim, proyek) sampai ke Anda lewat apa?'),
@@ -254,19 +261,21 @@ export const QUESTIONS: Question[] = [
     // Segmentation only (brief §4).
     scored: false,
   },
-  single(
-    'H2',
-    'ai',
-    // TODO(decision): the brief wants A4/H2 product-neutral when industry = Jasa, but industry is only
-    // asked at the gate, after the quiz. "produk atau layanan" keeps H2 neutral for everyone.
-    'Kalau AI ditanya “produk atau layanan mana yang paling untung 3 bulan terakhir?”, data buat jawabnya ada di:',
-    [
-      { id: 'tidak-ada', label: 'Nggak ada' },
-      { id: 'tersebar', label: 'Tersebar di beberapa tempat' },
-      { id: 'excel', label: 'Satu file Excel' },
-      { id: 'database', label: 'Database yang rapi' },
-    ],
-  ),
+  {
+    ...single(
+      'H2',
+      'ai',
+      'Kalau AI ditanya “produk mana yang paling untung 3 bulan terakhir?”, data buat jawabnya ada di:',
+      [
+        { id: 'tidak-ada', label: 'Nggak ada' },
+        { id: 'tersebar', label: 'Tersebar di beberapa tempat' },
+        { id: 'excel', label: 'Satu file Excel' },
+        { id: 'database', label: 'Database yang rapi' },
+      ],
+    ),
+    // REVIEW
+    promptJasa: 'Kalau AI ditanya “layanan mana yang paling untung 3 bulan terakhir?”, data buat jawabnya ada di:',
+  },
   {
     id: 'H3',
     area: 'ai',
@@ -292,12 +301,16 @@ export const QUESTION_BY_ID = Object.fromEntries(QUESTIONS.map((q) => [q.id, q])
 
 export const questionsForArea = (area: AreaId) => QUESTIONS.filter((q) => q.area === area);
 
+/** Industry is asked at the start of the sales section, so A4 and H2 can speak to service businesses. */
+export const promptFor = (question: Question, industry?: string) =>
+  industry === 'jasa' && question.promptJasa ? question.promptJasa : question.prompt;
+
 /* ------------------------------------------------------------------ */
 /* Gate — lead qualification fields (brief §8)                         */
 /* ------------------------------------------------------------------ */
 
 export const INDUSTRY_OPTIONS: Option[] = [
-  { id: 'produksi', label: 'Produksi/Manufaktur' },
+  { id: 'produksi', label: 'Produksi / Manufaktur' },
   { id: 'distribusi', label: 'Distribusi' },
   { id: 'jasa', label: 'Jasa' },
   { id: 'retail', label: 'Retail' },
