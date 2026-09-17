@@ -1,116 +1,21 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import type { SectionId } from '@/lib/opsscore/flow';
 import type { AreaId } from '@/lib/opsscore/questions';
+import { chance, messOf, octagonPoints, pick, useScene, type Palette, type Point, type Scene } from './scene-engine';
 
 /**
- * The animated scene at the top of a section's score card. It pictures the section's keyword, and the
- * area scores decide how messy it looks: leads leaking out of the funnel, reports arriving late, stock
- * counts that won't hold still. Plain SVG moved by requestAnimationFrame; a still frame for reduced motion.
+ * The animated scene on a section's score card. It pictures the section's keyword, and the area scores
+ * decide how messy it looks: leads leaking out of the funnel, reports arriving late, stock counts that
+ * won't hold still.
  */
 
 type Scores = Partial<Record<AreaId, number>>;
-type Point = [number, number];
-type Palette = { ink: string; paper: string; electric: string; mist: string; error: string };
-type Loop = { every: number; spawn: () => void; tick?: (dt: number, time: number) => void };
-type Scene = (c: Palette, scores: Scores) => { back: string; front: string; start: (stage: Stage) => Loop };
-
-const WIDTH = 280;
-const HEIGHT = 110;
-const SVG_NS = 'http://www.w3.org/2000/svg';
-
-/** 0 for a perfect score, 1 for zero. */
-const messOf = (score: number | undefined) => Math.min(1, Math.max(0, 1 - (score ?? 100) / 100));
-const chance = (probability: number) => Math.random() < probability;
-const pick = <T,>(items: T[]) => items[Math.floor(Math.random() * items.length)];
-
-const octagonPoints = (cx: number, cy: number, r: number) =>
-  Array.from({ length: 8 }, (_, i) => {
-    const angle = Math.PI / 8 + (i * Math.PI) / 4;
-    return `${(cx + r * Math.cos(angle)).toFixed(1)},${(cy + r * Math.sin(angle)).toFixed(1)}`;
-  }).join(' ');
-
-type Particle = {
-  node: SVGElement;
-  path: Point[];
-  duration: number;
-  /** Progress (0–1) after which the particle fades out. */
-  fadeFrom?: number;
-  move?: (x: number, y: number) => void;
-  tint?: (progress: number) => void;
-  done?: () => void;
-};
-
-/** Holds the moving particles of one scene and advances them along their paths. */
-class Stage {
-  private moving: Array<Particle & { lengths: number[]; total: number; age: number }> = [];
-
-  constructor(
-    readonly root: SVGSVGElement,
-    private readonly fx: SVGGElement,
-  ) {}
-
-  ref(name: string) {
-    return this.root.querySelector<SVGElement>(`[data-ref="${name}"]`)!;
-  }
-
-  add<K extends keyof SVGElementTagNameMap>(tag: K, attrs: Record<string, string | number>, parent: Element = this.fx) {
-    const node = document.createElementNS(SVG_NS, tag);
-    for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, String(value));
-    parent.appendChild(node);
-    return node;
-  }
-
-  dot(radius: number, fill: string) {
-    return this.add('circle', { r: radius, fill, cx: -20, cy: -20 });
-  }
-
-  send(particle: Particle) {
-    const { path } = particle;
-    const lengths = path.slice(1).map(([x, y], i) => Math.hypot(x - path[i][0], y - path[i][1]));
-    this.moving.push({ ...particle, lengths, total: lengths.reduce((sum, length) => sum + length, 0), age: 0 });
-  }
-
-  step(dt: number) {
-    for (const p of [...this.moving]) {
-      p.age += dt;
-      const progress = Math.min(1, p.age / p.duration);
-      const [x, y] = pointAlong(p.path, p.lengths, progress * p.total);
-      if (p.move) p.move(x, y);
-      else {
-        p.node.setAttribute('cx', x.toFixed(1));
-        p.node.setAttribute('cy', y.toFixed(1));
-      }
-      if (p.fadeFrom !== undefined && progress > p.fadeFrom) {
-        p.node.setAttribute('opacity', (1 - (progress - p.fadeFrom) / (1 - p.fadeFrom)).toFixed(2));
-      }
-      p.tint?.(progress);
-      if (progress >= 1) {
-        p.node.remove();
-        this.moving.splice(this.moving.indexOf(p), 1);
-        p.done?.();
-      }
-    }
-  }
-}
-
-function pointAlong(path: Point[], lengths: number[], distance: number): Point {
-  let left = distance;
-  for (let i = 0; i < lengths.length; i++) {
-    if (left <= lengths[i] || i === lengths.length - 1) {
-      const t = lengths[i] ? Math.min(1, left / lengths[i]) : 1;
-      const [ax, ay] = path[i];
-      const [bx, by] = path[i + 1];
-      return [ax + (bx - ax) * t, ay + (by - ay) * t];
-    }
-    left -= lengths[i];
-  }
-  return path[path.length - 1];
-}
+type Builder = (c: Palette, scores: Scores) => Scene;
 
 /** Penjualan & prospek: leads pour into a funnel; the ones nobody follows up leak out. */
-const sales: Scene = (c, scores) => {
+const sales: Builder = (c, scores) => {
   const mess = messOf(scores.sales);
   const wall = `fill="none" stroke="${c.paper}" stroke-opacity="0.55" stroke-width="1.75" stroke-linejoin="round"`;
   const stat = `text-anchor="end" style="font-size:18px;font-weight:700"`;
@@ -167,7 +72,7 @@ const sales: Scene = (c, scores) => {
 };
 
 /** Operasional & stok: field reports ride to the owner, some late and half empty; stock counts flicker. */
-const operations: Scene = (c, scores) => {
+const operations: Builder = (c, scores) => {
   const opsMess = messOf(scores.ops);
   const hasStock = scores.stock !== undefined;
   const stockMess = messOf(scores.stock);
@@ -263,7 +168,7 @@ const operations: Scene = (c, scores) => {
 };
 
 /** Keuangan & kas: the cash-flow line breaks where nothing was recorded; some money drops out as "selisih". */
-const finance: Scene = (c, scores) => {
+const finance: Builder = (c, scores) => {
   const mess = messOf(scores.finance);
   return {
     back: `<line x1="8" y1="52" x2="276" y2="52" stroke="${c.paper}" stroke-opacity="0.14"/>
@@ -343,7 +248,7 @@ const finance: Scene = (c, scores) => {
 };
 
 /** Tim & peran owner: the team's questions pile up on the owner, or flow to a system instead. */
-const team: Scene = (c, scores) => {
+const team: Builder = (c, scores) => {
   const ownerMess = messOf(scores.owner);
   const peopleMess = messOf(scores.people);
   const owner: Point = [100, 55];
@@ -406,7 +311,7 @@ const team: Scene = (c, scores) => {
 };
 
 /** Digitalisasi & AI: website visitors get lost in a personal WhatsApp, or land in a CRM that AI can read. */
-const digital: Scene = (c, scores) => {
+const digital: Builder = (c, scores) => {
   const webMess = messOf(scores.web);
   const aiMess = messOf(scores.ai);
   const rows = [60, 74, 88];
@@ -467,20 +372,7 @@ const digital: Scene = (c, scores) => {
   };
 };
 
-const SCENES: Partial<Record<SectionId, Scene>> = { sales, operations, finance, team, digital };
-
-/** Theme colors from the site tokens, so the scene follows globals.css. */
-function palette(element: Element): Palette {
-  const css = getComputedStyle(element);
-  const token = (name: string, fallback: string) => css.getPropertyValue(name).trim() || fallback;
-  return {
-    ink: token('--color-ink', '#08090A'),
-    paper: token('--color-paper', '#F4F7F5'),
-    electric: token('--color-electric', '#2C70FE'),
-    mist: token('--color-mist-500', '#A7A2A9'),
-    error: token('--color-error', '#E5484D'),
-  };
-}
+const SCENES: Partial<Record<SectionId, Builder>> = { sales, operations, finance, team, digital };
 
 export function SectionScene({
   section,
@@ -493,58 +385,14 @@ export function SectionScene({
 }) {
   const ref = useRef<SVGSVGElement>(null);
   // A stable key, so a new scores object with the same numbers doesn't restart the scene.
-  const scoresKey = JSON.stringify(scores);
-
-  useEffect(() => {
-    const svg = ref.current;
-    const scene = SCENES[section];
-    if (!svg || !scene) return;
-
-    const { back, front, start } = scene(palette(svg), JSON.parse(scoresKey) as Scores);
-    svg.innerHTML = `<g>${back}</g><g data-fx></g><g>${front}</g>`;
-    const stage = new Stage(svg, svg.querySelector<SVGGElement>('[data-fx]')!);
-    const loop = start(stage);
-
-    let time = 0;
-    let sinceSpawn = 0;
-    const advance = (dt: number) => {
-      time += dt;
-      sinceSpawn += dt;
-      while (sinceSpawn >= loop.every) {
-        sinceSpawn -= loop.every;
-        loop.spawn();
-      }
-      stage.step(dt);
-      loop.tick?.(dt, time);
-    };
-
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      // Run five seconds off-screen and keep that frame.
-      for (let i = 0; i < 150; i++) advance(1 / 30);
-      return () => {
-        svg.innerHTML = '';
-      };
-    }
-
-    let frame = 0;
-    let last = performance.now();
-    const run = (now: number) => {
-      advance(Math.min(0.05, (now - last) / 1000));
-      last = now;
-      frame = requestAnimationFrame(run);
-    };
-    frame = requestAnimationFrame(run);
-    return () => {
-      cancelAnimationFrame(frame);
-      svg.innerHTML = '';
-    };
-  }, [section, scoresKey]);
+  const key = `${section}:${JSON.stringify(scores)}`;
+  useScene(ref, (c) => SCENES[section]?.(c, scores) ?? null, key);
 
   if (!SCENES[section]) return null;
   return (
     <svg
       ref={ref}
-      viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
+      viewBox="0 0 280 110"
       preserveAspectRatio="xMidYMid meet"
       className={`font-mono text-[11px] ${className}`}
       aria-hidden

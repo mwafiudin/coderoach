@@ -7,17 +7,25 @@ import { productPath } from '@/lib/opsscore/config';
 import {
   ACTIONS,
   AREA_FEEDBACK,
+  AREA_NOUNS,
+  BENCHMARK_COPY,
   CTA_COPY,
   PHASE_COPY,
+  PLAN_COPY,
   PRINT_COPY,
   REPORT_CLOSING,
   REPORT_COPY,
   RESULT_COPY,
+  ROADMAP,
   SERVICE_CLASS_COPY,
   WEB_NOTE,
 } from '@/lib/opsscore/copy';
+import { gapTo } from '@/lib/opsscore/benchmark';
+import { benchmarkFor } from '@/lib/opsscore/benchmark-server';
+import { nextPhasePlan, roadmapAreas } from '@/lib/opsscore/plan';
 import { AREAS, AREA_LABELS } from '@/lib/opsscore/questions';
-import { bandFor, phaseRange, type Phase, type Scores } from '@/lib/opsscore/scoring';
+import { bandFor, phaseRange, type Answers, type Phase, type Scores } from '@/lib/opsscore/scoring';
+import { benchmarkGroup } from '../../../_components/Benchmark';
 import { PrintButton } from './PrintButton';
 
 export const dynamic = 'force-dynamic';
@@ -69,6 +77,11 @@ export default async function OpsScorePrintPage({
   const scores = session.scores as Scores;
   const phase = PHASE_COPY[scores.phase];
   const service = SERVICE_CLASS_COPY[scores.serviceClass];
+  const benchmark = await benchmarkFor(payload, lead?.industry);
+  const plan = nextPhasePlan((session.answers ?? {}) as Answers);
+  const [first = PLAN_COPY.fallbackNoun, second = first] = roadmapAreas(scores.areas, scores.priorities).map(
+    (area) => AREA_NOUNS[area],
+  );
   const date = new Intl.DateTimeFormat('id-ID', { dateStyle: 'long', timeZone: 'Asia/Jakarta' }).format(
     new Date(session.gatedAt ?? session.completedAt ?? session.startedAt),
   );
@@ -123,8 +136,14 @@ export default async function OpsScorePrintPage({
             <p className="m-0 font-mono text-[11px] uppercase tracking-wider text-mist-600">
               {RESULT_COPY.phaseOf(scores.phase)}
             </p>
-            <h1 className="m-0 mt-1 text-[28px] font-bold tracking-[-0.02em] leading-tight">{phase.title}</h1>
+            <h1 className="m-0 mt-1 text-[28px] font-bold tracking-[-0.02em] leading-tight">
+              {phase.title} <span className="text-[16px] font-semibold text-mist-600 tracking-normal">· {phase.nickname}</span>
+            </h1>
             <p className="m-0 mt-2 text-[13px] leading-[1.5]">{phase.key}</p>
+            <p className="m-0 mt-1.5 text-[11px] leading-[1.45] text-mist-600">
+              <b className="text-ink">{RESULT_COPY.strengthLabel}:</b> {phase.strength}{' '}
+              <b className="text-ink">{RESULT_COPY.blockerLabel}:</b> {phase.blocker}
+            </p>
             <ol className="list-none p-0 m-0 mt-3 grid grid-cols-4 gap-1.5 text-[10px]">
               {PHASES.map((p) => {
                 const { from, to } = phaseRange(p);
@@ -135,6 +154,11 @@ export default async function OpsScorePrintPage({
                 );
               })}
             </ol>
+            <p className="m-0 mt-2.5 text-[11px] leading-[1.45] text-mist-600">
+              <b className="text-ink">{BENCHMARK_COPY.marker}:</b>{' '}
+              {BENCHMARK_COPY.average(benchmarkGroup(benchmark), benchmark.source, benchmark.count)} {benchmark.total}.{' '}
+              {BENCHMARK_COPY.gap(gapTo(scores.total, benchmark))}
+            </p>
           </div>
         </section>
 
@@ -190,6 +214,38 @@ export default async function OpsScorePrintPage({
               <b>{WEB_NOTE.label}:</b> {WEB_NOTE.body}
             </p>
           )}
+        </section>
+
+        <section className="py-4 border-b border-paper-200 break-inside-avoid">
+          {plan && plan.steps.length > 0 && (
+            <>
+              <h2 className="m-0 text-[10px] font-semibold uppercase tracking-[0.18em] text-mist-600">
+                {PLAN_COPY.nextTitle(PHASE_COPY[plan.target].title)}
+              </h2>
+              <p className="m-0 mt-1 text-[12px] leading-[1.5] text-mist-600">
+                {PLAN_COPY.nextSummary(plan.steps.length, plan.from, plan.to, PHASE_COPY[plan.target].title, plan.reached)}
+              </p>
+              <ol className="list-none p-0 m-0 mt-2 flex flex-col gap-1.5">
+                {plan.steps.map((step, i) => (
+                  <li key={step.question} className="grid grid-cols-[28px_1fr_auto] gap-3 text-[12px] leading-[1.45]">
+                    <span className="font-mono tabular text-mist-600">{String(i + 1).padStart(2, '0')}</span>
+                    <span>{ACTIONS[step.question]}</span>
+                    <span className="font-mono tabular">{PLAN_COPY.points(step.gain)}</span>
+                  </li>
+                ))}
+              </ol>
+            </>
+          )}
+          <h2 className="m-0 mt-4 text-[10px] font-semibold uppercase tracking-[0.18em] text-mist-600">{PLAN_COPY.roadmapMarker}</h2>
+          <ol className="list-none p-0 m-0 mt-2 grid grid-cols-3 gap-4">
+            {ROADMAP[scores.phase].map((step) => (
+              <li key={step.days} className="text-[11px] leading-[1.45]">
+                <span className="font-mono tabular text-mist-600">{PLAN_COPY.days(step.days)}</span>
+                <b className="block text-[12px] mt-0.5">{step.title}</b>
+                {step.body(first, second)}
+              </li>
+            ))}
+          </ol>
         </section>
 
         <section className="py-4 break-inside-avoid">

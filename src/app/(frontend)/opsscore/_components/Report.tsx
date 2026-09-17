@@ -9,21 +9,24 @@ import {
   WEB_NOTE,
 } from '@/lib/opsscore/copy';
 import { AREA_LABELS } from '@/lib/opsscore/questions';
-import { bandFor, type Scores } from '@/lib/opsscore/scoring';
+import { bandFor, type Answers, type Scores } from '@/lib/opsscore/scoring';
 import { RevealReport } from './RevealReport';
 import { ScoreBar } from './ScoreBar';
 import { ShareButton } from './ShareButton';
+import { Suggestions } from './Suggestions';
 import { TrackedLink } from './Trackers';
 
-/** Full report, shown after the gate: priorities → service class → closing line → CTA. */
+/** Full report, shown after the gate: priorities → next steps → service class → closing line → CTA. */
 export function Report({
   sessionId,
   shareSlug,
   scores,
+  answers,
 }: {
   sessionId: string;
   shareSlug: string;
   scores: Scores;
+  answers: Answers;
 }) {
   const { priorities } = scores;
   const service = SERVICE_CLASS_COPY[scores.serviceClass];
@@ -76,7 +79,9 @@ export function Report({
           </aside>
         )}
 
-        <div className="mt-12 relative overflow-hidden rounded-2xl bg-ink text-paper p-8 lg:p-12">
+        <Suggestions answers={answers} scores={scores} />
+
+        <div className="mt-16 relative overflow-hidden rounded-2xl bg-ink text-paper p-8 lg:p-12">
           <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-mist-500">
             {REPORT_COPY.classTitle}
           </span>

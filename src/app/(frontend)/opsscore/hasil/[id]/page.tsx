@@ -7,12 +7,13 @@ import { AnimatedCount } from '../../../_components/ui/AnimatedCount';
 import { LEADS, findSession } from '@/lib/opsscore/api';
 import { benchmarkFor } from '@/lib/opsscore/benchmark-server';
 import { productPath } from '@/lib/opsscore/config';
-import { BENCHMARK_COPY, GATE_COPY, PHASE_COPY, RESULT_COPY } from '@/lib/opsscore/copy';
-import type { Scores } from '@/lib/opsscore/scoring';
+import { BENCHMARK_COPY, GATE_COPY, RESULT_COPY } from '@/lib/opsscore/copy';
+import type { Answers, Scores } from '@/lib/opsscore/scoring';
 import { AreaScoreList } from '../../_components/AreaScoreList';
 import { BenchmarkCompare, BenchmarkSources, benchmarkGroup } from '../../_components/Benchmark';
 import { GateForm } from '../../_components/GateForm';
 import { LockedDetails, LockedScore } from '../../_components/LockedResult';
+import { PersonaKey, PersonaScenePanel, PersonaTitle, PersonaTraits } from '../../_components/PersonaHero';
 import { PhaseLadder } from '../../_components/PhaseLadder';
 import { Report } from '../../_components/Report';
 import { CompleteTracker } from '../../_components/Trackers';
@@ -53,7 +54,6 @@ export default async function OpsScoreResultPage({ params }: { params: Promise<{
   }
 
   const scores = session.scores as Scores;
-  const phase = PHASE_COPY[scores.phase];
   const { docs } = await payload.find({
     collection: LEADS,
     where: { session: { equals: session.id } },
@@ -118,8 +118,10 @@ export default async function OpsScoreResultPage({ params }: { params: Promise<{
             className="absolute inset-0 opacity-40 pointer-events-none bg-cover bg-center"
             style={{ backgroundImage: 'url(/assets/bg-grid-clean.png)' }}
           />
-          <div className="relative max-w-[1180px] mx-auto px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
-            <div>
+          {/* Phones read top to bottom. Desktop pairs each row: the persona with its scene, the key sentence
+              with its traits, and the phase ladder with the area scores. */}
+          <div className="relative max-w-[1180px] mx-auto px-8 grid grid-cols-1 gap-y-6 lg:grid-cols-2 lg:gap-x-20 lg:gap-y-10">
+            <div className="lg:col-start-1 lg:row-start-1">
               <span className="font-mono text-xs font-medium tracking-wider text-mist-600 uppercase tabular">
                 {RESULT_COPY.marker}
               </span>
@@ -132,17 +134,19 @@ export default async function OpsScoreResultPage({ params }: { params: Promise<{
                 </span>
                 <span className="text-[18px] text-mist-600 tabular">{RESULT_COPY.outOf}</span>
               </div>
-              <p className="mt-8 mb-0 font-mono text-xs uppercase tracking-wider text-electric tabular">
-                {RESULT_COPY.phaseOf(scores.phase)}
-              </p>
-              <h1 className="text-[clamp(36px,5vw,56px)] leading-[1.02] tracking-[-0.025em] font-bold mt-2 mb-0">
-                {phase.title}
-              </h1>
-              <p className="mt-4 mb-0 text-[18px] leading-[1.55] text-mist-600 max-w-[520px] text-pretty">{phase.key}</p>
-              <PhaseLadder phase={scores.phase} className="mt-8 max-w-[520px]" animate />
+              <PersonaTitle phase={scores.phase} className="mt-8" />
+            </div>
+            <PersonaScenePanel
+              phase={scores.phase}
+              className="max-w-[520px] lg:max-w-none lg:col-start-2 lg:row-start-1 lg:self-end"
+            />
+            <PersonaKey phase={scores.phase} className="lg:col-start-1 lg:row-start-2" />
+            <PersonaTraits phase={scores.phase} className="max-w-[520px] lg:max-w-none lg:col-start-2 lg:row-start-2" />
+            <div className="mt-2 lg:mt-0 lg:col-start-1 lg:row-start-3">
+              <PhaseLadder phase={scores.phase} className="max-w-[520px]" animate />
               <BenchmarkCompare total={scores.total} benchmark={benchmark} className="mt-10 max-w-[520px]" />
             </div>
-            <div className="lg:pt-14">
+            <div className="mt-6 lg:mt-0 lg:col-start-2 lg:row-start-3">
               <h2 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-mist-600 m-0">
                 {RESULT_COPY.areasTitle}
               </h2>
@@ -160,7 +164,7 @@ export default async function OpsScoreResultPage({ params }: { params: Promise<{
           </div>
         </section>
 
-        <Report sessionId={session.id} shareSlug={session.shareSlug} scores={scores} />
+        <Report sessionId={session.id} shareSlug={session.shareSlug} scores={scores} answers={(session.answers ?? {}) as Answers} />
         <BenchmarkSources />
       </main>
     </SectionShell>

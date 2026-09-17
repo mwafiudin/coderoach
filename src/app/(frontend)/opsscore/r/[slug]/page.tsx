@@ -9,6 +9,7 @@ import { SHARE_CTA_QUERY, ogImagePath, productPath } from '@/lib/opsscore/config
 import { PHASE_COPY, RESULT_COPY, SHARE_COPY } from '@/lib/opsscore/copy';
 import type { Scores } from '@/lib/opsscore/scoring';
 import { AreaScoreList } from '../../_components/AreaScoreList';
+import { PersonaKey, PersonaScenePanel, PersonaTitle, PersonaTraits } from '../../_components/PersonaHero';
 import { PhaseLadder } from '../../_components/PhaseLadder';
 
 export const dynamic = 'force-dynamic';
@@ -35,7 +36,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const scores = await findSharedScores(slug);
   if (!scores) return { robots: { index: false, follow: false } };
   const phase = PHASE_COPY[scores.phase];
-  const title = SHARE_COPY.metaTitle(phase.title);
+  const title = SHARE_COPY.metaTitle(`${phase.title} · ${phase.nickname}`);
   const images = [{ url: ogImagePath(scores.phase), width: 1200, height: 630, alt: phase.title }];
   return {
     metadataBase: process.env.NEXT_PUBLIC_SERVER_URL ? new URL(process.env.NEXT_PUBLIC_SERVER_URL) : undefined,
@@ -51,7 +52,6 @@ export default async function SharedResultPage({ params }: { params: Promise<{ s
   const { slug } = await params;
   const scores = await findSharedScores(slug);
   if (!scores) notFound();
-  const phase = PHASE_COPY[scores.phase];
 
   return (
     <SectionShell>
@@ -62,8 +62,10 @@ export default async function SharedResultPage({ params }: { params: Promise<{ s
             className="absolute inset-0 opacity-40 pointer-events-none bg-cover bg-center"
             style={{ backgroundImage: 'url(/assets/bg-grid-clean.png)' }}
           />
-          <div className="relative max-w-[1180px] mx-auto px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
-            <div>
+          {/* Phones read top to bottom. Desktop pairs each row: the persona with its scene, the key sentence
+              with its traits, and the phase ladder with the area scores. */}
+          <div className="relative max-w-[1180px] mx-auto px-8 grid grid-cols-1 gap-y-6 lg:grid-cols-2 lg:gap-x-20 lg:gap-y-10">
+            <div className="lg:col-start-1 lg:row-start-1">
               <span className="font-mono text-xs font-medium tracking-wider text-mist-600 uppercase tabular">
                 {SHARE_COPY.marker}
               </span>
@@ -76,14 +78,16 @@ export default async function SharedResultPage({ params }: { params: Promise<{ s
                 </span>
                 <span className="text-[18px] text-mist-600 tabular">{RESULT_COPY.outOf}</span>
               </div>
-              <p className="mt-8 mb-0 font-mono text-xs uppercase tracking-wider text-electric tabular">
-                {RESULT_COPY.phaseOf(scores.phase)}
-              </p>
-              <h1 className="text-[clamp(36px,5vw,56px)] leading-[1.02] tracking-[-0.025em] font-bold mt-2 mb-0">
-                {phase.title}
-              </h1>
-              <p className="mt-4 mb-0 text-[18px] leading-[1.55] text-mist-600 max-w-[520px] text-pretty">{phase.key}</p>
-              <PhaseLadder phase={scores.phase} className="mt-8 max-w-[520px]" animate />
+              <PersonaTitle phase={scores.phase} className="mt-8" />
+            </div>
+            <PersonaScenePanel
+              phase={scores.phase}
+              className="max-w-[520px] lg:max-w-none lg:col-start-2 lg:row-start-1 lg:self-end"
+            />
+            <PersonaKey phase={scores.phase} className="lg:col-start-1 lg:row-start-2" />
+            <PersonaTraits phase={scores.phase} className="max-w-[520px] lg:max-w-none lg:col-start-2 lg:row-start-2" />
+            <div className="mt-2 lg:mt-0 lg:col-start-1 lg:row-start-3">
+              <PhaseLadder phase={scores.phase} className="max-w-[520px]" animate />
               <div className="mt-10 flex flex-col gap-3">
                 <a
                   href={productPath(SHARE_CTA_QUERY)}
@@ -97,7 +101,7 @@ export default async function SharedResultPage({ params }: { params: Promise<{ s
                 <span className="text-[13px] text-mist-600">{SHARE_COPY.ctaNote}</span>
               </div>
             </div>
-            <div className="lg:pt-14">
+            <div className="mt-6 lg:mt-0 lg:col-start-2 lg:row-start-3">
               <h2 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-mist-600 m-0">
                 {RESULT_COPY.areasTitle}
               </h2>

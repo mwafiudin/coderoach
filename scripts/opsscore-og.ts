@@ -43,8 +43,9 @@ body { background: #F4F7F5; color: #08090A; font-family: Satoshi, system-ui, san
 .mono { font-family: ui-monospace, Menlo, monospace; letter-spacing: .06em; text-transform: uppercase; }
 .marker { font-size: 20px; color: #7A767C; }
 .phase { margin-top: auto; font-size: 22px; color: #2C70FE; }
-h1 { font-size: 116px; font-weight: 700; letter-spacing: -0.035em; line-height: 1; margin-top: 10px; }
-p { font-size: 32px; line-height: 1.35; color: #7A767C; margin-top: 18px; max-width: 960px; }
+h1 { font-size: 104px; font-weight: 700; letter-spacing: -0.035em; line-height: 1; margin-top: 10px; }
+.nick { font-size: 38px; font-weight: 600; letter-spacing: -0.01em; color: #7A767C; margin-top: 8px; }
+p { font-size: 28px; line-height: 1.35; color: #7A767C; margin-top: 14px; max-width: 960px; }
 .ladder { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 40px; }
 .ladder div { border-top: 5px solid #E8ECEA; padding-top: 12px; font-size: 21px; color: #7A767C; }
 .ladder span { font-family: ui-monospace, Menlo, monospace; font-size: 17px; margin-left: 6px; }
@@ -55,6 +56,7 @@ p { font-size: 32px; line-height: 1.35; color: #7A767C; margin-top: 18px; max-wi
 <div class="mono marker">[ ${escape(QUIZ_COPY.brand)} ] · ${escape(PRINT_COPY.footerUrl)}</div></div>
 <div class="mono phase">${escape(RESULT_COPY.phaseOf(phase))}</div>
 <h1>${escape(copy.title)}</h1>
+<div class="nick">${escape(copy.nickname)}</div>
 <p>${escape(copy.key)}</p>
 <div class="ladder">${ladder}</div>
 </div></body></html>`;
