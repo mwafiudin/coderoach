@@ -194,7 +194,6 @@ export const QUIZ_COPY = {
   questionPosition: (index: number, total: number) => `Pertanyaan ${index} dari ${total}`,
   sectionCount: (index: number, total: number) => `Bagian ${index} dari ${total}`, // REVIEW
   questionCount: (index: number, total: number) => `${index}/${total}`,
-  feedbackMarker: 'Skor area', // REVIEW
   tapHint: 'Ketuk di mana saja untuk lanjut', // REVIEW
   scoring: 'Menghitung hasil', // REVIEW
   console: {
@@ -253,15 +252,25 @@ export const RESULT_COPY = {
   continueQuiz: 'Lanjutkan cek', // REVIEW
 };
 
+/** The gate comes before any result: the page shows a locked preview until WhatsApp is given. */
 export const GATE_COPY = {
-  marker: '[ REPORT LENGKAP ]', // REVIEW
-  title: 'Buka report lengkap', // REVIEW
-  intro: 'Report lengkap dan versi PDF-nya kami buka setelah ini. Kami hubungi lewat WA hanya kalau Anda mau.',
+  title: (brand?: string | null) => (brand ? `Hasil ${brand} sudah siap` : 'Hasil Anda sudah siap'), // REVIEW
+  intro: 'Isi nomor WhatsApp untuk membuka skor, fase, dan report lengkapnya. Kami hubungi lewat WA hanya kalau Anda mau.', // REVIEW
+  locked: 'Terkunci', // REVIEW
+  lockedScore: 'Skor terkunci sampai nomor WhatsApp diisi.', // REVIEW
+  phaseUnknown: 'Fase ? dari 4', // REVIEW
+  unlockTitle: 'Terbuka setelah ini', // REVIEW
+  unlocks: (areaCount: number) => [
+    'Skor total dan fase bisnis Anda',
+    `Skor ${areaCount} area operasional`,
+    'Area prioritas dan langkah pertamanya',
+    'Report versi PDF',
+  ], // REVIEW
   phoneLabel: 'Nomor WhatsApp',
   phonePlaceholder: '0812-3456-7890',
   consent: 'Saya setuju dihubungi Coderoach lewat WhatsApp tentang hasil ini.', // REVIEW
-  submit: 'Buka report lengkap', // REVIEW
-  submitting: 'Membuka report', // REVIEW
+  submit: 'Buka hasil', // REVIEW
+  submitting: 'Membuka hasil', // REVIEW
   errors: {
     required: 'Wajib diisi.', // REVIEW
     phone: 'Nomor WA diawali 08, 10–13 digit.', // REVIEW

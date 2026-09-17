@@ -28,7 +28,7 @@ Buka `/admin/opsscore` (login Payload biasa). Link-nya ada di navigasi admin, gr
 | Angka | Arti | Kill criteria di brief |
 | --- | --- | --- |
 | Mulai | Sesi yang dibuat (klik Mulai di quiz) dalam jendela waktu | — |
-| Selesai | Dari sesi tersebut, yang sampai hasil ringkas | — |
+| Selesai | Dari sesi tersebut, yang menyelesaikan quiz | — |
 | Isi gate | Dari sesi tersebut, yang mengisi nomor WA | — |
 | Completion rate | Selesai ÷ Mulai | < 25% → potong pertanyaan |
 | Gate conversion | Isi gate ÷ Selesai | < 30% → geser gate atau ubah copy |
@@ -55,7 +55,7 @@ Brief yang dikirim dari tombol CTA report masuk ke **Inbox → Submissions** sep
 | Keuangan & kas | Omset → C1–C4 → skor Keuangan & kas |
 | Tim & peran owner | Jumlah karyawan → E1–E3 → F1–F3 → skor Tim & SDM dan Ketergantungan owner |
 | Digitalisasi & AI | G1–G3 → H1–H3 → skor Kehadiran online dan Kesiapan AI |
-| Hasil | Hasil ringkas → gate nomor WA → report lengkap |
+| Hasil | Pratinjau terkunci + gate nomor WA → skor, fase, dan report lengkap |
 
 Bagian hanya mengelompokkan layar. Skor, prioritas, report, dan admin tetap per 8 area. Kalau D0 = Tidak, D1–D2 dan skor stok dilewati, tapi bagian Operasional & stok tetap ada.
 
@@ -66,6 +66,8 @@ Penyimpanan berjalan tanpa terlihat oleh pengunjung:
 - Nomor WA hanya dikirim di gate dan tidak pernah disimpan di localStorage.
 
 Urutan bagian, area di tiap bagian, dan layar profil pembukanya diatur di `SECTIONS` (`flow.ts`); teksnya di `PROFILE_COPY` (`copy.ts`). Kalimat versi Jasa untuk A4 dan H2 ada di `promptJasa` (`questions.ts`). Contoh atau analogi di bawah setiap pertanyaan ada di field `hint` (`questions.ts`); test gagal kalau ada pertanyaan tanpa `hint`.
+
+Adegan animasi di kepala kartu skor ada di `SectionScene.tsx`, satu per bagian; kondisinya mengikuti skor area. Sebelum nomor WA diisi, halaman hasil hanya menampilkan pratinjau terkunci (`LockedResult.tsx`) dan form gate.
 
 ## Mengubah bobot atau ambang
 
@@ -117,7 +119,7 @@ Tanpa ID, script tidak dimuat dan semua event diam-diam dilewati. Di mode dev se
 | `assessment_view` | Landing dimuat | utm_source, utm_medium, utm_campaign |
 | `assessment_start` | Klik Mulai di quiz | session_id |
 | `assessment_area_done` | Layar skor bagian tampil, sekali per area di bagian itu. `index` mengikuti urutan tampil (stok 3, keuangan 4; tanpa stok, keuangan 3) | area, index |
-| `assessment_complete` | Hasil ringkas tampil (sekali per sesi) | fase, total |
+| `assessment_complete` | Halaman hasil terkunci tampil setelah quiz (sekali per sesi) | fase, total |
 | `assessment_gate_submit` | Gate terkirim — di Meta dikirim sebagai `Lead` | fase, revenue_band |
 | `assessment_pdf` | Klik Simpan PDF | fase |
 | `assessment_cta_brief` | Klik CTA brief | fase, kelas |

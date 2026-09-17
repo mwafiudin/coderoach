@@ -22,7 +22,9 @@ export type IconName =
   | 'chat'
   | 'sheet'
   | 'app'
-  | 'system';
+  | 'system'
+  // OpsScore gate
+  | 'lock';
 
 const PATHS: Record<IconName, React.ReactNode> = {
   build: (
@@ -122,6 +124,12 @@ const PATHS: Record<IconName, React.ReactNode> = {
       <ellipse cx="12" cy="5" rx="8" ry="3" />
       <path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5" />
       <path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6" />
+    </>
+  ),
+  lock: (
+    <>
+      <rect x="5" y="11" width="14" height="10" rx="2" />
+      <path d="M8 11V8a4 4 0 0 1 8 0v3" />
     </>
   ),
 };
