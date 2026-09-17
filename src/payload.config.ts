@@ -19,6 +19,8 @@ import { Posts } from './collections/Posts';
 import { Authors } from './collections/Authors';
 import { Submissions } from './collections/Submissions';
 import { Pages } from './collections/Pages';
+import { AssessmentSessions } from './collections/AssessmentSessions';
+import { AssessmentLeads } from './collections/AssessmentLeads';
 
 // Globals
 import { Hero } from './globals/Hero';
@@ -94,6 +96,8 @@ export default buildConfig({
     Posts,
     Authors,
     Submissions,
+    AssessmentSessions,
+    AssessmentLeads,
   ],
   globals: [Hero, Studio, Contact, TopBar, SiteSettings, BlogSettings],
   graphQL: {
