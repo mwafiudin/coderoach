@@ -14,7 +14,8 @@
     "generate:importmap": "payload generate:importmap",
     "migrate": "payload migrate",
     "migrate:create": "payload migrate:create",
-    "seed": "tsx --env-file=.env.local src/lib/seed.ts"
+    "seed": "tsx --env-file=.env.local src/lib/seed.ts",
+    "opsscore:og": "tsx scripts/opsscore-og.ts"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "^3.0.0",

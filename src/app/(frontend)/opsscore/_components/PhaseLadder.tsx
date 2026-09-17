@@ -21,7 +21,7 @@ export function PhaseLadder({ phase, className = '' }: { phase?: Phase; classNam
               {from}–{to}
             </span>
             <span
-              className={`block mt-1 text-[13px] leading-tight truncate ${
+              className={`block mt-1 text-[11px] sm:text-[13px] leading-tight break-words ${
                 current ? 'font-semibold text-ink' : 'text-mist-600'
               }`}
             >

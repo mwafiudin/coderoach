@@ -5,6 +5,7 @@ import { getPayload } from 'payload';
 import config from '@payload-config';
 import '../globals.css';
 import { ToastProvider } from './_components/ui/Toast';
+import { Analytics } from './_components/Analytics';
 
 const satoshi = localFont({
   src: '../../../public/fonts/Satoshi-Variable.ttf',
@@ -64,6 +65,7 @@ export default function FrontendLayout({ children }: { children: React.ReactNode
     <html lang="id" className={`${satoshi.variable} ${jetbrainsMono.variable}`}>
       <body>
         <ToastProvider>{children}</ToastProvider>
+        <Analytics />
       </body>
     </html>
   );

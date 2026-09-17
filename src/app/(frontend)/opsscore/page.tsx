@@ -4,6 +4,7 @@ import { OctagonMark } from '../_components/ui/OctagonMark';
 import { productPath } from '@/lib/opsscore/config';
 import { LANDING_COPY, PHASE_COPY } from '@/lib/opsscore/copy';
 import { phaseRange, type Phase } from '@/lib/opsscore/scoring';
+import { LandingTracker } from './_components/Trackers';
 
 export const dynamic = 'force-dynamic';
 
@@ -19,6 +20,7 @@ const PHASES: Phase[] = [1, 2, 3, 4];
 export default function OpsScoreLandingPage() {
   return (
     <SectionShell>
+      <LandingTracker />
       <main>
         <section className="relative overflow-hidden pt-10 sm:pt-14 lg:pt-20 pb-20 lg:pb-28">
           <div

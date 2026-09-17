@@ -12,9 +12,19 @@ import { AREA_LABELS } from '@/lib/opsscore/questions';
 import { bandFor, type Scores } from '@/lib/opsscore/scoring';
 import { RevealReport } from './RevealReport';
 import { ScoreBar } from './ScoreBar';
+import { ShareButton } from './ShareButton';
+import { TrackedLink } from './Trackers';
 
 /** Full report, shown after the gate: priorities → service class → closing line → CTA. */
-export function Report({ sessionId, scores }: { sessionId: string; scores: Scores }) {
+export function Report({
+  sessionId,
+  shareSlug,
+  scores,
+}: {
+  sessionId: string;
+  shareSlug: string;
+  scores: Scores;
+}) {
   const { priorities } = scores;
   const service = SERVICE_CLASS_COPY[scores.serviceClass];
 
@@ -80,21 +90,29 @@ export function Report({ sessionId, scores }: { sessionId: string; scores: Score
             <p className="mt-6 mb-0 text-[17px] leading-[1.55] text-mist-500 max-w-[640px]">{REPORT_CLOSING}</p>
           )}
           <div className="mt-8 flex gap-3 flex-wrap">
-            <a
+            <TrackedLink
               href={`/?hasil_id=${sessionId}#contact`}
+              event="assessment_cta_brief"
+              params={{ fase: scores.phase, kelas: scores.serviceClass }}
               className="h-[52px] px-[22px] rounded-md bg-electric text-paper text-[15px] font-semibold inline-flex items-center gap-2 hover:bg-[#2562E0] transition-colors"
             >
               {CTA_COPY[scores.cta]}
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                 <path d="M5 12h14M13 5l7 7-7 7" />
               </svg>
-            </a>
-            <a
+            </TrackedLink>
+            <TrackedLink
               href={productPath(`/hasil/${sessionId}/print?cetak=1`)}
+              event="assessment_pdf"
+              params={{ fase: scores.phase }}
               className="h-[52px] px-[22px] rounded-md bg-transparent text-paper border border-shadow-700 text-[15px] font-semibold inline-flex items-center hover:bg-paper/[0.06] transition-colors"
             >
               {REPORT_COPY.savePdf}
-            </a>
+            </TrackedLink>
+            <ShareButton
+              path={productPath(`/r/${shareSlug}`)}
+              className="h-[52px] px-[22px] rounded-md bg-transparent text-paper border border-shadow-700 text-[15px] font-semibold inline-flex items-center hover:bg-paper/[0.06] transition-colors"
+            />
           </div>
         </div>
       </div>
