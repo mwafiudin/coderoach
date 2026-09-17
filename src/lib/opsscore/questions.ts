@@ -18,6 +18,8 @@ export type Option = {
   id: string;
   label: string;
   icon?: ScaleIcon;
+  /** Short name, used where the whole scale is shown at once (quiz intro). */
+  short?: string;
 };
 
 export type Question = {
@@ -27,6 +29,8 @@ export type Question = {
   prompt: string;
   /** Wording for service businesses (industry = Jasa), where "product" does not fit. */
   promptJasa?: string;
+  /** Example or analogy shown under the question, so it reads the same way for everyone. */
+  hint: string;
   options: Option[];
   /** False for questions that are stored but never scored (H1 is segmentation). */
   scored: boolean;
@@ -54,35 +58,42 @@ export const AREA_LABELS = Object.fromEntries(AREAS.map((a) => [a.id, a.label]))
 
 /** Standard scale — "where does this data live right now" (0–4). */
 export const SCALE_OPTIONS: Option[] = [
-  { id: 'kepala', label: 'Di kepala saya, atau tanya orangnya', icon: 'head' },
-  { id: 'chat', label: 'Grup WhatsApp / chat', icon: 'chat' },
-  { id: 'spreadsheet', label: 'Excel, Google Sheets, atau buku', icon: 'sheet' },
-  { id: 'aplikasi', label: 'Aplikasi langganan (Jurnal, Moka, Mekari, dll)', icon: 'app' },
-  { id: 'sistem', label: 'Sistem yang dibuat khusus untuk bisnis ini', icon: 'system' },
+  { id: 'kepala', label: 'Di kepala saya, atau tanya orangnya', icon: 'head', short: 'Kepala' },
+  { id: 'chat', label: 'Grup WhatsApp / chat', icon: 'chat', short: 'Chat' },
+  { id: 'spreadsheet', label: 'Excel, Google Sheets, atau buku', icon: 'sheet', short: 'Spreadsheet' },
+  { id: 'aplikasi', label: 'Aplikasi langganan (Jurnal, Moka, Mekari, dll)', icon: 'app', short: 'Aplikasi' },
+  { id: 'sistem', label: 'Sistem yang dibuat khusus untuk bisnis ini', icon: 'system', short: 'Sistem' },
 ];
 
-const scale = (id: string, area: AreaId, prompt: string): Question => ({
+const scale = (id: string, area: AreaId, prompt: string, hint: string): Question => ({
   id,
   area,
   type: 'scale',
   prompt,
+  hint,
   options: SCALE_OPTIONS,
   scored: true,
 });
 
-const single = (id: string, area: AreaId, prompt: string, options: Option[]): Question => ({
+const single = (id: string, area: AreaId, prompt: string, hint: string, options: Option[]): Question => ({
   id,
   area,
   type: 'single',
   prompt,
+  hint,
   options,
   scored: true,
 });
 
 export const QUESTIONS: Question[] = [
   // A — Penjualan & prospek
-  scale('A1', 'sales', 'Calon pelanggan yang tanya-tanya, dicatat di mana?'),
-  single('A2', 'sales', 'Kalau ada prospek yang belum di-follow-up seminggu, siapa yang tahu?', [
+  scale(
+    'A1',
+    'sales',
+    'Calon pelanggan yang tanya-tanya, dicatat di mana?',
+    'Contohnya orang yang tanya harga lewat DM atau telepon minggu ini. Nama dan kebutuhannya tersimpan di mana?', // REVIEW hint
+  ),
+  single('A2', 'sales', 'Kalau ada prospek yang belum di-follow-up seminggu, siapa yang tahu?', 'Misalnya calon pembeli yang sudah minta penawaran, lalu tidak dihubungi lagi.', [ // REVIEW hint
     { id: 'tidak-ada', label: 'Nggak ada yang tahu' },
     { id: 'sales', label: 'Sales-nya sendiri, kalau ingat' },
     { id: 'saya', label: 'Saya, kalau sempat cek' },
@@ -93,6 +104,7 @@ export const QUESTIONS: Question[] = [
     area: 'sales',
     type: 'volume',
     prompt: 'Berapa transaksi atau prospek per bulan?',
+    hint: 'Kira-kira saja: jumlah nota, pesanan, atau orang yang bertanya dalam sebulan.', // REVIEW
     options: [
       { id: 'lt30', label: '< 30' },
       { id: '30-100', label: '30–100' },
@@ -106,6 +118,7 @@ export const QUESTIONS: Question[] = [
       'A4',
       'sales',
       'Kalau Anda tanya “siapa pelanggan yang 3 bulan lalu beli tapi sekarang hilang?”, jawabannya datang dalam:',
+      'Maksudnya pelanggan lama yang diam-diam berhenti membeli atau memakai jasa Anda.', // REVIEW hint
       [
         { id: 'tidak-bisa', label: 'Nggak bisa dijawab' },
         { id: 'hari', label: 'Berhari-hari, disusun manual' },
@@ -119,21 +132,26 @@ export const QUESTIONS: Question[] = [
   },
 
   // B — Operasional harian
-  scale('B1', 'ops', 'Laporan harian dari lapangan (outlet, tim, proyek) sampai ke Anda lewat apa?'),
-  single('B2', 'ops', 'Dari kejadian di lapangan sampai Anda tahu angkanya, butuh:', [
+  scale(
+    'B1',
+    'ops',
+    'Laporan harian dari lapangan (outlet, tim, proyek) sampai ke Anda lewat apa?',
+    'Misalnya omzet outlet, absensi kru, atau progres proyek hari itu.', // REVIEW hint
+  ),
+  single('B2', 'ops', 'Dari kejadian di lapangan sampai Anda tahu angkanya, butuh:', 'Contoh: penjualan kemarin sore. Kapan angka pastinya sampai ke Anda?', [ // REVIEW hint
     { id: 'tidak-lengkap', label: 'Nggak pernah benar-benar lengkap' },
     { id: 'mingguan', label: 'Mingguan' },
     { id: 'besok', label: 'Besoknya' },
     { id: 'hari-itu', label: 'Hari itu juga' },
     { id: 'realtime', label: 'Real time' },
   ]),
-  single('B3', 'ops', 'Seberapa sering laporan datang nggak lengkap dan harus ditanya ulang?', [
+  single('B3', 'ops', 'Seberapa sering laporan datang nggak lengkap dan harus ditanya ulang?', 'Misalnya laporan kas datang, tapi pengeluarannya kosong, jadi Anda harus bertanya lagi.', [ // REVIEW hint
     { id: 'harian', label: 'Hampir tiap hari' },
     { id: 'mingguan', label: 'Tiap minggu' },
     { id: 'jarang', label: 'Jarang' },
     { id: 'tidak-pernah', label: 'Nggak pernah, sistem nggak mengizinkan' },
   ]),
-  single('B4', 'ops', 'Approval (cuti, pengeluaran, diskon) diminta lewat:', [
+  single('B4', 'ops', 'Approval (cuti, pengeluaran, diskon) diminta lewat:', 'Misalnya staf minta izin cuti, beli perlengkapan, atau memberi diskon ke pelanggan.', [ // REVIEW hint
     { id: 'chat-saya', label: 'Chat langsung ke saya' },
     { id: 'chat-atasan', label: 'Chat ke atasan' },
     { id: 'form', label: 'Form' },
@@ -141,20 +159,25 @@ export const QUESTIONS: Question[] = [
   ]),
 
   // C — Keuangan & kas
-  scale('C1', 'finance', 'Kas masuk-keluar harian dicatat di:'),
-  single('C2', 'finance', 'Siapa yang tahu pelanggan mana yang belum bayar, dan sudah berapa lama?', [
+  scale(
+    'C1',
+    'finance',
+    'Kas masuk-keluar harian dicatat di:',
+    'Termasuk kas kecil. Setiap uang masuk dan keluar hari ini dicatat di mana?', // REVIEW hint
+  ),
+  single('C2', 'finance', 'Siapa yang tahu pelanggan mana yang belum bayar, dan sudah berapa lama?', 'Pelanggan yang mengambil barang atau memakai jasa dulu, lalu bayar belakangan.', [ // REVIEW hint
     { id: 'hafal', label: 'Saya hafal' },
     { id: 'catatan-sales', label: 'Catatan masing-masing sales' },
     { id: 'excel', label: 'Satu file Excel' },
     { id: 'sistem', label: 'Sistem, otomatis' },
   ]),
-  single('C3', 'finance', 'Omset dan laba bulan lalu, Anda tahu angka pastinya kapan?', [
+  single('C3', 'finance', 'Omset dan laba bulan lalu, Anda tahu angka pastinya kapan?', 'Bayangkan hari ini ditanya laba bulan lalu. Bisa dijawab pasti, atau masih menunggu hitungan?', [ // REVIEW hint
     { id: 'belum-pasti', label: 'Sampai sekarang belum pasti' },
     { id: 'lebih-2-minggu', label: 'Lebih dari 2 minggu setelah tutup bulan' },
     { id: 'seminggu', label: 'Seminggu' },
     { id: 'realtime', label: 'Kapan saja, real time' },
   ]),
-  single('C4', 'finance', 'Kalau ada selisih kas, biasanya ketahuan kapan?', [
+  single('C4', 'finance', 'Kalau ada selisih kas, biasanya ketahuan kapan?', 'Selisih kas terjadi saat uang di laci atau rekening tidak sama dengan catatan.', [ // REVIEW hint
     { id: 'tidak-pernah', label: 'Nggak pernah ketahuan' },
     { id: 'sudah-masalah', label: 'Pas sudah jadi masalah' },
     { id: 'rekon-bulanan', label: 'Saat rekon bulanan' },
@@ -167,6 +190,7 @@ export const QUESTIONS: Question[] = [
     area: 'stock',
     type: 'branch',
     prompt: 'Bisnis Anda pegang stok fisik?',
+    hint: 'Barang yang disimpan untuk dijual atau diolah, seperti bahan baku atau barang dagangan.', // REVIEW
     options: [
       { id: 'ya', label: 'Ya' },
       { id: 'tidak', label: 'Tidak' },
@@ -174,8 +198,13 @@ export const QUESTIONS: Question[] = [
     scored: false,
     branch: { when: 'tidak', skips: ['D1', 'D2'] },
   },
-  scale('D1', 'stock', 'Stok dicatat di:'),
-  single('D2', 'stock', 'Stock opname terakhir, selisihnya?', [
+  scale(
+    'D1',
+    'stock',
+    'Stok dicatat di:',
+    'Kalau besok Anda tanya sisa stok barang paling laku, jawabannya dicari di mana?', // REVIEW hint
+  ),
+  single('D2', 'stock', 'Stock opname terakhir, selisihnya?', 'Stock opname artinya menghitung barang yang ada, lalu mencocokkannya dengan catatan.', [ // REVIEW hint
     { id: 'tidak-pernah', label: 'Nggak pernah opname' },
     { id: 'besar', label: 'Besar, dan nggak ketemu sebabnya' },
     { id: 'terlacak', label: 'Ada, tapi bisa dilacak' },
@@ -183,14 +212,19 @@ export const QUESTIONS: Question[] = [
   ]),
 
   // E — Tim & SDM
-  scale('E1', 'people', 'Absensi dan jadwal shift dikelola di:'),
-  single('E2', 'people', 'Kalau satu orang kunci resign besok, tim pulih dalam:', [
+  scale(
+    'E1',
+    'people',
+    'Absensi dan jadwal shift dikelola di:',
+    'Siapa masuk jam berapa, dan siapa jaga shift apa minggu depan.', // REVIEW hint
+  ),
+  single('E2', 'people', 'Kalau satu orang kunci resign besok, tim pulih dalam:', 'Misalnya admin yang pegang jadwal, password, dan kontak supplier tiba-tiba berhenti.', [ // REVIEW hint
     { id: 'bulanan', label: 'Berbulan-bulan, bisnis terganggu' },
     { id: 'mingguan', label: 'Beberapa minggu' },
     { id: 'seminggu', label: 'Seminggu, ada catatan' },
     { id: 'tidak-terasa', label: 'Nggak terasa, semua terdokumentasi' },
   ]),
-  single('E3', 'people', 'SOP bisnis Anda ada di mana?', [
+  single('E3', 'people', 'SOP bisnis Anda ada di mana?', 'SOP adalah cara kerja baku, misalnya cara buka toko, terima barang, atau tutup kas.', [ // REVIEW hint
     { id: 'kepala', label: 'Di kepala orang lama' },
     { id: 'tidak-dipakai', label: 'Pernah ditulis, nggak dipakai' },
     { id: 'dokumen', label: 'Dokumen yang dipakai' },
@@ -202,6 +236,7 @@ export const QUESTIONS: Question[] = [
     'F1',
     'owner',
     'Dalam sehari, berapa jam Anda habiskan menjawab pertanyaan tim yang sebenarnya bisa mereka lihat sendiri?',
+    'Pertanyaan seperti “stok masih ada?” atau “harga ini berapa?” yang sebenarnya bisa mereka cek sendiri.', // REVIEW hint
     [
       { id: 'gt3', label: 'Lebih dari 3 jam' },
       { id: '1-3', label: '1–3 jam' },
@@ -214,6 +249,7 @@ export const QUESTIONS: Question[] = [
     area: 'owner',
     type: 'multi',
     prompt: 'Kalau Anda offline dua minggu tanpa HP, apa yang macet?',
+    hint: 'Bayangkan Anda liburan tanpa sinyal. Apa yang pasti tertahan?', // REVIEW
     options: [
       { id: 'approval', label: 'Approval' },
       { id: 'pembayaran', label: 'Pembayaran' },
@@ -225,26 +261,26 @@ export const QUESTIONS: Question[] = [
     scored: false,
     exclusive: ['semua', 'tidak-ada'],
   },
-  single('F3', 'owner', 'Keputusan penting bulan ini Anda ambil berdasarkan:', [
+  single('F3', 'owner', 'Keputusan penting bulan ini Anda ambil berdasarkan:', 'Keputusan seperti menaikkan harga, menambah stok, atau membuka cabang.', [ // REVIEW hint
     { id: 'feeling', label: 'Feeling dan pengalaman' },
     { id: 'manual', label: 'Angka yang disusun manual saat dibutuhkan' },
     { id: 'dashboard', label: 'Dashboard yang rutin dilihat' },
   ]),
 
   // G — Kehadiran online
-  single('G1', 'web', 'Website bisnis Anda:', [
+  single('G1', 'web', 'Website bisnis Anda:', 'Website adalah alamat online resmi usaha Anda, bukan hanya akun media sosial.', [ // REVIEW hint
     { id: 'tidak-ada', label: 'Nggak ada' },
     { id: 'lama', label: 'Ada, terakhir update lebih dari setahun' },
     { id: 'rutin', label: 'Diupdate rutin' },
     { id: 'sumber-lead', label: 'Jadi sumber lead' },
   ]),
-  single('G2', 'web', 'Lead dari internet masuk ke:', [
+  single('G2', 'web', 'Lead dari internet masuk ke:', 'Orang yang menemukan Anda lewat Google, iklan, atau website, lalu menghubungi.', [ // REVIEW hint
     { id: 'tidak-ada', label: 'Nggak ada lead dari internet' },
     { id: 'wa-pribadi', label: 'WA pribadi saya' },
     { id: 'wa-admin', label: 'WA admin' },
     { id: 'crm', label: 'CRM' },
   ]),
-  single('G3', 'web', 'Anda tahu pelanggan datang dari mana (iklan, Google, referral)?', [
+  single('G3', 'web', 'Anda tahu pelanggan datang dari mana (iklan, Google, referral)?', 'Misalnya Anda tahu sebagian besar pelanggan datang dari Instagram, sisanya dari rekomendasi.', [ // REVIEW hint
     { id: 'tidak-tahu', label: 'Nggak tahu' },
     { id: 'kira-kira', label: 'Kira-kira' },
     { id: 'ada-data', label: 'Ada datanya' },
@@ -252,7 +288,7 @@ export const QUESTIONS: Question[] = [
 
   // H — Kesiapan AI
   {
-    ...single('H1', 'ai', 'Anda sudah coba AI (ChatGPT dan semacamnya) untuk bisnis?', [
+    ...single('H1', 'ai', 'Anda sudah coba AI (ChatGPT dan semacamnya) untuk bisnis?', 'Misalnya ChatGPT untuk menulis caption, membalas email, atau merangkum dokumen.', [ // REVIEW hint
       { id: 'belum', label: 'Belum' },
       { id: 'tidak-nyantol', label: 'Pernah, nggak nyantol' },
       { id: 'pribadi', label: 'Dipakai pribadi — bikin caption, balas email' },
@@ -266,6 +302,7 @@ export const QUESTIONS: Question[] = [
       'H2',
       'ai',
       'Kalau AI ditanya “produk mana yang paling untung 3 bulan terakhir?”, data buat jawabnya ada di:',
+      'AI seperti karyawan baru yang cerdas: ia hanya bisa menjawab dari catatan yang Anda berikan.', // REVIEW hint
       [
         { id: 'tidak-ada', label: 'Nggak ada' },
         { id: 'tersebar', label: 'Tersebar di beberapa tempat' },
@@ -281,6 +318,7 @@ export const QUESTIONS: Question[] = [
     area: 'ai',
     type: 'multi',
     prompt: 'Yang paling ingin Anda serahkan ke AI?',
+    hint: 'Pilih pekerjaan rutin yang paling ingin Anda lepas dari tangan sendiri.', // REVIEW
     options: [
       { id: 'balas-chat', label: 'Balas chat pelanggan' },
       { id: 'laporan', label: 'Bikin laporan' },

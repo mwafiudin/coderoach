@@ -174,6 +174,9 @@ export const QUIZ_COPY = {
   brand: 'OpsScore',
   introMarker: '[ OPSSCORE ] · 27 pertanyaan · ±5 menit', // REVIEW
   instruction: 'Jawab sesuai yang benar-benar terjadi, bukan yang seharusnya.',
+  scaleTitle: 'Hampir semua pertanyaan menanyakan satu hal', // REVIEW
+  scaleQuestion: 'Di mana data bisnis Anda hidup sekarang?', // REVIEW
+  scaleNote: 'Pilih tempat yang paling sering dipakai, walau belum rapi.', // REVIEW
   start: 'Mulai',
   lastResult: 'Lihat hasil terakhir Anda', // REVIEW
   resumeTitle: 'Anda pernah mulai cek ini.', // REVIEW
@@ -185,6 +188,10 @@ export const QUIZ_COPY = {
   nextArea: (area: string) => `Lanjut ke ${area}`,
   seeResult: 'Lihat hasil',
   multiHint: 'Boleh pilih lebih dari satu.', // REVIEW
+  remaining: (minutes: number) => (minutes <= 1 ? '±1 menit lagi' : `±${minutes} menit lagi`), // REVIEW
+  keyboardHint: 'tekan angka untuk memilih', // REVIEW
+  nextUp: (section: string) => `Berikutnya: ${section}`, // REVIEW
+  questionPosition: (index: number, total: number) => `Pertanyaan ${index} dari ${total}`,
   sectionCount: (index: number, total: number) => `Bagian ${index} dari ${total}`, // REVIEW
   questionCount: (index: number, total: number) => `${index}/${total}`,
   feedbackMarker: 'Skor area', // REVIEW
@@ -214,9 +221,11 @@ export const PROFILE_COPY = {
     greeting: (firstName: string) => `Halo, ${firstName}.`, // REVIEW
     prompt: 'Apa nama usaha Anda?', // REVIEW
     placeholder: 'Nama brand atau usaha', // REVIEW
+    hint: 'Nama yang dikenal pelanggan, tidak harus nama PT.', // REVIEW
   },
   industry: {
     prompt: (brand?: string) => (brand ? `${brand} bergerak di bidang apa?` : 'Bisnis Anda bergerak di bidang apa?'), // REVIEW
+    hint: 'Pilih yang paling mendekati.', // REVIEW
   },
   revenue: {
     prompt: (brand?: string) =>
@@ -226,6 +235,7 @@ export const PROFILE_COPY = {
   employees: {
     prompt: (brand?: string) =>
       brand ? `Berapa orang di tim ${brand} sekarang?` : 'Berapa orang di tim Anda sekarang?', // REVIEW
+    hint: 'Hitung semua yang bekerja rutin, termasuk paruh waktu.', // REVIEW
   },
 };
 

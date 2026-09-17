@@ -22,10 +22,11 @@ import {
   type Profile,
   type ProfileField,
 } from '@/lib/opsscore/profile';
-import { QUESTION_BY_ID, promptFor, type AreaId, type Option } from '@/lib/opsscore/questions';
+import { QUESTION_BY_ID, SCALE_OPTIONS, promptFor, type AreaId, type Option } from '@/lib/opsscore/questions';
 import { areaScore, bandFor, isAnswered, sanitizeAnswers, type Answers } from '@/lib/opsscore/scoring';
 import { track } from '@/lib/opsscore/track';
 import { AnimatedCount } from '../../_components/ui/AnimatedCount';
+import { OctagonMark } from '../../_components/ui/OctagonMark';
 import { ScoreBar } from './ScoreBar';
 
 const STORAGE_KEY = `opsscore.quiz.v${INSTRUMENT_VERSION}`;
@@ -488,31 +489,37 @@ export function Quiz() {
     step?.kind === 'feedback' ? inSection.length : inSection.findIndex((s) => stepKey(s) === current);
   const activeFill =
     screen === 'finishing' ? 1 : inSection.length ? Math.max(0.08, doneInSection / inSection.length) : 0.08;
+  // About seven seconds per remaining screen, rounded up to whole minutes.
+  const remainingScreens = step ? steps.slice(index).filter((s) => s.kind !== 'feedback').length : 0;
+  const remainingMinutes = Math.ceil((remainingScreens * 7) / 60);
 
   /* ---------------------------------------------------------------- */
   /* Screens                                                           */
   /* ---------------------------------------------------------------- */
 
   let content: React.ReactNode = null;
+  let footer: React.ReactNode = null;
+
   if (screen === 'intro') {
     content = (
-      <div className="flex-1 flex flex-col justify-center py-6">
+      <div className="flex flex-col">
         <span className="font-mono text-xs font-medium tracking-wider text-mist-600 uppercase tabular">
           {QUIZ_COPY.introMarker}
         </span>
         <h1
           ref={headingRef}
           tabIndex={-1}
-          className="mt-5 text-[30px] sm:text-[44px] leading-[1.08] tracking-[-0.025em] font-bold text-balance outline-none"
+          className="mt-3 text-[26px] sm:text-[44px] leading-[1.1] tracking-[-0.025em] font-bold text-balance outline-none"
         >
           {QUIZ_COPY.instruction}
         </h1>
-        <div className="mt-10 flex flex-col sm:flex-row gap-3">
+        <ScaleStrip />
+        <div className="mt-6 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5">
           <PrimaryButton onClick={begin}>{QUIZ_COPY.start}</PrimaryButton>
           {lastResult && (
             <a
               href={productPath(`/hasil/${lastResult}`)}
-              className="h-[52px] px-[22px] rounded-md bg-transparent text-ink border border-mist-400 text-[15px] font-semibold inline-flex items-center justify-center hover:bg-ink/[0.04] transition-colors"
+              className="self-center sm:self-auto text-[14px] font-semibold text-mist-600 underline underline-offset-4 decoration-mist-400 hover:text-ink"
             >
               {QUIZ_COPY.lastResult}
             </a>
@@ -523,7 +530,7 @@ export function Quiz() {
   } else if (screen === 'resume') {
     const saved = steps.find((s) => stepKey(s) === current);
     content = (
-      <div className="flex-1 flex flex-col justify-center py-6">
+      <div className="flex flex-col">
         <h1
           ref={headingRef}
           tabIndex={-1}
@@ -545,19 +552,25 @@ export function Quiz() {
       </div>
     );
   } else if (screen === 'step' && step) {
-    const marker = `${SECTION_LABELS[step.section]} · ${QUIZ_COPY.questionCount(
-      Math.min(doneInSection + 1, inSection.length),
-      inSection.length,
-    )}`;
+    const chip = (
+      <SectionChip
+        number={activeIndex + 1}
+        label={SECTION_LABELS[step.section]}
+        position={Math.min(doneInSection + 1, inSection.length)}
+        total={inSection.length}
+        complete={step.kind === 'feedback'}
+      />
+    );
+    const nextSection = steps.slice(index + 1).find((s) => s.kind !== 'feedback')?.section;
+
     if (step.kind === 'feedback') {
-      const nextSection = steps.slice(index + 1).find((s) => s.kind !== 'feedback')?.section;
       content = (
         <FeedbackScreen
+          chip={chip}
           area={step.section}
           score={areaScore(step.section, answers) ?? 0}
-          nextLabel={nextSection ? QUIZ_COPY.nextArea(SECTION_LABELS[nextSection]) : QUIZ_COPY.seeResult}
+          nextLabel={nextSection ? QUIZ_COPY.nextUp(SECTION_LABELS[nextSection]) : QUIZ_COPY.seeResult}
           headingRef={headingRef}
-          onBack={goBack}
           onNext={goNext}
         />
       );
@@ -565,35 +578,36 @@ export function Quiz() {
       const field = step.field;
       content = (
         <TextScreen
+          chip={chip}
           field={field}
           value={profile[field] ?? ''}
           prompt={profilePrompt(field, profile)}
+          hint={field === 'brand' ? PROFILE_COPY.brand.hint : undefined}
           greeting={field === 'brand' && profile.name ? PROFILE_COPY.brand.greeting(firstName(profile.name)) : undefined}
-          marker={marker}
           headingRef={headingRef}
           onChange={(value) => typeProfile(field, value)}
-          onBack={goBack}
           onNext={goNext}
         />
       );
     } else if (step.kind === 'profile') {
       const value = profile[step.field];
+      const hints: Partial<Record<ProfileField, string>> = {
+        industry: PROFILE_COPY.industry.hint,
+        revenue: PROFILE_COPY.revenue.hint,
+        employees: PROFILE_COPY.employees.hint,
+      };
       content = (
         <ChoiceScreen
+          chip={chip}
           id={stepKey(step)}
-          marker={marker}
           prompt={profilePrompt(step.field, profile)}
-          hint={step.field === 'revenue' ? PROFILE_COPY.revenue.hint : undefined}
+          hint={hints[step.field]}
           options={PROFILE_OPTIONS[step.field]!}
           layout="grid"
           isSelected={(id) => value === id}
-          answered={isProfileAnswered(step.field, profile)}
-          needsNext={false}
           multi={false}
           headingRef={headingRef}
           onChoose={(id) => choose(step, id)}
-          onBack={goBack}
-          onNext={goNext}
         />
       );
     } else {
@@ -602,30 +616,51 @@ export function Quiz() {
       const multi = q.type === 'multi';
       content = (
         <ChoiceScreen
+          chip={chip}
           id={stepKey(step)}
-          marker={marker}
           prompt={promptFor(q, profile.industry)}
-          hint={multi ? QUIZ_COPY.multiHint : undefined}
+          hint={multi ? `${q.hint} ${QUIZ_COPY.multiHint}` : q.hint}
           options={q.options}
           layout="list"
           isSelected={(id) => (multi ? Array.isArray(answer) && answer.includes(id) : answer === id)}
-          answered={isAnswered(q, answer)}
-          needsNext={multi || q.type === 'volume'}
           multi={multi}
           headingRef={headingRef}
           onChoose={(id) => choose(step, id)}
-          onBack={goBack}
-          onNext={goNext}
         />
       );
     }
+
+    const needsNext =
+      step.kind === 'feedback' ||
+      (step.kind === 'profile' && !PROFILE_OPTIONS[step.field]) ||
+      (step.kind === 'question' && ['multi', 'volume'].includes(QUESTION_BY_ID[step.id].type));
+    footer = (
+      <>
+        <BackButton onClick={goBack} />
+        <span className="min-w-0 text-center text-[12px] leading-tight text-mist-600 tabular">
+          {step.kind === 'feedback' ? (
+            QUIZ_COPY.tapHint
+          ) : (
+            <>
+              {QUIZ_COPY.remaining(remainingMinutes)}
+              {step.kind === 'question' && <span className="max-sm:hidden"> · {QUIZ_COPY.keyboardHint}</span>}
+            </>
+          )}
+        </span>
+        <NextButton
+          ready={isStepDone(step, answers, profile)}
+          quiet={!needsNext}
+          onClick={goNext}
+        />
+      </>
+    );
   } else if (screen === 'finishing') {
     const scoredSections = sections.filter((s) => s.id !== 'kenalan').length;
     const answered = steps.filter((s) => s.kind === 'question').length;
     content = <ScoringConsole answered={answered} areas={scoredSections} />;
   } else if (screen === 'error') {
     content = (
-      <div className="flex-1 flex flex-col justify-center py-6" role="alert">
+      <div className="flex flex-col" role="alert">
         <h1
           ref={headingRef}
           tabIndex={-1}
@@ -648,8 +683,22 @@ export function Quiz() {
   }
 
   return (
-    <div className="min-h-[100dvh] flex flex-col bg-paper-100 text-ink">
-      <header className="border-b border-paper-200">
+    <div className="relative min-h-[100dvh] flex flex-col bg-paper-100 text-ink overflow-hidden">
+      {/* Backdrop: the site's grid, a soft glow, and the octagon motif — texture without content. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-40 bg-cover bg-top"
+        style={{ backgroundImage: 'url(/assets/bg-grid-clean.png)' }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[560px] h-[340px] rounded-full bg-electric/[0.08] blur-3xl"
+      />
+      <div aria-hidden className="pointer-events-none absolute -right-28 bottom-16 text-mist-400 opacity-[0.12]">
+        <OctagonMark size={340} strokeWidth={1} className="animate-octagon-drift" />
+      </div>
+
+      <header className="relative z-10 border-b border-paper-200 bg-paper-100/80 backdrop-blur-md">
         <div className="max-w-[640px] mx-auto px-5 sm:px-8">
           <div className="h-14 flex items-center justify-between gap-4">
             <a href={productPath()} className="flex items-center gap-2.5">
@@ -705,50 +754,146 @@ export function Quiz() {
           )}
         </div>
       </header>
-      <main className="flex-1 flex w-full max-w-[640px] mx-auto px-5 sm:px-8 pt-5 pb-5 sm:pt-10 sm:pb-8">
-        <div ref={panelRef} className="flex-1 flex flex-col">
+
+      <main className="relative z-10 flex-1 flex w-full max-w-[640px] mx-auto px-5 sm:px-8">
+        {/* Content sits in the middle of the free space, so tall phones do not end in a blank strip. */}
+        <div ref={panelRef} className="flex-1 flex flex-col justify-center py-2 sm:py-10">
           {content}
         </div>
       </main>
+
+      {footer && (
+        <footer className="relative z-10 border-t border-paper-200 bg-paper-100/85 backdrop-blur-md">
+          <div className="max-w-[640px] mx-auto px-5 sm:px-8 h-16 grid grid-cols-[auto_1fr_auto] items-center gap-3">
+            {footer}
+          </div>
+        </footer>
+      )}
     </div>
   );
 }
 
-function Marker({ children }: { children: React.ReactNode }) {
-  return <p className="font-mono text-[11px] uppercase tracking-wider text-mist-600 tabular m-0">[ {children} ]</p>;
+/** Section number and name, with one dot per screen in the section. */
+function SectionChip({
+  number,
+  label,
+  position,
+  total,
+  complete,
+}: {
+  number: number;
+  label: string;
+  position: number;
+  total: number;
+  complete: boolean;
+}) {
+  return (
+    <div className="flex items-center justify-between gap-3">
+      <span className="inline-flex items-center gap-2 h-7 pl-1 pr-2.5 rounded-full bg-paper-50/90 border border-paper-200 font-mono text-[11px] uppercase tracking-wider text-mist-600 tabular min-w-0">
+        <span className="h-5 min-w-5 px-1 rounded-full bg-ink text-paper grid place-items-center text-[10px]">
+          {String(number).padStart(2, '0')}
+        </span>
+        <span className="truncate">{label}</span>
+      </span>
+      <span
+        className="flex items-center gap-1 shrink-0"
+        role="img"
+        aria-label={QUIZ_COPY.questionPosition(complete ? total : position, total)}
+      >
+        {Array.from({ length: total }, (_, i) => (
+          <span
+            key={i}
+            className={`h-1.5 rounded-full transition-all duration-300 ${
+              complete || i < position - 1
+                ? 'w-1.5 bg-ink'
+                : i === position - 1
+                  ? 'w-4 bg-electric'
+                  : 'w-1.5 bg-paper-200'
+            }`}
+          />
+        ))}
+      </span>
+    </div>
+  );
+}
+
+/** Example or analogy under a question. */
+function Hint({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+  return (
+    <div className={`flex gap-2.5 items-start rounded-lg bg-electric/[0.06] border border-electric/15 px-3 py-1.5 sm:py-2 ${className}`}>
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="mt-[1px] shrink-0 text-electric"
+        aria-hidden
+      >
+        <path d="M9 18h6" />
+        <path d="M10 22h4" />
+        <path d="M12 2a7 7 0 0 0-4 12.74V16h8v-1.26A7 7 0 0 0 12 2z" />
+      </svg>
+      <p className="m-0 text-[13px] leading-[1.45] text-shadow-700">{children}</p>
+    </div>
+  );
+}
+
+/** The one idea behind most questions, shown once before starting: where does the data live. */
+function ScaleStrip() {
+  return (
+    <div className="mt-6 rounded-xl border border-paper-200 bg-paper-50/80 backdrop-blur p-4 sm:p-5">
+      <p className="m-0 text-[11px] font-semibold uppercase tracking-[0.18em] text-mist-600">{QUIZ_COPY.scaleTitle}</p>
+      <p className="m-0 mt-1.5 text-[17px] font-semibold tracking-[-0.01em]">{QUIZ_COPY.scaleQuestion}</p>
+      <ol className="list-none p-0 m-0 mt-4 relative grid grid-cols-5 gap-1">
+        <span aria-hidden className="absolute left-[10%] right-[10%] top-[18px] h-px bg-paper-200" />
+        {SCALE_OPTIONS.map((option) => (
+          <li key={option.id} className="relative flex flex-col items-center gap-1.5 text-center min-w-0">
+            <span className="w-9 h-9 rounded-lg grid place-items-center bg-paper-100 border border-paper-200 text-shadow-700">
+              <Icon name={option.icon!} size={18} />
+            </span>
+            <span className="text-[10.5px] leading-tight text-mist-600 break-words">{option.short}</span>
+          </li>
+        ))}
+      </ol>
+      <p className="m-0 mt-3 text-[13px] leading-[1.45] text-mist-600">{QUIZ_COPY.scaleNote}</p>
+    </div>
+  );
 }
 
 function TextScreen({
+  chip,
   field,
   value,
   prompt,
+  hint,
   greeting,
-  marker,
   headingRef,
   onChange,
-  onBack,
   onNext,
 }: {
+  chip: React.ReactNode;
   field: ProfileField;
   value: string;
   prompt: string;
+  hint?: string;
   greeting?: string;
-  marker: string;
   headingRef: React.RefObject<HTMLHeadingElement | null>;
   onChange: (value: string) => void;
-  onBack: () => void;
   onNext: () => void;
 }) {
-  const valid = isProfileAnswered(field, { [field]: value });
   const inputId = `profile-${field}`;
   const placeholder = field === 'name' ? PROFILE_COPY.name.placeholder : PROFILE_COPY.brand.placeholder;
 
   return (
     <>
-      <Marker>{marker}</Marker>
+      {chip}
       {greeting && (
         <p
-          className="ops-fade-up mt-4 mb-0 text-[20px] sm:text-[24px] font-semibold tracking-[-0.01em] text-electric"
+          className="ops-fade-up mt-6 mb-0 text-[20px] sm:text-[24px] font-semibold tracking-[-0.01em] text-electric"
           style={{ '--ops-delay': '80ms' } as CSSProperties}
         >
           {greeting}
@@ -757,7 +902,7 @@ function TextScreen({
       <h1
         ref={headingRef}
         tabIndex={-1}
-        className={`${greeting ? 'mt-1' : 'mt-2'} text-[26px] sm:text-[36px] leading-[1.15] tracking-[-0.02em] font-bold text-balance outline-none`}
+        className={`${greeting ? 'mt-1' : 'mt-6'} text-[28px] sm:text-[38px] leading-[1.12] tracking-[-0.025em] font-bold text-balance outline-none`}
       >
         <label htmlFor={inputId}>{prompt}</label>
       </h1>
@@ -768,6 +913,7 @@ function TextScreen({
           onNext();
         }}
       >
+        {/* Conversational underline input, as in the site's brief form. */}
         <input
           id={inputId}
           data-autofocus
@@ -786,65 +932,54 @@ function TextScreen({
           autoCapitalize="words"
           enterKeyHint="next"
           maxLength={field === 'name' ? 80 : 120}
-          className="block w-full h-14 px-4 rounded-md border border-paper-200 bg-paper-50 text-[18px] text-ink placeholder:text-mist-500 outline-none transition-[border-color,box-shadow] duration-200 focus:border-electric focus:shadow-[0_0_0_3px_rgba(44,112,254,0.14)]"
+          className="block w-full bg-transparent border-0 border-b-2 border-paper-200 focus:border-electric px-0 py-2 text-[24px] sm:text-[30px] font-semibold tracking-[-0.015em] text-ink placeholder:text-mist-400 caret-electric outline-none transition-colors duration-200"
         />
       </form>
-      <div className="mt-auto pt-4 flex items-center justify-between gap-3">
-        <BackButton onClick={onBack} />
-        <NextButton ready={valid} onClick={onNext} />
-      </div>
+      {hint && <Hint className="mt-5">{hint}</Hint>}
     </>
   );
 }
 
 function ChoiceScreen({
+  chip,
   id,
-  marker,
   prompt,
   hint,
   options,
   layout,
   isSelected,
-  answered,
-  needsNext,
   multi,
   headingRef,
   onChoose,
-  onBack,
-  onNext,
 }: {
+  chip: React.ReactNode;
   id: string;
-  marker: string;
   prompt: string;
   hint?: string;
   options: Option[];
   layout: 'list' | 'grid';
   isSelected: (id: string) => boolean;
-  answered: boolean;
-  needsNext: boolean;
   multi: boolean;
   headingRef: React.RefObject<HTMLHeadingElement | null>;
   onChoose: (id: string) => void;
-  onBack: () => void;
-  onNext: () => void;
 }) {
   const headingId = `h-${id.replace(':', '-')}`;
   return (
     <>
-      <Marker>{marker}</Marker>
+      {chip}
       <h1
         id={headingId}
         ref={headingRef}
         tabIndex={-1}
-        className="mt-2 text-[20px] sm:text-[28px] leading-[1.25] tracking-[-0.015em] font-bold text-balance outline-none"
+        className="mt-3 sm:mt-4 text-[21px] sm:text-[30px] leading-[1.22] tracking-[-0.02em] font-bold text-balance outline-none"
       >
         {prompt}
       </h1>
-      {hint && <p className="mt-1.5 mb-0 text-[13px] text-mist-600">{hint}</p>}
+      {hint && <Hint className="mt-2.5 sm:mt-3">{hint}</Hint>}
       <div
         role={multi ? 'group' : 'radiogroup'}
         aria-labelledby={headingId}
-        className={`mt-4 sm:mt-6 ${layout === 'grid' ? 'grid grid-cols-2 gap-2' : 'flex flex-col gap-2'}`}
+        className={`mt-3 sm:mt-6 ${layout === 'grid' ? 'grid grid-cols-2 gap-2' : 'flex flex-col gap-1 sm:gap-2'}`}
       >
         {options.map((option, i) => {
           const selected = isSelected(option.id);
@@ -856,17 +991,17 @@ function ChoiceScreen({
               role={multi ? 'checkbox' : 'radio'}
               aria-checked={selected}
               onClick={() => onChoose(option.id)}
-              className={`relative w-full min-h-[48px] px-3 py-1.5 rounded-md border text-left flex items-center gap-3 transition-[border-color,background-color,box-shadow,transform] duration-150 active:scale-[0.98] ${
+              className={`group relative w-full min-h-[44px] px-2.5 py-1.5 rounded-lg border text-left flex items-center gap-2.5 transition-[border-color,background-color,box-shadow,transform] duration-150 active:scale-[0.98] ${
                 selected
-                  ? 'border-electric bg-electric/[0.08] shadow-[0_0_0_3px_rgba(44,112,254,0.14)]'
-                  : 'border-paper-200 bg-paper-50 hover:border-mist-400'
+                  ? 'border-electric bg-electric/[0.07] shadow-[0_0_0_3px_rgba(44,112,254,0.14)]'
+                  : 'border-paper-200 bg-paper-50/90 shadow-[0_1px_2px_rgba(8,9,10,0.04)] hover:border-mist-400 hover:-translate-y-px hover:shadow-[0_8px_18px_-12px_rgba(8,9,10,0.3)]'
               }`}
             >
               {option.icon ? (
                 <span
                   data-icon={option.icon}
                   className={`ops-icon ${
-                    selected ? 'is-on text-electric border-electric/30 bg-paper-50' : 'text-shadow-700 border-paper-200 bg-paper-100'
+                    selected ? 'is-on text-paper bg-electric border-electric' : 'text-shadow-700 border-paper-200 bg-paper-100'
                   } w-8 h-8 rounded-md grid place-items-center shrink-0 border transition-colors duration-150`}
                 >
                   <Icon name={option.icon} size={18} />
@@ -874,92 +1009,84 @@ function ChoiceScreen({
               ) : layout === 'list' ? (
                 <span
                   aria-hidden
-                  className={`w-4 h-4 shrink-0 border grid place-items-center transition-colors duration-150 ${
-                    multi ? 'rounded-[4px]' : 'rounded-full'
-                  } ${selected ? 'border-electric bg-electric' : 'border-mist-400 bg-paper-50'}`}
+                  className={`w-7 h-7 shrink-0 grid place-items-center border font-mono text-[12px] tabular transition-colors duration-150 ${
+                    multi ? 'rounded-md' : 'rounded-full'
+                  } ${selected ? 'border-electric bg-electric text-paper' : 'border-paper-200 bg-paper-100 text-mist-600'}`}
                 >
-                  {selected && !multi && <span className="w-1.5 h-1.5 rounded-full bg-paper-50" />}
-                  {selected && multi && <CheckIcon size={10} className="text-paper-50" />}
+                  {selected && multi ? <CheckIcon size={12} /> : i + 1}
                 </span>
               ) : null}
               <span className="flex-1 min-w-0 text-[15px] leading-[1.3] font-medium">{option.label}</span>
-              {selected && !multi ? (
+              {selected && !multi && (
                 <span className="ops-pop w-5 h-5 shrink-0 rounded-full bg-electric text-paper grid place-items-center" aria-hidden>
                   <CheckIcon size={11} />
                 </span>
-              ) : (
-                layout === 'list' && <kbd className="max-sm:hidden font-mono text-[11px] text-mist-500 tabular">{i + 1}</kbd>
               )}
             </button>
           );
         })}
-      </div>
-      <div className="mt-auto pt-4 flex items-center justify-between gap-3">
-        <BackButton onClick={onBack} />
-        {needsNext && <NextButton ready={answered} onClick={onNext} />}
       </div>
     </>
   );
 }
 
 function FeedbackScreen({
+  chip,
   area,
   score,
   nextLabel,
   headingRef,
-  onBack,
   onNext,
 }: {
+  chip: React.ReactNode;
   area: AreaId;
   score: number;
   nextLabel: string;
   headingRef: React.RefObject<HTMLHeadingElement | null>;
-  onBack: () => void;
   onNext: () => void;
 }) {
   return (
-    // Tapping anywhere continues (brief §7); the explicit buttons stay for keyboard and screen readers.
-    <div className="flex-1 flex flex-col cursor-pointer" onClick={onNext}>
-      <Marker>{QUIZ_COPY.feedbackMarker}</Marker>
-      <h1
-        ref={headingRef}
-        tabIndex={-1}
-        className="mt-2 text-[28px] sm:text-[40px] leading-[1.08] tracking-[-0.025em] font-bold outline-none"
-      >
-        {SECTION_LABELS[area]}
-      </h1>
-      <div className="mt-6 flex items-baseline gap-2">
-        <span className="text-[64px] sm:text-[80px] font-bold leading-none tracking-[-0.04em] tabular">
-          <AnimatedCount value={String(score)} duration={700} />
-        </span>
-        <span className="text-[15px] text-mist-600 tabular">/100</span>
-      </div>
-      <ScoreBar value={score} className="mt-4" animate />
-      <p
-        className="ops-fade-up mt-6 mb-0 text-[18px] sm:text-[21px] leading-[1.45] text-pretty"
-        style={{ '--ops-delay': '450ms' } as CSSProperties}
-      >
-        {AREA_FEEDBACK[area][bandFor(score)]}
-      </p>
-      <div className="mt-auto pt-6 flex flex-col gap-3">
-        <PrimaryButton
-          onClick={(e) => {
-            e.stopPropagation();
-            onNext();
+    // Tapping anywhere continues (brief §7); the footer buttons stay for keyboard and screen readers.
+    <div className="flex flex-col cursor-pointer" onClick={onNext}>
+      {chip}
+      <div className="mt-5 relative overflow-hidden rounded-2xl bg-ink text-paper px-5 py-6 sm:px-8 sm:py-8 shadow-[0_30px_60px_-30px_rgba(8,9,10,0.65)]">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-[0.22] bg-no-repeat"
+          style={{
+            backgroundImage: 'url(/assets/texture-halftone-dark.png)',
+            backgroundPosition: 'right -20% center',
+            backgroundSize: '90% auto',
           }}
+        />
+        <p className="relative m-0 font-mono text-[11px] uppercase tracking-wider text-mist-500">
+          [ {QUIZ_COPY.feedbackMarker} ]
+        </p>
+        <h1
+          ref={headingRef}
+          tabIndex={-1}
+          className="relative mt-2 text-[26px] sm:text-[36px] leading-[1.08] tracking-[-0.025em] font-bold outline-none"
         >
-          {nextLabel}
-        </PrimaryButton>
-        <div className="flex items-center justify-between gap-3">
-          <BackButton
-            onClick={(e) => {
-              e.stopPropagation();
-              onBack();
-            }}
-          />
-          <span className="text-[12px] text-mist-600">{QUIZ_COPY.tapHint}</span>
+          {SECTION_LABELS[area]}
+        </h1>
+        <div className="relative mt-5 flex items-baseline gap-2">
+          <span className="text-[64px] sm:text-[80px] font-bold leading-none tracking-[-0.04em] tabular">
+            <AnimatedCount value={String(score)} duration={700} />
+          </span>
+          <span className="text-[15px] text-mist-500 tabular">/100</span>
         </div>
+        <ScoreBar value={score} className="relative mt-4" animate tone="dark" />
+        <p
+          className="ops-fade-up relative mt-5 mb-0 text-[17px] sm:text-[20px] leading-[1.45] text-paper/90 text-pretty"
+          style={{ '--ops-delay': '450ms' } as CSSProperties}
+        >
+          {AREA_FEEDBACK[area][bandFor(score)]}
+        </p>
       </div>
+      <p className="mt-4 mb-0 text-[13px] font-semibold text-ink inline-flex items-center gap-2">
+        {nextLabel}
+        <Arrow />
+      </p>
     </div>
   );
 }
@@ -988,7 +1115,7 @@ function ScoringConsole({ answered, areas }: { answered: number; areas: number }
   }, []);
 
   return (
-    <div className="flex-1 grid place-items-center py-6" role="status" aria-label={QUIZ_COPY.scoring}>
+    <div className="grid place-items-center py-6" role="status" aria-label={QUIZ_COPY.scoring}>
       <div className="w-full max-w-[420px] bg-ink text-paper rounded-xl border border-shadow-700 shadow-[0_24px_60px_-24px_rgba(8,9,10,0.55)] overflow-hidden font-mono text-[13px] leading-[1.9] tabular">
         <div className="flex items-center justify-between gap-3 px-4 h-10 border-b border-shadow-700 text-[11px] uppercase tracking-wider text-mist-500">
           <span className="inline-flex items-center gap-2">
@@ -1029,17 +1156,22 @@ function PrimaryButton({
   );
 }
 
-/** Lights up once the screen has an answer. */
-function NextButton({ ready, onClick }: { ready: boolean; onClick: () => void }) {
+/**
+ * Footer "Lanjut". Lights up once the screen has an answer. `quiet` is for screens that already
+ * advance on tap; it still helps when coming back to a question that was answered before.
+ */
+function NextButton({ ready, quiet = false, onClick }: { ready: boolean; quiet?: boolean; onClick: () => void }) {
   return (
     <button
       type="button"
       onClick={onClick}
       aria-disabled={!ready}
-      className={`h-12 px-5 rounded-md text-[15px] font-semibold inline-flex items-center gap-2 transition-[background-color,color,box-shadow,transform] duration-200 ${
-        ready
-          ? 'bg-electric text-paper shadow-[0_8px_24px_-10px_rgba(44,112,254,0.7)] hover:bg-[#2562E0] active:scale-[0.98]'
-          : 'bg-paper-200 text-mist-600 cursor-not-allowed'
+      className={`h-11 px-4 rounded-md text-[14px] font-semibold inline-flex items-center gap-2 transition-[background-color,color,box-shadow,border-color,transform] duration-200 ${
+        !ready
+          ? 'bg-paper-200/70 text-mist-500 cursor-not-allowed'
+          : quiet
+            ? 'bg-paper-50 text-ink border border-paper-200 hover:border-mist-400 active:scale-[0.98]'
+            : 'bg-electric text-paper shadow-[0_8px_24px_-10px_rgba(44,112,254,0.7)] hover:bg-[#2562E0] active:scale-[0.98]'
       }`}
     >
       {QUIZ_COPY.next}
@@ -1053,7 +1185,7 @@ function BackButton({ onClick }: { onClick: (e: React.MouseEvent<HTMLButtonEleme
     <button
       type="button"
       onClick={onClick}
-      className="h-12 -ml-2 px-2 rounded-md text-[14px] font-semibold text-mist-600 hover:text-ink inline-flex items-center gap-1.5 transition-colors"
+      className="h-11 -ml-2 px-2 rounded-md text-[14px] font-semibold text-mist-600 hover:text-ink inline-flex items-center gap-1.5 transition-colors"
     >
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
         <path d="M19 12H5M11 19l-7-7 7-7" />
