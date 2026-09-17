@@ -6,12 +6,11 @@ import { LEADS, SESSIONS } from './api';
 import type { Attribution } from './attribution';
 import { productPath } from './config';
 import { ADMIN_COPY } from './copy';
-import { SECTION_LABELS } from './flow';
+import { SECTION_LABELS, lastAnsweredSection } from './flow';
 import {
   AREA_LABELS,
   EMPLOYEE_OPTIONS,
   INDUSTRY_OPTIONS,
-  QUESTIONS,
   QUESTION_BY_ID,
   REVENUE_OPTIONS,
   type Option,
@@ -66,12 +65,11 @@ function source(utm: Attribution) {
   return ADMIN_COPY.direct;
 }
 
-/** How far a session got: WhatsApp given, finished, or the last section with saved answers. */
+/** How far a session got: WhatsApp given, finished, or the quiz section of the furthest saved answer. */
 export function progressLabel(status: string | null | undefined, answers: Answers) {
   if (status === 'gated') return ADMIN_COPY.progress.gated;
   if (status === 'completed') return ADMIN_COPY.progress.completed;
-  const last = [...QUESTIONS].reverse().find((q) => answers[q.id] !== undefined);
-  return ADMIN_COPY.progress.stoppedAt(last ? SECTION_LABELS[last.area] : SECTION_LABELS.kenalan);
+  return ADMIN_COPY.progress.stoppedAt(SECTION_LABELS[lastAnsweredSection(answers) ?? 'intro']);
 }
 
 export type LeadRow = {

@@ -49,14 +49,15 @@ Brief yang dikirim dari tombol CTA report masuk ke **Inbox → Submissions** sep
 
 | Bagian | Layar |
 | --- | --- |
-| Kenalan | Nama → nama usaha (dengan sapaan) |
-| Penjualan & prospek | Bidang usaha → A1–A4 → skor area |
-| Operasional harian | B1–B4 → skor area |
-| Keuangan & kas | Omset → C1–C4 → skor area |
-| Stok & pembelian | D0 (–D2) → skor area |
-| Tim & SDM | Jumlah karyawan → E1–E3 → skor area |
-| Ketergantungan owner, Kehadiran online, Kesiapan AI | F, G, H → skor area |
+| Intro | Nama → nama usaha (dengan sapaan) |
+| Penjualan & prospek | Bidang usaha → A1–A4 → skor Penjualan & prospek |
+| Operasional & stok | B1–B4 → D0 (–D2) → skor Operasional harian dan Stok & pembelian |
+| Keuangan & kas | Omset → C1–C4 → skor Keuangan & kas |
+| Tim & peran owner | Jumlah karyawan → E1–E3 → F1–F3 → skor Tim & SDM dan Ketergantungan owner |
+| Digitalisasi & AI | G1–G3 → H1–H3 → skor Kehadiran online dan Kesiapan AI |
 | Hasil | Hasil ringkas → gate nomor WA → report lengkap |
+
+Bagian hanya mengelompokkan layar. Skor, prioritas, report, dan admin tetap per 8 area. Kalau D0 = Tidak, D1–D2 dan skor stok dilewati, tapi bagian Operasional & stok tetap ada.
 
 Penyimpanan berjalan tanpa terlihat oleh pengunjung:
 
@@ -64,7 +65,7 @@ Penyimpanan berjalan tanpa terlihat oleh pengunjung:
 - Jawaban dan profil dikirim ke server setiap satu bagian selesai, dan sekali lagi saat tab disembunyikan atau ditutup. Kalau pengiriman gagal, dicoba lagi di kesempatan berikutnya.
 - Nomor WA hanya dikirim di gate dan tidak pernah disimpan di localStorage.
 
-Layar profil diatur di `SECTION_OPENERS` (`flow.ts`); teksnya di `PROFILE_COPY` (`copy.ts`). Kalimat versi Jasa untuk A4 dan H2 ada di `promptJasa` (`questions.ts`). Contoh atau analogi di bawah setiap pertanyaan ada di field `hint` (`questions.ts`); test gagal kalau ada pertanyaan tanpa `hint`.
+Urutan bagian, area di tiap bagian, dan layar profil pembukanya diatur di `SECTIONS` (`flow.ts`); teksnya di `PROFILE_COPY` (`copy.ts`). Kalimat versi Jasa untuk A4 dan H2 ada di `promptJasa` (`questions.ts`). Contoh atau analogi di bawah setiap pertanyaan ada di field `hint` (`questions.ts`); test gagal kalau ada pertanyaan tanpa `hint`.
 
 ## Mengubah bobot atau ambang
 
@@ -81,7 +82,7 @@ Apa yang terjadi setelah versi naik:
 
 ## Menambah atau mengubah pertanyaan
 
-1. Tambahkan pertanyaan di `QUESTIONS` (`questions.ts`), di dalam blok area yang benar. Urutan di array = urutan di quiz.
+1. Tambahkan pertanyaan di `QUESTIONS` (`questions.ts`), di dalam blok area yang benar. Urutan di array = urutan di quiz; urutan area dan bagian mengikuti `SECTIONS` (`flow.ts`).
 2. Untuk `single`, tulis opsi dari skor 0 ke skor tertinggi. Jumlah opsi menentukan skor maksimum.
 3. `id` pertanyaan dan `id` opsi yang sudah dipakai jangan diganti. Itu yang tersimpan di `answers`, dan admin memakainya untuk menampilkan label.
 4. Pertanyaan berskor wajib punya kalimat tindakan di `ACTIONS` (`copy.ts`); test akan gagal kalau belum.
@@ -115,7 +116,7 @@ Tanpa ID, script tidak dimuat dan semua event diam-diam dilewati. Di mode dev se
 | --- | --- | --- |
 | `assessment_view` | Landing dimuat | utm_source, utm_medium, utm_campaign |
 | `assessment_start` | Klik Mulai di quiz | session_id |
-| `assessment_area_done` | Setiap area selesai | area, index |
+| `assessment_area_done` | Layar skor bagian tampil, sekali per area di bagian itu. `index` mengikuti urutan tampil (stok 3, keuangan 4; tanpa stok, keuangan 3) | area, index |
 | `assessment_complete` | Hasil ringkas tampil (sekali per sesi) | fase, total |
 | `assessment_gate_submit` | Gate terkirim — di Meta dikirim sebagai `Lead` | fase, revenue_band |
 | `assessment_pdf` | Klik Simpan PDF | fase |

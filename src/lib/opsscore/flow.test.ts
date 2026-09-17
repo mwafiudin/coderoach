@@ -4,7 +4,15 @@ import { dirname, join } from 'node:path';
 import { describe, test } from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { PRODUCT_SLUG } from './config';
-import { buildSteps, closesSection, progressSections, stepKey } from './flow';
+import {
+  SECTIONS,
+  buildSteps,
+  closesSection,
+  lastAnsweredSection,
+  progressSections,
+  shownAreas,
+  stepKey,
+} from './flow';
 import { normalizePhone } from './phone';
 import { formatPhoneInput, isProfileAnswered, sanitizeProfile } from './profile';
 import { QUESTION_BY_ID, promptFor } from './questions';
@@ -12,30 +20,55 @@ import { QUESTION_BY_ID, promptFor } from './questions';
 describe('quiz flow', () => {
   const keys = (answers: Record<string, string>) => buildSteps(answers).map(stepKey);
 
-  test('opens with name and business name, then weaves profile questions into their sections', () => {
+  test('six sections: Intro, then the eight scoring areas grouped, one score screen per section', () => {
+    assert.deepEqual(
+      SECTIONS.map((s) => s.label),
+      ['Intro', 'Penjualan & prospek', 'Operasional & stok', 'Keuangan & kas', 'Tim & peran owner', 'Digitalisasi & AI'],
+    );
     const steps = keys({ D0: 'ya' });
     assert.deepEqual(steps.slice(0, 4), ['p:name', 'p:brand', 'p:industry', 'q:A1']);
+    assert.equal(steps.indexOf('q:B4') + 1, steps.indexOf('q:D0'));
     assert.equal(steps.indexOf('p:revenue') + 1, steps.indexOf('q:C1'));
     assert.equal(steps.indexOf('p:employees') + 1, steps.indexOf('q:E1'));
-    assert.equal(steps.length, 27 + 5 + 8);
-    assert.equal(steps[steps.length - 1], 'f:ai');
-    assert.ok(!steps.includes('p:phone'));
+    assert.equal(steps.indexOf('q:E3') + 1, steps.indexOf('q:F1'));
+    assert.equal(steps.length, 27 + 5 + 5);
+    assert.equal(steps.filter((key) => key.startsWith('f:')).length, 5);
+    assert.equal(steps[steps.length - 1], 'f:digital');
+    const feedback = buildSteps({ D0: 'ya' }).filter((s) => s.kind === 'feedback');
+    assert.deepEqual(feedback.map((s) => (s.kind === 'feedback' ? s.areas : [])), [
+      ['sales'],
+      ['ops', 'stock'],
+      ['finance'],
+      ['people', 'owner'],
+      ['web', 'ai'],
+    ]);
   });
 
-  test('D0 = Tidak drops D1, D2, the stock feedback, and stock from progress', () => {
-    const steps = keys({ D0: 'tidak' });
-    assert.ok(steps.includes('q:D0'));
-    assert.ok(!steps.includes('q:D1') && !steps.includes('q:D2') && !steps.includes('f:stock'));
-    assert.equal(progressSections({ D0: 'tidak' }).length, 8);
-    assert.deepEqual(progressSections({}).map((s) => s.id).slice(0, 2), ['kenalan', 'sales']);
+  test('D0 = Tidak drops D1, D2, and the stock score, but keeps the section', () => {
+    const steps = buildSteps({ D0: 'tidak' });
+    const stepKeys = steps.map(stepKey);
+    assert.ok(stepKeys.includes('q:D0') && !stepKeys.includes('q:D1') && !stepKeys.includes('q:D2'));
+    const operations = steps.find((s) => s.kind === 'feedback' && s.section === 'operations');
+    assert.deepEqual(operations?.kind === 'feedback' ? operations.areas : null, ['ops']);
+    assert.equal(progressSections().length, 6);
   });
 
   test('saves silently whenever a section closes', () => {
     const steps = buildSteps({ D0: 'ya' });
     const closing = steps.flatMap((step, i) => (closesSection(steps, i) ? [stepKey(step)] : []));
-    assert.deepEqual(closing.slice(0, 3), ['p:brand', 'q:A4', 'q:B4']);
-    assert.equal(closing.length, 1 + 8);
-    assert.equal(closing[closing.length - 1], 'q:H3');
+    assert.deepEqual(closing, ['p:brand', 'q:A4', 'q:D2', 'q:C4', 'q:F3', 'q:H3']);
+  });
+
+  test('tracking numbers areas in the order their scores are shown', () => {
+    const shown = (answers: Record<string, string>) => shownAreas(buildSteps(answers)).join(' ');
+    assert.equal(shown({ D0: 'ya' }), 'sales ops stock finance people owner web ai');
+    assert.equal(shown({ D0: 'tidak' }), 'sales ops finance people owner web ai');
+  });
+
+  test('stopped-at follows quiz order, where stock comes before finance', () => {
+    assert.equal(lastAnsweredSection({}), null);
+    assert.equal(lastAnsweredSection({ A1: 'chat', D0: 'ya', D2: 'nol' }), 'operations');
+    assert.equal(lastAnsweredSection({ A1: 'chat', D0: 'ya', D2: 'nol', C1: 'chat' }), 'finance');
   });
 });
 
