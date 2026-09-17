@@ -31,8 +31,7 @@ Thumbs.db
 *.tsbuildinfo
 next-env.d.ts
 
-# Payload generated
-src/payload-types.ts
+# Payload generated types are committed: `next build` type-checks against them on the server.
 
 # Vercel
 .vercel/
