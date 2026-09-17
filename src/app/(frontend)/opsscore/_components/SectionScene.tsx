@@ -17,7 +17,7 @@ type Loop = { every: number; spawn: () => void; tick?: (dt: number, time: number
 type Scene = (c: Palette, scores: Scores) => { back: string; front: string; start: (stage: Stage) => Loop };
 
 const WIDTH = 280;
-const HEIGHT = 72;
+const HEIGHT = 110;
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
 /** 0 for a perfect score, 1 for zero. */
@@ -112,11 +112,14 @@ function pointAlong(path: Point[], lengths: number[], distance: number): Point {
 /** Penjualan & prospek: leads pour into a funnel; the ones nobody follows up leak out. */
 const sales: Scene = (c, scores) => {
   const mess = messOf(scores.sales);
-  const wall = `fill="none" stroke="${c.paper}" stroke-opacity="0.5" stroke-width="1.5" stroke-linejoin="round"`;
+  const wall = `fill="none" stroke="${c.paper}" stroke-opacity="0.55" stroke-width="1.75" stroke-linejoin="round"`;
+  const stat = `text-anchor="end" style="font-size:18px;font-weight:700"`;
   return {
-    back: `<polyline points="60,6 150,30 196,30" ${wall}/><polyline points="60,66 150,42 196,42" ${wall}/>`,
-    front: `<text data-ref="won" x="276" y="31" text-anchor="end" fill="${c.electric}">closing 0</text>
-      <text data-ref="lost" x="276" y="49" text-anchor="end" fill="${c.mist}">hilang 0</text>`,
+    back: `<polyline points="70,10 170,48 214,48" ${wall}/><polyline points="70,100 170,62 214,62" ${wall}/>`,
+    front: `<text data-ref="won" x="276" y="44" fill="${c.electric}" ${stat}>0</text>
+      <text x="276" y="57" text-anchor="end" fill="${c.mist}">closing</text>
+      <text data-ref="lost" x="276" y="82" fill="${c.mist}" ${stat}>0</text>
+      <text x="276" y="95" text-anchor="end" fill="${c.mist}">hilang</text>`,
     start(stage) {
       const won = stage.ref('won');
       const lost = stage.ref('lost');
@@ -125,22 +128,22 @@ const sales: Scene = (c, scores) => {
         recent.push(closed);
         if (recent.length > 20) recent.shift();
         const count = recent.filter(Boolean).length;
-        won.textContent = `closing ${count}`;
-        lost.textContent = `hilang ${recent.length - count}`;
+        won.textContent = String(count);
+        lost.textContent = String(recent.length - count);
       };
       return {
         every: 0.34,
         spawn() {
-          const x = 2 + Math.random() * 28;
-          const y = 10 + Math.random() * 52;
-          const node = stage.dot(2.4, c.paper);
+          const x = 4 + Math.random() * 36;
+          const y = 16 + Math.random() * 78;
+          const node = stage.dot(3.2, c.paper);
           if (chance(mess * 0.85)) {
-            const out = y < 36 ? -1 : 1;
+            const out = y < 55 ? -1 : 1;
             stage.send({
               node,
-              duration: 1.7,
+              duration: 1.8,
               fadeFrom: 0.55,
-              path: [[x, y], [62, y], [100, 36 + out * 24], [128, 36 + out * 44]],
+              path: [[x, y], [72, y], [112, 55 + out * 36], [140, 55 + out * 64]],
               tint: (progress) => {
                 if (progress > 0.4) node.setAttribute('fill', c.mist);
               },
@@ -150,8 +153,8 @@ const sales: Scene = (c, scores) => {
           }
           stage.send({
             node,
-            duration: 2,
-            path: [[x, y], [62, y], [150, 36 + (y - 36) * 0.08], [204, 36]],
+            duration: 2.2,
+            path: [[x, y], [72, y], [170, 55 + (y - 55) * 0.08], [222, 55]],
             tint: (progress) => {
               if (progress > 0.7) node.setAttribute('fill', c.electric);
             },
@@ -168,24 +171,24 @@ const operations: Scene = (c, scores) => {
   const opsMess = messOf(scores.ops);
   const hasStock = scores.stock !== undefined;
   const stockMess = messOf(scores.stock);
-  const beltStart = hasStock ? 108 : 8;
+  const beltStart = hasStock ? 124 : 8;
   const box = (x: number, y: number, ref?: string) =>
-    `<rect ${ref ? `data-ref="${ref}" ` : ''}x="${x}" y="${y}" width="22" height="10" rx="1.5" fill="none" stroke="${c.paper}" stroke-opacity="0.6"/>`;
+    `<rect ${ref ? `data-ref="${ref}" ` : ''}x="${x}" y="${y}" width="28" height="14" rx="2" fill="none" stroke="${c.paper}" stroke-opacity="0.65" stroke-width="1.5"/>`;
+  const count = (i: number, x: number, y: number, value: number) =>
+    `<text data-ref="count${i}" x="${x}" y="${y}" text-anchor="middle" fill="${c.paper}" style="font-size:13px">${value}</text>`;
   const shelf = hasStock
-    ? `<line x1="6" y1="46" x2="94" y2="46" stroke="${c.paper}" stroke-opacity="0.35"/>
-      ${box(8, 36)}${box(8, 26, 'box0')}${box(36, 36, 'box1')}${box(64, 36)}${box(64, 26, 'box2')}
-      <text data-ref="count0" x="19" y="21" text-anchor="middle" fill="${c.paper}">12</text>
-      <text data-ref="count1" x="47" y="31" text-anchor="middle" fill="${c.paper}">8</text>
-      <text data-ref="count2" x="75" y="21" text-anchor="middle" fill="${c.paper}">20</text>
-      <text x="50" y="62" text-anchor="middle" fill="${c.mist}">stok</text>`
+    ? `<line x1="6" y1="72" x2="112" y2="72" stroke="${c.paper}" stroke-opacity="0.4" stroke-width="1.5"/>
+      ${box(10, 58)}${box(10, 44, 'box0')}${box(44, 58, 'box1')}${box(78, 58)}${box(78, 44, 'box2')}
+      ${count(0, 24, 37, 12)}${count(1, 58, 51, 8)}${count(2, 92, 37, 20)}
+      <text x="59" y="90" text-anchor="middle" fill="${c.mist}">stok</text>`
     : '';
   return {
     back: `${shelf}
-      <line data-ref="belt" x1="${beltStart}" y1="58" x2="244" y2="58" stroke="${c.paper}" stroke-opacity="0.35" stroke-dasharray="6 5"/>
-      <text x="${beltStart}" y="69" fill="${c.mist}">lapangan</text>`,
-    front: `<polygon data-ref="owner" points="${octagonPoints(262, 40, 10)}" fill="${c.ink}" stroke="${c.paper}" stroke-opacity="0.75" stroke-width="1.5"/>
-      <text data-ref="question" x="262" y="22" text-anchor="middle" fill="${c.error}" opacity="0" style="font-size:13px">?</text>
-      <text x="262" y="69" text-anchor="middle" fill="${c.mist}">owner</text>`,
+      <line data-ref="belt" x1="${beltStart}" y1="86" x2="236" y2="86" stroke="${c.paper}" stroke-opacity="0.4" stroke-width="1.75" stroke-dasharray="7 6"/>
+      <text x="${beltStart}" y="102" fill="${c.mist}">lapangan</text>`,
+    front: `<polygon data-ref="owner" points="${octagonPoints(256, 66, 14)}" fill="${c.ink}" stroke="${c.paper}" stroke-opacity="0.8" stroke-width="2"/>
+      <text data-ref="question" x="256" y="42" text-anchor="middle" fill="${c.error}" opacity="0" style="font-size:18px;font-weight:700">?</text>
+      <text x="256" y="102" text-anchor="middle" fill="${c.mist}">owner</text>`,
     start(stage) {
       const belt = stage.ref('belt');
       const owner = stage.ref('owner');
@@ -195,7 +198,7 @@ const operations: Scene = (c, scores) => {
       const unsteadyFrom = [0.2, 0.45, 0.7];
       const labels = hasStock ? counts.map((_, i) => stage.ref(`count${i}`)) : [];
       const tops = hasStock ? counts.map((_, i) => stage.ref(`box${i}`)) : [];
-      const travel = (238 - beltStart) / 55;
+      const travel = (226 - beltStart) / 55;
       let questionFor = 0;
       let flashFor = 0;
       let blink = 0;
@@ -208,25 +211,26 @@ const operations: Scene = (c, scores) => {
           stage.add(
             'rect',
             {
-              width: 10,
-              height: 13,
-              rx: 1.5,
+              width: 13,
+              height: 17,
+              rx: 2,
               fill: c.ink,
               stroke: late ? c.mist : c.paper,
-              'stroke-opacity': late ? 0.9 : 0.8,
-              'stroke-dasharray': late ? '2 2' : 'none',
+              'stroke-opacity': late ? 0.9 : 0.85,
+              'stroke-width': 1.25,
+              'stroke-dasharray': late ? '2.5 2' : 'none',
             },
             sheet,
           );
-          stage.add('line', { x1: 2.5, y1: 3.5, x2: 7.5, y2: 3.5, stroke: late ? c.mist : c.electric, 'stroke-width': 1.2 }, sheet);
+          stage.add('line', { x1: 3.5, y1: 4.5, x2: 9.5, y2: 4.5, stroke: late ? c.mist : c.electric, 'stroke-width': 1.5 }, sheet);
           if (!late) {
-            stage.add('line', { x1: 2.5, y1: 6.5, x2: 7.5, y2: 6.5, stroke: c.paper, 'stroke-opacity': 0.6 }, sheet);
-            stage.add('line', { x1: 2.5, y1: 9.5, x2: 6, y2: 9.5, stroke: c.paper, 'stroke-opacity': 0.6 }, sheet);
+            stage.add('line', { x1: 3.5, y1: 8.5, x2: 9.5, y2: 8.5, stroke: c.paper, 'stroke-opacity': 0.6 }, sheet);
+            stage.add('line', { x1: 3.5, y1: 12.5, x2: 8, y2: 12.5, stroke: c.paper, 'stroke-opacity': 0.6 }, sheet);
           }
           stage.send({
             node: sheet,
             duration: late ? travel * (1.2 + Math.random() * 0.6) : travel,
-            path: [[beltStart, 43], [238, 43]],
+            path: [[beltStart, 66], [226, 66]],
             move: (x, y) => sheet.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)})`),
             done: () => {
               if (late) questionFor = 0.9;
@@ -235,7 +239,7 @@ const operations: Scene = (c, scores) => {
           });
         },
         tick(dt, time) {
-          belt.setAttribute('stroke-dashoffset', (-time * 18).toFixed(1));
+          belt.setAttribute('stroke-dashoffset', (-time * 20).toFixed(1));
           questionFor = Math.max(0, questionFor - dt);
           flashFor = Math.max(0, flashFor - dt);
           question.setAttribute('opacity', questionFor > 0 ? '1' : '0');
@@ -262,14 +266,14 @@ const operations: Scene = (c, scores) => {
 const finance: Scene = (c, scores) => {
   const mess = messOf(scores.finance);
   return {
-    back: `<line x1="8" y1="38" x2="276" y2="38" stroke="${c.paper}" stroke-opacity="0.12"/>
+    back: `<line x1="8" y1="52" x2="276" y2="52" stroke="${c.paper}" stroke-opacity="0.14"/>
       <g data-ref="gaps"></g>
-      <path data-ref="line" fill="none" stroke="${c.electric}" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
-      <text x="8" y="50" fill="${c.mist}">masuk</text>
-      <text x="272" y="50" text-anchor="end" fill="${c.mist}">keluar</text>`,
-    front: `<rect x="126" y="46" width="40" height="24" rx="4" fill="${c.ink}" stroke="${c.paper}" stroke-opacity="0.55"/>
-      <text x="146" y="62" text-anchor="middle" fill="${c.paper}" fill-opacity="0.75">kas</text>
-      <text data-ref="diff" x="172" y="70" fill="${c.error}" opacity="0">selisih?</text>`,
+      <path data-ref="line" fill="none" stroke="${c.electric}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      <text x="8" y="70" fill="${c.mist}">masuk</text>
+      <text x="272" y="70" text-anchor="end" fill="${c.mist}">keluar</text>`,
+    front: `<rect x="122" y="68" width="48" height="32" rx="5" fill="${c.ink}" stroke="${c.paper}" stroke-opacity="0.6" stroke-width="1.5"/>
+      <text x="146" y="89" text-anchor="middle" fill="${c.paper}" fill-opacity="0.8" style="font-size:12px">kas</text>
+      <text data-ref="diff" x="178" y="106" fill="${c.error}" opacity="0" style="font-size:12px">selisih?</text>`,
     start(stage) {
       const chart = stage.ref('line');
       const gaps = stage.ref('gaps');
@@ -280,13 +284,13 @@ const finance: Scene = (c, scores) => {
       return {
         every: 0.5,
         spawn() {
-          const node = stage.dot(3.2, c.paper);
+          const node = stage.dot(4.5, c.paper);
           if (chance(mess * 0.5)) {
             stage.send({
               node,
-              duration: 1.8,
+              duration: 1.9,
               fadeFrom: 0.8,
-              path: [[-4, 56], [140, 56], [146, 80]],
+              path: [[-6, 84], [140, 84], [146, 120]],
               tint: (progress) => {
                 if (progress > 0.85) node.setAttribute('fill', c.error);
               },
@@ -298,8 +302,8 @@ const finance: Scene = (c, scores) => {
           }
           stage.send({
             node,
-            duration: 3,
-            path: [[-4, 56], [146, 56], [290, 56]],
+            duration: 3.2,
+            path: [[-6, 84], [146, 84], [292, 84]],
             tint: (progress) => {
               if (progress > 0.5) node.setAttribute('fill', c.electric);
             },
@@ -322,9 +326,9 @@ const finance: Scene = (c, scores) => {
             const x = (8 + i * 9.2 - offset).toFixed(1);
             if (value === null) {
               pen = false;
-              marks += `<line x1="${x}" y1="10" x2="${x}" y2="34" stroke="${c.mist}" stroke-opacity="0.35" stroke-dasharray="2 3"/>`;
+              marks += `<line x1="${x}" y1="10" x2="${x}" y2="50" stroke="${c.mist}" stroke-opacity="0.35" stroke-dasharray="2 3"/>`;
             } else {
-              d += `${pen ? 'L' : 'M'}${x} ${(34 - value * 26).toFixed(1)} `;
+              d += `${pen ? 'L' : 'M'}${x} ${(48 - value * 38).toFixed(1)} `;
               pen = true;
             }
           });
@@ -342,32 +346,32 @@ const finance: Scene = (c, scores) => {
 const team: Scene = (c, scores) => {
   const ownerMess = messOf(scores.owner);
   const peopleMess = messOf(scores.people);
-  const owner: Point = [96, 34];
-  const system: Point = [186, 34];
+  const owner: Point = [100, 55];
+  const system: Point = [190, 55];
   const members: Point[] = [
-    [20, 10],
-    [140, 8],
-    [262, 10],
-    [20, 60],
-    [140, 64],
-    [262, 60],
+    [22, 16],
+    [146, 10],
+    [258, 16],
+    [22, 94],
+    [146, 100],
+    [258, 94],
   ];
   const edges = members
-    .map(([x, y]) => `<line x1="${x}" y1="${y}" x2="96" y2="34"/><line x1="${x}" y1="${y}" x2="186" y2="34"/>`)
+    .map(([x, y]) => `<line x1="${x}" y1="${y}" x2="100" y2="55"/><line x1="${x}" y1="${y}" x2="190" y2="55"/>`)
     .join('');
   // Undocumented work (low team score) draws the team with broken outlines.
-  const memberStyle = peopleMess > 0.6 ? ' stroke-dasharray="2 2"' : '';
+  const memberStyle = peopleMess > 0.6 ? ' stroke-dasharray="3 2.5"' : '';
   return {
     back: `<g stroke="${c.paper}" stroke-opacity="0.1">${edges}</g>`,
-    front: `<circle data-ref="ring" cx="96" cy="34" r="12" fill="none" stroke="${c.error}" stroke-opacity="0" stroke-width="2"/>
-      <circle cx="96" cy="34" r="10" fill="${c.ink}" stroke="${c.paper}" stroke-opacity="0.85" stroke-width="1.5"/>
-      <polygon data-ref="system" points="${octagonPoints(186, 34, 11)}" fill="${c.electric}" fill-opacity="0" stroke="${c.paper}" stroke-opacity="0.85" stroke-width="1.5"/>
-      <g fill="${c.ink}" stroke="${c.paper}" stroke-opacity="0.6"${memberStyle}>
-        ${members.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="4"/>`).join('')}
+    front: `<circle data-ref="ring" cx="100" cy="55" r="17" fill="none" stroke="${c.error}" stroke-opacity="0" stroke-width="2.5"/>
+      <circle cx="100" cy="55" r="15" fill="${c.ink}" stroke="${c.paper}" stroke-opacity="0.85" stroke-width="2"/>
+      <polygon data-ref="system" points="${octagonPoints(190, 55, 16)}" fill="${c.electric}" fill-opacity="0" stroke="${c.paper}" stroke-opacity="0.85" stroke-width="2"/>
+      <g fill="${c.ink}" stroke="${c.paper}" stroke-opacity="0.65" stroke-width="1.5"${memberStyle}>
+        ${members.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="6"/>`).join('')}
       </g>
-      <text x="96" y="58" text-anchor="middle" fill="${c.mist}">owner</text>
-      <text x="186" y="58" text-anchor="middle" fill="${c.mist}">sistem</text>
-      <text data-ref="question" x="116" y="16" text-anchor="middle" fill="${c.error}" opacity="0" style="font-size:13px">?</text>`,
+      <text x="100" y="88" text-anchor="middle" fill="${c.mist}">owner</text>
+      <text x="190" y="88" text-anchor="middle" fill="${c.mist}">sistem</text>
+      <text data-ref="question" x="130" y="28" text-anchor="middle" fill="${c.error}" opacity="0" style="font-size:18px;font-weight:700">?</text>`,
     start(stage) {
       const ring = stage.ref('ring');
       const hub = stage.ref('system');
@@ -379,8 +383,8 @@ const team: Scene = (c, scores) => {
         spawn() {
           const toOwner = chance(ownerMess);
           stage.send({
-            node: stage.dot(2.2, toOwner ? c.paper : c.electric),
-            duration: 0.95,
+            node: stage.dot(3, toOwner ? c.paper : c.electric),
+            duration: 1,
             path: [pick(members), toOwner ? owner : system],
             done: () => {
               if (toOwner) load += 1;
@@ -391,7 +395,7 @@ const team: Scene = (c, scores) => {
         tick(dt, time) {
           load *= Math.exp(-dt * 0.6);
           flash = Math.max(0, flash - dt * 2.5);
-          ring.setAttribute('r', (12 + Math.min(7, load * 0.7)).toFixed(1));
+          ring.setAttribute('r', (17 + Math.min(9, load * 0.9)).toFixed(1));
           ring.setAttribute('stroke-opacity', Math.min(0.85, load * 0.1).toFixed(2));
           hub.setAttribute('fill-opacity', (flash * 0.55).toFixed(2));
           question.setAttribute('opacity', load > 5 ? (Math.sin(time * 6) > 0 ? '1' : '0.25') : '0');
@@ -405,25 +409,25 @@ const team: Scene = (c, scores) => {
 const digital: Scene = (c, scores) => {
   const webMess = messOf(scores.web);
   const aiMess = messOf(scores.ai);
-  const rows = [41, 51, 61];
+  const rows = [60, 74, 88];
   return {
-    back: `<rect x="6" y="6" width="56" height="54" rx="5" fill="none" stroke="${c.paper}" stroke-opacity="0.5"/>
-      <line x1="6" y1="16" x2="62" y2="16" stroke="${c.paper}" stroke-opacity="0.3"/>
-      <g fill="${c.paper}" fill-opacity="0.5"><circle cx="12" cy="11" r="1.4"/><circle cx="17" cy="11" r="1.4"/><circle cx="22" cy="11" r="1.4"/></g>
-      <text x="34" y="71" text-anchor="middle" fill="${c.mist}">website</text>
-      <rect x="92" y="4" width="72" height="20" rx="9" fill="none" stroke="${c.paper}" stroke-opacity="0.45"/>
-      <path d="M104 24 L100 30 L112 24" fill="none" stroke="${c.paper}" stroke-opacity="0.45"/>
-      <text x="128" y="17.5" text-anchor="middle" fill="${c.mist}">WA pribadi</text>
+    back: `<rect x="8" y="12" width="76" height="70" rx="6" fill="none" stroke="${c.paper}" stroke-opacity="0.55" stroke-width="1.5"/>
+      <line x1="8" y1="26" x2="84" y2="26" stroke="${c.paper}" stroke-opacity="0.3"/>
+      <g fill="${c.paper}" fill-opacity="0.5"><circle cx="17" cy="19" r="2"/><circle cx="24" cy="19" r="2"/><circle cx="31" cy="19" r="2"/></g>
+      <text x="46" y="100" text-anchor="middle" fill="${c.mist}">website</text>
+      <rect x="104" y="8" width="84" height="28" rx="12" fill="none" stroke="${c.paper}" stroke-opacity="0.5" stroke-width="1.5"/>
+      <path d="M118 36 L113 45 L130 36" fill="none" stroke="${c.paper}" stroke-opacity="0.5" stroke-width="1.5"/>
+      <text x="146" y="26" text-anchor="middle" fill="${c.mist}">WA pribadi</text>
       ${rows
         .map(
           (y, i) =>
-            `<rect data-ref="row${i}" x="100" y="${y - 3}" width="52" height="6" rx="2" fill="none" stroke="${c.paper}" stroke-opacity="0.35"/>`,
+            `<rect data-ref="row${i}" x="112" y="${y - 4.5}" width="64" height="9" rx="2.5" fill="none" stroke="${c.paper}" stroke-opacity="0.4" stroke-width="1.25"/>`,
         )
         .join('')}
-      <text x="126" y="71" text-anchor="middle" fill="${c.mist}">CRM</text>
-      <text x="236" y="66" text-anchor="middle" fill="${c.mist}">AI</text>`,
-    front: `<path data-ref="ai" d="M236 18 L240 30 L252 34 L240 38 L236 50 L232 38 L220 34 L232 30 Z" fill="${c.electric}"/>
-      <text data-ref="question" x="256" y="18" text-anchor="middle" fill="${c.mist}" opacity="0" style="font-size:13px">?</text>`,
+      <text x="144" y="106" text-anchor="middle" fill="${c.mist}">CRM</text>
+      <text x="238" y="96" text-anchor="middle" fill="${c.mist}">AI</text>`,
+    front: `<path data-ref="ai" d="M238 28 L244 46 L262 52 L244 58 L238 76 L232 58 L214 52 L232 46 Z" fill="${c.electric}"/>
+      <text data-ref="question" x="266" y="30" text-anchor="middle" fill="${c.mist}" opacity="0" style="font-size:18px;font-weight:700">?</text>`,
     start(stage) {
       const ai = stage.ref('ai');
       const question = stage.ref('question');
@@ -432,20 +436,20 @@ const digital: Scene = (c, scores) => {
       return {
         every: 0.45,
         spawn() {
-          const from: Point = [12 + Math.random() * 44, 22 + Math.random() * 34];
+          const from: Point = [16 + Math.random() * 60, 34 + Math.random() * 42];
           if (chance(webMess)) {
-            stage.send({ node: stage.dot(2.2, c.paper), duration: 1.3, fadeFrom: 0.7, path: [from, [128, 14]] });
+            stage.send({ node: stage.dot(3, c.paper), duration: 1.4, fadeFrom: 0.7, path: [from, [146, 22]] });
             return;
           }
           const row = Math.floor(Math.random() * rows.length);
           const y = rows[row];
           stage.send({
-            node: stage.dot(2.2, c.electric),
-            duration: 1.3,
-            path: [from, [88, y], [126, y]],
+            node: stage.dot(3, c.electric),
+            duration: 1.4,
+            path: [from, [100, y], [140, y]],
             done: () => {
               flash[row] = 0.5;
-              stage.send({ node: stage.dot(1.6, c.electric), duration: 0.5, path: [[154, y], [222, 34]] });
+              stage.send({ node: stage.dot(2.2, c.electric), duration: 0.5, path: [[180, y], [222, 52]] });
             },
           });
         },
@@ -455,7 +459,7 @@ const digital: Scene = (c, scores) => {
           rowRects.forEach((rect, i) => {
             flash[i] = Math.max(0, flash[i] - dt);
             rect.setAttribute('stroke', flash[i] > 0 ? c.electric : c.paper);
-            rect.setAttribute('stroke-opacity', flash[i] > 0 ? '1' : '0.35');
+            rect.setAttribute('stroke-opacity', flash[i] > 0 ? '1' : '0.4');
           });
         },
       };
@@ -542,7 +546,7 @@ export function SectionScene({
       ref={ref}
       viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
       preserveAspectRatio="xMidYMid meet"
-      className={`font-mono text-[10px] ${className}`}
+      className={`font-mono text-[11px] ${className}`}
       aria-hidden
     />
   );

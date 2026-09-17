@@ -5,10 +5,12 @@ import config from '@payload-config';
 import { SectionShell } from '../../../_components/detail/SectionShell';
 import { AnimatedCount } from '../../../_components/ui/AnimatedCount';
 import { LEADS, findSession } from '@/lib/opsscore/api';
+import { benchmarkFor } from '@/lib/opsscore/benchmark-server';
 import { productPath } from '@/lib/opsscore/config';
-import { GATE_COPY, PHASE_COPY, RESULT_COPY } from '@/lib/opsscore/copy';
+import { BENCHMARK_COPY, GATE_COPY, PHASE_COPY, RESULT_COPY } from '@/lib/opsscore/copy';
 import type { Scores } from '@/lib/opsscore/scoring';
 import { AreaScoreList } from '../../_components/AreaScoreList';
+import { BenchmarkCompare, BenchmarkSources, benchmarkGroup } from '../../_components/Benchmark';
 import { GateForm } from '../../_components/GateForm';
 import { LockedDetails, LockedScore } from '../../_components/LockedResult';
 import { PhaseLadder } from '../../_components/PhaseLadder';
@@ -55,7 +57,7 @@ export default async function OpsScoreResultPage({ params }: { params: Promise<{
   const { docs } = await payload.find({
     collection: LEADS,
     where: { session: { equals: session.id } },
-    select: { brand: true, revenueBand: true },
+    select: { brand: true, revenueBand: true, industry: true },
     limit: 1,
     depth: 0,
     overrideAccess: true,
@@ -104,6 +106,8 @@ export default async function OpsScoreResultPage({ params }: { params: Promise<{
     );
   }
 
+  const benchmark = await benchmarkFor(payload, lead?.industry);
+
   return (
     <SectionShell>
       <CompleteTracker sessionId={session.id} phase={scores.phase} total={scores.total} />
@@ -136,12 +140,19 @@ export default async function OpsScoreResultPage({ params }: { params: Promise<{
               </h1>
               <p className="mt-4 mb-0 text-[18px] leading-[1.55] text-mist-600 max-w-[520px] text-pretty">{phase.key}</p>
               <PhaseLadder phase={scores.phase} className="mt-8 max-w-[520px]" animate />
+              <BenchmarkCompare total={scores.total} benchmark={benchmark} className="mt-10 max-w-[520px]" />
             </div>
             <div className="lg:pt-14">
               <h2 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-mist-600 m-0">
                 {RESULT_COPY.areasTitle}
               </h2>
-              <AreaScoreList areas={scores.areas} className="mt-6" animate />
+              <AreaScoreList
+                areas={scores.areas}
+                benchmark={benchmark.areas}
+                benchmarkLegend={BENCHMARK_COPY.areaLegend(benchmarkGroup(benchmark), benchmark.source)}
+                className="mt-6"
+                animate
+              />
               {scores.areas.stock === undefined && (
                 <p className="mt-5 mb-0 text-[13px] leading-[1.5] text-mist-600">{RESULT_COPY.stockSkipped}</p>
               )}
@@ -150,6 +161,7 @@ export default async function OpsScoreResultPage({ params }: { params: Promise<{
         </section>
 
         <Report sessionId={session.id} shareSlug={session.shareSlug} scores={scores} />
+        <BenchmarkSources />
       </main>
     </SectionShell>
   );
