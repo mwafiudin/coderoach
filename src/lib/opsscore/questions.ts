@@ -117,8 +117,8 @@ export const QUESTIONS: Question[] = [
     ...single(
       'A4',
       'sales',
-      'Kalau Anda tanya “siapa pelanggan yang 3 bulan lalu beli tapi sekarang hilang?”, jawabannya datang dalam:',
-      'Maksudnya pelanggan lama yang diam-diam berhenti membeli atau memakai jasa Anda.', // REVIEW hint
+      'Berapa lama sampai Anda tahu pelanggan lama yang berhenti membeli?',
+      'Bayangkan Anda bertanya: siapa yang 3 bulan lalu masih jadi pelanggan, tapi sekarang hilang?', // REVIEW hint
       [
         { id: 'tidak-bisa', label: 'Nggak bisa dijawab' },
         { id: 'hari', label: 'Berhari-hari, disusun manual' },
@@ -127,8 +127,7 @@ export const QUESTIONS: Question[] = [
       ],
     ),
     // REVIEW
-    promptJasa:
-      'Kalau Anda tanya “siapa klien yang 3 bulan lalu masih pakai jasa Anda tapi sekarang hilang?”, jawabannya datang dalam:',
+    promptJasa: 'Berapa lama sampai Anda tahu klien lama yang berhenti memakai jasa Anda?',
   },
 
   // B — Operasional harian
@@ -145,7 +144,7 @@ export const QUESTIONS: Question[] = [
     { id: 'hari-itu', label: 'Hari itu juga' },
     { id: 'realtime', label: 'Real time' },
   ]),
-  single('B3', 'ops', 'Seberapa sering laporan datang nggak lengkap dan harus ditanya ulang?', 'Misalnya laporan kas datang, tapi pengeluarannya kosong, jadi Anda harus bertanya lagi.', [ // REVIEW hint
+  single('B3', 'ops', 'Seberapa sering laporan harus ditanya ulang?', 'Misalnya laporan kas datang, tapi pengeluarannya kosong, jadi Anda harus bertanya lagi.', [ // REVIEW hint
     { id: 'harian', label: 'Hampir tiap hari' },
     { id: 'mingguan', label: 'Tiap minggu' },
     { id: 'jarang', label: 'Jarang' },
@@ -165,7 +164,7 @@ export const QUESTIONS: Question[] = [
     'Kas masuk-keluar harian dicatat di:',
     'Termasuk kas kecil. Setiap uang masuk dan keluar hari ini dicatat di mana?', // REVIEW hint
   ),
-  single('C2', 'finance', 'Siapa yang tahu pelanggan mana yang belum bayar, dan sudah berapa lama?', 'Pelanggan yang mengambil barang atau memakai jasa dulu, lalu bayar belakangan.', [ // REVIEW hint
+  single('C2', 'finance', 'Siapa yang tahu daftar pelanggan yang belum bayar?', 'Pelanggan yang ambil barang atau pakai jasa dulu dan bayar belakangan, termasuk sudah berapa lama belum bayar.', [ // REVIEW hint
     { id: 'hafal', label: 'Saya hafal' },
     { id: 'catatan-sales', label: 'Catatan masing-masing sales' },
     { id: 'excel', label: 'Satu file Excel' },
@@ -235,7 +234,7 @@ export const QUESTIONS: Question[] = [
   single(
     'F1',
     'owner',
-    'Dalam sehari, berapa jam Anda habiskan menjawab pertanyaan tim yang sebenarnya bisa mereka lihat sendiri?',
+    'Berapa jam sehari habis untuk menjawab pertanyaan tim?',
     'Pertanyaan seperti “stok masih ada?” atau “harga ini berapa?” yang sebenarnya bisa mereka cek sendiri.', // REVIEW hint
     [
       { id: 'gt3', label: 'Lebih dari 3 jam' },
@@ -301,7 +300,7 @@ export const QUESTIONS: Question[] = [
     ...single(
       'H2',
       'ai',
-      'Kalau AI ditanya “produk mana yang paling untung 3 bulan terakhir?”, data buat jawabnya ada di:',
+      'Data untuk tahu produk paling untung ada di mana?',
       'AI seperti karyawan baru yang cerdas: ia hanya bisa menjawab dari catatan yang Anda berikan.', // REVIEW hint
       [
         { id: 'tidak-ada', label: 'Nggak ada' },
@@ -311,7 +310,7 @@ export const QUESTIONS: Question[] = [
       ],
     ),
     // REVIEW
-    promptJasa: 'Kalau AI ditanya “layanan mana yang paling untung 3 bulan terakhir?”, data buat jawabnya ada di:',
+    promptJasa: 'Data untuk tahu layanan paling untung ada di mana?',
   },
   {
     id: 'H3',

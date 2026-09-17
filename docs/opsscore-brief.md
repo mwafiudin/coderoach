@@ -3,10 +3,12 @@
 2026-09-17 · @Someone
 
 > **Revisi 2026-09-17** (disetujui pemilik produk setelah M3):
-> - Nama dan nama usaha diminta di awal quiz (layar Kenalan). Bidang usaha, omset, dan jumlah karyawan menjadi pembuka section Penjualan, Keuangan, dan Tim & SDM. Gate di akhir tinggal nomor WA dan persetujuan.
-> - Profil dan jawaban disimpan diam-diam ke server setiap section selesai, dan saat tab disembunyikan atau ditutup.
+> - Nama dan nama usaha diminta di awal quiz (bagian Intro). Bidang usaha, omset, dan jumlah karyawan menjadi pembuka bagian Penjualan & prospek, Keuangan & kas, dan Tim & peran owner. Gate di akhir tinggal nomor WA dan persetujuan.
+> - Profil dan jawaban disimpan diam-diam ke server setiap bagian selesai, dan saat tab disembunyikan atau ditutup.
 > - Aturan animasi dilonggarkan untuk momen skor dan hasil (bagian 7).
 > - Setiap pertanyaan punya satu contoh atau analogi di bawahnya, dan layar pembuka menjelaskan skala "di mana data hidup" (bagian 4 dan 7).
+> - Quiz dikelompokkan jadi 6 bagian: Intro, Penjualan & prospek, Operasional & stok, Keuangan & kas, Tim & peran owner, Digitalisasi & AI. Skor dan report tetap per 8 area (bagian 7).
+> - Lima pertanyaan terpanjang (A4, B3, C2, F1, H2) dipendekkan; detailnya pindah ke kotak contoh. Id dan opsi tidak berubah (bagian 4).
 >
 > Bagian yang berubah ditandai *(revisi)*.
 
@@ -56,12 +58,12 @@ MVP dikerjakan dalam tiga milestone berurutan (detail di bagian 11); yang di kol
 
 Gate diletakkan setelah hasil ringkas tampil, bukan sebelum quiz: pengunjung sudah investasi 5 menit dan sudah melihat fasenya sebelum diminta nomor WA.
 
-*(revisi)* Profil usaha tidak lagi diminta di gate. Nama dan nama usaha dibuka di awal quiz (layar Kenalan), lalu bidang usaha, omset, dan jumlah karyawan masing-masing jadi layar pembuka section yang relevan. Gate tinggal nomor WA dan persetujuan.
+*(revisi)* Profil usaha tidak lagi diminta di gate. Nama dan nama usaha dibuka di awal quiz (bagian Intro), lalu bidang usaha, omset, dan jumlah karyawan masing-masing jadi layar pembuka bagian yang relevan. Gate tinggal nomor WA dan persetujuan.
 
 ```mermaid
 flowchart LR
   A[Ads / organik / SEO] --> B[/opsscore<br/>landing/]
-  B --> C[/opsscore/mulai<br/>Kenalan + quiz 27 soal/]
+  B --> C[/opsscore/mulai<br/>Intro + quiz 27 soal/]
   C --> D[Hasil ringkas<br/>skor + fase]
   D --> E[Gate<br/>nomor WA]
   E --> F[/opsscore/hasil/id<br/>report lengkap + PDF/]
@@ -103,13 +105,13 @@ Semua pertanyaan hidup di satu berkas data (`questions.ts` atau JSON), bukan di 
 | A1 | sales | scale | Calon pelanggan yang tanya-tanya, dicatat di mana? | skala standar |
 | A2 | sales | single | Kalau ada prospek yang belum di-follow-up seminggu, siapa yang tahu? | Nggak ada yang tahu / Sales-nya sendiri, kalau ingat / Saya, kalau sempat cek / Sistem yang mengingatkan |
 | A3 | sales | volume | Berapa transaksi atau prospek per bulan? | < 30 / 30–100 / 100–500 / > 500 |
-| A4 | sales | single | Kalau Anda tanya "siapa pelanggan yang 3 bulan lalu beli tapi sekarang hilang?", jawabannya datang dalam: | Nggak bisa dijawab / Berhari-hari, disusun manual / Beberapa jam / Detik |
+| A4 | sales | single | *(revisi)* Berapa lama sampai Anda tahu pelanggan lama yang berhenti membeli? | Nggak bisa dijawab / Berhari-hari, disusun manual / Beberapa jam / Detik |
 | B1 | ops | scale | Laporan harian dari lapangan (outlet, tim, proyek) sampai ke Anda lewat apa? | skala standar |
 | B2 | ops | single | Dari kejadian di lapangan sampai Anda tahu angkanya, butuh: | Nggak pernah benar-benar lengkap / Mingguan / Besoknya / Hari itu juga / Real time |
-| B3 | ops | single | Seberapa sering laporan datang nggak lengkap dan harus ditanya ulang? | Hampir tiap hari / Tiap minggu / Jarang / Nggak pernah, sistem nggak mengizinkan |
+| B3 | ops | single | *(revisi)* Seberapa sering laporan harus ditanya ulang? | Hampir tiap hari / Tiap minggu / Jarang / Nggak pernah, sistem nggak mengizinkan |
 | B4 | ops | single | Approval (cuti, pengeluaran, diskon) diminta lewat: | Chat langsung ke saya / Chat ke atasan / Form / Di dalam sistem |
 | C1 | finance | scale | Kas masuk-keluar harian dicatat di: | skala standar |
-| C2 | finance | single | Siapa yang tahu pelanggan mana yang belum bayar, dan sudah berapa lama? | Saya hafal / Catatan masing-masing sales / Satu file Excel / Sistem, otomatis |
+| C2 | finance | single | *(revisi)* Siapa yang tahu daftar pelanggan yang belum bayar? | Saya hafal / Catatan masing-masing sales / Satu file Excel / Sistem, otomatis |
 | C3 | finance | single | Omset dan laba bulan lalu, Anda tahu angka pastinya kapan? | Sampai sekarang belum pasti / Lebih dari 2 minggu setelah tutup bulan / Seminggu / Kapan saja, real time |
 | C4 | finance | single | Kalau ada selisih kas, biasanya ketahuan kapan? | Nggak pernah ketahuan / Pas sudah jadi masalah / Saat rekon bulanan / Hari itu juga |
 | D0 | stock | branch | Bisnis Anda pegang stok fisik? | Ya / Tidak — "Tidak" melewati D1–D2 dan area stock dikeluarkan dari skor |
@@ -118,14 +120,14 @@ Semua pertanyaan hidup di satu berkas data (`questions.ts` atau JSON), bukan di 
 | E1 | people | scale | Absensi dan jadwal shift dikelola di: | skala standar |
 | E2 | people | single | Kalau satu orang kunci resign besok, tim pulih dalam: | Berbulan-bulan, bisnis terganggu / Beberapa minggu / Seminggu, ada catatan / Nggak terasa, semua terdokumentasi |
 | E3 | people | single | SOP bisnis Anda ada di mana? | Di kepala orang lama / Pernah ditulis, nggak dipakai / Dokumen yang dipakai / Di dalam sistem — sistem yang memaksa SOP-nya jalan |
-| F1 | owner | single | Dalam sehari, berapa jam Anda habiskan menjawab pertanyaan tim yang sebenarnya bisa mereka lihat sendiri? | Lebih dari 3 jam / 1–3 jam / Kurang dari 1 jam / Hampir nol |
+| F1 | owner | single | *(revisi)* Berapa jam sehari habis untuk menjawab pertanyaan tim? | Lebih dari 3 jam / 1–3 jam / Kurang dari 1 jam / Hampir nol |
 | F2 | owner | multi | Kalau Anda offline dua minggu tanpa HP, apa yang macet? | Approval / Pembayaran / Laporan / Keputusan harga / Semuanya / Nggak ada — "Semuanya" dan "Nggak ada" eksklusif terhadap opsi lain |
 | F3 | owner | single | Keputusan penting bulan ini Anda ambil berdasarkan: | Feeling dan pengalaman / Angka yang disusun manual saat dibutuhkan / Dashboard yang rutin dilihat |
 | G1 | web | single | Website bisnis Anda: | Nggak ada / Ada, terakhir update lebih dari setahun / Diupdate rutin / Jadi sumber lead |
 | G2 | web | single | Lead dari internet masuk ke: | Nggak ada lead dari internet / WA pribadi saya / WA admin / CRM |
 | G3 | web | single | Anda tahu pelanggan datang dari mana (iklan, Google, referral)? | Nggak tahu / Kira-kira / Ada datanya |
 | H1 | ai | single | Anda sudah coba AI (ChatGPT dan semacamnya) untuk bisnis? | Belum / Pernah, nggak nyantol / Dipakai pribadi — bikin caption, balas email / Dipakai tim secara rutin |
-| H2 | ai | single | Kalau AI ditanya "produk mana yang paling untung 3 bulan terakhir?", data buat jawabnya ada di: | Nggak ada / Tersebar di beberapa tempat / Satu file Excel / Database yang rapi |
+| H2 | ai | single | *(revisi)* Data untuk tahu produk paling untung ada di mana? | Nggak ada / Tersebar di beberapa tempat / Satu file Excel / Database yang rapi |
 | H3 | ai | multi | Yang paling ingin Anda serahkan ke AI? | Balas chat pelanggan / Bikin laporan / Mengingatkan follow-up / Prediksi stok / Rekap keuangan / Nggak kepikiran |
 
 A3, F2, dan H3 tidak masuk skor area; A3 dan F2 jadi pembobot (bagian 5), H3 jadi data intent untuk follow-up (bagian 9). H1 juga tidak masuk skor — ia segmentasi.
@@ -134,17 +136,19 @@ A3, F2, dan H3 tidak masuk skor area; A3 dan F2 jadi pembobot (bagian 5), H3 jad
 
 | Posisi | Layar | Bentuk |
 | --- | --- | --- |
-| Kenalan (sebelum A1) | Nama | Isian teks |
-| Kenalan | Nama usaha, dengan sapaan "Halo, {nama}." | Isian teks |
-| Pembuka Penjualan | Bidang usaha | Kartu pilihan |
-| Pembuka Keuangan | Omset per bulan ("Hanya untuk mengelompokkan hasil. Tidak tampil di report.") | Kartu pilihan |
-| Pembuka Tim & SDM | Jumlah karyawan | Kartu pilihan |
+| Intro (sebelum A1) | Nama | Isian teks |
+| Intro | Nama usaha, dengan sapaan "Halo, {nama}." | Isian teks |
+| Pembuka Penjualan & prospek | Bidang usaha | Kartu pilihan |
+| Pembuka Keuangan & kas | Omset per bulan ("Hanya untuk mengelompokkan hasil. Tidak tampil di report.") | Kartu pilihan |
+| Pembuka Tim & peran owner | Jumlah karyawan | Kartu pilihan |
 
 Karena bidang usaha sudah diketahui sebelum A4 dan H2, keduanya memakai kalimat versi Jasa kalau bidang = Jasa (`promptJasa` di `questions.ts`).
 
-*(revisi)* **Contoh atau analogi per pertanyaan.** Setiap pertanyaan punya field `hint`: satu kalimat contoh konkret atau analogi di bawah pertanyaan, supaya semua pengisi membacanya dengan cara yang sama (misalnya H2: "AI seperti karyawan baru yang cerdas: ia hanya bisa menjawab dari catatan yang Anda berikan."). Teks pertanyaan dan opsinya tidak berubah.
+*(revisi)* **Contoh atau analogi per pertanyaan.** Setiap pertanyaan punya field `hint`: satu kalimat contoh konkret atau analogi di bawah pertanyaan, supaya semua pengisi membacanya dengan cara yang sama (misalnya H2: "AI seperti karyawan baru yang cerdas: ia hanya bisa menjawab dari catatan yang Anda berikan."). Opsi tidak berubah.
 
-**Urutan seksi di layar:** A Penjualan & prospek → B Operasional harian → C Keuangan & kas → D Stok & pembelian → E Tim & SDM → F Ketergantungan owner → G Kehadiran online → H Kesiapan AI. Judul seksi ditampilkan sebagai nama area, bukan huruf.
+*(revisi)* **Pertanyaan yang dipendekkan.** A4, B3, C2, F1, dan H2 terlalu panjang untuk layar ponsel. Kalimatnya dipendekkan (tabel di atas). Detail yang terpotong dibawa oleh `hint`: A4 dan C2 mendapat hint baru ("siapa yang 3 bulan lalu masih jadi pelanggan, tapi sekarang hilang?" dan "sudah berapa lama belum bayar"), sedangkan hint B3, F1, dan H2 yang sudah ada sudah memuat contohnya. Versi Jasa: A4 "Berapa lama sampai Anda tahu klien lama yang berhenti memakai jasa Anda?", H2 "Data untuk tahu layanan paling untung ada di mana?". Id pertanyaan dan opsi tetap, jadi skor dan `instrument_version` tidak berubah.
+
+**Urutan seksi di layar:** *(revisi)* mengikuti 6 bagian (bagian 7): A Penjualan & prospek → B Operasional harian dan D Stok & pembelian → C Keuangan & kas → E Tim & SDM dan F Ketergantungan owner → G Kehadiran online dan H Kesiapan AI. Stok kini ditanyakan sebelum keuangan. Judul ditampilkan sebagai nama bagian dan nama area, bukan huruf.
 
 ## 5. Skoring, fase & area prioritas
 
@@ -230,9 +234,9 @@ Mobile-first: mayoritas pengunjung datang dari ads di ponsel. Tiap layar harus s
 
 - Satu pertanyaan per layar. Pilihan sebagai kartu besar yang bisa disentuh; skala standar membawa ikon sederhana per opsi (kepala, chat, spreadsheet, aplikasi, sistem) — ikon dari set yang sudah dipakai website, bukan emoji.
 - Memilih opsi pada `scale`/`single`/`branch` langsung lanjut ke pertanyaan berikutnya setelah jeda 250 ms; `multi` dan `volume` butuh tombol "Lanjut". Selalu ada tombol "Kembali".
-- Progress ditampilkan per bagian — Kenalan lalu 8 area *(revisi)* — bukan per pertanyaan. Area `stock` hilang dari progress kalau D0 = Tidak.
-- Setelah pertanyaan terakhir tiap area, satu layar mini-feedback: nama area, skor 0–100 sebagai bar, kalimat dari `copy.ts` (bagian 6), tombol "Lanjut ke \[area berikutnya\]". Layar ini boleh dilewati dengan tap di mana saja.
-- Autosave: jawaban dan profil disimpan ke localStorage tiap perubahan, dan disinkronkan diam-diam ke DB tiap satu bagian selesai serta saat tab disembunyikan atau ditutup *(revisi)*. Pengunjung tidak diberi tahu. Buka ulang `/opsscore/mulai` dengan sesi tersimpan → tawarkan "Lanjutkan dari area X" atau "Mulai ulang".
+- Progress ditampilkan per bagian, bukan per pertanyaan. *(revisi)* Ada 6 bagian: Intro (nama, nama usaha), Penjualan & prospek (sales), Operasional & stok (ops + stock), Keuangan & kas (finance), Tim & peran owner (people + owner), Digitalisasi & AI (web + ai). Area yang berdekatan digabung supaya quiz terasa lebih pendek; skor, prioritas, dan report tetap per 8 area. Kalau D0 = Tidak, bagian Operasional & stok tetap ada tanpa D1–D2 dan tanpa skor stok.
+- Setelah pertanyaan terakhir tiap bagian, satu layar mini-feedback: nama bagian, lalu untuk tiap area di bagian itu nama area, skor 0–100 sebagai bar, dan kalimat dari `copy.ts` (bagian 6); di bawahnya "Berikutnya: \[bagian berikutnya\]" dan tombol Lanjut *(revisi)*. Layar ini boleh dilewati dengan tap di mana saja.
+- Autosave: jawaban dan profil disimpan ke localStorage tiap perubahan, dan disinkronkan diam-diam ke DB tiap satu bagian selesai serta saat tab disembunyikan atau ditutup *(revisi)*. Pengunjung tidak diberi tahu. Buka ulang `/opsscore/mulai` dengan sesi tersimpan → tawarkan "Lanjutkan dari \[bagian\]" atau "Mulai ulang".
 - Tidak ada timer. *(revisi)* Transisi dan umpan balik pilihan maksimal ±300 ms. Animasi sampai ±1 detik hanya boleh di momen skor dan hasil: skor area menghitung naik, konsol "menghitung hasil" (±1,5 detik), dan reveal halaman hasil. Semua animasi mati untuk `prefers-reduced-motion`, tanpa library animasi.
 - Motion yang disetujui *(revisi)*: transisi geser keluar-masuk dengan opsi muncul berurutan; kartu mengecil saat ditekan, border menyala, centang muncul dengan pegas kecil, getar halus di Android; ikon skala bergerak saat dipilih; progress terisi halus dan berdenyut saat bagian selesai; nomor WA terformat otomatis dengan centang saat valid dan tombol menyala saat siap; sapaan setelah nama; skor area menghitung naik; konsol menghitung hasil; reveal hasil (skor naik, penanda tangga fase bergeser, bar area terisi bergantian); kartu report muncul saat di-scroll dengan kotak "Mulai dari sini" disorot.
 - Transisi antar pertanyaan: geser horizontal ringan; hormati `prefers-reduced-motion`.
@@ -252,7 +256,7 @@ Definisi selesai untuk quiz: pengujian manual di Safari iOS dan Chrome Android, 
 | Tabel | Kolom utama | Catatan |
 | --- | --- | --- |
 | `assessment_sessions` | `id` uuid, `share_slug` text unik 8 karakter, `instrument_version` int, `status` (started/completed/gated), `answers` jsonb, `scores` jsonb (area, total, fase, prioritas, kelas), `utm` jsonb, `referrer`, `user_agent`, `started_at`, `completed_at`, `gated_at` | Satu baris per sesi; `answers` disimpan mentah supaya bisa dihitung ulang |
-| `assessment_leads` | `id`, `session_id` fk, `name`, `phone_e164`, `brand`, `industry`, `employees`, `revenue_band`, `consent_at`, `followup_status` (new/contacted/qualified/not\_fit/converted), `notes` text | Data kontak dipisah dari sesi; halaman share tidak pernah membaca tabel ini. *(revisi)* Baris dibuat setelah layar Kenalan dan diisi bertahap, jadi semua field profil dan kontak opsional; hanya baris dengan `phone_e164` yang bisa di-follow-up |
+| `assessment_leads` | `id`, `session_id` fk, `name`, `phone_e164`, `brand`, `industry`, `employees`, `revenue_band`, `consent_at`, `followup_status` (new/contacted/qualified/not\_fit/converted), `notes` text | Data kontak dipisah dari sesi; halaman share tidak pernah membaca tabel ini. *(revisi)* Baris dibuat setelah bagian Intro dan diisi bertahap, jadi semua field profil dan kontak opsional; hanya baris dengan `phone_e164` yang bisa di-follow-up |
 
 RLS: insert/update sesi lewat route handler server dengan service key, bukan dari client langsung. Client hanya memegang `id` sesi. Halaman share membaca lewat `share_slug` dan hanya mengembalikan `scores`.
 
@@ -262,7 +266,7 @@ RLS: insert/update sesi lewat route handler server dengan service key, bukan dar
 | --- | --- | --- |
 | `assessment_view` | Landing dimuat | utm |
 | `assessment_start` | Klik mulai | session\_id |
-| `assessment_area_done` | Tiap area selesai | area, index |
+| `assessment_area_done` | *(revisi)* Layar skor bagian tampil, sekali per area di bagian itu | area, index |
 | `assessment_complete` | Hasil ringkas tampil | fase, total |
 | `assessment_gate_submit` | Gate terkirim (Meta: `Lead`) | fase, revenue\_band |
 | `assessment_pdf` | Klik simpan PDF | fase |
@@ -301,8 +305,8 @@ Keputusan yang belum diambil — jangan diputuskan sepihak oleh Claude Code, tan
 | Nama produk & slug route | OpsScore / Ops X-Ray / Operating Index / Sistemasi Score | OpsScore, slug `opsscore`, satu konstanta `PRODUCT_SLUG` |
 | Pronoun di quiz & report | Anda / kamu | Anda (konsisten dengan datasheet) |
 | Tampilkan harga di report | tanpa harga / kelas + rentang datasheet | Tanpa harga, hanya kelas + durasi |
-| Varian pertanyaan untuk bisnis jasa proyek (kontraktor, konsultan) | satu instrumen generik / dua varian dari bidang usaha | Satu instrumen; A4 dan H2 dibuat netral produk kalau bidang = Jasa. *(revisi)* Berjalan, karena bidang usaha kini diketahui di awal section Penjualan |
-| Posisi pertanyaan omset & karyawan | di gate akhir / di awal quiz | *(revisi — diputuskan 2026-09-17)* Nama dan nama usaha di awal quiz; bidang usaha, omset, dan karyawan di pembuka section Penjualan, Keuangan, dan Tim & SDM; nomor WA di gate akhir |
+| Varian pertanyaan untuk bisnis jasa proyek (kontraktor, konsultan) | satu instrumen generik / dua varian dari bidang usaha | Satu instrumen; A4 dan H2 dibuat netral produk kalau bidang = Jasa. *(revisi)* Berjalan, karena bidang usaha kini diketahui di awal bagian Penjualan & prospek |
+| Posisi pertanyaan omset & karyawan | di gate akhir / di awal quiz | *(revisi — diputuskan 2026-09-17)* Nama dan nama usaha di awal quiz; bidang usaha, omset, dan karyawan di pembuka bagian Penjualan & prospek, Keuangan & kas, dan Tim & peran owner; nomor WA di gate akhir |
 | Basis instrumen BOS Check | boleh dipakai sebagai kerangka / tidak dirujuk sama sekali | Tidak dirujuk; struktur dan butir sudah berbeda total, tapi konfirmasi ke pemilik instrumen aslinya tetap perlu |
 
 Angka target metrik di bagian 1 dan bobot di bagian 5 adalah tebakan terinformasi, bukan hasil kalibrasi. Keduanya dikunci ke `instrument_version = 1` dan direvisi setelah 100 sesi selesai.

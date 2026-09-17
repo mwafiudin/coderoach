@@ -22,8 +22,16 @@ import {
   type Profile,
   type ProfileField,
 } from '@/lib/opsscore/profile';
-import { QUESTION_BY_ID, SCALE_OPTIONS, promptFor, type AreaId, type Option } from '@/lib/opsscore/questions';
-import { areaScore, bandFor, isAnswered, sanitizeAnswers, type Answers } from '@/lib/opsscore/scoring';
+import {
+  AREAS,
+  AREA_LABELS,
+  QUESTION_BY_ID,
+  SCALE_OPTIONS,
+  promptFor,
+  type AreaId,
+  type Option,
+} from '@/lib/opsscore/questions';
+import { areaScore, bandFor, isAnswered, isAreaSkipped, sanitizeAnswers, type Answers } from '@/lib/opsscore/scoring';
 import { track } from '@/lib/opsscore/track';
 import { AnimatedCount } from '../../_components/ui/AnimatedCount';
 import { OctagonMark } from '../../_components/ui/OctagonMark';
@@ -143,7 +151,7 @@ export function Quiz() {
   const steps = useMemo(() => buildSteps(answers), [answers]);
   const index = steps.findIndex((s) => stepKey(s) === current);
   const step: Step | undefined = steps[index];
-  const sections = useMemo(() => progressSections(answers), [answers]);
+  const sections = useMemo(() => progressSections(), []);
 
   // Restore saved progress once. Ads may link here directly, so attribution is captured here too.
   useEffect(() => {
@@ -340,11 +348,9 @@ export function Quiz() {
     }
     if (closesSection(list, i)) void save();
     if (next.kind === 'feedback') {
-      const scored = progressSections(answersRef.current).filter((s) => s.id !== 'kenalan');
-      track('assessment_area_done', {
-        area: next.section,
-        index: scored.findIndex((s) => s.id === next.section) + 1,
-      });
+      // Events stay per scoring area (brief §8), even though the quiz shows them per section.
+      const scored = AREAS.filter((a) => !isAreaSkipped(a.id, answersRef.current)).map((a) => a.id);
+      for (const area of next.areas) track('assessment_area_done', { area, index: scored.indexOf(area) + 1 });
     }
     void transition(1, () => setCurrent(stepKey(next)));
   }, [finish, save, transition]);
@@ -540,7 +546,7 @@ export function Quiz() {
         </h1>
         <p className="mt-4 text-[17px] leading-[1.55] text-mist-600">{QUIZ_COPY.resumeBody}</p>
         <div className="mt-10 flex flex-col sm:flex-row gap-3">
-          <PrimaryButton onClick={resume}>{QUIZ_COPY.resume(SECTION_LABELS[saved?.section ?? 'kenalan'])}</PrimaryButton>
+          <PrimaryButton onClick={resume}>{QUIZ_COPY.resume(SECTION_LABELS[saved?.section ?? 'intro'])}</PrimaryButton>
           <button
             type="button"
             onClick={start}
@@ -567,8 +573,8 @@ export function Quiz() {
       content = (
         <FeedbackScreen
           chip={chip}
-          area={step.section}
-          score={areaScore(step.section, answers) ?? 0}
+          title={SECTION_LABELS[step.section]}
+          scores={step.areas.map((area) => ({ area, score: areaScore(area, answers) ?? 0 }))}
           nextLabel={nextSection ? QUIZ_COPY.nextUp(SECTION_LABELS[nextSection]) : QUIZ_COPY.seeResult}
           headingRef={headingRef}
           onNext={goNext}
@@ -655,9 +661,9 @@ export function Quiz() {
       </>
     );
   } else if (screen === 'finishing') {
-    const scoredSections = sections.filter((s) => s.id !== 'kenalan').length;
+    const scoredAreas = AREAS.filter((a) => !isAreaSkipped(a.id, answers)).length;
     const answered = steps.filter((s) => s.kind === 'question').length;
-    content = <ScoringConsole answered={answered} areas={scoredSections} />;
+    content = <ScoringConsole answered={answered} areas={scoredAreas} />;
   } else if (screen === 'error') {
     content = (
       <div className="flex flex-col" role="alert">
@@ -1032,24 +1038,25 @@ function ChoiceScreen({
 
 function FeedbackScreen({
   chip,
-  area,
-  score,
+  title,
+  scores,
   nextLabel,
   headingRef,
   onNext,
 }: {
   chip: React.ReactNode;
-  area: AreaId;
-  score: number;
+  title: string;
+  scores: Array<{ area: AreaId; score: number }>;
   nextLabel: string;
   headingRef: React.RefObject<HTMLHeadingElement | null>;
   onNext: () => void;
 }) {
+  const [only] = scores;
   return (
     // Tapping anywhere continues (brief §7); the footer buttons stay for keyboard and screen readers.
     <div className="flex flex-col cursor-pointer" onClick={onNext}>
       {chip}
-      <div className="mt-5 relative overflow-hidden rounded-2xl bg-ink text-paper px-5 py-6 sm:px-8 sm:py-8 shadow-[0_30px_60px_-30px_rgba(8,9,10,0.65)]">
+      <div className="mt-4 sm:mt-5 relative overflow-hidden rounded-2xl bg-ink text-paper px-5 py-5 sm:px-8 sm:py-7 shadow-[0_30px_60px_-30px_rgba(8,9,10,0.65)]">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 opacity-[0.22] bg-no-repeat"
@@ -1067,23 +1074,49 @@ function FeedbackScreen({
           tabIndex={-1}
           className="relative mt-2 text-[26px] sm:text-[36px] leading-[1.08] tracking-[-0.025em] font-bold outline-none"
         >
-          {SECTION_LABELS[area]}
+          {title}
         </h1>
-        <div className="relative mt-5 flex items-baseline gap-2">
-          <span className="text-[64px] sm:text-[80px] font-bold leading-none tracking-[-0.04em] tabular">
-            <AnimatedCount value={String(score)} duration={700} />
-          </span>
-          <span className="text-[15px] text-mist-500 tabular">/100</span>
-        </div>
-        <ScoreBar value={score} className="relative mt-4" animate tone="dark" />
-        <p
-          className="ops-fade-up relative mt-5 mb-0 text-[17px] sm:text-[20px] leading-[1.45] text-paper/90 text-pretty"
-          style={{ '--ops-delay': '450ms' } as CSSProperties}
-        >
-          {AREA_FEEDBACK[area][bandFor(score)]}
-        </p>
+        {scores.length === 1 ? (
+          <>
+            <div className="relative mt-5 flex items-baseline gap-2">
+              <span className="text-[64px] sm:text-[80px] font-bold leading-none tracking-[-0.04em] tabular">
+                <AnimatedCount value={String(only.score)} duration={700} />
+              </span>
+              <span className="text-[15px] text-mist-500 tabular">/100</span>
+            </div>
+            <ScoreBar value={only.score} className="relative mt-4" animate tone="dark" />
+            <p
+              className="ops-fade-up relative mt-5 mb-0 text-[17px] sm:text-[20px] leading-[1.45] text-paper/90 text-pretty"
+              style={{ '--ops-delay': '450ms' } as CSSProperties}
+            >
+              {AREA_FEEDBACK[only.area][bandFor(only.score)]}
+            </p>
+          </>
+        ) : (
+          // Combined section: one row per scoring area, revealed one after the other.
+          <ul className="relative list-none p-0 m-0 mt-3 flex flex-col divide-y divide-shadow-700">
+            {scores.map(({ area, score }, i) => (
+              <li key={area} className="py-3.5 first:pt-1 last:pb-0">
+                <div className="flex items-baseline justify-between gap-3">
+                  <h2 className="m-0 text-[15px] sm:text-[18px] font-semibold text-paper/90">{AREA_LABELS[area]}</h2>
+                  <span className="shrink-0 text-[34px] sm:text-[44px] font-bold leading-none tracking-[-0.03em] tabular">
+                    <AnimatedCount value={String(score)} duration={700} />
+                    <span className="ml-1 text-[12px] font-normal tracking-normal text-mist-500">/100</span>
+                  </span>
+                </div>
+                <ScoreBar value={score} className="mt-2.5" animate index={i * 4} tone="dark" />
+                <p
+                  className="ops-fade-up mt-2.5 mb-0 text-[14px] sm:text-[16px] leading-[1.45] text-paper/85 text-pretty"
+                  style={{ '--ops-delay': `${450 + i * 250}ms` } as CSSProperties}
+                >
+                  {AREA_FEEDBACK[area][bandFor(score)]}
+                </p>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
-      <p className="mt-4 mb-0 text-[13px] font-semibold text-ink inline-flex items-center gap-2">
+      <p className="mt-3 sm:mt-4 mb-0 text-[13px] font-semibold text-ink inline-flex items-center gap-2">
         {nextLabel}
         <Arrow />
       </p>
