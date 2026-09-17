@@ -2,6 +2,13 @@
 
 2026-09-17 · @Someone
 
+> **Revisi 2026-09-17** (disetujui pemilik produk setelah M3):
+> - Nama dan nama usaha diminta di awal quiz (layar Kenalan). Bidang usaha, omset, dan jumlah karyawan menjadi pembuka section Penjualan, Keuangan, dan Tim & SDM. Gate di akhir tinggal nomor WA dan persetujuan.
+> - Profil dan jawaban disimpan diam-diam ke server setiap section selesai, dan saat tab disembunyikan atau ditutup.
+> - Aturan animasi dilonggarkan untuk momen skor dan hasil (bagian 7).
+>
+> Bagian yang berubah ditandai *(revisi)*.
+
 ## 1. Konteks & tujuan
 
 Bangun fitur assessment gratis "OpsScore" di coderoach.id sebagai lead generator untuk lini SYS (sistem operasional internal) dan WEB. Pengunjung datang dari ads, konten organik, dan SEO, mengisi 27 pertanyaan dalam ±5 menit, lalu mendapat report fase bisnis + 3 area prioritas yang bisa disimpan sebagai PDF.
@@ -30,7 +37,7 @@ MVP dikerjakan dalam tiga milestone berurutan (detail di bagian 11); yang di kol
 | Landing | Satu halaman `/opsscore`: janji, durasi, 1 CTA | Varian landing per angle ads (A/B) |
 | Quiz | 27 pertanyaan, satu per layar, branching stok, autosave | Varian pertanyaan untuk bisnis jasa proyek |
 | Hasil | Fase + skor per area di layar, 3 area prioritas | Perbandingan dengan rata-rata industri sejenis |
-| Gate | Nama, WA, brand, bidang usaha, karyawan, omset | Lead scoring otomatis, sinkron ke Notion |
+| Gate *(revisi)* | Nomor WA + persetujuan. Nama, brand, bidang usaha, karyawan, dan omset sudah dikumpulkan di dalam quiz | Lead scoring otomatis, sinkron ke Notion |
 | Report | Halaman report lengkap + print-to-PDF via CSS print | PDF server-side ber-branding, dikirim ke WA |
 | Share | URL publik per hasil (tanpa data kontak) | OG image dinamis per hasil |
 | Admin | Daftar lead dengan skor, fase, sumber, intent; proteksi login sederhana | Dashboard agregat per industri |
@@ -48,12 +55,14 @@ MVP dikerjakan dalam tiga milestone berurutan (detail di bagian 11); yang di kol
 
 Gate diletakkan setelah hasil ringkas tampil, bukan sebelum quiz: pengunjung sudah investasi 5 menit dan sudah melihat fasenya sebelum diminta nomor WA.
 
+*(revisi)* Profil usaha tidak lagi diminta di gate. Nama dan nama usaha dibuka di awal quiz (layar Kenalan), lalu bidang usaha, omset, dan jumlah karyawan masing-masing jadi layar pembuka section yang relevan. Gate tinggal nomor WA dan persetujuan.
+
 ```mermaid
 flowchart LR
   A[Ads / organik / SEO] --> B[/opsscore<br/>landing/]
-  B --> C[/opsscore/mulai<br/>quiz 27 soal/]
+  B --> C[/opsscore/mulai<br/>Kenalan + quiz 27 soal/]
   C --> D[Hasil ringkas<br/>skor + fase]
-  D --> E[Gate<br/>nama, WA, omset]
+  D --> E[Gate<br/>nomor WA]
   E --> F[/opsscore/hasil/id<br/>report lengkap + PDF/]
   F --> G[Follow-up manual<br/>dari admin]
   G --> H[Brief / discovery]
@@ -119,6 +128,18 @@ Semua pertanyaan hidup di satu berkas data (`questions.ts` atau JSON), bukan di 
 | H3 | ai | multi | Yang paling ingin Anda serahkan ke AI? | Balas chat pelanggan / Bikin laporan / Mengingatkan follow-up / Prediksi stok / Rekap keuangan / Nggak kepikiran |
 
 A3, F2, dan H3 tidak masuk skor area; A3 dan F2 jadi pembobot (bagian 5), H3 jadi data intent untuk follow-up (bagian 9). H1 juga tidak masuk skor — ia segmentasi.
+
+*(revisi)* **Layar profil di dalam quiz** (tidak berskor, disimpan di `assessment_leads`, bukan di `answers`):
+
+| Posisi | Layar | Bentuk |
+| --- | --- | --- |
+| Kenalan (sebelum A1) | Nama | Isian teks |
+| Kenalan | Nama usaha, dengan sapaan "Halo, {nama}." | Isian teks |
+| Pembuka Penjualan | Bidang usaha | Kartu pilihan |
+| Pembuka Keuangan | Omset per bulan ("Hanya untuk mengelompokkan hasil. Tidak tampil di report.") | Kartu pilihan |
+| Pembuka Tim & SDM | Jumlah karyawan | Kartu pilihan |
+
+Karena bidang usaha sudah diketahui sebelum A4 dan H2, keduanya memakai kalimat versi Jasa kalau bidang = Jasa (`promptJasa` di `questions.ts`).
 
 **Urutan seksi di layar:** A Penjualan & prospek → B Operasional harian → C Keuangan & kas → D Stok & pembelian → E Tim & SDM → F Ketergantungan owner → G Kehadiran online → H Kesiapan AI. Judul seksi ditampilkan sebagai nama area, bukan huruf.
 
@@ -206,10 +227,11 @@ Mobile-first: mayoritas pengunjung datang dari ads di ponsel. Tiap layar harus s
 
 - Satu pertanyaan per layar. Pilihan sebagai kartu besar yang bisa disentuh; skala standar membawa ikon sederhana per opsi (kepala, chat, spreadsheet, aplikasi, sistem) — ikon dari set yang sudah dipakai website, bukan emoji.
 - Memilih opsi pada `scale`/`single`/`branch` langsung lanjut ke pertanyaan berikutnya setelah jeda 250 ms; `multi` dan `volume` butuh tombol "Lanjut". Selalu ada tombol "Kembali".
-- Progress ditampilkan per area (8 langkah dengan nama area), bukan per pertanyaan. Area `stock` hilang dari progress kalau D0 = Tidak.
+- Progress ditampilkan per bagian — Kenalan lalu 8 area *(revisi)* — bukan per pertanyaan. Area `stock` hilang dari progress kalau D0 = Tidak.
 - Setelah pertanyaan terakhir tiap area, satu layar mini-feedback: nama area, skor 0–100 sebagai bar, kalimat dari `copy.ts` (bagian 6), tombol "Lanjut ke \[area berikutnya\]". Layar ini boleh dilewati dengan tap di mana saja.
-- Autosave: jawaban disimpan ke localStorage tiap perubahan, dan disinkronkan ke DB (upsert sesi) tiap selesai satu area. Buka ulang `/opsscore/mulai` dengan sesi tersimpan → tawarkan "Lanjutkan dari area X" atau "Mulai ulang".
-- Tidak ada timer, tidak ada gamifikasi skor sementara, tidak ada animasi lebih dari 300 ms. Audiensnya owner bisnis.
+- Autosave: jawaban dan profil disimpan ke localStorage tiap perubahan, dan disinkronkan diam-diam ke DB tiap satu bagian selesai serta saat tab disembunyikan atau ditutup *(revisi)*. Pengunjung tidak diberi tahu. Buka ulang `/opsscore/mulai` dengan sesi tersimpan → tawarkan "Lanjutkan dari area X" atau "Mulai ulang".
+- Tidak ada timer. *(revisi)* Transisi dan umpan balik pilihan maksimal ±300 ms. Animasi sampai ±1 detik hanya boleh di momen skor dan hasil: skor area menghitung naik, konsol "menghitung hasil" (±1,5 detik), dan reveal halaman hasil. Semua animasi mati untuk `prefers-reduced-motion`, tanpa library animasi.
+- Motion yang disetujui *(revisi)*: transisi geser keluar-masuk dengan opsi muncul berurutan; kartu mengecil saat ditekan, border menyala, centang muncul dengan pegas kecil, getar halus di Android; ikon skala bergerak saat dipilih; progress terisi halus dan berdenyut saat bagian selesai; nomor WA terformat otomatis dengan centang saat valid dan tombol menyala saat siap; sapaan setelah nama; skor area menghitung naik; konsol menghitung hasil; reveal hasil (skor naik, penanda tangga fase bergeser, bar area terisi bergantian); kartu report muncul saat di-scroll dengan kotak "Mulai dari sini" disorot.
 - Transisi antar pertanyaan: geser horizontal ringan; hormati `prefers-reduced-motion`.
 - Navigasi keyboard lengkap di desktop (angka 1–5 memilih opsi, Enter lanjut, Esc kembali).
 - Copy tombol dan label mengikuti tone datasheet Coderoach: kalimat pendek, tanpa tanda seru, tanpa emoji.
@@ -219,14 +241,14 @@ Definisi selesai untuk quiz: pengujian manual di Safari iOS dan Chrome Android, 
 
 ## 8. Gate, data model & tracking
 
-**Gate** tampil setelah hasil ringkas, sebagai satu form pendek di halaman yang sama. Field: nama (wajib), nomor WA (wajib, validasi `08xxxxxxxxxx` 10–13 digit, dinormalisasi ke `62…`), nama brand/usaha (wajib), bidang usaha (select: Produksi/Manufaktur, Distribusi, Jasa, Retail, Kuliner, Fashion, Kriya, Lainnya), jumlah karyawan (select: 1–5, 6–10, 11–20, 21–50, 51–100, > 100), omset per bulan (select: < 50 jt, 50–100 jt, 100–200 jt, 200–400 jt, 400–800 jt, > 800 jt), checkbox persetujuan dihubungi via WA (wajib). Tanpa email. Copy di atas form: "Report lengkap dan versi PDF-nya kami buka setelah ini. Kami hubungi lewat WA hanya kalau Anda mau."
+**Gate** tampil setelah hasil ringkas, sebagai satu form pendek di halaman yang sama. *(revisi)* Field: nomor WA (wajib, validasi `08xxxxxxxxxx` 10–13 digit, dinormalisasi ke `62…`) dan checkbox persetujuan dihubungi via WA (wajib). Tanpa email. Nama, nama brand/usaha, bidang usaha (Produksi/Manufaktur, Distribusi, Jasa, Retail, Kuliner, Fashion, Kriya, Lainnya), jumlah karyawan (1–5, 6–10, 11–20, 21–50, 51–100, > 100), dan omset per bulan (< 50 jt, 50–100 jt, 100–200 jt, 200–400 jt, 400–800 jt, > 800 jt) dikumpulkan di dalam quiz (bagian 4). Copy di atas form: "Report lengkap dan versi PDF-nya kami buka setelah ini. Kami hubungi lewat WA hanya kalau Anda mau."
 
 **Data model** (asumsi Supabase/Postgres; kalau repo sudah punya DB lain, ikuti yang ada — bagian 10):
 
 | Tabel | Kolom utama | Catatan |
 | --- | --- | --- |
 | `assessment_sessions` | `id` uuid, `share_slug` text unik 8 karakter, `instrument_version` int, `status` (started/completed/gated), `answers` jsonb, `scores` jsonb (area, total, fase, prioritas, kelas), `utm` jsonb, `referrer`, `user_agent`, `started_at`, `completed_at`, `gated_at` | Satu baris per sesi; `answers` disimpan mentah supaya bisa dihitung ulang |
-| `assessment_leads` | `id`, `session_id` fk, `name`, `phone_e164`, `brand`, `industry`, `employees`, `revenue_band`, `consent_at`, `followup_status` (new/contacted/qualified/not\_fit/converted), `notes` text | Data kontak dipisah dari sesi; halaman share tidak pernah membaca tabel ini |
+| `assessment_leads` | `id`, `session_id` fk, `name`, `phone_e164`, `brand`, `industry`, `employees`, `revenue_band`, `consent_at`, `followup_status` (new/contacted/qualified/not\_fit/converted), `notes` text | Data kontak dipisah dari sesi; halaman share tidak pernah membaca tabel ini. *(revisi)* Baris dibuat setelah layar Kenalan dan diisi bertahap, jadi semua field profil dan kontak opsional; hanya baris dengan `phone_e164` yang bisa di-follow-up |
 
 RLS: insert/update sesi lewat route handler server dengan service key, bukan dari client langsung. Client hanya memegang `id` sesi. Halaman share membaca lewat `share_slug` dan hanya mengembalikan `scores`.
 
@@ -275,8 +297,8 @@ Keputusan yang belum diambil — jangan diputuskan sepihak oleh Claude Code, tan
 | Nama produk & slug route | OpsScore / Ops X-Ray / Operating Index / Sistemasi Score | OpsScore, slug `opsscore`, satu konstanta `PRODUCT_SLUG` |
 | Pronoun di quiz & report | Anda / kamu | Anda (konsisten dengan datasheet) |
 | Tampilkan harga di report | tanpa harga / kelas + rentang datasheet | Tanpa harga, hanya kelas + durasi |
-| Varian pertanyaan untuk bisnis jasa proyek (kontraktor, konsultan) | satu instrumen generik / dua varian dari bidang usaha | Satu instrumen; A4 dan H2 dibuat netral produk kalau bidang = Jasa |
-| Posisi pertanyaan omset & karyawan | di gate akhir / di awal quiz | Di gate akhir |
+| Varian pertanyaan untuk bisnis jasa proyek (kontraktor, konsultan) | satu instrumen generik / dua varian dari bidang usaha | Satu instrumen; A4 dan H2 dibuat netral produk kalau bidang = Jasa. *(revisi)* Berjalan, karena bidang usaha kini diketahui di awal section Penjualan |
+| Posisi pertanyaan omset & karyawan | di gate akhir / di awal quiz | *(revisi — diputuskan 2026-09-17)* Nama dan nama usaha di awal quiz; bidang usaha, omset, dan karyawan di pembuka section Penjualan, Keuangan, dan Tim & SDM; nomor WA di gate akhir |
 | Basis instrumen BOS Check | boleh dipakai sebagai kerangka / tidak dirujuk sama sekali | Tidak dirujuk; struktur dan butir sudah berbeda total, tapi konfirmasi ke pemilik instrumen aslinya tetap perlu |
 
 Angka target metrik di bagian 1 dan bobot di bagian 5 adalah tebakan terinformasi, bukan hasil kalibrasi. Keduanya dikunci ke `instrument_version = 1` dan direvisi setelah 100 sesi selesai.

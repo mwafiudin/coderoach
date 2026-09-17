@@ -3,7 +3,8 @@ import { notFound } from 'next/navigation';
 import { getPayload } from 'payload';
 import config from '@payload-config';
 import { SectionShell } from '../../../_components/detail/SectionShell';
-import { findSession } from '@/lib/opsscore/api';
+import { AnimatedCount } from '../../../_components/ui/AnimatedCount';
+import { LEADS, findSession } from '@/lib/opsscore/api';
 import { productPath } from '@/lib/opsscore/config';
 import { GATE_COPY, PHASE_COPY, RESULT_COPY } from '@/lib/opsscore/copy';
 import type { Scores } from '@/lib/opsscore/scoring';
@@ -50,6 +51,15 @@ export default async function OpsScoreResultPage({ params }: { params: Promise<{
 
   const scores = session.scores as Scores;
   const phase = PHASE_COPY[scores.phase];
+  const { docs } = await payload.find({
+    collection: LEADS,
+    where: { session: { equals: session.id } },
+    select: { brand: true, revenueBand: true },
+    limit: 1,
+    depth: 0,
+    overrideAccess: true,
+  });
+  const lead = docs[0];
 
   return (
     <SectionShell>
@@ -67,11 +77,11 @@ export default async function OpsScoreResultPage({ params }: { params: Promise<{
                 {RESULT_COPY.marker}
               </span>
               <p className="mt-8 mb-0 text-[11px] font-semibold uppercase tracking-[0.18em] text-mist-600">
-                {RESULT_COPY.scoreLabel}
+                {RESULT_COPY.scoreLabelFor(lead?.brand)}
               </p>
               <div className="mt-2 flex items-baseline gap-2">
                 <span className="text-[104px] sm:text-[128px] font-bold leading-[0.9] tracking-[-0.045em] tabular">
-                  {scores.total}
+                  <AnimatedCount value={String(scores.total)} duration={900} />
                 </span>
                 <span className="text-[18px] text-mist-600 tabular">{RESULT_COPY.outOf}</span>
               </div>
@@ -82,13 +92,13 @@ export default async function OpsScoreResultPage({ params }: { params: Promise<{
                 {phase.title}
               </h1>
               <p className="mt-4 mb-0 text-[18px] leading-[1.55] text-mist-600 max-w-[520px] text-pretty">{phase.key}</p>
-              <PhaseLadder phase={scores.phase} className="mt-8 max-w-[520px]" />
+              <PhaseLadder phase={scores.phase} className="mt-8 max-w-[520px]" animate />
             </div>
             <div className="lg:pt-14">
               <h2 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-mist-600 m-0">
                 {RESULT_COPY.areasTitle}
               </h2>
-              <AreaScoreList areas={scores.areas} className="mt-6" />
+              <AreaScoreList areas={scores.areas} className="mt-6" animate />
               {scores.areas.stock === undefined && (
                 <p className="mt-5 mb-0 text-[13px] leading-[1.5] text-mist-600">{RESULT_COPY.stockSkipped}</p>
               )}
@@ -112,7 +122,7 @@ export default async function OpsScoreResultPage({ params }: { params: Promise<{
                   {GATE_COPY.intro}
                 </p>
               </div>
-              <GateForm sessionId={session.id} phase={scores.phase} />
+              <GateForm sessionId={session.id} phase={scores.phase} revenueBand={lead?.revenueBand} />
             </div>
           </section>
         )}

@@ -83,7 +83,7 @@ export default async function SharedResultPage({ params }: { params: Promise<{ s
                 {phase.title}
               </h1>
               <p className="mt-4 mb-0 text-[18px] leading-[1.55] text-mist-600 max-w-[520px] text-pretty">{phase.key}</p>
-              <PhaseLadder phase={scores.phase} className="mt-8 max-w-[520px]" />
+              <PhaseLadder phase={scores.phase} className="mt-8 max-w-[520px]" animate />
               <div className="mt-10 flex flex-col gap-3">
                 <a
                   href={productPath(SHARE_CTA_QUERY)}
@@ -101,7 +101,7 @@ export default async function SharedResultPage({ params }: { params: Promise<{ s
               <h2 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-mist-600 m-0">
                 {RESULT_COPY.areasTitle}
               </h2>
-              <AreaScoreList areas={scores.areas} className="mt-6" />
+              <AreaScoreList areas={scores.areas} className="mt-6" animate />
             </div>
           </div>
         </section>

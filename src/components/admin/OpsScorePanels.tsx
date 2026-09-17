@@ -4,7 +4,15 @@
  */
 import type { Payload } from 'payload';
 import type { CSSProperties } from 'react';
-import { filtersToQuery, findLeads, formatDate, funnel, optionLabels, parseFilters } from '@/lib/opsscore/admin';
+import {
+  filtersToQuery,
+  findLeads,
+  formatDate,
+  funnel,
+  optionLabels,
+  parseFilters,
+  progressLabel,
+} from '@/lib/opsscore/admin';
 import { LEADS, findSession } from '@/lib/opsscore/api';
 import type { Attribution } from '@/lib/opsscore/attribution';
 import { productPath } from '@/lib/opsscore/config';
@@ -94,6 +102,10 @@ export async function LeadList({
           {ADMIN_COPY.filters.qualified}
         </label>
         <label style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+          <input type="checkbox" name="wa" value="1" defaultChecked={filters.withPhone} />
+          {ADMIN_COPY.filters.withPhone}
+        </label>
+        <label style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
           {ADMIN_COPY.filters.phase}
           <select name="fase" defaultValue={filters.phase ?? ''} style={control}>
             <option value="">{ADMIN_COPY.filters.all}</option>
@@ -150,9 +162,13 @@ export async function LeadList({
                   <td style={cell}>{row.name}</td>
                   <td style={cell}>{row.brand}</td>
                   <td style={{ ...cell, whiteSpace: 'nowrap' }}>
-                    <a href={`https://wa.me/${row.phone}`} target="_blank" rel="noopener noreferrer">
-                      +{row.phone}
-                    </a>
+                    {row.phone ? (
+                      <a href={`https://wa.me/${row.phone}`} target="_blank" rel="noopener noreferrer">
+                        +{row.phone}
+                      </a>
+                    ) : (
+                      '—'
+                    )}
                   </td>
                   <td style={cell}>{row.industry}</td>
                   <td style={cell}>{row.employees}</td>
@@ -161,6 +177,7 @@ export async function LeadList({
                   <td style={cell}>{row.total ?? '—'}</td>
                   <td style={cell}>{row.priorities.join(', ')}</td>
                   <td style={{ ...cell, whiteSpace: 'nowrap' }}>{row.serviceClass}</td>
+                  <td style={cell}>{row.progress}</td>
                   <td style={cell}>{row.intent.join(', ')}</td>
                   <td style={cell}>{row.source}</td>
                   <td style={cell}>
@@ -216,15 +233,23 @@ export async function SessionDetail({ payload, id, base, apiRoute }: { payload: 
           <p style={eyebrow}>{ADMIN_COPY.leadTitle}</p>
           {lead ? (
             <div style={{ display: 'grid', gap: 6 }}>
-              <strong>{lead.brand}</strong>
-              <span>{lead.name}</span>
-              <a href={`https://wa.me/${lead.phoneE164}`} target="_blank" rel="noopener noreferrer">
-                +{lead.phoneE164}
-              </a>
+              <strong>{lead.brand || '—'}</strong>
+              <span>{lead.name || '—'}</span>
+              {lead.phoneE164 ? (
+                <a href={`https://wa.me/${lead.phoneE164}`} target="_blank" rel="noopener noreferrer">
+                  +{lead.phoneE164}
+                </a>
+              ) : (
+                <span style={muted}>{ADMIN_COPY.noPhone}</span>
+              )}
               <span style={muted}>
-                {INDUSTRY_OPTIONS.find((o) => o.id === lead.industry)?.label} ·{' '}
-                {EMPLOYEE_OPTIONS.find((o) => o.id === lead.employees)?.label} ·{' '}
-                {REVENUE_OPTIONS.find((o) => o.id === lead.revenueBand)?.label}
+                {[
+                  INDUSTRY_OPTIONS.find((o) => o.id === lead.industry)?.label,
+                  EMPLOYEE_OPTIONS.find((o) => o.id === lead.employees)?.label,
+                  REVENUE_OPTIONS.find((o) => o.id === lead.revenueBand)?.label,
+                ]
+                  .filter(Boolean)
+                  .join(' · ') || '—'}
               </span>
               <OpsScoreStatus id={lead.id} value={lead.followupStatus} apiRoute={apiRoute} />
             </div>
@@ -237,7 +262,7 @@ export async function SessionDetail({ payload, id, base, apiRoute }: { payload: 
           <p style={eyebrow}>{ADMIN_COPY.sessionMeta}</p>
           <div style={{ display: 'grid', gap: 6 }}>
             <span>
-              {ADMIN_COPY.sessionStatus[session.status]} · {ADMIN_COPY.instrumentVersion(session.instrumentVersion)}
+              {progressLabel(session.status, answers)} · {ADMIN_COPY.instrumentVersion(session.instrumentVersion)}
             </span>
             {dates.map(([name, value]) => (
               <span key={name} style={muted}>

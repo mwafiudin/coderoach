@@ -6,7 +6,9 @@ Brief dan aturan skor: [`opsscore-brief.md`](./opsscore-brief.md). Dokumen ini m
 
 | Yang diubah | File |
 | --- | --- |
-| Pertanyaan, opsi, area, opsi gate | `src/lib/opsscore/questions.ts` |
+| Pertanyaan, opsi, area, opsi profil | `src/lib/opsscore/questions.ts` |
+| Urutan layar, posisi layar profil | `src/lib/opsscore/flow.ts` |
+| Validasi profil, format nomor WA | `src/lib/opsscore/profile.ts` |
 | Bobot, ambang fase, aturan prioritas dan kelas layanan | `src/lib/opsscore/scoring.ts` |
 | Semua teks: fase, feedback, tindakan, landing, quiz, gate, report, admin | `src/lib/opsscore/copy.ts` |
 | Nama produk, slug, `INSTRUMENT_VERSION` | `src/lib/opsscore/config.ts` |
@@ -35,12 +37,34 @@ Angka dihitung per kohort: semua sesi yang **mulai** dalam 7 atau 30 hari terakh
 
 **Tabel lead**
 
-- Filter: omset ≥ 50 jt, fase, dan status follow-up. Urutan terbaru dulu.
+- Lead dibuat begitu pengunjung selesai mengisi nama dan nama usaha, lalu terisi bertahap. Jadi tabel juga memuat orang yang berhenti di tengah; kolom **Progres** menunjukkan sampai mana ("Berhenti di Keuangan & kas", "Selesai, belum isi WA", "Isi WA"). Hanya baris dengan WA yang bisa dihubungi.
+- Filter: omset ≥ 50 jt, sudah isi WA, fase, dan status follow-up. Urutan terbaru dulu.
 - Kolom WA langsung membuka `wa.me`. Status follow-up tersimpan begitu dropdown diganti.
 - **Buka** menampilkan detail sesi: kontak, UTM, waktu mulai/selesai/gate, skor per area, prioritas beserta tindakannya, dan semua jawaban mentah. Baca ini sebelum menghubungi.
 - **Ekspor CSV** mengunduh lead sesuai filter yang aktif. File memakai UTF-8 dengan BOM, jadi bisa langsung dibuka di Google Sheets atau diimpor ke Notion.
 
 Brief yang dikirim dari tombol CTA report masuk ke **Inbox → Submissions** seperti biasa. Field `assessmentSession` di sidebar menunjuk ke sesinya.
+
+## Alur quiz dan autosave
+
+| Bagian | Layar |
+| --- | --- |
+| Kenalan | Nama → nama usaha (dengan sapaan) |
+| Penjualan & prospek | Bidang usaha → A1–A4 → skor area |
+| Operasional harian | B1–B4 → skor area |
+| Keuangan & kas | Omset → C1–C4 → skor area |
+| Stok & pembelian | D0 (–D2) → skor area |
+| Tim & SDM | Jumlah karyawan → E1–E3 → skor area |
+| Ketergantungan owner, Kehadiran online, Kesiapan AI | F, G, H → skor area |
+| Hasil | Hasil ringkas → gate nomor WA → report lengkap |
+
+Penyimpanan berjalan tanpa terlihat oleh pengunjung:
+
+- Setiap perubahan disimpan di localStorage perangkat, untuk tawaran "Lanjutkan dari …".
+- Jawaban dan profil dikirim ke server setiap satu bagian selesai, dan sekali lagi saat tab disembunyikan atau ditutup. Kalau pengiriman gagal, dicoba lagi di kesempatan berikutnya.
+- Nomor WA hanya dikirim di gate dan tidak pernah disimpan di localStorage.
+
+Layar profil diatur di `SECTION_OPENERS` (`flow.ts`); teksnya di `PROFILE_COPY` (`copy.ts`). Kalimat versi Jasa untuk A4 dan H2 ada di `promptJasa` (`questions.ts`).
 
 ## Mengubah bobot atau ambang
 

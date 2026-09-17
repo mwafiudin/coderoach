@@ -6,17 +6,19 @@ import { LEADS, SESSIONS } from './api';
 import type { Attribution } from './attribution';
 import { productPath } from './config';
 import { ADMIN_COPY } from './copy';
+import { SECTION_LABELS } from './flow';
 import {
   AREA_LABELS,
   EMPLOYEE_OPTIONS,
   INDUSTRY_OPTIONS,
+  QUESTIONS,
   QUESTION_BY_ID,
   REVENUE_OPTIONS,
   type Option,
 } from './questions';
 import type { Answers, Scores } from './scoring';
 
-export type LeadFilters = { qualified: boolean; phase: number | null; status: string | null };
+export type LeadFilters = { qualified: boolean; withPhone: boolean; phase: number | null; status: string | null };
 
 type SearchParams = Record<string, string | string[] | undefined> | undefined;
 
@@ -27,6 +29,7 @@ export function parseFilters(searchParams: SearchParams): LeadFilters {
   const status = first(searchParams?.status) ?? null;
   return {
     qualified: first(searchParams?.omset) === '50',
+    withPhone: first(searchParams?.wa) === '1',
     phase: [1, 2, 3, 4].includes(phase) ? phase : null,
     status: status && Object.hasOwn(ADMIN_COPY.followup, status) ? status : null,
   };
@@ -35,6 +38,7 @@ export function parseFilters(searchParams: SearchParams): LeadFilters {
 export const filtersToQuery = (filters: LeadFilters) => {
   const params = new URLSearchParams();
   if (filters.qualified) params.set('omset', '50');
+  if (filters.withPhone) params.set('wa', '1');
   if (filters.phase) params.set('fase', String(filters.phase));
   if (filters.status) params.set('status', filters.status);
   const query = params.toString();
@@ -62,6 +66,14 @@ function source(utm: Attribution) {
   return ADMIN_COPY.direct;
 }
 
+/** How far a session got: WhatsApp given, finished, or the last section with saved answers. */
+export function progressLabel(status: string | null | undefined, answers: Answers) {
+  if (status === 'gated') return ADMIN_COPY.progress.gated;
+  if (status === 'completed') return ADMIN_COPY.progress.completed;
+  const last = [...QUESTIONS].reverse().find((q) => answers[q.id] !== undefined);
+  return ADMIN_COPY.progress.stoppedAt(last ? SECTION_LABELS[last.area] : SECTION_LABELS.kenalan);
+}
+
 export type LeadRow = {
   id: number;
   createdAt: string;
@@ -78,6 +90,7 @@ export type LeadRow = {
   total: number | null;
   priorities: string[];
   serviceClass: string;
+  progress: string;
   intent: string[];
   source: string;
   utm: Attribution;
@@ -86,6 +99,7 @@ export type LeadRow = {
 export async function findLeads(payload: Payload, filters: LeadFilters): Promise<LeadRow[]> {
   const and: Where[] = [];
   if (filters.qualified) and.push({ revenueBand: { not_equals: 'lt50' } });
+  if (filters.withPhone) and.push({ phoneE164: { exists: true } });
   if (filters.status) and.push({ followupStatus: { equals: filters.status } });
   if (filters.phase) and.push({ 'session.phase': { equals: filters.phase } });
 
@@ -106,9 +120,9 @@ export async function findLeads(payload: Payload, filters: LeadFilters): Promise
     return {
       id: lead.id,
       createdAt: lead.createdAt,
-      name: lead.name,
-      brand: lead.brand,
-      phone: lead.phoneE164,
+      name: lead.name ?? '',
+      brand: lead.brand ?? '',
+      phone: lead.phoneE164 ?? '',
       industry: label(INDUSTRY_OPTIONS, lead.industry),
       employees: label(EMPLOYEE_OPTIONS, lead.employees),
       revenue: label(REVENUE_OPTIONS, lead.revenueBand),
@@ -119,6 +133,7 @@ export async function findLeads(payload: Payload, filters: LeadFilters): Promise
       total: scores?.total ?? null,
       priorities: (scores?.priorities ?? []).map((p) => AREA_LABELS[p.area]),
       serviceClass: scores?.serviceClass ?? '',
+      progress: progressLabel(session?.status, answers),
       intent: optionLabels('H3', answers.H3),
       source: source(utm),
       utm,
@@ -157,14 +172,14 @@ const csvCell = (value: string | number | null) => `"${String(value ?? '').repla
 export function leadsToCsv(rows: LeadRow[], siteUrl: string) {
   const header = [
     'tanggal', 'nama', 'brand', 'wa', 'wa_link', 'bidang_usaha', 'karyawan', 'omset', 'fase', 'total',
-    'prioritas', 'kelas', 'intent_h3', 'utm_source', 'utm_medium', 'utm_campaign', 'referrer',
+    'prioritas', 'kelas', 'progres', 'intent_h3', 'utm_source', 'utm_medium', 'utm_campaign', 'referrer',
     'followup_status', 'notes', 'session_id', 'hasil_url',
   ];
   const lines = rows.map((row) =>
     [
-      formatDate(row.createdAt), row.name, row.brand, row.phone, `https://wa.me/${row.phone}`, row.industry,
-      row.employees, row.revenue, row.phase, row.total, row.priorities.join(' | '), row.serviceClass,
-      row.intent.join(' | '), row.utm.utm_source ?? '', row.utm.utm_medium ?? '', row.utm.utm_campaign ?? '',
+      formatDate(row.createdAt), row.name, row.brand, row.phone, row.phone ? `https://wa.me/${row.phone}` : '',
+      row.industry, row.employees, row.revenue, row.phase, row.total, row.priorities.join(' | '), row.serviceClass,
+      row.progress, row.intent.join(' | '), row.utm.utm_source ?? '', row.utm.utm_medium ?? '', row.utm.utm_campaign ?? '',
       row.utm.referrer ?? '', row.followupStatus, row.notes, row.sessionId,
       `${siteUrl}${productPath(`/hasil/${row.sessionId}`)}`,
     ]

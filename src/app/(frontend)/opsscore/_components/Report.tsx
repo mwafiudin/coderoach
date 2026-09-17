@@ -40,7 +40,7 @@ export function Report({
         </h2>
 
         {priorities.length > 0 ? (
-          <ol className="list-none p-0 m-0 mt-10 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <ol className="reveal-stagger list-none p-0 m-0 mt-10 grid grid-cols-1 md:grid-cols-3 gap-4">
             {priorities.map((p, i) => (
               <li key={p.area} className="bg-paper-50 border border-paper-200 rounded-xl p-6 flex flex-col">
                 <div className="flex items-center justify-between gap-3 font-mono text-[12px] tabular">
@@ -48,12 +48,12 @@ export function Report({
                   <span className="text-ink">{REPORT_COPY.scoreOf(p.score)}</span>
                 </div>
                 <h3 className="text-[24px] font-bold tracking-[-0.015em] mt-4 mb-0">{AREA_LABELS[p.area]}</h3>
-                <ScoreBar value={p.score} className="mt-3" />
+                <ScoreBar value={p.score} className="mt-3" animate index={i} />
                 <p className="mt-4 mb-0 text-[15px] leading-[1.55] text-mist-600 text-pretty">
                   {AREA_FEEDBACK[p.area][bandFor(p.score)]}
                 </p>
                 <div className="mt-auto pt-5">
-                  <div className="bg-paper-100 border border-paper-200 rounded-md px-3.5 py-3">
+                  <div className="ops-highlight bg-paper-100 border border-paper-200 rounded-md px-3.5 py-3">
                     <span className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-mist-600 mb-1">
                       {REPORT_COPY.actionLabel}
                     </span>
