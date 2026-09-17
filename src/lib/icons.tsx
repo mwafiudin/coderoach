@@ -2,7 +2,7 @@ import * as React from 'react';
 
 /**
  * Icon library — outlined SVG primitives.
- * currentColor stroke at 1.75px. Used in Services, Process, and Studio tenets.
+ * currentColor stroke at 1.75px. Used in Services, Process, Studio tenets, and the OpsScore scale.
  */
 
 export type IconName =
@@ -16,7 +16,13 @@ export type IconName =
   | 'handoff'
   | 'users'
   | 'voice'
-  | 'shield';
+  | 'shield'
+  // OpsScore scale: where the data lives
+  | 'head'
+  | 'chat'
+  | 'sheet'
+  | 'app'
+  | 'system';
 
 const PATHS: Record<IconName, React.ReactNode> = {
   build: (
@@ -80,6 +86,42 @@ const PATHS: Record<IconName, React.ReactNode> = {
     <>
       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
       <polyline points="9 12 11 14 15 10" />
+    </>
+  ),
+  head: (
+    <>
+      <path d="M9 21v-3.2C6.6 16.6 5 14.2 5 11.3 5 7.3 8.2 4 12.3 4c3.7 0 6.7 2.9 6.7 6.5l1.8 3.2c.2.4 0 .8-.5.8H19V17a2 2 0 0 1-2 2h-2v2" />
+      <path d="M11 9.5a2 2 0 1 1 2 2v1" />
+    </>
+  ),
+  chat: (
+    <>
+      <path d="M21 14a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z" />
+      <line x1="8" y1="8" x2="16" y2="8" />
+      <line x1="8" y1="11.5" x2="13" y2="11.5" />
+    </>
+  ),
+  sheet: (
+    <>
+      <rect x="3" y="4" width="18" height="16" rx="1.5" />
+      <line x1="3" y1="9.5" x2="21" y2="9.5" />
+      <line x1="3" y1="14.5" x2="21" y2="14.5" />
+      <line x1="9" y1="4" x2="9" y2="20" />
+    </>
+  ),
+  app: (
+    <>
+      <rect x="3" y="3" width="7.5" height="7.5" rx="1.5" />
+      <rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5" />
+      <rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5" />
+      <rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5" />
+    </>
+  ),
+  system: (
+    <>
+      <ellipse cx="12" cy="5" rx="8" ry="3" />
+      <path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5" />
+      <path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6" />
     </>
   ),
 };
