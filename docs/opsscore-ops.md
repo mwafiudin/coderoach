@@ -154,7 +154,7 @@ Situs berjalan di project Railway **coderoach-web** (workspace Coderoach):
 Variabel `web`: `DATABASE_URI` (`${{Postgres.DATABASE_URL}}`), `NEXT_PUBLIC_SERVER_URL` (`https://${{RAILWAY_PUBLIC_DOMAIN}}`), `NEXT_PUBLIC_SITE_NAME`, `PAYLOAD_SECRET`, `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `RESEND_TO_EMAIL`, dan opsional `NEXT_PUBLIC_GA4_ID` serta `NEXT_PUBLIC_META_PIXEL_ID`. Variabel `NEXT_PUBLIC_*` dibaca saat build, jadi redeploy setelah mengubahnya.
 
 - Membuka database dari laptop: `railway connect Postgres` (lewat SSH, butuh SSH key terdaftar di Railway). Untuk operasi panjang seperti restore, jalankan perintahnya di dalam container: `cat file.dump | railway ssh --service Postgres -- 'pg_restore -U postgres -d railway ...'`.
-- Build Next.js membaca data dari database, jadi build gagal kalau `DATABASE_URI` atau `PAYLOAD_SECRET` belum ada.
+- Build tidak bisa menjangkau jaringan privat Railway, jadi tidak ada halaman yang boleh membaca database saat build. Halaman dan route yang membaca Payload memakai `export const dynamic = 'force-dynamic'`, dan `generateStaticParams` mengembalikan daftar kosong kalau database tidak terjangkau. Sebelum menambah halaman statis, cek tidak ada query Payload di jalurnya, termasuk `SectionShell` yang ikut dirender lewat `not-found.tsx`. Build tetap butuh `PAYLOAD_SECRET`.
 
 ## Database
 

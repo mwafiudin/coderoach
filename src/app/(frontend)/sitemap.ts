@@ -2,6 +2,9 @@ import type { MetadataRoute } from 'next';
 import { getPayload } from 'payload';
 import config from '@payload-config';
 
+// Built per request: new content shows up without a redeploy, and Railway builds cannot reach the database.
+export const dynamic = 'force-dynamic';
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
 
