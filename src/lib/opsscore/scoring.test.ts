@@ -28,6 +28,11 @@ describe('instrument', () => {
     assert.equal(new Set(QUESTIONS.map((x) => x.id)).size, 27);
   });
 
+  test('every question has an example under it, and every scale option a short name', () => {
+    for (const question of QUESTIONS) assert.ok(question.hint.trim().length > 10, `missing hint for ${question.id}`);
+    for (const option of QUESTION_BY_ID.A1.options) assert.ok(option.short, option.id);
+  });
+
   test('every scored question has an action sentence, every area has feedback for each band', () => {
     for (const question of QUESTIONS.filter((x) => x.scored)) {
       assert.ok(ACTIONS[question.id], `missing action for ${question.id}`);

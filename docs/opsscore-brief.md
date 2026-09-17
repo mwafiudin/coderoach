@@ -6,6 +6,7 @@
 > - Nama dan nama usaha diminta di awal quiz (layar Kenalan). Bidang usaha, omset, dan jumlah karyawan menjadi pembuka section Penjualan, Keuangan, dan Tim & SDM. Gate di akhir tinggal nomor WA dan persetujuan.
 > - Profil dan jawaban disimpan diam-diam ke server setiap section selesai, dan saat tab disembunyikan atau ditutup.
 > - Aturan animasi dilonggarkan untuk momen skor dan hasil (bagian 7).
+> - Setiap pertanyaan punya satu contoh atau analogi di bawahnya, dan layar pembuka menjelaskan skala "di mana data hidup" (bagian 4 dan 7).
 >
 > Bagian yang berubah ditandai *(revisi)*.
 
@@ -141,6 +142,8 @@ A3, F2, dan H3 tidak masuk skor area; A3 dan F2 jadi pembobot (bagian 5), H3 jad
 
 Karena bidang usaha sudah diketahui sebelum A4 dan H2, keduanya memakai kalimat versi Jasa kalau bidang = Jasa (`promptJasa` di `questions.ts`).
 
+*(revisi)* **Contoh atau analogi per pertanyaan.** Setiap pertanyaan punya field `hint`: satu kalimat contoh konkret atau analogi di bawah pertanyaan, supaya semua pengisi membacanya dengan cara yang sama (misalnya H2: "AI seperti karyawan baru yang cerdas: ia hanya bisa menjawab dari catatan yang Anda berikan."). Teks pertanyaan dan opsinya tidak berubah.
+
 **Urutan seksi di layar:** A Penjualan & prospek → B Operasional harian → C Keuangan & kas → D Stok & pembelian → E Tim & SDM → F Ketergantungan owner → G Kehadiran online → H Kesiapan AI. Judul seksi ditampilkan sebagai nama area, bukan huruf.
 
 ## 5. Skoring, fase & area prioritas
@@ -235,7 +238,8 @@ Mobile-first: mayoritas pengunjung datang dari ads di ponsel. Tiap layar harus s
 - Transisi antar pertanyaan: geser horizontal ringan; hormati `prefers-reduced-motion`.
 - Navigasi keyboard lengkap di desktop (angka 1–5 memilih opsi, Enter lanjut, Esc kembali).
 - Copy tombol dan label mengikuti tone datasheet Coderoach: kalimat pendek, tanpa tanda seru, tanpa emoji.
-- Layar pembuka quiz (sebelum A1): satu kalimat instruksi — "Jawab sesuai yang benar-benar terjadi, bukan yang seharusnya." — dan tombol mulai. Ini satu-satunya yang diambil dari BOS Check asli, karena berguna.
+- Layar pembuka quiz (sebelum A1): satu kalimat instruksi — "Jawab sesuai yang benar-benar terjadi, bukan yang seharusnya." — dan tombol mulai. Ini satu-satunya yang diambil dari BOS Check asli, karena berguna. *(revisi)* Di bawahnya ada kartu penjelasan skala: lima tempat data bisa hidup (kepala, chat, spreadsheet, aplikasi, sistem) dengan catatan "pilih tempat yang paling sering dipakai, walau belum rapi".
+- *(revisi)* Layout layar pertanyaan: chip nomor dan nama bagian dengan titik posisi, pertanyaan, kotak contoh/analogi, lalu opsi bernomor. Konten diletakkan di tengah tinggi layar. Bar bawah yang tetap berisi Kembali, perkiraan sisa waktu, dan Lanjut (juga berguna saat kembali ke pertanyaan yang sudah dijawab).
 
 Definisi selesai untuk quiz: pengujian manual di Safari iOS dan Chrome Android, semua 27 pertanyaan terjawab dalam < 5 menit oleh penguji yang belum pernah melihatnya, tanpa layar yang butuh scroll.
 

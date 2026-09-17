@@ -64,7 +64,7 @@ Penyimpanan berjalan tanpa terlihat oleh pengunjung:
 - Jawaban dan profil dikirim ke server setiap satu bagian selesai, dan sekali lagi saat tab disembunyikan atau ditutup. Kalau pengiriman gagal, dicoba lagi di kesempatan berikutnya.
 - Nomor WA hanya dikirim di gate dan tidak pernah disimpan di localStorage.
 
-Layar profil diatur di `SECTION_OPENERS` (`flow.ts`); teksnya di `PROFILE_COPY` (`copy.ts`). Kalimat versi Jasa untuk A4 dan H2 ada di `promptJasa` (`questions.ts`).
+Layar profil diatur di `SECTION_OPENERS` (`flow.ts`); teksnya di `PROFILE_COPY` (`copy.ts`). Kalimat versi Jasa untuk A4 dan H2 ada di `promptJasa` (`questions.ts`). Contoh atau analogi di bawah setiap pertanyaan ada di field `hint` (`questions.ts`); test gagal kalau ada pertanyaan tanpa `hint`.
 
 ## Mengubah bobot atau ambang
 
