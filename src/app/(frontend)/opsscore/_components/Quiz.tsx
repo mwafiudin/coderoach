@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Icon } from '@/lib/icons';
 import { captureAttribution } from '@/lib/opsscore/attribution';
 import { INSTRUMENT_VERSION, productPath } from '@/lib/opsscore/config';
-import { AREA_FEEDBACK, PROFILE_COPY, QUIZ_COPY } from '@/lib/opsscore/copy';
+import { AREA_FEEDBACK, PROFILE_COPY, QUIZ_COPY, SECTION_FACTS } from '@/lib/opsscore/copy';
 import {
   SECTION_LABELS,
   buildSteps,
@@ -571,6 +571,7 @@ export function Quiz() {
       />
     );
     const nextSection = steps.slice(index + 1).find((s) => s.kind !== 'feedback')?.section;
+    const nextLabel = nextSection ? QUIZ_COPY.nextUp(SECTION_LABELS[nextSection]) : QUIZ_COPY.seeResult;
 
     if (step.kind === 'feedback') {
       content = (
@@ -579,7 +580,7 @@ export function Quiz() {
           section={step.section}
           title={SECTION_LABELS[step.section]}
           scores={step.areas.map((area) => ({ area, score: areaScore(area, answers) ?? 0 }))}
-          nextLabel={nextSection ? QUIZ_COPY.nextUp(SECTION_LABELS[nextSection]) : QUIZ_COPY.seeResult}
+          fact={SECTION_FACTS[step.section]}
           headingRef={headingRef}
           onNext={goNext}
         />
@@ -648,8 +649,9 @@ export function Quiz() {
       <>
         <BackButton onClick={goBack} />
         <span className="min-w-0 text-center text-[12px] leading-tight text-mist-600 tabular">
+          {/* Score screens name what comes next here; the space under their card holds a quick fact. */}
           {step.kind === 'feedback' ? (
-            QUIZ_COPY.tapHint
+            nextLabel
           ) : (
             <>
               {QUIZ_COPY.remaining(remainingMinutes)}
@@ -831,24 +833,30 @@ function SectionChip({
 function Hint({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return (
     <div className={`flex gap-2.5 items-start rounded-lg bg-electric/[0.06] border border-electric/15 px-3 py-1.5 sm:py-2 ${className}`}>
-      <svg
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="mt-[1px] shrink-0 text-electric"
-        aria-hidden
-      >
-        <path d="M9 18h6" />
-        <path d="M10 22h4" />
-        <path d="M12 2a7 7 0 0 0-4 12.74V16h8v-1.26A7 7 0 0 0 12 2z" />
-      </svg>
+      <BulbIcon />
       <p className="m-0 text-[13px] leading-[1.45] text-shadow-700">{children}</p>
     </div>
+  );
+}
+
+function BulbIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="mt-[1px] shrink-0 text-electric"
+      aria-hidden
+    >
+      <path d="M9 18h6" />
+      <path d="M10 22h4" />
+      <path d="M12 2a7 7 0 0 0-4 12.74V16h8v-1.26A7 7 0 0 0 12 2z" />
+    </svg>
   );
 }
 
@@ -1045,7 +1053,7 @@ function FeedbackScreen({
   section,
   title,
   scores,
-  nextLabel,
+  fact,
   headingRef,
   onNext,
 }: {
@@ -1053,7 +1061,7 @@ function FeedbackScreen({
   section: SectionId;
   title: string;
   scores: Array<{ area: AreaId; score: number }>;
-  nextLabel: string;
+  fact?: { text: string; source: string };
   headingRef: React.RefObject<HTMLHeadingElement | null>;
   onNext: () => void;
 }) {
@@ -1063,67 +1071,90 @@ function FeedbackScreen({
     // Tapping anywhere continues (brief §7); the footer buttons stay for keyboard and screen readers.
     <div className="flex flex-col cursor-pointer" onClick={onNext}>
       {chip}
-      <div className="mt-4 sm:mt-5 relative overflow-hidden rounded-2xl bg-ink text-paper px-5 pt-4 pb-5 sm:px-8 sm:pt-6 sm:pb-7 shadow-[0_30px_60px_-30px_rgba(8,9,10,0.65)]">
-        <SectionScene section={section} scores={sceneScores} className="block w-full h-[72px] sm:h-[104px]" />
-        {/* The chip above already names a combined section, so its card gives the room to the area rows. */}
-        <h1
-          ref={headingRef}
-          tabIndex={-1}
-          className={
-            scores.length === 1
-              ? 'relative mt-3 text-[26px] sm:text-[36px] leading-[1.08] tracking-[-0.025em] font-bold outline-none'
-              : 'sr-only'
-          }
+      <div className="mt-3 sm:mt-5 relative overflow-hidden rounded-2xl bg-ink text-paper pb-4 sm:pb-7 shadow-[0_30px_60px_-30px_rgba(8,9,10,0.65)]">
+        {/* The scene is the card's cover: its own lit panel, with the section's quick fact as its caption. */}
+        <div
+          className="relative px-5 sm:px-8 pt-3 sm:pt-5 pb-3 sm:pb-4 bg-shadow-900 border-b border-shadow-700"
+          style={SCENE_PANEL_GRID}
         >
-          {title}
-        </h1>
-        {scores.length === 1 ? (
-          <>
-            <div className="relative mt-4 sm:mt-5 flex items-baseline gap-2">
-              <span className="text-[64px] sm:text-[80px] font-bold leading-none tracking-[-0.04em] tabular">
-                <AnimatedCount value={String(only.score)} duration={700} />
-              </span>
-              <span className="text-[15px] text-mist-500 tabular">/100</span>
-            </div>
-            <ScoreBar value={only.score} className="relative mt-4" animate tone="dark" />
+          <SectionScene section={section} scores={sceneScores} className="block w-full h-auto sm:max-h-[132px]" />
+          {fact && (
             <p
-              className="ops-fade-up relative mt-5 mb-0 text-[17px] sm:text-[20px] leading-[1.45] text-paper/90 text-pretty"
-              style={{ '--ops-delay': '450ms' } as CSSProperties}
+              className="ops-fade-up mt-2 mb-0 flex items-start gap-2 text-[12px] sm:text-[14px] leading-[1.4] text-paper/80"
+              style={{ '--ops-delay': '700ms' } as CSSProperties}
             >
-              {AREA_FEEDBACK[only.area][bandFor(only.score)]}
+              <BulbIcon />
+              <span>
+                {fact.text}{' '}
+                <span className="font-mono text-[10px] sm:text-[11px] text-mist-500 whitespace-nowrap">{fact.source}</span>
+              </span>
             </p>
-          </>
-        ) : (
-          // Combined section: one row per scoring area, revealed one after the other.
-          <ul className="relative list-none p-0 m-0 mt-3 flex flex-col divide-y divide-shadow-700">
-            {scores.map(({ area, score }, i) => (
-              <li key={area} className="py-3 first:pt-1 last:pb-0">
-                <div className="flex items-baseline justify-between gap-3">
-                  <h2 className="m-0 text-[15px] sm:text-[18px] font-semibold text-paper/90">{AREA_LABELS[area]}</h2>
-                  <span className="shrink-0 text-[34px] sm:text-[44px] font-bold leading-none tracking-[-0.03em] tabular">
-                    <AnimatedCount value={String(score)} duration={700} />
-                    <span className="ml-1 text-[12px] font-normal tracking-normal text-mist-500">/100</span>
-                  </span>
-                </div>
-                <ScoreBar value={score} className="mt-2" animate index={i * 4} tone="dark" />
-                <p
-                  className="ops-fade-up mt-2 mb-0 text-[14px] sm:text-[16px] leading-[1.45] text-paper/85 text-pretty"
-                  style={{ '--ops-delay': `${450 + i * 250}ms` } as CSSProperties}
-                >
-                  {AREA_FEEDBACK[area][bandFor(score)]}
-                </p>
-              </li>
-            ))}
-          </ul>
-        )}
+          )}
+        </div>
+        <div className="px-5 sm:px-8">
+          {/* The chip above already names a combined section, so its card gives the room to the area rows. */}
+          <h1
+            ref={headingRef}
+            tabIndex={-1}
+            className={
+              scores.length === 1
+                ? 'mt-3 sm:mt-5 text-[24px] sm:text-[36px] leading-[1.08] tracking-[-0.025em] font-bold outline-none'
+                : 'sr-only'
+            }
+          >
+            {title}
+          </h1>
+          {scores.length === 1 ? (
+            <>
+              <div className="mt-2 sm:mt-4 flex items-baseline gap-2">
+                <span className="text-[56px] sm:text-[80px] font-bold leading-none tracking-[-0.04em] tabular">
+                  <AnimatedCount value={String(only.score)} duration={700} />
+                </span>
+                <span className="text-[15px] text-mist-500 tabular">/100</span>
+              </div>
+              <ScoreBar value={only.score} className="mt-3 sm:mt-4" animate tone="dark" />
+              <p
+                className="ops-fade-up mt-3 sm:mt-5 mb-0 text-[15px] sm:text-[18px] leading-[1.45] text-paper/80 text-pretty"
+                style={{ '--ops-delay': '450ms' } as CSSProperties}
+              >
+                {AREA_FEEDBACK[only.area][bandFor(only.score)]}
+              </p>
+            </>
+          ) : (
+            // Combined section: one row per scoring area, revealed one after the other.
+            <ul className="list-none p-0 m-0 mt-2.5 sm:mt-4 flex flex-col divide-y divide-shadow-700">
+              {scores.map(({ area, score }, i) => (
+                <li key={area} className="py-2.5 sm:py-3 first:pt-1 last:pb-0">
+                  <div className="flex items-baseline justify-between gap-3">
+                    <h2 className="m-0 text-[15px] sm:text-[18px] font-semibold text-paper/90">{AREA_LABELS[area]}</h2>
+                    <span className="shrink-0 text-[28px] sm:text-[44px] font-bold leading-none tracking-[-0.03em] tabular">
+                      <AnimatedCount value={String(score)} duration={700} />
+                      <span className="ml-1 text-[12px] font-normal tracking-normal text-mist-500">/100</span>
+                    </span>
+                  </div>
+                  <ScoreBar value={score} className="mt-1.5 sm:mt-2" animate index={i * 4} tone="dark" />
+                  <p
+                    className="ops-fade-up mt-1.5 sm:mt-2 mb-0 text-[12px] sm:text-[14px] leading-[1.45] text-paper/70 text-pretty"
+                    style={{ '--ops-delay': `${450 + i * 250}ms` } as CSSProperties}
+                  >
+                    {AREA_FEEDBACK[area][bandFor(score)]}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
-      <p className="mt-2.5 sm:mt-4 mb-0 text-[13px] font-semibold text-ink inline-flex items-center gap-2">
-        {nextLabel}
-        <Arrow />
-      </p>
     </div>
   );
 }
+
+// A faint blueprint grid behind the scene, echoing the site's grid backgrounds.
+const SCENE_PANEL_GRID: CSSProperties = {
+  backgroundImage:
+    'linear-gradient(rgba(244,247,245,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(244,247,245,0.04) 1px, transparent 1px)',
+  backgroundSize: '20px 20px',
+};
 
 /** Log lines play out while the result is computed, in the style of the site's deploy console. */
 function ScoringConsole({ answered, areas }: { answered: number; areas: number }) {

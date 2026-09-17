@@ -10,7 +10,8 @@ Brief dan aturan skor: [`opsscore-brief.md`](./opsscore-brief.md). Dokumen ini m
 | Urutan layar, posisi layar profil | `src/lib/opsscore/flow.ts` |
 | Validasi profil, format nomor WA | `src/lib/opsscore/profile.ts` |
 | Bobot, ambang fase, aturan prioritas dan kelas layanan | `src/lib/opsscore/scoring.ts` |
-| Semua teks: fase, feedback, tindakan, landing, quiz, gate, report, admin | `src/lib/opsscore/copy.ts` |
+| Semua teks: fase, feedback, tindakan, fakta sekilas, benchmark, landing, quiz, gate, report, admin | `src/lib/opsscore/copy.ts` |
+| Estimasi benchmark per bidang, ambang 30 sesi | `src/lib/opsscore/benchmark.ts` |
 | Nama produk, slug, `INSTRUMENT_VERSION` | `src/lib/opsscore/config.ts` |
 | Route publik | `src/app/(frontend)/opsscore/` |
 | API sesi, gate, CSV | `src/app/(frontend)/api/opsscore/` |
@@ -131,6 +132,14 @@ Cara memeriksa setelah deploy:
 
 UTM (`utm_*`, `fbclid`, `gclid`) dan referrer eksternal disimpan di cookie `opsscore_attr` selama 30 hari saat landing atau quiz dibuka, lalu disalin ke `assessment_sessions.utm` ketika sesi dibuat. Tombol CTA di halaman share menambahkan `utm_source=opsscore_share`.
 
+## Benchmark
+
+Halaman hasil membandingkan skor pengisi dengan rata-rata usaha sebidang ("Gambaran kompetisi").
+
+- Sampai ada 30 sesi selesai di satu bidang, angkanya estimasi dari `benchmark.ts`, dengan label "estimasi" dan daftar sumber di akhir halaman. Setelah itu rata-rata asli dipakai otomatis, dihitung ulang paling lama tiap satu jam.
+- Sesi uji atau internal: buka lead-nya di **OpsScore → Assessment leads** dan centang **Exclude from benchmark**.
+- Mengubah estimasi: edit `ESTIMATES` di `benchmark.ts`. Fakta per bidang ada di `INDUSTRY_FACTS`, fakta sekilas di kartu skor quiz di `SECTION_FACTS`, sumber di `BENCHMARK_SOURCES` (semuanya `copy.ts`). Setiap angka baru harus bisa ditunjukkan sumbernya.
+
 ## Database
 
 - Skema DB production saat ini diperbarui lewat dev push Payload (menjalankan `npm run dev` dengan `DATABASE_URI` production). Migrasi di `src/migrations/` untuk fork template yang memakai `npm run migrate`.
@@ -140,6 +149,7 @@ UTM (`utm_*`, `fbclid`, `gclid`) dan referrer eksternal disimpan di cookie `opss
 
 - [ ] Hapus sesi dan lead uji dari DB.
 - [ ] Baca semua baris `// REVIEW` di `copy.ts`, termasuk 22 kalimat tindakan.
+- [ ] Cocokkan angka sub-industri di `INDUSTRY_FACTS` (Fashion, Kriya, Kuliner) dengan PDF BPS Profil IMK 2024 dan Statistik Penyediaan Makanan dan Minuman 2024.
 - [ ] Putuskan setiap `TODO(decision)` (lihat `rg "TODO\(decision\)" src`).
 - [ ] Isi `NEXT_PUBLIC_GA4_ID` dan `NEXT_PUBLIC_META_PIXEL_ID` di Vercel, lalu cek event di DebugView dan Test Events.
 - [ ] Uji di Safari iOS dan Chrome Android, termasuk "Simpan sebagai PDF" dan "Bagikan → Cetak".

@@ -3,6 +3,8 @@
  * from questions.ts. Lines marked `// REVIEW` are drafts written during the build and need a human
  * pass before release; everything else is taken verbatim from the brief.
  */
+import type { IndustryId } from './benchmark';
+import type { SectionId } from './flow';
 import type { AreaId } from './questions';
 import type { Band, Phase, ServiceClass } from './scoring';
 
@@ -194,7 +196,6 @@ export const QUIZ_COPY = {
   questionPosition: (index: number, total: number) => `Pertanyaan ${index} dari ${total}`,
   sectionCount: (index: number, total: number) => `Bagian ${index} dari ${total}`, // REVIEW
   questionCount: (index: number, total: number) => `${index}/${total}`,
-  tapHint: 'Ketuk di mana saja untuk lanjut', // REVIEW
   scoring: 'Menghitung hasil', // REVIEW
   console: {
     command: 'opsscore run',
@@ -279,6 +280,103 @@ export const GATE_COPY = {
     rateLimited: 'Terlalu banyak percobaan. Coba lagi beberapa menit lagi.', // REVIEW
   },
 };
+
+/**
+ * Quick facts under each section's score card in the quiz. Every figure is checked against its source
+ * (BENCHMARK_SOURCES). "Penjual online" figures describe businesses that sell online, not all UMKM. Kept to
+ * about 70 characters, so the caption stays at two lines on a 360px screen.
+ */
+export const SECTION_FACTS: Partial<Record<SectionId, { text: string; source: string }>> = {
+  sales: {
+    text: '9 dari 10 penjual online jualan lewat aplikasi chat. Lewat website cuma 1,4%.', // REVIEW
+    source: 'BPS 2024',
+  },
+  operations: {
+    text: 'Hanya 13,5% penjual online yang memakai komputer untuk menjalankan usaha.', // REVIEW
+    source: 'BPS 2024',
+  },
+  finance: {
+    text: '77% UMKM sudah mencatat keuangan, tapi 3 dari 4 masih mencatat manual.', // REVIEW
+    source: 'OCBC NISP 2024',
+  },
+  team: {
+    text: 'Hanya 3,6% penjual online yang pernah ikut pelatihan teknologi informasi.', // REVIEW
+    source: 'BPS 2024',
+  },
+  digital: {
+    text: '38% UKM sudah memakai AI, tapi baru 1 dari 10 yang terintegrasi penuh.', // REVIEW
+    source: 'AWS 2026',
+  },
+};
+
+/** Where similar businesses stand, on the results page (brief §8). */
+export const BENCHMARK_COPY = {
+  marker: 'Gambaran kompetisi', // REVIEW
+  you: 'Skor Anda', // REVIEW
+  /** `group` is "usaha Fashion" or one of the groups below. */
+  average: (group: string, source: 'estimate' | 'sessions', count: number) =>
+    source === 'estimate' ? `Estimasi rata-rata ${group}` : `Rata-rata ${count} ${group}`, // REVIEW
+  nationalGroup: 'UMKM Indonesia', // REVIEW
+  otherGroup: 'usaha bidang lain', // REVIEW
+  areaAverage: 'rata-rata', // REVIEW
+  gap: (points: number) =>
+    points > 0
+      ? `${points} poin di atas rata-rata usaha sejenis.`
+      : points < 0
+        ? `${-points} poin di bawah rata-rata usaha sejenis.`
+        : 'Setara dengan rata-rata usaha sejenis.', // REVIEW
+  estimateNote: 'Estimasi Coderoach dari data BPS, World Bank, OCBC NISP, dan AWS.', // REVIEW
+  sessionsNote: (count: number) => `Dihitung dari ${count} usaha sebidang yang sudah menyelesaikan OpsScore.`, // REVIEW
+  sourcesLink: 'Lihat sumber', // REVIEW
+  areaLegend: (group: string, source: 'estimate' | 'sessions') =>
+    `Garis tipis: rata-rata ${group}${source === 'estimate' ? ' (estimasi)' : ''}`, // REVIEW
+  sourcesTitle: 'Sumber data pembanding', // REVIEW
+  method:
+    'Estimasi disusun dari profil jawaban usaha mikro dan kecil yang tipikal menurut data di bawah, lalu dihitung dengan rumus OpsScore yang sama. Setelah 30 usaha sebidang menyelesaikan OpsScore, angka ini diganti rata-rata asli mereka.', // REVIEW
+};
+
+/** One fact per industry next to the benchmark. Sub-industry rates are computed from BPS tables. */
+export const INDUSTRY_FACTS: Record<IndustryId, string> = {
+  produksi: 'Baru 46,8% industri mikro dan kecil yang memakai internet untuk usahanya (BPS 2024).', // REVIEW
+  distribusi: '86,5% usaha yang jualan online belum memakai komputer untuk menjalankan usahanya (BPS 2024).', // REVIEW
+  jasa: 'Baru 42,7% perusahaan jasa formal yang punya website sendiri (World Bank 2023).', // REVIEW
+  retail: 'Perdagangan besar dan eceran menyumbang 31,9% usaha yang jualan online di Indonesia (BPS 2024).', // REVIEW
+  kuliner: '52,7% usaha makan-minum memakai internet, tapi sebagian besar hanya untuk pembayaran (BPS 2024).', // REVIEW
+  fashion: '61,7% usaha pakaian jadi skala mikro dan kecil memakai internet untuk usahanya (BPS 2024).', // REVIEW
+  kriya: 'Baru 31,4% usaha kayu, bambu, dan rotan skala mikro dan kecil yang memakai internet (BPS 2024).', // REVIEW
+  lainnya: 'Baru 42% usaha di Indonesia yang sudah jualan online (BPS 2024).', // REVIEW
+};
+
+export const BENCHMARK_SOURCES = [
+  {
+    name: 'BPS, Statistik E-Commerce 2024',
+    url: 'https://www.bps.go.id/id/publication/2025/11/28/647323224ecc656c2933571b/statistik-e-commerce-2024.html',
+  },
+  {
+    name: 'BPS, Profil Industri Mikro dan Kecil 2024',
+    url: 'https://www.bps.go.id/id/publication/2025/09/16/a83f105e49377d0a7434e62a/profil-industri-mikro-dan-kecil-2024.html',
+  },
+  {
+    name: 'BPS, Statistik Penyediaan Makanan dan Minuman 2024',
+    url: 'https://www.bps.go.id/id/publication/2025/12/31/e46a55af756331ede8016b91/statistik-penyediaan-makanan-minuman-2024.html',
+  },
+  {
+    name: 'World Bank, Enterprise Survey Indonesia 2023',
+    url: 'https://www.enterprisesurveys.org/content/dam/enterprisesurveys/documents/country/Indonesia-2023.pdf',
+  },
+  {
+    name: 'OCBC NISP × NielsenIQ, Business Fitness Index 2024',
+    url: 'https://www.ocbc.id/tentang-ocbc-nisp/informasi/siaran-pers/2024/08/19/ocbc-business-fitness-index',
+  },
+  {
+    name: 'AWS × Strand Partners, Unlocking Indonesia\'s AI Potential 2026',
+    url: 'https://www.aboutamazon.sg/news/aws/indonesias-next-wave-of-ai-is-taking-shape',
+  },
+  {
+    name: '60 Decibels, State of Indonesian MSEs 2026',
+    url: 'https://60decibels.com/insights/indonesian-mses/',
+  },
+];
 
 export const REPORT_COPY = {
   prioritiesTitle: (count: number) => (count === 3 ? 'Tiga area prioritas' : 'Area prioritas'), // REVIEW

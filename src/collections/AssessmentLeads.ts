@@ -72,6 +72,15 @@ export const AssessmentLeads: CollectionConfig = {
       ],
       admin: { position: 'sidebar' },
     },
+    {
+      name: 'excludeFromBenchmark',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        position: 'sidebar',
+        description: 'Tick for test or internal sessions, so they stay out of the benchmark averages.',
+      },
+    },
     { name: 'notes', type: 'textarea', admin: { description: 'Internal notes (admin only).' } },
   ],
 };
