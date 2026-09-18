@@ -303,6 +303,7 @@ export const GATE_COPY = {
   locked: 'Terkunci', // REVIEW
   lockedScore: 'Skor terkunci sampai nomor WhatsApp diisi.', // REVIEW
   phaseUnknown: 'Fase ? dari 4', // REVIEW
+  phaseTeaser: 'Salah satu dari empat karakter ini adalah bisnis Anda.', // REVIEW
   unlockTitle: 'Terbuka setelah ini', // REVIEW
   unlocks: (areaCount: number) => [
     'Skor AI Readiness dan fase bisnis Anda',

@@ -13,7 +13,9 @@ Brief dan aturan skor: [`opsscore-brief.md`](./opsscore-brief.md). Dokumen ini m
 | Semua teks: fase, feedback, tindakan, fakta sekilas, benchmark, landing, quiz, gate, report, admin | `src/lib/opsscore/copy.ts` |
 | Estimasi benchmark per bidang, ambang 30 sesi | `src/lib/opsscore/benchmark.ts` |
 | Langkah naik fase, pilihan quick win dan area rencana 90 hari | `src/lib/opsscore/plan.ts` |
-| Adegan animasi: kartu skor bagian, persona di hasil | `_components/SectionScene.tsx`, `PhaseScene.tsx`, `scene-engine.ts` |
+| Adegan animasi kartu skor per bagian di kuis | `_components/SectionScene.tsx`, `scene-engine.ts` |
+| Gambar karakter fase: landing, hasil, share, gate, OG | `public/assets/opsscore/phase-{1..4}.webp`, `_components/PersonaHero.tsx` ([prompt-nya](opsscore-phase-art.md)) |
+| Diagram kecil di daftar benefit landing | `_components/BenefitVisual.tsx` |
 | Nama produk, slug, `INSTRUMENT_VERSION` | `src/lib/opsscore/config.ts` |
 | Route publik | `src/app/(frontend)/opsscore/` |
 | API sesi, gate, CSV | `src/app/(frontend)/api/opsscore/` |
@@ -98,7 +100,7 @@ Mengganti teks pertanyaan atau label opsi tanpa mengubah urutan dan jumlahnya ti
 
 ## Gambar share (OG)
 
-Empat gambar statis ada di `public/assets/opsscore/og-fase-{1..4}.png`. Setelah mengubah `PHASE_COPY`, render ulang:
+Empat gambar statis ada di `public/assets/opsscore/og-fase-{1..4}.png`, memakai gambar karakter `phase-{1..4}.webp`. Setelah mengubah `PHASE_COPY` atau gambar karakternya, render ulang:
 
 ```bash
 npm run opsscore:og

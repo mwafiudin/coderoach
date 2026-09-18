@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { SectionShell } from '../_components/detail/SectionShell';
 import { OctagonMark } from '../_components/ui/OctagonMark';
 import { productPath } from '@/lib/opsscore/config';
@@ -107,17 +108,27 @@ export default function OpsScoreLandingPage() {
               {PHASES.map((phase) => {
                 const { from, to } = phaseRange(phase);
                 return (
-                  <li key={phase} className="pt-4 border-t-2 border-ink">
-                    <span className="font-mono text-[11px] tracking-wider text-mist-600 tabular">
-                      [ {LANDING_COPY.phaseRange(from, to)} ]
-                    </span>
-                    <h3 className="text-[24px] font-bold tracking-[-0.015em] mt-3 mb-0">
-                      {PHASE_COPY[phase].title}
-                    </h3>
-                    <p className="mt-0.5 mb-2 text-[15px] font-semibold text-mist-600">{PHASE_COPY[phase].nickname}</p>
-                    <p className="text-[15px] leading-[1.55] text-mist-600 m-0 text-pretty">
-                      {PHASE_COPY[phase].key}
-                    </p>
+                  <li key={phase} className="flex flex-col">
+                    <Image
+                      src={`/assets/opsscore/phase-${phase}.webp`}
+                      alt=""
+                      width={1024}
+                      height={1024}
+                      sizes="(min-width: 1024px) 270px, (min-width: 640px) 45vw, 88vw"
+                      className="block w-full h-auto rounded-lg bg-ink"
+                    />
+                    <div className="mt-5 pt-4 border-t-2 border-ink">
+                      <span className="font-mono text-[11px] tracking-wider text-mist-600 tabular">
+                        [ {LANDING_COPY.phaseRange(from, to)} ]
+                      </span>
+                      <h3 className="text-[24px] font-bold tracking-[-0.015em] mt-3 mb-0">
+                        {PHASE_COPY[phase].title}
+                      </h3>
+                      <p className="mt-0.5 mb-2 text-[15px] font-semibold text-mist-600">{PHASE_COPY[phase].nickname}</p>
+                      <p className="text-[15px] leading-[1.55] text-mist-600 m-0 text-pretty">
+                        {PHASE_COPY[phase].key}
+                      </p>
+                    </div>
                   </li>
                 );
               })}
