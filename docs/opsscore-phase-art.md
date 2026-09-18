@@ -1,6 +1,8 @@
 # Gambar karakter empat fase OpsScore
 
-Prompt untuk membuat ilustrasi karakter tiap fase di section "Empat fase AI Readiness" (`/opsscore`). Dipakai bareng `PHASE_COPY` di `src/lib/opsscore/copy.ts`.
+Prompt untuk ilustrasi karakter tiap fase di section "Empat fase AI Readiness" (`/opsscore`). Dipakai bareng `PHASE_COPY` di `src/lib/opsscore/copy.ts`.
+
+Arah gayanya mengikuti panel adegan di dalam kuis (`SectionScene`, `PhaseScene`): bidang gelap, garis tipis, satu aksen biru, objek digambar sebagai proyeksi, bukan benda nyata. Jadi landing, kuis, dan report terbaca sebagai satu produk.
 
 ## Spesifikasi file
 
@@ -8,22 +10,25 @@ Prompt untuk membuat ilustrasi karakter tiap fase di section "Empat fase AI Read
 | --- | --- |
 | Rasio | 1:1 |
 | Ukuran | 1200 × 1200 px, diturunkan ke 600 × 600 saat dipasang |
-| Format | PNG latar transparan (kalau tidak bisa, latar rata `#F4F7F5`) |
+| Format | PNG, latar gelap ikut di dalam gambar (bukan transparan) |
 | Nama file | `public/assets/opsscore/phase-1.png` … `phase-4.png` |
-| Safe area | Karakter di tengah, sisakan 8% kosong di tiap sisi supaya aman saat dipotong |
-| Teks | Tidak ada teks di dalam gambar. Judul dan nama fase tetap dari HTML |
+| Safe area | Figur di tengah, sisakan 8% kosong di tiap sisi supaya aman saat dipotong |
+| Teks | Tidak ada teks, huruf, atau angka di dalam gambar |
 
 ## Gaya bersama (tempel di depan tiap prompt)
 
 ```
-Flat vector editorial illustration, clean geometric line work at even 2px weight,
-limited palette: near-black ink #08090A, off-white paper #F4F7F5, one electric blue
-accent #2C70FE used sparingly for the single most important object, soft warm grey
-#A7A2A9 for secondary shapes. Subtle paper grain, no gradients, no glossy 3D, no drop
-shadows, no neon glow. Calm technical mood, like a diagram in a design manual that
-happens to have a person in it. Indonesian small business owner, modern casual clothes,
-friendly and competent, not cartoonish and not corporate stock. Full body or
-three-quarter view, centered, generous empty space around the figure, flat background.
+Futuristic technical illustration, vector line art on a dark near-black background
+#13171A with a faint electric-blue grid receding into depth. Every object is a
+translucent wireframe projection: thin 1.5px electric-blue #2C70FE edges, small vertex
+dots at the corners, faint blue inner fill, as if beamed into the air. The person is
+drawn as a clean off-white #F4F7F5 line figure with light flat shading, realistic
+proportions, calm face: an Indonesian small business owner in modern casual clothes and
+an apron. Strict palette: near-black background, off-white figure, electric blue for
+everything projected, warm grey #A7A2A9 only for depth. Fine halftone texture, very
+subtle scanlines, controlled soft glow on the blue elements only. Flat frontal camera,
+centered figure, generous empty space, composed like an instrument panel diagram.
+No purple or magenta neon, no cyberpunk city, no chrome, no lens flare, no rainbow light.
 ```
 
 ## Prompt per fase
@@ -31,60 +36,73 @@ three-quarter view, centered, generous empty space around the figure, flat backg
 **Fase 1 — The Juggler (Si Paling Hafal).** Semua data ada di kepala pemilik.
 
 ```
-[gaya bersama] A shop owner juggling five floating objects at once: a cash box, a
-stack of receipts, a produce crate, a wall clock and a phone. The objects orbit around
-the head in an arc. The head is drawn as a simple octagon outline in electric blue with
-a dense tangle of thin lines inside, like a knot of memory. One object is slipping out
-of the arc and starting to fall. Body language: quick, alert, slightly overloaded.
-No desk, no computer, nothing written down.
+[gaya bersama] A shop owner at the center, looking up, hands open mid-juggle. Five
+holographic objects orbit their head along a thin elliptical path marked with tick marks
+and node dots: a cash box, a stack of receipts, a produce crate, a clock, a phone — all
+blue wireframe projections, none of them solid. Above the head an octagonal HUD frame
+holds a dense tangle of thin blue lines, a knot of unstructured memory, a few line ends
+escaping the frame. One object at the lower right has left the orbit and is breaking
+apart into small particles as it falls. Nothing here is stored anywhere but in the head.
 ```
 
 **Fase 2 — The Connector (Si Paling Fast Response).** Data ada, tapi berserakan di chat.
 
 ```
-[gaya bersama] A shop owner standing inside a tall column of chat bubbles that rises
-past the top of the frame, thumb scrolling a phone held in both hands. The bubbles are
-plain outlined rounded rectangles in grey, dozens of them, overlapping and unsorted.
-One single bubble deep in the stack is filled electric blue, as if it holds the number
-they are looking for. A magnifier outline hovers over the stack. Body language: fast,
-responsive, buried in messages.
+[gaya bersama] A shop owner holding a phone in both hands, thumb scrolling, standing
+inside a tall column of holographic chat bubbles that pours out of the phone and rises
+past the top of the frame. Dozens of wireframe bubbles at varying opacity, overlapping,
+unsorted, drifting sideways. Deep in the stack one single bubble is solid electric blue
+and denser than the rest: the number being searched for. A thin scanning line sweeps
+down the column hunting for it. The data exists, but it is suspended in the air.
 ```
 
 **Fase 3 — The Organizer (Si Paling Excel).** Sudah tercatat, tapi laporan masih disusun tangan.
 
 ```
-[gaya bersama] A shop owner seated at a plain desk beside a large spreadsheet grid that
-stands upright like a board, hand-copying one row from the grid onto a separate report
-sheet. Grid cells are thin grey outlines, a few cells filled electric blue to mark the
-row being moved. A second identical sheet waits in a tray. Body language: patient,
-methodical, doing the same transfer again. Nothing is automated, the link between grid
-and report is literally the owner's hand.
+[gaya bersama] A shop owner at a plain desk beside a large holographic spreadsheet
+lattice standing upright in the air, one hand reaching into the grid and dragging a
+single row out of it. Grid cells are blue wireframe with visible node points; the dragged
+row is solid electric blue and trails a thin line toward a second, empty panel where the
+owner is placing it by hand. A queue of identical empty panels waits behind it. The link
+between the two panels runs through the person's hand, not through a machine.
 ```
 
 **Fase 4 — The Autopilot (Si Paling Siap AI).** Data sudah bisa dibaca mesin.
 
 ```
-[gaya bersama] A shop owner standing calmly with hands relaxed, one step back from the
-work. Beside them, three thin lines labelled by simple icons (a cart, a crate, a coin)
-flow into a single octagon hub outlined in electric blue, and out of the hub one line
-continues to a small dashboard panel showing three neat bars and a four-pointed spark.
-Everything is aligned and evenly spaced. Body language: unhurried, in control, watching
-the system run instead of running it.
+[gaya bersama] A shop owner standing calm, hands at their sides, one step back from the
+work. Three blue data streams made of moving particles flow in from the left, each led by
+a small wireframe icon — a cart, a crate, a coin — converging into a single octagonal hub
+floating at chest height with solid electric-blue edges. One clean line leaves the hub and
+feeds a floating dashboard panel showing three even bars and a four-pointed spark.
+Everything snaps to the background grid. The owner holds nothing; the system runs itself.
 ```
 
 ## Negative prompt
 
 ```
-text, letters, numbers, watermark, logo, UI screenshot, photorealism, 3D render,
-glossy plastic, neon glow, heavy drop shadow, gradient mesh, cluttered background,
-office stock photo vibe, cartoon mascot, chibi, exaggerated facial expression,
-multiple accent colors, rainbow palette
+text, letters, numbers, watermark, logo, photorealism, 3D render, chrome, purple or
+magenta neon, cyberpunk city street, rainbow lights, lens flare, heavy bloom, busy
+background, cartoon mascot, chibi, exaggerated facial expression, robot, android,
+floating UI screenshots, hand-drawn sketch texture
 ```
 
 ## Menjaga keempatnya konsisten
 
-- Generate keempat gambar dalam satu sesi, dengan style prompt yang sama persis dan seed yang sama kalau model-nya mendukung.
-- Kunci framing: tinggi karakter di semua gambar kira-kira sama, sekitar 70% tinggi kanvas.
-- Empat karakter boleh orang yang berbeda, karena pengguna akan mengenali dirinya di salah satunya. Yang harus sama adalah gaya garis, palet, dan sudut pandang.
-- Biru elektrik hanya boleh muncul di satu objek per gambar: simpul ingatan, satu bubble chat, baris yang disalin, dan hub oktagon. Itu yang membuat keempatnya terbaca sebagai satu rangkaian.
-- Setelah jadi, cek di ukuran kecil (240 px). Kalau objek kuncinya sudah tidak terbaca, minta versi dengan objek lebih besar dan detail lebih sedikit.
+- Buat Fase 1 dulu sampai puas, lalu pakai gambar itu sebagai style reference untuk tiga sisanya. Seed sama kalau model-nya mendukung.
+- Tinggi figur sama di semua gambar, sekitar 70% tinggi kanvas, kamera sejajar dada.
+- Biru hanya untuk yang diproyeksikan. Badan orangnya tidak pernah biru, supaya kontras "manusia vs data" tetap terbaca.
+- Satu objek kunci per gambar yang paling terang: simpul ingatan, satu bubble chat, baris yang disalin, hub oktagon. Itu yang membuat keempatnya terbaca sebagai satu rangkaian naik.
+- Cek di ukuran kecil (240 px). Kalau objek kuncinya tidak terbaca, minta versi dengan objek lebih besar dan detail lebih sedikit.
+
+## Kalau mau versi terang
+
+Landing-nya berlatar `paper`, jadi empat kartu gelap akan jadi elemen paling berat di halaman. Itu bisa bagus (mereka jadi jangkar visual), tapi kalau terasa terlalu berat, ganti dua baris pertama gaya bersama dengan:
+
+```
+Vector line art on an off-white #F4F7F5 background with a faint blue blueprint grid.
+Objects are blue wireframe projections with visible vertex dots; the person is drawn in
+near-black #08090A line work with light grey flat shading.
+```
+
+Sisa promptnya tidak berubah.
