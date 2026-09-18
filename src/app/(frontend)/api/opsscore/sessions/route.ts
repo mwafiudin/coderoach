@@ -2,7 +2,16 @@ import { randomUUID } from 'node:crypto';
 import type { NextRequest } from 'next/server';
 import { getPayload } from 'payload';
 import config from '@payload-config';
-import { SESSIONS, json, newShareSlug, rateLimited, readJson, truncate } from '@/lib/opsscore/api';
+import {
+  SESSIONS,
+  crossSite,
+  json,
+  newShareSlug,
+  rateLimited,
+  rateLimitPersisted,
+  readJson,
+  truncate,
+} from '@/lib/opsscore/api';
 import {
   ATTRIBUTION_COOKIE,
   parseAttributionCookie,
@@ -12,8 +21,8 @@ import { INSTRUMENT_VERSION } from '@/lib/opsscore/config';
 
 /** Starts a session. The client keeps only the returned id. */
 export async function POST(req: NextRequest) {
-  const limited = rateLimited(req, 'opsscore:create', 10);
-  if (limited) return limited;
+  const blocked = crossSite(req) ?? rateLimited(req, 'opsscore:create', 10);
+  if (blocked) return blocked;
 
   // The landing-page cookie wins; the body is the fallback when cookies are blocked.
   const body = (await readJson(req)) ?? {};
@@ -22,6 +31,8 @@ export async function POST(req: NextRequest) {
 
   try {
     const payload = await getPayload({ config });
+    const flooding = await rateLimitPersisted(payload, req, 'opsscore:create', 30);
+    if (flooding) return flooding;
     const session = await payload.create({
       collection: SESSIONS,
       data: {

@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { TurnstileField, type TurnstileHandle } from './TurnstileField';
 import { DeployConsole } from './DeployConsole';
 import { StatusAlert } from './ui/StatusAlert';
 import { useToast } from './ui/Toast';
@@ -37,6 +38,8 @@ export function Contact({ data }: { data: ContactData | null }) {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [honeypot, setHoneypot] = useState('');
+  const [turnstileToken, setTurnstileToken] = useState('');
+  const turnstile = useRef<TurnstileHandle | null>(null);
   // Set when the visitor arrives from an OpsScore report (/?hasil_id=…#contact).
   const [hasilId, setHasilId] = useState<string | null>(null);
   const [now, setNow] = useState<Date | null>(null);
@@ -171,6 +174,7 @@ export function Contact({ data }: { data: ContactData | null }) {
                       scope,
                       brief,
                       company_url: honeypot,
+                      turnstileToken,
                       hasil_id: hasilId ?? undefined,
                     }),
                   });
@@ -260,6 +264,7 @@ export function Contact({ data }: { data: ContactData | null }) {
                 }
               }}
             >
+              <TurnstileField onToken={setTurnstileToken} handleRef={turnstile} theme="dark" />
               {/* Honeypot — hidden from real users; bots that fill it get silently rejected */}
               <input
                 type="text"

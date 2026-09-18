@@ -8,7 +8,9 @@ Brief dan aturan skor: [`opsscore-brief.md`](./opsscore-brief.md). Dokumen ini m
 | --- | --- |
 | Pertanyaan, opsi, area, opsi profil | `src/lib/opsscore/questions.ts` |
 | Urutan layar, posisi layar profil | `src/lib/opsscore/flow.ts` |
-| Validasi profil, alamat website, format nomor WA, email | `src/lib/opsscore/profile.ts`, `phone.ts`, `email.ts` |
+| Validasi profil, alamat website, format nomor WA, email | `src/lib/opsscore/profile.ts`, `phone.ts`, `email.ts`, `email-server.ts` |
+| Rate limit, origin check, upsert lead | `src/lib/opsscore/api.ts`, `src/collections/RateLimits.ts` |
+| Turnstile | `src/lib/turnstile.ts`, `_components/TurnstileField.tsx` |
 | Bobot, ambang fase, aturan prioritas dan kelas layanan | `src/lib/opsscore/scoring.ts` |
 | Semua teks: fase, feedback, tindakan, fakta sekilas, benchmark, landing, quiz, gate, report, admin | `src/lib/opsscore/copy.ts` |
 | Estimasi benchmark per bidang, ambang 30 sesi | `src/lib/opsscore/benchmark.ts` |
@@ -110,16 +112,34 @@ Butuh Google Chrome. Kalau Chrome tidak di lokasi default macOS, set `CHROME_PAT
 
 ## Keamanan form
 
-Yang sudah terpasang di jalur kuis dan gate:
+Lapisan yang sudah terpasang di jalur kuis, gate, dan form brief:
 
-- **Rate limit per IP** di semua route `/api/opsscore` (buat sesi 10, autosave 120, gate 10 per 10 menit). Hitungannya di memori proses, jadi ikut reset tiap deploy.
-- **Honeypot** `company_url` di form gate: kalau terisi, server menjawab sukses tanpa menyimpan apa pun.
+- **Cloudflare Turnstile** di form gate dan form brief. Mati selama `NEXT_PUBLIC_TURNSTILE_SITE_KEY` dan `TURNSTILE_SECRET_KEY` kosong, jadi aman dipakai sebelum key-nya diisi. Mode `interaction-only`: pengunjung normal tidak melihat apa pun. Kalau Cloudflare tidak bisa dihubungi, submit tetap diloloskan supaya lead tidak hilang karena gangguan di luar kita.
+- **Rate limit dua lapis.** Lapis pertama di memori proses (buat sesi 10, autosave 120, gate 10 per 10 menit), cepat dan tanpa query. Lapis kedua di tabel `rate_limits` (buat sesi 30, gate 20 per jam), tahan restart dan deploy. Kalau query-nya gagal, request diloloskan.
+- **Origin check**: POST dari situs lain ditolak 403. Request tanpa header Origin diserahkan ke rate limit.
+- **Honeypot** `company_url` di kedua form: kalau terisi, server menjawab sukses tanpa menyimpan apa pun.
 - **Batas body** 32 KB dan hanya JSON object; id sesi wajib berformat UUID.
 - **Nomor WA** wajib format Indonesia, dan nomor isian asal seperti `081111111111` atau `081234567890` ditolak (`phone.ts`).
-- **Email** opsional, tapi kalau diisi harus valid dan bukan domain sekali pakai (`email.ts`).
+- **Email** opsional, tapi kalau diisi: formatnya divalidasi, domain sekali pakai ditolak, domain tanpa MX record ditolak, dan salah ketik seperti `gmial.com` ditawarkan koreksinya di form.
 - **Nomor berulang**: kalau nomor yang sama sudah pernah masuk dari sesi lain, lead-nya ditandai `repeatContact`. Tidak diblokir, hanya ditandai untuk tim.
+- **Security header** di semua halaman: CSP (kecuali `/admin` dan `/api`), `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options`, `Permissions-Policy`, dan HSTS di production.
 
-Yang belum, dan perlu diputuskan: Cloudflare Turnstile di gate, proxy Cloudflare menyala supaya WAF dan bot protection aktif, rate limit yang disimpan di database, dan Cloudflare Access untuk `/admin`.
+Menyalakan Turnstile:
+
+1. Cloudflare → Turnstile → Add site, domain `coderoach.id`, widget mode **Managed**.
+2. Isi `NEXT_PUBLIC_TURNSTILE_SITE_KEY` dan `TURNSTILE_SECRET_KEY` di variabel service `web` Railway, lalu deploy ulang (site key dibaca saat build).
+3. Cek di halaman gate: normalnya tidak ada widget yang terlihat, dan submit tetap jalan.
+
+Retensi data:
+
+```bash
+npx tsx --env-file=.env.local scripts/opsscore-prune.ts             # lihat dulu
+npx tsx --env-file=.env.local scripts/opsscore-prune.ts --apply     # hapus
+```
+
+Menghapus sesi yang tidak pernah sampai gate dan lebih tua dari 12 bulan, beserta lead parsialnya. Sesi yang sudah gated tidak disentuh.
+
+Yang masih di tangan Anda, di dashboard Cloudflare: menyalakan proxy (orange cloud) supaya WAF, Bot Fight Mode, dan rate limiting di edge ikut aktif, serta Cloudflare Access untuk mengunci `/admin`.
 
 ## Tracking
 

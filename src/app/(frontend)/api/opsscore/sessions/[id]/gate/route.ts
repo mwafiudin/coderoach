@@ -1,19 +1,32 @@
 import type { NextRequest } from 'next/server';
 import { getPayload } from 'payload';
 import config from '@payload-config';
-import { SESSIONS, findSession, json, phoneSeenBefore, rateLimited, readJson, upsertLead } from '@/lib/opsscore/api';
-import { isDisposableEmail, normalizeEmail } from '@/lib/opsscore/email';
+import {
+  SESSIONS,
+  clientIp,
+  crossSite,
+  findSession,
+  json,
+  phoneSeenBefore,
+  rateLimited,
+  rateLimitPersisted,
+  readJson,
+  upsertLead,
+} from '@/lib/opsscore/api';
+import { emailDomain, isDisposableEmail, normalizeEmail } from '@/lib/opsscore/email';
+import { domainAcceptsMail } from '@/lib/opsscore/email-server';
 import { normalizePhone } from '@/lib/opsscore/phone';
 import { sanitizeProfile } from '@/lib/opsscore/profile';
 import { serviceClass, type Scores } from '@/lib/opsscore/scoring';
+import { verifyTurnstile } from '@/lib/turnstile';
 
 /**
  * Gate: the profile is already saved during the quiz, so this only needs WhatsApp and consent.
  * Any profile fields in the body are a fallback for saves that never reached the server.
  */
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  const limited = rateLimited(req, 'opsscore:gate', 10);
-  if (limited) return limited;
+  const blocked = crossSite(req) ?? rateLimited(req, 'opsscore:gate', 10);
+  if (blocked) return blocked;
 
   const { id } = await params;
   const body = await readJson(req);
@@ -33,8 +46,18 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   if (body.consent !== true) errors.consent = 'consent';
   if (Object.keys(errors).length) return json({ ok: false, code: 'invalid', errors }, 400);
 
+  if (!(await verifyTurnstile(body.turnstileToken, clientIp(req)))) {
+    return json({ ok: false, code: 'invalid', errors: { turnstile: 'turnstile' } }, 400);
+  }
+
+  if (email && !(await domainAcceptsMail(emailDomain(email)))) {
+    return json({ ok: false, code: 'invalid', errors: { email: 'emailDomain' } }, 400);
+  }
+
   try {
     const payload = await getPayload({ config });
+    const flooding = await rateLimitPersisted(payload, req, 'opsscore:gate', 20);
+    if (flooding) return flooding;
     const session = await findSession(payload, id);
     if (!session) return json({ ok: false, code: 'not_found' }, 404);
     if (session.status === 'gated') return json({ ok: true });

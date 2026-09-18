@@ -13,7 +13,7 @@ import {
   shownAreas,
   stepKey,
 } from './flow';
-import { isDisposableEmail, normalizeEmail } from './email';
+import { isDisposableEmail, normalizeEmail, suggestEmail } from './email';
 import { normalizePhone } from './phone';
 import { formatPhoneInput, isProfileAnswered, isProfileOptional, normalizeWebsite, sanitizeProfile } from './profile';
 import { QUESTION_BY_ID, promptFor } from './questions';
@@ -146,6 +146,14 @@ describe('email', () => {
     assert.equal(normalizeEmail('halo@tokosaya'), null);
     assert.equal(normalizeEmail('halo tokosaya.com'), null);
     assert.equal(normalizeEmail('@tokosaya.com'), null);
+  });
+
+  test('offers a fix for near-miss domains', () => {
+    assert.equal(suggestEmail('halo@gmial.com'), 'halo@gmail.com');
+    assert.equal(suggestEmail('halo@gmail.con'), 'halo@gmail.com');
+    assert.equal(suggestEmail('halo@gmail.com'), null);
+    assert.equal(suggestEmail('halo@tokosaya.co.id'), null);
+    assert.equal(suggestEmail('bukan email'), null);
   });
 
   test('knows throwaway domains', () => {

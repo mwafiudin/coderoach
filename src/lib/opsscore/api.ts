@@ -2,6 +2,7 @@
  * Server-only helpers for the /api/opsscore route handlers.
  */
 import { randomBytes } from 'node:crypto';
+import { sql } from '@payloadcms/db-postgres';
 import { NextResponse, type NextRequest } from 'next/server';
 import type { Payload, RequiredDataFromCollectionSlug } from 'payload';
 import type { Profile } from './profile';
@@ -32,6 +33,62 @@ export function rateLimited(req: NextRequest, route: string, max: number, window
   }
   bucket.count += 1;
   return null;
+}
+
+/**
+ * The persistent half of the limit. The in-memory bucket above is the cheap first line; this one
+ * survives deploys and would hold across instances if the service is ever scaled. A database that
+ * cannot answer lets the request through: the request itself needs that database anyway.
+ */
+export async function rateLimitPersisted(
+  payload: Payload,
+  req: NextRequest,
+  route: string,
+  max: number,
+  windowSeconds = 60 * 60,
+) {
+  const key = `${route}:${clientIp(req)}`;
+  try {
+    const result = await (payload.db as unknown as { drizzle: { execute: (query: unknown) => Promise<{ rows: Array<{ count: number | string; reset_at: string }> }> } }).drizzle.execute(sql`
+      INSERT INTO rate_limits (key, count, reset_at)
+      VALUES (${key}, 1, now() + make_interval(secs => ${windowSeconds}))
+      ON CONFLICT (key) DO UPDATE SET
+        count = CASE WHEN rate_limits.reset_at < now() THEN 1 ELSE rate_limits.count + 1 END,
+        reset_at = CASE WHEN rate_limits.reset_at < now()
+          THEN now() + make_interval(secs => ${windowSeconds})
+          ELSE rate_limits.reset_at END
+      RETURNING count, reset_at
+    `);
+    const row = result.rows?.[0];
+    if (!row || Number(row.count) <= max) return null;
+    const retryAfterSec = Math.max(1, Math.ceil((new Date(row.reset_at).getTime() - Date.now()) / 1000));
+    return json({ ok: false, code: 'rate_limited' }, 429, { 'Retry-After': String(retryAfterSec) });
+  } catch (err) {
+    console.error('[opsscore] persisted rate limit unavailable', err);
+    return null;
+  }
+}
+
+/**
+ * Rejects posts that come from another site. Requests without an Origin header (curl, server to
+ * server) are left to the rate limits; browsers always send one on a cross-site POST.
+ */
+export function crossSite(req: NextRequest) {
+  const origin = req.headers.get('origin');
+  if (!origin) return null;
+  const allowed = new Set<string>();
+  const host = req.headers.get('x-forwarded-host') || req.headers.get('host');
+  if (host) allowed.add(host);
+  const site = process.env.NEXT_PUBLIC_SERVER_URL;
+  if (site) {
+    try {
+      allowed.add(new URL(site).host);
+    } catch {}
+  }
+  try {
+    if (allowed.has(new URL(origin).host)) return null;
+  } catch {}
+  return json({ ok: false, code: 'forbidden' }, 403);
 }
 
 const MAX_BODY_BYTES = 32 * 1024;

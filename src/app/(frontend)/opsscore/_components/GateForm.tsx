@@ -1,15 +1,17 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useRef, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { GATE_COPY } from '@/lib/opsscore/copy';
-import { normalizeEmail } from '@/lib/opsscore/email';
+import { normalizeEmail, suggestEmail } from '@/lib/opsscore/email';
 import { normalizePhone } from '@/lib/opsscore/phone';
 import { formatPhoneInput } from '@/lib/opsscore/profile';
 import { track } from '@/lib/opsscore/track';
+import { TURNSTILE_SITE_KEY } from '@/lib/turnstile';
+import { TurnstileField, type TurnstileHandle } from '../../_components/TurnstileField';
 import { JUST_GATED_KEY } from './RevealReport';
 
-type Field = 'phone' | 'email' | 'consent';
+type Field = 'phone' | 'email' | 'consent' | 'turnstile';
 type Errors = Partial<Record<Field, keyof typeof GATE_COPY.errors>>;
 
 /**
@@ -32,6 +34,8 @@ export function GateForm({
   const [email, setEmail] = useState('');
   const [consent, setConsent] = useState(false);
   const [honeypot, setHoneypot] = useState('');
+  const [turnstileToken, setTurnstileToken] = useState('');
+  const turnstile = useRef<TurnstileHandle | null>(null);
   const [errors, setErrors] = useState<Errors>({});
   const [formError, setFormError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -39,6 +43,7 @@ export function GateForm({
 
   const phoneValid = Boolean(normalizePhone(phone));
   const emailValid = !email.trim() || Boolean(normalizeEmail(email));
+  const emailFix = suggestEmail(email);
   const ready = phoneValid && consent;
   const busy = submitting || refreshing;
 
@@ -56,13 +61,18 @@ export function GateForm({
       document.getElementById(`gate-${Object.keys(found)[0]}`)?.focus();
       return;
     }
+    // Turnstile answers on its own within a moment; only a click that beats it lands here.
+    if (TURNSTILE_SITE_KEY && !turnstileToken) {
+      setFormError(GATE_COPY.errors.turnstilePending);
+      return;
+    }
 
     setSubmitting(true);
     try {
       const res = await fetch(`/api/opsscore/sessions/${sessionId}/gate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone, email, consent, company_url: honeypot }),
+        body: JSON.stringify({ phone, email, consent, turnstileToken, company_url: honeypot }),
       });
       const body = await res.json().catch(() => ({}));
       if (res.ok && body.ok) {
@@ -73,9 +83,11 @@ export function GateForm({
         startRefresh(() => router.refresh());
         return;
       }
+      turnstile.current?.reset();
       if (body.code === 'invalid' && body.errors) setErrors(body.errors);
       else setFormError(res.status === 429 ? GATE_COPY.errors.rateLimited : GATE_COPY.errors.server);
     } catch {
+      turnstile.current?.reset();
       setFormError(GATE_COPY.errors.server);
     }
     setSubmitting(false);
@@ -152,6 +164,16 @@ export function GateForm({
         />
         {errors.email ? (
           <FieldError id="gate-email-error">{GATE_COPY.errors[errors.email]}</FieldError>
+        ) : emailFix ? (
+          <p className="mt-1.5 mb-0 text-[12px] leading-[1.45] text-mist-600">
+            <button
+              type="button"
+              onClick={() => setEmail(emailFix)}
+              className="font-medium text-electric underline underline-offset-2"
+            >
+              {GATE_COPY.emailSuggestion(emailFix)}
+            </button>
+          </p>
         ) : (
           <p id="gate-email-hint" className="mt-1.5 mb-0 text-[12px] leading-[1.45] text-mist-600">
             {GATE_COPY.emailHint}
@@ -177,6 +199,9 @@ export function GateForm({
         </label>
         {errors.consent && <FieldError id="gate-consent-error">{GATE_COPY.errors[errors.consent]}</FieldError>}
       </div>
+
+      <TurnstileField onToken={setTurnstileToken} handleRef={turnstile} />
+      {errors.turnstile && <FieldError id="gate-turnstile-error">{GATE_COPY.errors[errors.turnstile]}</FieldError>}
 
       <div className="flex flex-col gap-3 pt-1">
         <button

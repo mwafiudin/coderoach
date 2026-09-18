@@ -81,6 +81,7 @@ export interface Config {
     submissions: Submission;
     'assessment-sessions': AssessmentSession;
     'assessment-leads': AssessmentLead;
+    'rate-limits': RateLimit;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -102,6 +103,7 @@ export interface Config {
     submissions: SubmissionsSelect<false> | SubmissionsSelect<true>;
     'assessment-sessions': AssessmentSessionsSelect<false> | AssessmentSessionsSelect<true>;
     'assessment-leads': AssessmentLeadsSelect<false> | AssessmentLeadsSelect<true>;
+    'rate-limits': RateLimitsSelect<false> | RateLimitsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -1111,6 +1113,18 @@ export interface AssessmentLead {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "rate-limits".
+ */
+export interface RateLimit {
+  id: number;
+  key: string;
+  count: number;
+  resetAt: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -1188,6 +1202,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'assessment-leads';
         value: number | AssessmentLead;
+      } | null)
+    | ({
+        relationTo: 'rate-limits';
+        value: number | RateLimit;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -1843,6 +1861,17 @@ export interface AssessmentLeadsSelect<T extends boolean = true> {
   excludeFromBenchmark?: T;
   repeatContact?: T;
   notes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "rate-limits_select".
+ */
+export interface RateLimitsSelect<T extends boolean = true> {
+  key?: T;
+  count?: T;
+  resetAt?: T;
   updatedAt?: T;
   createdAt?: T;
 }

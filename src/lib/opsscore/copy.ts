@@ -325,11 +325,15 @@ export const GATE_COPY = {
   emailLabel: 'Email (opsional)', // REVIEW
   emailPlaceholder: 'nama@bisnisanda.com', // REVIEW
   emailHint: 'Kami kirimkan salinan report ke email ini.', // REVIEW
+  emailSuggestion: (fixed: string) => `Maksud Anda ${fixed}?`, // REVIEW
   consent: 'Saya setuju dihubungi Coderoach lewat WhatsApp tentang hasil ini.', // REVIEW
   submit: 'Buka hasil', // REVIEW
   submitting: 'Membuka hasil', // REVIEW
   errors: {
     email: 'Format email belum benar. Contoh: nama@bisnisanda.com.', // REVIEW
+    emailDomain: 'Domain email itu tidak menerima email. Cek lagi ketikannya.', // REVIEW
+    turnstile: 'Verifikasi keamanan gagal. Muat ulang halaman, lalu coba lagi.', // REVIEW
+    turnstilePending: 'Sebentar, verifikasi keamanan masih berjalan.', // REVIEW
     emailDisposable: 'Pakai email yang benar-benar Anda buka, bukan email sekali pakai.', // REVIEW
     required: 'Wajib diisi.', // REVIEW
     phone: 'Nomor WA diawali 08, 10–13 digit.', // REVIEW
