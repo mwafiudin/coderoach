@@ -5,6 +5,7 @@ import { productPath } from '@/lib/opsscore/config';
 import { LANDING_COPY, PHASE_COPY } from '@/lib/opsscore/copy';
 import { phaseRange, type Phase } from '@/lib/opsscore/scoring';
 import { LandingTracker } from './_components/Trackers';
+import { BenefitVisual } from './_components/BenefitVisual';
 
 export const dynamic = 'force-dynamic';
 
@@ -75,13 +76,21 @@ export default function OpsScoreLandingPage() {
               <ol className="list-none p-0 m-0 mt-5 flex flex-col">
                 {LANDING_COPY.get.map((item, i) => (
                   <li
-                    key={item}
-                    className="flex gap-4 py-4 border-t border-paper-200 first:border-t-0 first:pt-0 last:pb-0"
+                    key={item.title}
+                    className="py-4 border-t border-paper-200 first:border-t-0 first:pt-0 last:pb-0"
                   >
-                    <span className="font-mono text-[12px] text-electric tabular pt-0.5">
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
-                    <span className="text-[16px] leading-[1.5] text-ink">{item}</span>
+                    <div className="flex items-baseline gap-3">
+                      <span className="font-mono text-[12px] text-electric tabular">
+                        {String(i + 1).padStart(2, '0')}
+                      </span>
+                      <h3 className="text-[17px] font-bold tracking-[-0.015em] leading-[1.3] text-ink m-0">
+                        {item.title}
+                      </h3>
+                    </div>
+                    <p className="mt-1.5 mb-0 text-[14px] leading-[1.5] text-mist-600 text-pretty">
+                      {item.body}
+                    </p>
+                    <BenefitVisual kind={item.visual} className="mt-3" />
                   </li>
                 ))}
               </ol>

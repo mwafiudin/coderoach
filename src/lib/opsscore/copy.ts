@@ -173,25 +173,43 @@ export const ACTIONS: Record<string, string> = {
 /* ------------------------------------------------------------------ */
 
 export const LANDING_COPY = {
-  // SEO carries the searched words ("siap pakai AI", "sistem operasional bisnis", "bisnis masih manual").
-  metaTitle: 'Bisnis Anda siap pakai AI? Cek sistem operasionalnya dalam 5 menit', // REVIEW
+  // SEO carries the searched words ("siap pakai AI", "AI readiness", "bisnis masih manual").
+  metaTitle: 'Cek AI Readiness bisnis Anda: siap pakai AI atau belum?', // REVIEW
   metaDescription:
-    'Assessment gratis untuk bisnis yang masih banyak manual. Lihat di mana data operasional Anda hidup, fase bisnis Anda, dan tiga area yang perlu dirapikan sebelum pakai AI.', // REVIEW
-  marker: '[ OPSSCORE ] · Cek operasional bisnis', // REVIEW
+    'Assessment gratis untuk bisnis yang masih banyak manual. Lihat skor AI Readiness bisnis Anda, fase operasionalnya, dan tiga area yang perlu dirapikan sebelum pakai AI.', // REVIEW
+  marker: '[ OPSSCORE ] · Cek AI Readiness', // REVIEW
   headline: {
     lead: 'Bisnis Anda siap pakai AI?', // REVIEW
-    accent: 'Cek dulu di mana datanya hidup.', // REVIEW
+    accent: 'Cek AI Readiness dulu.', // REVIEW (nbsp keeps the term on one line)
   },
-  lede: 'AI itu langkah ketiga, bukan pertama. Urutannya tercatat, tersistem, baru AI. OpsScore memetakan di mana data operasional bisnis Anda hidup sekarang: di kepala, di chat, di spreadsheet, atau di sistem.', // REVIEW
+  lede: 'AI itu langkah ketiga, bukan pertama. Urutannya tercatat, tersistem, baru AI. OpsScore mengukur AI Readiness bisnis Anda dari satu hal yang paling menentukan: di mana data operasional Anda hidup sekarang — di kepala, di chat, di spreadsheet, atau di sistem.', // REVIEW
   getTitle: 'Yang Anda dapat', // REVIEW
+  /** Each item is drawn with a small diagram; `visual` picks it (see BenefitVisual). */
   get: [
-    'Fase bisnis Anda: Ingatan, Chat, Spreadsheet, atau Sistem.', // REVIEW
-    'Skor untuk delapan area, dari penjualan sampai keuangan.', // REVIEW
-    'Tiga area prioritas, masing-masing dengan satu langkah konkret. Bisa disimpan sebagai PDF.', // REVIEW
-  ],
+    {
+      visual: 'phase',
+      title: 'Fase AI Readiness Anda', // REVIEW
+      body: 'Dari The Juggler sampai The Autopilot. Anda tahu persis ada di posisi mana sekarang.', // REVIEW
+    },
+    {
+      visual: 'areas',
+      title: 'Skor 0–100 untuk 8 area', // REVIEW
+      body: 'Penjualan, stok, kas, tim. Kelihatan area mana yang paling menahan.', // REVIEW
+    },
+    {
+      visual: 'benchmark',
+      title: 'Posisi Anda vs usaha sejenis', // REVIEW
+      body: 'Skor Anda dibanding rata-rata industri yang sama.', // REVIEW
+    },
+    {
+      visual: 'steps',
+      title: 'Tiga langkah prioritas', // REVIEW
+      body: 'Konkret, bisa dikerjakan minggu ini. Lengkap dengan report PDF.', // REVIEW
+    },
+  ] as const,
   meta: ['27 pertanyaan', '±5 menit', 'Gratis'], // REVIEW
   cta: 'Mulai cek',
-  phasesTitle: 'Empat fase yang diukur', // REVIEW
+  phasesTitle: 'Empat fase AI Readiness', // REVIEW
   phaseRange: (from: number, to: number) => `${from}–${to}`,
 };
 
@@ -265,8 +283,8 @@ export const PROFILE_COPY = {
 export const RESULT_COPY = {
   metaTitle: 'Hasil OpsScore', // REVIEW
   marker: '[ OPSSCORE ] · Hasil', // REVIEW
-  scoreLabel: 'OpsScore bisnis Anda',
-  scoreLabelFor: (brand?: string | null) => (brand ? `OpsScore ${brand}` : 'OpsScore bisnis Anda'), // REVIEW
+  scoreLabel: 'AI Readiness bisnis Anda',
+  scoreLabelFor: (brand?: string | null) => (brand ? `AI Readiness ${brand}` : 'AI Readiness bisnis Anda'), // REVIEW
   outOf: '/100',
   phaseOf: (phase: number) => `Fase ${phase} dari 4`,
   strengthLabel: 'Kekuatan', // REVIEW
@@ -287,7 +305,7 @@ export const GATE_COPY = {
   phaseUnknown: 'Fase ? dari 4', // REVIEW
   unlockTitle: 'Terbuka setelah ini', // REVIEW
   unlocks: (areaCount: number) => [
-    'Skor total dan fase bisnis Anda',
+    'Skor AI Readiness dan fase bisnis Anda',
     `Skor ${areaCount} area operasional`,
     'Area prioritas dan langkah pertamanya',
     'Report versi PDF',
@@ -533,10 +551,10 @@ export const SHARE_COPY = {
   copied: 'Link tersalin', // REVIEW
   copyPrompt: 'Salin link ini', // REVIEW
   shareTitle: 'Hasil OpsScore', // REVIEW
-  shareText: 'Ini fase operasional bisnis kami menurut OpsScore.', // REVIEW
+  shareText: 'Ini fase AI Readiness bisnis kami menurut OpsScore.', // REVIEW
   metaTitle: (phaseTitle: string) => `${phaseTitle} — hasil OpsScore`, // REVIEW
   marker: '[ OPSSCORE ] · Hasil yang dibagikan', // REVIEW
-  scoreLabel: 'OpsScore bisnis ini', // REVIEW
+  scoreLabel: 'AI Readiness bisnis ini', // REVIEW
   cta: 'Cek bisnis Anda',
   ctaNote: '27 pertanyaan, ±5 menit, gratis.', // REVIEW
 };
