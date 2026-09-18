@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPayload } from 'payload';
 import config from '@payload-config';
-import { findSession } from '@/lib/opsscore/api';
+import { crossSite, findSession } from '@/lib/opsscore/api';
+import { verifyTurnstile } from '@/lib/turnstile';
 
 const ALLOWED_SCOPES = new Set([
   'Build',
@@ -34,6 +35,9 @@ function checkRate(ip: string): { allowed: boolean; retryAfterSec: number } {
 }
 
 export async function POST(req: NextRequest) {
+  const foreign = crossSite(req);
+  if (foreign) return foreign;
+
   const ip =
     req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
     req.headers.get('x-real-ip') ||
@@ -61,6 +65,13 @@ export async function POST(req: NextRequest) {
   }
 
   // Honeypot — if filled, treat as bot but return success silently.
+  if (!(await verifyTurnstile(body?.turnstileToken, ip))) {
+    return NextResponse.json(
+      { ok: false, code: 'turnstile', error: 'Verifikasi keamanan gagal. Muat ulang halaman, lalu coba lagi.' },
+      { status: 400 },
+    );
+  }
+
   if (body?.company_url) {
     return NextResponse.json({ ok: true });
   }
@@ -102,7 +113,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true });
   } catch (err: any) {
     return NextResponse.json(
-      { ok: false, code: 'server_error', error: 'Gagal menyimpan brief. Server sedang bermasalah — coba lagi sebentar lagi atau email langsung agar kami segera proses.' },
+      { ok: false, code: 'server_error', error: 'Gagal menyimpan brief. Server sedang bermasalah, coba lagi sebentar lagi atau email langsung agar kami segera proses.' },
       { status: 500 },
     );
   }

@@ -227,7 +227,7 @@ export const QUESTIONS: Question[] = [
     { id: 'kepala', label: 'Di kepala orang lama' },
     { id: 'tidak-dipakai', label: 'Pernah ditulis, nggak dipakai' },
     { id: 'dokumen', label: 'Dokumen yang dipakai' },
-    { id: 'sistem', label: 'Di dalam sistem — sistem yang memaksa SOP-nya jalan' },
+    { id: 'sistem', label: 'Di dalam sistem yang memaksa SOP-nya jalan' },
   ]),
 
   // F — Ketergantungan owner
@@ -290,7 +290,7 @@ export const QUESTIONS: Question[] = [
     ...single('H1', 'ai', 'Anda sudah coba AI (ChatGPT dan semacamnya) untuk bisnis?', 'Misalnya ChatGPT untuk menulis caption, membalas email, atau merangkum dokumen.', [ // REVIEW hint
       { id: 'belum', label: 'Belum' },
       { id: 'tidak-nyantol', label: 'Pernah, nggak nyantol' },
-      { id: 'pribadi', label: 'Dipakai pribadi — bikin caption, balas email' },
+      { id: 'pribadi', label: 'Dipakai pribadi untuk bikin caption atau balas email' },
       { id: 'tim', label: 'Dipakai tim secara rutin' },
     ]),
     // Segmentation only (brief §4).

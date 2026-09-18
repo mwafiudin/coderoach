@@ -3,6 +3,8 @@ import * as migration_20260917_084810_opsscore from './20260917_084810_opsscore'
 import * as migration_20260917_091659_opsscore_brief_link from './20260917_091659_opsscore_brief_link';
 import * as migration_20260917_102014_opsscore_progressive_lead from './20260917_102014_opsscore_progressive_lead';
 import * as migration_20260917_141624_opsscore_benchmark_exclude from './20260917_141624_opsscore_benchmark_exclude';
+import * as migration_20260918_073500_opsscore_lead_contact from './20260918_073500_opsscore_lead_contact';
+import * as migration_20260918_080500_rate_limits from './20260918_080500_rate_limits';
 
 export const migrations = [
   {
@@ -29,5 +31,15 @@ export const migrations = [
     up: migration_20260917_141624_opsscore_benchmark_exclude.up,
     down: migration_20260917_141624_opsscore_benchmark_exclude.down,
     name: '20260917_141624_opsscore_benchmark_exclude',
+  },
+  {
+    up: migration_20260918_073500_opsscore_lead_contact.up,
+    down: migration_20260918_073500_opsscore_lead_contact.down,
+    name: '20260918_073500_opsscore_lead_contact',
+  },
+  {
+    up: migration_20260918_080500_rate_limits.up,
+    down: migration_20260918_080500_rate_limits.down,
+    name: '20260918_080500_rate_limits',
   },
 ];

@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { TurnstileField, type TurnstileHandle } from './TurnstileField';
 import { DeployConsole } from './DeployConsole';
 import { StatusAlert } from './ui/StatusAlert';
 import { useToast } from './ui/Toast';
@@ -37,6 +38,8 @@ export function Contact({ data }: { data: ContactData | null }) {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [honeypot, setHoneypot] = useState('');
+  const [turnstileToken, setTurnstileToken] = useState('');
+  const turnstile = useRef<TurnstileHandle | null>(null);
   // Set when the visitor arrives from an OpsScore report (/?hasil_id=…#contact).
   const [hasilId, setHasilId] = useState<string | null>(null);
   const [now, setNow] = useState<Date | null>(null);
@@ -149,7 +152,7 @@ export function Contact({ data }: { data: ContactData | null }) {
                 if (submitting) return;
                 // Client-side validation — show toast for quick fixes
                 if (!emailValid) {
-                  toast.warning('Email belum valid', 'Pastikan format email-nya benar — mis. nama@perusahaan.com.');
+                  toast.warning('Email belum valid', 'Pastikan format email-nya benar, mis. nama@perusahaan.com.');
                   return;
                 }
                 if (brief.trim().length < 10) {
@@ -171,6 +174,7 @@ export function Contact({ data }: { data: ContactData | null }) {
                       scope,
                       brief,
                       company_url: honeypot,
+                      turnstileToken,
                       hasil_id: hasilId ?? undefined,
                     }),
                   });
@@ -260,6 +264,7 @@ export function Contact({ data }: { data: ContactData | null }) {
                 }
               }}
             >
+              <TurnstileField onToken={setTurnstileToken} handleRef={turnstile} theme="dark" />
               {/* Honeypot — hidden from real users; bots that fill it get silently rejected */}
               <input
                 type="text"
@@ -286,7 +291,7 @@ export function Contact({ data }: { data: ContactData | null }) {
               {/* Brief — the main shipping ask */}
               <div className="flex flex-col gap-2">
                 <label htmlFor="brief" className="text-[15px] leading-[1.6] text-mist-400 font-medium">
-                  Hai <span className="text-paper">👋</span> — aku mau bangun
+                  Hai <span className="text-paper">👋</span>, aku mau bangun
                 </label>
                 <textarea
                   id="brief"
@@ -487,7 +492,7 @@ function BriefPreview({
         <div className="flex items-end justify-between gap-4 flex-wrap pt-5 border-t border-shadow-200">
           <div>
             <p className="text-shadow-700 text-[12px] m-0 mb-1 tracking-[0.04em]">
-              — dikirim dari <span className="text-shadow-900 font-medium">{email || '…'}</span>
+              Dikirim dari <span className="text-shadow-900 font-medium">{email || '…'}</span>
             </p>
             <p className="text-mist-500 text-[10px] uppercase tracking-[0.18em] m-0">
               {hasAny ? 'balas dalam 48 jam' : 'menunggu input'}

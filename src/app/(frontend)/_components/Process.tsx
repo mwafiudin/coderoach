@@ -19,7 +19,7 @@ export function Process({ phases }: { phases: Phase[] }) {
           category="Process"
           description="Cara kami kerja"
           heading="Brief to production, in four phases."
-          lede="Setiap proyek mengikuti pola yang sama. Scope berbeda, stack berbeda — disiplin shipping tetap konsisten."
+          lede="Setiap proyek mengikuti pola yang sama. Scope berbeda, stack berbeda, disiplin shipping tetap konsisten."
         />
         <div
           className="grid grid-cols-1 md:grid-cols-4 relative pt-14 mt-14 [--progress:0]"

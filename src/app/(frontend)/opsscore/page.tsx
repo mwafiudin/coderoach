@@ -1,10 +1,12 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { SectionShell } from '../_components/detail/SectionShell';
 import { OctagonMark } from '../_components/ui/OctagonMark';
 import { productPath } from '@/lib/opsscore/config';
 import { LANDING_COPY, PHASE_COPY } from '@/lib/opsscore/copy';
 import { phaseRange, type Phase } from '@/lib/opsscore/scoring';
 import { LandingTracker } from './_components/Trackers';
+import { BenefitVisual } from './_components/BenefitVisual';
 
 export const dynamic = 'force-dynamic';
 
@@ -75,13 +77,21 @@ export default function OpsScoreLandingPage() {
               <ol className="list-none p-0 m-0 mt-5 flex flex-col">
                 {LANDING_COPY.get.map((item, i) => (
                   <li
-                    key={item}
-                    className="flex gap-4 py-4 border-t border-paper-200 first:border-t-0 first:pt-0 last:pb-0"
+                    key={item.title}
+                    className="py-4 border-t border-paper-200 first:border-t-0 first:pt-0 last:pb-0"
                   >
-                    <span className="font-mono text-[12px] text-electric tabular pt-0.5">
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
-                    <span className="text-[16px] leading-[1.5] text-ink">{item}</span>
+                    <div className="flex items-baseline gap-3">
+                      <span className="font-mono text-[12px] text-electric tabular">
+                        {String(i + 1).padStart(2, '0')}
+                      </span>
+                      <h3 className="text-[17px] font-bold tracking-[-0.015em] leading-[1.3] text-ink m-0">
+                        {item.title}
+                      </h3>
+                    </div>
+                    <p className="mt-1.5 mb-0 text-[14px] leading-[1.5] text-mist-600 text-pretty">
+                      {item.body}
+                    </p>
+                    <BenefitVisual kind={item.visual} className="mt-3" />
                   </li>
                 ))}
               </ol>
@@ -91,24 +101,40 @@ export default function OpsScoreLandingPage() {
 
         <section className="border-t border-paper-200 bg-paper-50 py-16 lg:py-20">
           <div className="max-w-[1180px] mx-auto px-8">
-            <h2 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-mist-600 m-0">
+            <span className="block text-[11px] font-semibold uppercase tracking-[0.18em] text-mist-600">
               {LANDING_COPY.phasesTitle}
+            </span>
+            <h2 className="mt-4 mb-0 text-[clamp(30px,4vw,44px)] font-bold tracking-[-0.025em] leading-[1.05] text-balance">
+              {LANDING_COPY.phasesHeadline}
             </h2>
-            <ol className="list-none p-0 m-0 mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8">
+            <p className="mt-3 mb-0 max-w-[560px] text-[16px] sm:text-[17px] leading-[1.55] text-mist-600 text-pretty">
+              {LANDING_COPY.phasesLede}
+            </p>
+            <ol className="list-none p-0 m-0 mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8">
               {PHASES.map((phase) => {
                 const { from, to } = phaseRange(phase);
                 return (
-                  <li key={phase} className="pt-4 border-t-2 border-ink">
-                    <span className="font-mono text-[11px] tracking-wider text-mist-600 tabular">
-                      [ {LANDING_COPY.phaseRange(from, to)} ]
-                    </span>
-                    <h3 className="text-[24px] font-bold tracking-[-0.015em] mt-3 mb-0">
-                      {PHASE_COPY[phase].title}
-                    </h3>
-                    <p className="mt-0.5 mb-2 text-[15px] font-semibold text-mist-600">{PHASE_COPY[phase].nickname}</p>
-                    <p className="text-[15px] leading-[1.55] text-mist-600 m-0 text-pretty">
-                      {PHASE_COPY[phase].key}
-                    </p>
+                  <li key={phase} className="flex flex-col">
+                    <Image
+                      src={`/assets/opsscore/phase-${phase}.webp`}
+                      alt=""
+                      width={1024}
+                      height={1024}
+                      sizes="(min-width: 1024px) 270px, (min-width: 640px) 45vw, 88vw"
+                      className="block w-full h-auto rounded-lg bg-ink"
+                    />
+                    <div className="mt-5 pt-4 border-t-2 border-ink">
+                      <span className="font-mono text-[11px] tracking-wider text-mist-600 tabular">
+                        [ {LANDING_COPY.phaseRange(from, to)} ]
+                      </span>
+                      <h3 className="text-[24px] font-bold tracking-[-0.015em] mt-3 mb-0">
+                        {PHASE_COPY[phase].title}
+                      </h3>
+                      <p className="mt-0.5 mb-2 text-[15px] font-semibold text-mist-600">{PHASE_COPY[phase].nickname}</p>
+                      <p className="text-[15px] leading-[1.55] text-mist-600 m-0 text-pretty">
+                        {PHASE_COPY[phase].key}
+                      </p>
+                    </div>
                   </li>
                 );
               })}

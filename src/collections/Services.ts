@@ -29,7 +29,7 @@ export const Services: CollectionConfig = {
       hooks: { beforeValidate: [autoSlug('title')] },
       admin: {
         position: 'sidebar',
-        description: 'URL-safe identifier — drives /services/[slug] route.',
+        description: 'URL-safe identifier, drives /services/[slug] route.',
       },
     },
     {
@@ -38,7 +38,7 @@ export const Services: CollectionConfig = {
       required: true,
       admin: {
         position: 'sidebar',
-        description: 'Mono label, e.g. BUILD, AUTOMATE (kept English — short tech label).',
+        description: 'Mono label, e.g. BUILD, AUTOMATE (kept English, short tech label).',
       },
     },
     {
@@ -67,7 +67,7 @@ export const Services: CollectionConfig = {
       name: 'stack',
       type: 'array',
       required: true,
-      admin: { description: 'Tech stack pills (kept English — tech terms).' },
+      admin: { description: 'Tech stack pills (kept English, tech terms).' },
       fields: [{ name: 'tech', type: 'text', required: true }],
     },
     {

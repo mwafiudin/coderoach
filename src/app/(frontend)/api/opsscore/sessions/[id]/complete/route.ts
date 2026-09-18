@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { getPayload } from 'payload';
 import config from '@payload-config';
-import { SESSIONS, findSession, json, rateLimited, readJson, upsertLead } from '@/lib/opsscore/api';
+import { SESSIONS, findSession, crossSite, json, rateLimited, readJson, upsertLead } from '@/lib/opsscore/api';
 import { sanitizeProfile } from '@/lib/opsscore/profile';
 import { missingAnswers, sanitizeAnswers, scoreAnswers } from '@/lib/opsscore/scoring';
 
@@ -10,8 +10,8 @@ import { missingAnswers, sanitizeAnswers, scoreAnswers } from '@/lib/opsscore/sc
  * section does not depend on a separate save. Team size is known by now, so the service class is final.
  */
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  const limited = rateLimited(req, 'opsscore:complete', 30);
-  if (limited) return limited;
+  const blocked = crossSite(req) ?? rateLimited(req, 'opsscore:complete', 30);
+  if (blocked) return blocked;
 
   const { id } = await params;
   const body = (await readJson(req)) ?? {};

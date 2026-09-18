@@ -1,18 +1,32 @@
 import type { NextRequest } from 'next/server';
 import { getPayload } from 'payload';
 import config from '@payload-config';
-import { SESSIONS, findSession, json, rateLimited, readJson, upsertLead } from '@/lib/opsscore/api';
+import {
+  SESSIONS,
+  clientIp,
+  crossSite,
+  findSession,
+  json,
+  phoneSeenBefore,
+  rateLimited,
+  rateLimitPersisted,
+  readJson,
+  upsertLead,
+} from '@/lib/opsscore/api';
+import { emailDomain, isDisposableEmail, normalizeEmail } from '@/lib/opsscore/email';
+import { domainAcceptsMail } from '@/lib/opsscore/email-server';
 import { normalizePhone } from '@/lib/opsscore/phone';
 import { sanitizeProfile } from '@/lib/opsscore/profile';
 import { serviceClass, type Scores } from '@/lib/opsscore/scoring';
+import { verifyTurnstile } from '@/lib/turnstile';
 
 /**
  * Gate: the profile is already saved during the quiz, so this only needs WhatsApp and consent.
  * Any profile fields in the body are a fallback for saves that never reached the server.
  */
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  const limited = rateLimited(req, 'opsscore:gate', 10);
-  if (limited) return limited;
+  const blocked = crossSite(req) ?? rateLimited(req, 'opsscore:gate', 10);
+  if (blocked) return blocked;
 
   const { id } = await params;
   const body = await readJson(req);
@@ -23,13 +37,27 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
 
   const rawPhone = typeof body.phone === 'string' ? body.phone.trim() : '';
   const phoneE164 = normalizePhone(rawPhone);
+  const rawEmail = typeof body.email === 'string' ? body.email.trim() : '';
+  const email = rawEmail ? normalizeEmail(rawEmail) : null;
   const errors: Record<string, string> = {};
   if (!phoneE164) errors.phone = rawPhone ? 'phone' : 'required';
+  if (rawEmail && !email) errors.email = 'email';
+  else if (email && isDisposableEmail(email)) errors.email = 'emailDisposable';
   if (body.consent !== true) errors.consent = 'consent';
   if (Object.keys(errors).length) return json({ ok: false, code: 'invalid', errors }, 400);
 
+  if (!(await verifyTurnstile(body.turnstileToken, clientIp(req)))) {
+    return json({ ok: false, code: 'invalid', errors: { turnstile: 'turnstile' } }, 400);
+  }
+
+  if (email && !(await domainAcceptsMail(emailDomain(email)))) {
+    return json({ ok: false, code: 'invalid', errors: { email: 'emailDomain' } }, 400);
+  }
+
   try {
     const payload = await getPayload({ config });
+    const flooding = await rateLimitPersisted(payload, req, 'opsscore:gate', 20);
+    if (flooding) return flooding;
     const session = await findSession(payload, id);
     if (!session) return json({ ok: false, code: 'not_found' }, 404);
     if (session.status === 'gated') return json({ ok: true });
@@ -38,7 +66,12 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     }
 
     const now = new Date().toISOString();
-    const lead = await upsertLead(payload, id, sanitizeProfile(body.profile), { phoneE164: phoneE164!, consentAt: now });
+    const lead = await upsertLead(payload, id, sanitizeProfile(body.profile), {
+      phoneE164: phoneE164!,
+      consentAt: now,
+      repeatContact: await phoneSeenBefore(payload, id, phoneE164!),
+      ...(email ? { email } : {}),
+    });
 
     // Normally already final at completion; recomputed in case team size only arrived with this request.
     const scores = session.scores as Scores;

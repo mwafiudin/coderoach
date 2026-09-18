@@ -35,7 +35,7 @@ export const ContactBlock: Block = {
     {
       name: 'formLabels',
       type: 'group',
-      admin: { description: 'Form field labels — keep short.' },
+      admin: { description: 'Form field labels, keep short.' },
       fields: [
         { name: 'submit', type: 'text', defaultValue: 'Send the brief →' },
         { name: 'emailFallback', type: 'text', defaultValue: 'hello@example.com', admin: { description: 'Shown as "or email …"' } },
@@ -44,7 +44,7 @@ export const ContactBlock: Block = {
     {
       name: 'successHeading',
       type: 'text',
-      defaultValue: 'Thanks — we got your brief.',
+      defaultValue: 'Thanks, we got your brief.',
     },
   ],
 };

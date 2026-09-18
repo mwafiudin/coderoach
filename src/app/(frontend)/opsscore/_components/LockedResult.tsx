@@ -1,9 +1,11 @@
+import Image from 'next/image';
 import { GATE_COPY, RESULT_COPY } from '@/lib/opsscore/copy';
 import { Icon } from '@/lib/icons';
 import { AREAS } from '@/lib/opsscore/questions';
-import type { AreaScores } from '@/lib/opsscore/scoring';
+import type { AreaScores, Phase } from '@/lib/opsscore/scoring';
 import { PhaseLadder } from './PhaseLadder';
 
+const PHASES: Phase[] = [1, 2, 3, 4];
 // Fixed stand-in widths, so the blurred rows don't hint at the real scores.
 const PLACEHOLDER_WIDTHS = [62, 38, 71, 45, 56, 30, 67, 49];
 
@@ -32,6 +34,22 @@ export function LockedScore({ brand, className = '' }: { brand?: string | null; 
       </div>
       <p className="mt-5 mb-0 font-mono text-xs uppercase tracking-wider text-electric tabular">{GATE_COPY.phaseUnknown}</p>
       <PhaseLadder className="mt-3" />
+      {/* The four characters, dimmed: one of them is the answer being held back. */}
+      <ul className="list-none p-0 m-0 mt-4 grid grid-cols-4 gap-2 select-none" aria-hidden>
+        {PHASES.map((phase) => (
+          <li key={phase}>
+            <Image
+              src={`/assets/opsscore/phase-${phase}.webp`}
+              alt=""
+              width={1024}
+              height={1024}
+              sizes="140px"
+              className="block w-full h-auto rounded-md bg-ink opacity-55 grayscale-[0.65]"
+            />
+          </li>
+        ))}
+      </ul>
+      <p className="mt-3 mb-0 text-[13px] leading-[1.45] text-mist-600">{GATE_COPY.phaseTeaser}</p>
     </div>
   );
 }

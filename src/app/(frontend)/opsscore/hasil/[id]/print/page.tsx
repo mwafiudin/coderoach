@@ -131,6 +131,12 @@ export default async function OpsScorePrintPage({
               {scores.total}
               <span className="text-[14px] font-normal text-mist-600 tracking-normal ml-1">{RESULT_COPY.outOf}</span>
             </p>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={`/assets/opsscore/phase-${scores.phase}.webp`}
+              alt=""
+              className="mt-3 block w-[34mm] h-[34mm] rounded-md"
+            />
           </div>
           <div>
             <p className="m-0 font-mono text-[11px] uppercase tracking-wider text-mist-600">

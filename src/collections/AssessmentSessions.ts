@@ -45,7 +45,7 @@ export const AssessmentSessions: CollectionConfig = {
       required: true,
       unique: true,
       index: true,
-      admin: { readOnly: true, description: 'Public /opsscore/r/[slug] link — scores only.' },
+      admin: { readOnly: true, description: 'Public /opsscore/r/[slug] link, scores only.' },
     },
     {
       name: 'instrumentVersion',

@@ -21,6 +21,7 @@ import { Submissions } from './collections/Submissions';
 import { Pages } from './collections/Pages';
 import { AssessmentSessions } from './collections/AssessmentSessions';
 import { AssessmentLeads } from './collections/AssessmentLeads';
+import { RateLimits } from './collections/RateLimits';
 
 // Globals
 import { Hero } from './globals/Hero';
@@ -84,7 +85,7 @@ export default buildConfig({
       collections: ['posts', 'projects', 'pages'],
     },
     meta: {
-      titleSuffix: `— ${siteName} Admin`,
+      titleSuffix: `· ${siteName} Admin`,
     },
   },
   editor: lexicalEditor(),
@@ -103,6 +104,7 @@ export default buildConfig({
     Submissions,
     AssessmentSessions,
     AssessmentLeads,
+    RateLimits,
   ],
   globals: [Hero, Studio, Contact, TopBar, SiteSettings, BlogSettings],
   graphQL: {

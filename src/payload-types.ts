@@ -81,6 +81,7 @@ export interface Config {
     submissions: Submission;
     'assessment-sessions': AssessmentSession;
     'assessment-leads': AssessmentLead;
+    'rate-limits': RateLimit;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -102,6 +103,7 @@ export interface Config {
     submissions: SubmissionsSelect<false> | SubmissionsSelect<true>;
     'assessment-sessions': AssessmentSessionsSelect<false> | AssessmentSessionsSelect<true>;
     'assessment-leads': AssessmentLeadsSelect<false> | AssessmentLeadsSelect<true>;
+    'rate-limits': RateLimitsSelect<false> | RateLimitsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -492,7 +494,7 @@ export interface Page {
             }[]
           | null;
         /**
-         * Form field labels — keep short.
+         * Form field labels, keep short.
          */
         formLabels?: {
           submit?: string | null;
@@ -592,11 +594,11 @@ export interface Service {
    */
   order: number;
   /**
-   * URL-safe identifier — drives /services/[slug] route.
+   * URL-safe identifier, drives /services/[slug] route.
    */
   slug: string;
   /**
-   * Mono label, e.g. BUILD, AUTOMATE (kept English — short tech label).
+   * Mono label, e.g. BUILD, AUTOMATE (kept English, short tech label).
    */
   tag: string;
   icon: 'build' | 'automate' | 'intelligence' | 'augment';
@@ -617,7 +619,7 @@ export interface Service {
     id?: string | null;
   }[];
   /**
-   * Tech stack pills (kept English — tech terms).
+   * Tech stack pills (kept English, tech terms).
    */
   stack: {
     tech: string;
@@ -696,7 +698,7 @@ export interface Project {
    */
   service?: (number | null) | Service;
   /**
-   * e.g. "2024" — shown in "[ // SHIPPED 2024 ]" labels.
+   * e.g. "2024", shown in "[ // SHIPPED 2024 ]" labels.
    */
   publishedYear?: string | null;
   /**
@@ -891,7 +893,7 @@ export interface Client {
    */
   logoDark?: (number | null) | Media;
   /**
-   * Optional outbound URL — wraps the logo in an <a>.
+   * Optional outbound URL, wraps the logo in an <a>.
    */
   website?: string | null;
   updatedAt: string;
@@ -1018,7 +1020,7 @@ export interface Submission {
 export interface AssessmentSession {
   id: string;
   /**
-   * Public /opsscore/r/[slug] link — scores only.
+   * Public /opsscore/r/[slug] link, scores only.
    */
   shareSlug: string;
   instrumentVersion: number;
@@ -1081,6 +1083,14 @@ export interface AssessmentLead {
    */
   phoneE164?: string | null;
   brand?: string | null;
+  /**
+   * Optional, given at the gate.
+   */
+  email?: string | null;
+  /**
+   * Website, marketplace, or social link given during the quiz.
+   */
+  website?: string | null;
   industry?: ('produksi' | 'distribusi' | 'jasa' | 'retail' | 'kuliner' | 'fashion' | 'kriya' | 'lainnya') | null;
   employees?: ('1-5' | '6-10' | '11-20' | '21-50' | '51-100' | '100+') | null;
   revenueBand?: ('lt50' | '50-100' | '100-200' | '200-400' | '400-800' | 'gt800') | null;
@@ -1091,9 +1101,25 @@ export interface AssessmentLead {
    */
   excludeFromBenchmark?: boolean | null;
   /**
+   * This WhatsApp number already came in from another session.
+   */
+  repeatContact?: boolean | null;
+  /**
    * Internal notes (admin only).
    */
   notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "rate-limits".
+ */
+export interface RateLimit {
+  id: number;
+  key: string;
+  count: number;
+  resetAt: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -1176,6 +1202,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'assessment-leads';
         value: number | AssessmentLead;
+      } | null)
+    | ({
+        relationTo: 'rate-limits';
+        value: number | RateLimit;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -1821,13 +1851,27 @@ export interface AssessmentLeadsSelect<T extends boolean = true> {
   name?: T;
   phoneE164?: T;
   brand?: T;
+  email?: T;
+  website?: T;
   industry?: T;
   employees?: T;
   revenueBand?: T;
   consentAt?: T;
   followupStatus?: T;
   excludeFromBenchmark?: T;
+  repeatContact?: T;
   notes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "rate-limits_select".
+ */
+export interface RateLimitsSelect<T extends boolean = true> {
+  key?: T;
+  count?: T;
+  resetAt?: T;
   updatedAt?: T;
   createdAt?: T;
 }

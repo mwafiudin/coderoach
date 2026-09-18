@@ -78,6 +78,9 @@ export type LeadRow = {
   name: string;
   brand: string;
   phone: string;
+  email: string;
+  website: string;
+  repeatContact: boolean;
   industry: string;
   employees: string;
   revenue: string;
@@ -121,6 +124,9 @@ export async function findLeads(payload: Payload, filters: LeadFilters): Promise
       name: lead.name ?? '',
       brand: lead.brand ?? '',
       phone: lead.phoneE164 ?? '',
+      email: lead.email ?? '',
+      website: lead.website ?? '',
+      repeatContact: Boolean(lead.repeatContact),
       industry: label(INDUSTRY_OPTIONS, lead.industry),
       employees: label(EMPLOYEE_OPTIONS, lead.employees),
       revenue: label(REVENUE_OPTIONS, lead.revenueBand),
@@ -169,13 +175,14 @@ const csvCell = (value: string | number | null) => `"${String(value ?? '').repla
 /** CSV with a UTF-8 BOM so Sheets and Excel read Indonesian text and dashes correctly. */
 export function leadsToCsv(rows: LeadRow[], siteUrl: string) {
   const header = [
-    'tanggal', 'nama', 'brand', 'wa', 'wa_link', 'bidang_usaha', 'karyawan', 'omset', 'fase', 'total',
+    'tanggal', 'nama', 'brand', 'wa', 'wa_link', 'email', 'website', 'nomor_berulang', 'bidang_usaha', 'karyawan', 'omset', 'fase', 'total',
     'prioritas', 'kelas', 'progres', 'intent_h3', 'utm_source', 'utm_medium', 'utm_campaign', 'referrer',
     'followup_status', 'notes', 'session_id', 'hasil_url',
   ];
   const lines = rows.map((row) =>
     [
       formatDate(row.createdAt), row.name, row.brand, row.phone, row.phone ? `https://wa.me/${row.phone}` : '',
+      row.email, row.website, row.repeatContact ? 'ya' : '',
       row.industry, row.employees, row.revenue, row.phase, row.total, row.priorities.join(' | '), row.serviceClass,
       row.progress, row.intent.join(' | '), row.utm.utm_source ?? '', row.utm.utm_medium ?? '', row.utm.utm_campaign ?? '',
       row.utm.referrer ?? '', row.followupStatus, row.notes, row.sessionId,

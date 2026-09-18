@@ -13,8 +13,9 @@ import {
   shownAreas,
   stepKey,
 } from './flow';
+import { isDisposableEmail, normalizeEmail, suggestEmail } from './email';
 import { normalizePhone } from './phone';
-import { formatPhoneInput, isProfileAnswered, sanitizeProfile } from './profile';
+import { formatPhoneInput, isProfileAnswered, isProfileOptional, normalizeWebsite, sanitizeProfile } from './profile';
 import { QUESTION_BY_ID, promptFor } from './questions';
 
 describe('quiz flow', () => {
@@ -31,7 +32,9 @@ describe('quiz flow', () => {
     assert.equal(steps.indexOf('p:revenue') + 1, steps.indexOf('q:C1'));
     assert.equal(steps.indexOf('p:employees') + 1, steps.indexOf('q:E1'));
     assert.equal(steps.indexOf('q:E3') + 1, steps.indexOf('q:F1'));
-    assert.equal(steps.length, 27 + 5 + 5);
+    assert.equal(steps.indexOf('f:team') + 1, steps.indexOf('p:website'));
+    assert.equal(steps.indexOf('p:website') + 1, steps.indexOf('q:G1'));
+    assert.equal(steps.length, 27 + 6 + 5);
     assert.equal(steps.filter((key) => key.startsWith('f:')).length, 5);
     assert.equal(steps[steps.length - 1], 'f:digital');
     const feedback = buildSteps({ D0: 'ya' }).filter((s) => s.kind === 'feedback');
@@ -99,10 +102,17 @@ describe('profile', () => {
 
 describe('phone', () => {
   test('normalises common Indonesian formats to 62…', () => {
-    assert.equal(normalizePhone('0812-3456-7890'), '6281234567890');
-    assert.equal(normalizePhone('+62 812 3456 789'), '628123456789');
-    assert.equal(normalizePhone('81234567890'), '6281234567890');
-    assert.equal(normalizePhone('0812345678'), '62812345678');
+    assert.equal(normalizePhone('0813-5566-7788'), '6281355667788');
+    assert.equal(normalizePhone('+62 812 8899 776'), '628128899776');
+    assert.equal(normalizePhone('81288997766'), '6281288997766');
+    assert.equal(normalizePhone('0812889977'), '62812889977');
+  });
+
+  test('rejects placeholder numbers', () => {
+    assert.equal(normalizePhone('0811-1111-1111'), null);
+    assert.equal(normalizePhone('0812-3456-7890'), null);
+    assert.equal(normalizePhone('0898-7654-3210'), null);
+    assert.equal(normalizePhone('0812-3456-7899'), '6281234567899');
   });
 
   test('rejects landlines and wrong lengths', () => {
@@ -110,6 +120,45 @@ describe('phone', () => {
     assert.equal(normalizePhone('081234567'), null);
     assert.equal(normalizePhone('08123456789012'), null);
     assert.equal(normalizePhone(''), null);
+  });
+});
+
+describe('website', () => {
+  test('accepts what people type', () => {
+    assert.equal(normalizeWebsite('tokosaya.com'), 'https://tokosaya.com');
+    assert.equal(normalizeWebsite('  WWW.TokoSaya.co.id/katalog/ '), 'https://www.tokosaya.co.id/katalog');
+    assert.equal(normalizeWebsite('http://instagram.com/tokosaya'), 'http://instagram.com/tokosaya');
+  });
+
+  test('drops what is not a host, and stays optional', () => {
+    assert.equal(normalizeWebsite(''), null);
+    assert.equal(normalizeWebsite('belum ada'), null);
+    assert.equal(normalizeWebsite('tokosaya'), null);
+    assert.equal(sanitizeProfile({ website: 'belum punya' }).website, undefined);
+    assert.equal(isProfileOptional('website'), true);
+    assert.equal(isProfileOptional('brand'), false);
+  });
+});
+
+describe('email', () => {
+  test('normalises and rejects', () => {
+    assert.equal(normalizeEmail('  Halo@TokoSaya.co.id '), 'halo@tokosaya.co.id');
+    assert.equal(normalizeEmail('halo@tokosaya'), null);
+    assert.equal(normalizeEmail('halo tokosaya.com'), null);
+    assert.equal(normalizeEmail('@tokosaya.com'), null);
+  });
+
+  test('offers a fix for near-miss domains', () => {
+    assert.equal(suggestEmail('halo@gmial.com'), 'halo@gmail.com');
+    assert.equal(suggestEmail('halo@gmail.con'), 'halo@gmail.com');
+    assert.equal(suggestEmail('halo@gmail.com'), null);
+    assert.equal(suggestEmail('halo@tokosaya.co.id'), null);
+    assert.equal(suggestEmail('bukan email'), null);
+  });
+
+  test('knows throwaway domains', () => {
+    assert.equal(isDisposableEmail('halo@mailinator.com'), true);
+    assert.equal(isDisposableEmail('halo@tokosaya.co.id'), false);
   });
 });
 

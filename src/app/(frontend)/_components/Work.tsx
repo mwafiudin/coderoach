@@ -36,7 +36,7 @@ export function Work({ cases }: { cases: Project[] }) {
           category="Work"
           description="Beberapa proyek terpilih"
           heading="Work we've shipped."
-          lede="Sebagian proyek yang telah berjalan — dari company website sampai data pipeline. Case study lengkap tersedia atas permintaan."
+          lede="Sebagian proyek yang telah berjalan, dari company website sampai data pipeline. Case study lengkap tersedia atas permintaan."
         />
 
         {featured?.featuredDetails && (

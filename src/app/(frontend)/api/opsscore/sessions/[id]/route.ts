@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { getPayload } from 'payload';
 import config from '@payload-config';
-import { SESSIONS, findSession, json, rateLimited, readJson, upsertLead } from '@/lib/opsscore/api';
+import { SESSIONS, findSession, crossSite, json, rateLimited, readJson, upsertLead } from '@/lib/opsscore/api';
 import { sanitizeProfile } from '@/lib/opsscore/profile';
 import { sanitizeAnswers } from '@/lib/opsscore/scoring';
 
@@ -12,8 +12,8 @@ const isObject = (value: unknown) => Boolean(value) && typeof value === 'object'
  * tab is hidden. Answers are locked once the gate is sent.
  */
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  const limited = rateLimited(req, 'opsscore:save', 120);
-  if (limited) return limited;
+  const blocked = crossSite(req) ?? rateLimited(req, 'opsscore:save', 120);
+  if (blocked) return blocked;
 
   const { id } = await params;
   const body = await readJson(req);

@@ -29,7 +29,7 @@ export function ClientCaseDetail({ project }: { project: Project }) {
             </span>
           )}
           <h1 className="text-[clamp(40px,5.5vw,72px)] font-bold tracking-[-0.025em] leading-[1.05] my-6 max-w-[20ch] text-balance">
-            {project.featuredDetails?.headline || `${project.client} — ${project.tagline}`}
+            {project.featuredDetails?.headline || `${project.client}: ${project.tagline}`}
           </h1>
           {project.featuredDetails?.description && (
             <p className="text-[19px] leading-[1.55] text-mist-400 max-w-[640px] mb-10 text-pretty">

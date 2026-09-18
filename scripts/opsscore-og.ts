@@ -15,6 +15,7 @@ const root = resolve(import.meta.dirname, '..');
 const chrome = process.env.CHROME_PATH ?? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const fontUrl = pathToFileURL(join(root, 'public/fonts/Satoshi-Variable.ttf')).href;
 const logoUrl = pathToFileURL(join(root, 'public/assets/coderoach_logo.svg')).href;
+const artUrl = (phase: Phase) => pathToFileURL(join(root, `public/assets/opsscore/phase-${phase}.webp`)).href;
 const workDir = mkdtempSync(join(tmpdir(), 'opsscore-og-'));
 const PHASES: Phase[] = [1, 2, 3, 4];
 
@@ -36,17 +37,20 @@ body { background: #F4F7F5; color: #08090A; font-family: Satoshi, system-ui, san
 .grid { position: absolute; inset: 0; opacity: .7;
   background-image: linear-gradient(#E8ECEA 1px, transparent 1px), linear-gradient(90deg, #E8ECEA 1px, transparent 1px);
   background-size: 64px 64px; }
-.wrap { position: relative; height: 100%; padding: 60px 72px 64px; display: flex; flex-direction: column; }
+.wrap { position: relative; height: 100%; padding: 56px 72px 60px; display: flex; flex-direction: column; }
+.body { margin-top: auto; display: flex; gap: 56px; align-items: flex-end; }
+.left { flex: 1; min-width: 0; }
+.art { width: 300px; height: 300px; flex: none; border-radius: 20px; box-shadow: 0 30px 60px -30px rgba(8,9,10,.65); }
 .top { display: flex; justify-content: space-between; align-items: center; }
 .brand { display: flex; align-items: center; gap: 14px; font-size: 24px; line-height: 1.05; letter-spacing: -0.02em; }
 .brand img { height: 48px; }
 .mono { font-family: ui-monospace, Menlo, monospace; letter-spacing: .06em; text-transform: uppercase; }
 .marker { font-size: 20px; color: #7A767C; }
-.phase { margin-top: auto; font-size: 22px; color: #2C70FE; }
-h1 { font-size: 104px; font-weight: 700; letter-spacing: -0.035em; line-height: 1; margin-top: 10px; }
+.phase { font-size: 22px; color: #2C70FE; }
+h1 { font-size: 88px; font-weight: 700; letter-spacing: -0.035em; line-height: 1; margin-top: 10px; }
 .nick { font-size: 38px; font-weight: 600; letter-spacing: -0.01em; color: #7A767C; margin-top: 8px; }
-p { font-size: 28px; line-height: 1.35; color: #7A767C; margin-top: 14px; max-width: 960px; }
-.ladder { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 40px; }
+p { font-size: 26px; line-height: 1.35; color: #7A767C; margin-top: 14px; }
+.ladder { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 36px; }
 .ladder div { border-top: 5px solid #E8ECEA; padding-top: 12px; font-size: 21px; color: #7A767C; }
 .ladder span { font-family: ui-monospace, Menlo, monospace; font-size: 17px; margin-left: 6px; }
 .ladder .done { border-color: #08090A; }
@@ -54,10 +58,12 @@ p { font-size: 28px; line-height: 1.35; color: #7A767C; margin-top: 14px; max-wi
 </style></head><body><div class="grid"></div><div class="wrap">
 <div class="top"><div class="brand"><img src="${logoUrl}" alt=""><div><b>coderoach</b><br>studio</div></div>
 <div class="mono marker">[ ${escape(QUIZ_COPY.brand)} ] · ${escape(PRINT_COPY.footerUrl)}</div></div>
+<div class="body"><div class="left">
 <div class="mono phase">${escape(RESULT_COPY.phaseOf(phase))}</div>
 <h1>${escape(copy.title)}</h1>
 <div class="nick">${escape(copy.nickname)}</div>
 <p>${escape(copy.key)}</p>
+</div><img class="art" src="${artUrl(phase)}" alt=""></div>
 <div class="ladder">${ladder}</div>
 </div></body></html>`;
 }

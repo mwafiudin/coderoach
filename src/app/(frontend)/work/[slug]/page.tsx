@@ -41,9 +41,9 @@ export async function generateMetadata({
     limit: 1,
   });
   const p = docs[0] as any;
-  if (!p) return { title: 'Not found — Coderoach Studio' };
+  if (!p) return { title: 'Not found · Coderoach Studio' };
   return {
-    title: `${p.client} — Coderoach Studio`,
+    title: `${p.client} · Coderoach Studio`,
     description: p.excerpt || p.tagline,
     openGraph: {
       title: p.client,

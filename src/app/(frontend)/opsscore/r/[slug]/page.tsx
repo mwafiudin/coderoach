@@ -9,7 +9,7 @@ import { SHARE_CTA_QUERY, ogImagePath, productPath } from '@/lib/opsscore/config
 import { PHASE_COPY, RESULT_COPY, SHARE_COPY } from '@/lib/opsscore/copy';
 import type { Scores } from '@/lib/opsscore/scoring';
 import { AreaScoreList } from '../../_components/AreaScoreList';
-import { PersonaKey, PersonaScenePanel, PersonaTitle, PersonaTraits } from '../../_components/PersonaHero';
+import { PersonaArt, PersonaKey, PersonaTitle, PersonaTraits } from '../../_components/PersonaHero';
 import { PhaseLadder } from '../../_components/PhaseLadder';
 
 export const dynamic = 'force-dynamic';
@@ -62,7 +62,7 @@ export default async function SharedResultPage({ params }: { params: Promise<{ s
             className="absolute inset-0 opacity-40 pointer-events-none bg-cover bg-center"
             style={{ backgroundImage: 'url(/assets/bg-grid-clean.png)' }}
           />
-          {/* Phones read top to bottom. Desktop pairs each row: the persona with its scene, the key sentence
+          {/* Phones read top to bottom. Desktop pairs each row: the persona with its portrait, the key sentence
               with its traits, and the phase ladder with the area scores. */}
           <div className="relative max-w-[1180px] mx-auto px-8 grid grid-cols-1 gap-y-6 lg:grid-cols-2 lg:gap-x-20 lg:gap-y-10">
             <div className="lg:col-start-1 lg:row-start-1">
@@ -80,9 +80,9 @@ export default async function SharedResultPage({ params }: { params: Promise<{ s
               </div>
               <PersonaTitle phase={scores.phase} className="mt-8" />
             </div>
-            <PersonaScenePanel
+            <PersonaArt
               phase={scores.phase}
-              className="max-w-[520px] lg:max-w-none lg:col-start-2 lg:row-start-1 lg:self-end"
+              className="w-full max-w-[360px] sm:max-w-[420px] lg:col-start-2 lg:row-start-1 lg:self-end lg:justify-self-end"
             />
             <PersonaKey phase={scores.phase} className="lg:col-start-1 lg:row-start-2" />
             <PersonaTraits phase={scores.phase} className="max-w-[520px] lg:max-w-none lg:col-start-2 lg:row-start-2" />

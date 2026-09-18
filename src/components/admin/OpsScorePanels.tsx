@@ -242,6 +242,13 @@ export async function SessionDetail({ payload, id, base, apiRoute }: { payload: 
               ) : (
                 <span style={muted}>{ADMIN_COPY.noPhone}</span>
               )}
+              {lead.repeatContact && <span style={muted}>{ADMIN_COPY.repeatContact}</span>}
+              {lead.email && <a href={`mailto:${lead.email}`}>{lead.email}</a>}
+              {lead.website && (
+                <a href={lead.website} target="_blank" rel="noopener noreferrer">
+                  {lead.website.replace(/^https?:\/\//, '')}
+                </a>
+              )}
               <span style={muted}>
                 {[
                   INDUSTRY_OPTIONS.find((o) => o.id === lead.industry)?.label,
@@ -297,7 +304,7 @@ export async function SessionDetail({ payload, id, base, apiRoute }: { payload: 
               )}
               {scores.priorities.map((p, i) => (
                 <span key={p.area} style={{ ...muted, marginTop: i === 0 ? 8 : 0 }}>
-                  {i + 1}. {AREA_LABELS[p.area]} ({p.score}) — {ACTIONS[p.focusQuestion]}
+                  {i + 1}. {AREA_LABELS[p.area]} ({p.score}): {ACTIONS[p.focusQuestion]}
                 </span>
               ))}
             </div>

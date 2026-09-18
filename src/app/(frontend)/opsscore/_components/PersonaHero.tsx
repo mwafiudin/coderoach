@@ -1,11 +1,10 @@
+import Image from 'next/image';
 import { PHASE_COPY, RESULT_COPY } from '@/lib/opsscore/copy';
 import type { Phase } from '@/lib/opsscore/scoring';
-import { PhaseScene } from './PhaseScene';
-import { SCENE_PANEL_GRID } from './scene-engine';
 
 /**
  * The phase as a persona, in pieces the results and share pages lay out on a two-column grid: the title,
- * its illustration, the key sentence, and what the stage does well and what holds it back.
+ * its portrait, the key sentence, and what the stage does well and what holds it back.
  */
 
 type Props = { phase: Phase; className?: string };
@@ -23,14 +22,21 @@ export function PersonaTitle({ phase, className = '' }: Props) {
   );
 }
 
-export function PersonaScenePanel({ phase, className = '' }: Props) {
+/** The phase character. The art carries the story, so the alt text stays empty: the title, the key
+ *  sentence and the traits next to it say the same thing in words. */
+export function PersonaArt({ phase, className = '' }: Props) {
   return (
-    <div
-      className={`overflow-hidden rounded-2xl bg-ink px-4 py-4 sm:px-6 sm:py-5 shadow-[0_30px_60px_-30px_rgba(8,9,10,0.65)] ${className}`}
-      style={SCENE_PANEL_GRID}
-    >
-      <PhaseScene phase={phase} className="block w-full h-auto" />
-    </div>
+    <figure className={`m-0 overflow-hidden rounded-2xl bg-ink shadow-[0_30px_60px_-30px_rgba(8,9,10,0.65)] ${className}`}>
+      <Image
+        src={`/assets/opsscore/phase-${phase}.webp`}
+        alt=""
+        width={1024}
+        height={1024}
+        sizes="(min-width: 1024px) 420px, 90vw"
+        priority
+        className="block w-full h-auto"
+      />
+    </figure>
   );
 }
 

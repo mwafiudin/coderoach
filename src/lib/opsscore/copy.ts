@@ -21,7 +21,7 @@ export const PHASE_COPY: Record<
     title: 'The Juggler', // REVIEW
     nickname: 'Si Paling Hafal', // REVIEW
     data: 'data di kepala',
-    key: 'Bisnis Anda berjalan di kepala Anda. AI belum bisa membantu — belum ada yang bisa dibaca.',
+    key: 'Bisnis Anda berjalan di kepala Anda. AI belum bisa membantu karena belum ada yang bisa dibaca.',
     strength: 'Anda hafal detail bisnis dan bisa memutuskan dengan cepat.', // REVIEW
     blocker: 'Semuanya bergantung pada ingatan Anda. Kalau Anda berhenti, bisnis ikut berhenti.', // REVIEW
   },
@@ -57,7 +57,7 @@ export const PHASE_COPY: Record<
 /** Mini-feedback after each area in the quiz, reused as the diagnosis sentence in the report. */
 export const AREA_FEEDBACK: Record<AreaId, Record<Band, string>> = {
   sales: {
-    low: 'Prospek Anda hidup di chat. AI nggak bisa membaca yang nggak tercatat — dan sales Anda juga sering lupa.',
+    low: 'Prospek Anda hidup di chat. AI nggak bisa membaca yang nggak tercatat, dan sales Anda juga sering lupa.',
     mid: 'Prospek tercatat, tapi follow-up masih bergantung ingatan orang.',
     high: 'Pipeline Anda sudah rapi. Nggak perlu diapa-apain.',
   },
@@ -67,17 +67,17 @@ export const AREA_FEEDBACK: Record<AreaId, Record<Band, string>> = {
     high: 'Laporan lapangan Anda lengkap dan tepat waktu. Ini fondasi yang bagus.',
   },
   finance: {
-    low: 'Angka laba yang datang dua minggu terlambat bukan data — itu sejarah. AI butuh data hari ini.',
+    low: 'Angka laba yang datang dua minggu terlambat bukan data, tapi sejarah. AI butuh data hari ini.',
     mid: 'Kas tercatat, tapi piutang dan selisih masih ketahuan belakangan.',
     high: 'Keuangan Anda real time. Area ini sudah siap.',
   },
   stock: {
-    low: 'Stok yang nggak ketahuan selisihnya nggak bisa diprediksi. Prediksi stok justru hal termudah buat AI — kalau angkanya ada.',
+    low: 'Stok yang nggak ketahuan selisihnya nggak bisa diprediksi. Prediksi stok justru hal termudah buat AI, asal angkanya ada.',
     mid: 'Stok tercatat, selisih opname masih sering nggak terlacak sebabnya.',
     high: 'Stok Anda akurat. Prediksi tinggal disambungkan.',
   },
   people: {
-    low: 'SOP di kepala orang lama itu risiko terbesar Anda. Bukan cuma buat AI — buat kelangsungan bisnis.',
+    low: 'SOP di kepala orang lama itu risiko terbesar Anda. Bukan cuma buat AI, tapi buat kelangsungan bisnis.',
     mid: 'SOP ada, tapi belum dipaksa jalan oleh sistem.',
     high: 'Tim Anda terdokumentasi. Orang boleh ganti, prosesnya tetap.',
   },
@@ -122,7 +122,7 @@ export const SERVICE_CLASS_COPY: Record<ServiceClass, { label: string; body: str
     body: 'Operasional Anda sudah rapi. Yang tertinggal adalah cara calon pelanggan menemukan Anda.',
   },
   READY: {
-    label: '—',
+    label: 'READY',
     body: 'Anda sudah siap AI. Kalau mau membahas apa yang bisa diotomasi, kirim brief.',
   },
 };
@@ -173,25 +173,46 @@ export const ACTIONS: Record<string, string> = {
 /* ------------------------------------------------------------------ */
 
 export const LANDING_COPY = {
-  // SEO carries the searched words ("siap pakai AI", "sistem operasional bisnis", "bisnis masih manual").
-  metaTitle: 'Bisnis Anda siap pakai AI? Cek sistem operasionalnya dalam 5 menit', // REVIEW
+  // SEO carries the searched words ("siap pakai AI", "AI readiness", "bisnis masih manual").
+  metaTitle: 'Cek AI Readiness bisnis Anda: siap pakai AI atau belum?', // REVIEW
   metaDescription:
-    'Assessment gratis untuk bisnis yang masih banyak manual. Lihat di mana data operasional Anda hidup, fase bisnis Anda, dan tiga area yang perlu dirapikan sebelum pakai AI.', // REVIEW
-  marker: '[ OPSSCORE ] · Cek operasional bisnis', // REVIEW
+    'Assessment gratis untuk bisnis yang masih banyak manual. Lihat skor AI Readiness bisnis Anda, fase operasionalnya, dan tiga area yang perlu dirapikan sebelum pakai AI.', // REVIEW
+  marker: '[ OPSSCORE ] · Cek AI Readiness', // REVIEW
   headline: {
     lead: 'Bisnis Anda siap pakai AI?', // REVIEW
-    accent: 'Cek dulu di mana datanya hidup.', // REVIEW
+    accent: 'Cek AI Readiness dulu.', // REVIEW (nbsp keeps the term on one line)
   },
-  lede: 'AI itu langkah ketiga, bukan pertama. Urutannya tercatat, tersistem, baru AI. OpsScore memetakan di mana data operasional bisnis Anda hidup sekarang: di kepala, di chat, di spreadsheet, atau di sistem.', // REVIEW
+  lede: 'AI itu langkah ketiga, bukan pertama. Urutannya tercatat, tersistem, baru AI. OpsScore mengukur AI Readiness bisnis Anda dari satu hal yang paling menentukan: di mana data operasional Anda hidup sekarang, apakah di kepala, di chat, di spreadsheet, atau di sistem.', // REVIEW
   getTitle: 'Yang Anda dapat', // REVIEW
+  /** Each item is drawn with a small diagram; `visual` picks it (see BenefitVisual). */
   get: [
-    'Fase bisnis Anda: Ingatan, Chat, Spreadsheet, atau Sistem.', // REVIEW
-    'Skor untuk delapan area, dari penjualan sampai keuangan.', // REVIEW
-    'Tiga area prioritas, masing-masing dengan satu langkah konkret. Bisa disimpan sebagai PDF.', // REVIEW
-  ],
+    {
+      visual: 'phase',
+      title: 'Fase AI Readiness Anda', // REVIEW
+      body: 'Dari The Juggler sampai The Autopilot. Anda tahu persis ada di posisi mana sekarang.', // REVIEW
+    },
+    {
+      visual: 'areas',
+      title: 'Skor 0–100 untuk 8 area', // REVIEW
+      body: 'Penjualan, stok, kas, tim. Kelihatan area mana yang paling menahan.', // REVIEW
+    },
+    {
+      visual: 'benchmark',
+      title: 'Posisi Anda vs usaha sejenis', // REVIEW
+      body: 'Skor Anda dibanding rata-rata industri yang sama.', // REVIEW
+    },
+    {
+      visual: 'steps',
+      title: 'Tiga langkah prioritas', // REVIEW
+      body: 'Konkret, bisa dikerjakan minggu ini. Lengkap dengan report PDF.', // REVIEW
+    },
+  ] as const,
   meta: ['27 pertanyaan', '±5 menit', 'Gratis'], // REVIEW
   cta: 'Mulai cek',
-  phasesTitle: 'Empat fase yang diukur', // REVIEW
+  phasesTitle: 'Empat fase AI Readiness', // REVIEW
+  phasesHeadline: 'Bisnis Anda yang mana?', // REVIEW
+  phasesLede:
+    'Empat cara data bisnis hidup, dari semuanya di kepala sampai semuanya di sistem. Salah satunya Anda.', // REVIEW
   phaseRange: (from: number, to: number) => `${from}–${to}`,
 };
 
@@ -260,13 +281,19 @@ export const PROFILE_COPY = {
       brand ? `Berapa orang di tim ${brand} sekarang?` : 'Berapa orang di tim Anda sekarang?', // REVIEW
     hint: 'Hitung semua yang bekerja rutin, termasuk paruh waktu.', // REVIEW
   },
+  website: {
+    prompt: (brand?: string) =>
+      brand ? `Di mana pelanggan menemukan ${brand} online?` : 'Di mana pelanggan menemukan Anda online?', // REVIEW
+    placeholder: 'tokosaya.com atau instagram.com/tokosaya', // REVIEW
+    hint: 'Website, marketplace, atau akun sosial. Kosongkan saja kalau belum ada.', // REVIEW
+  },
 };
 
 export const RESULT_COPY = {
   metaTitle: 'Hasil OpsScore', // REVIEW
   marker: '[ OPSSCORE ] · Hasil', // REVIEW
-  scoreLabel: 'OpsScore bisnis Anda',
-  scoreLabelFor: (brand?: string | null) => (brand ? `OpsScore ${brand}` : 'OpsScore bisnis Anda'), // REVIEW
+  scoreLabel: 'AI Readiness bisnis Anda',
+  scoreLabelFor: (brand?: string | null) => (brand ? `AI Readiness ${brand}` : 'AI Readiness bisnis Anda'), // REVIEW
   outOf: '/100',
   phaseOf: (phase: number) => `Fase ${phase} dari 4`,
   strengthLabel: 'Kekuatan', // REVIEW
@@ -285,19 +312,29 @@ export const GATE_COPY = {
   locked: 'Terkunci', // REVIEW
   lockedScore: 'Skor terkunci sampai nomor WhatsApp diisi.', // REVIEW
   phaseUnknown: 'Fase ? dari 4', // REVIEW
+  phaseTeaser: 'Salah satu dari empat karakter ini adalah bisnis Anda.', // REVIEW
   unlockTitle: 'Terbuka setelah ini', // REVIEW
   unlocks: (areaCount: number) => [
-    'Skor total dan fase bisnis Anda',
+    'Skor AI Readiness dan fase bisnis Anda',
     `Skor ${areaCount} area operasional`,
     'Area prioritas dan langkah pertamanya',
     'Report versi PDF',
   ], // REVIEW
   phoneLabel: 'Nomor WhatsApp',
   phonePlaceholder: '0812-3456-7890',
+  emailLabel: 'Email (opsional)', // REVIEW
+  emailPlaceholder: 'nama@bisnisanda.com', // REVIEW
+  emailHint: 'Kami kirimkan salinan report ke email ini.', // REVIEW
+  emailSuggestion: (fixed: string) => `Maksud Anda ${fixed}?`, // REVIEW
   consent: 'Saya setuju dihubungi Coderoach lewat WhatsApp tentang hasil ini.', // REVIEW
   submit: 'Buka hasil', // REVIEW
   submitting: 'Membuka hasil', // REVIEW
   errors: {
+    email: 'Format email belum benar. Contoh: nama@bisnisanda.com.', // REVIEW
+    emailDomain: 'Domain email itu tidak menerima email. Cek lagi ketikannya.', // REVIEW
+    turnstile: 'Verifikasi keamanan gagal. Muat ulang halaman, lalu coba lagi.', // REVIEW
+    turnstilePending: 'Sebentar, verifikasi keamanan masih berjalan.', // REVIEW
+    emailDisposable: 'Pakai email yang benar-benar Anda buka, bukan email sekali pakai.', // REVIEW
     required: 'Wajib diisi.', // REVIEW
     phone: 'Nomor WA diawali 08, 10–13 digit.', // REVIEW
     consent: 'Centang persetujuan untuk lanjut.', // REVIEW
@@ -533,10 +570,10 @@ export const SHARE_COPY = {
   copied: 'Link tersalin', // REVIEW
   copyPrompt: 'Salin link ini', // REVIEW
   shareTitle: 'Hasil OpsScore', // REVIEW
-  shareText: 'Ini fase operasional bisnis kami menurut OpsScore.', // REVIEW
-  metaTitle: (phaseTitle: string) => `${phaseTitle} — hasil OpsScore`, // REVIEW
+  shareText: 'Ini fase AI Readiness bisnis kami menurut OpsScore.', // REVIEW
+  metaTitle: (phaseTitle: string) => `${phaseTitle} · hasil OpsScore`, // REVIEW
   marker: '[ OPSSCORE ] · Hasil yang dibagikan', // REVIEW
-  scoreLabel: 'OpsScore bisnis ini', // REVIEW
+  scoreLabel: 'AI Readiness bisnis ini', // REVIEW
   cta: 'Cek bisnis Anda',
   ctaNote: '27 pertanyaan, ±5 menit, gratis.', // REVIEW
 };
@@ -595,6 +632,7 @@ export const ADMIN_COPY = {
     stoppedAt: (section: string) => `Berhenti di ${section}`,
   },
   noPhone: 'Belum isi WA',
+  repeatContact: 'Nomor ini pernah masuk dari sesi lain.', // REVIEW
   scoresTitle: 'Skor',
   answersTitle: 'Jawaban mentah',
   instrumentVersion: (version: number) => `Instrumen v${version}`,

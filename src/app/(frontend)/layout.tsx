@@ -24,7 +24,7 @@ const jetbrainsMono = JetBrains_Mono({
 export async function generateMetadata(): Promise<Metadata> {
   const fallbackName = process.env.NEXT_PUBLIC_SITE_NAME || 'Studio';
   const fallbackDescription =
-    'A small dev studio. We build, automate, and ship intelligence — from company sites to internal tools.';
+    'A small dev studio. We build, automate, and ship intelligence, from company sites to internal tools.';
   try {
     const payload = await getPayload({ config });
     const [siteSettings, hero] = await Promise.all([
@@ -37,7 +37,7 @@ export async function generateMetadata(): Promise<Metadata> {
       : '';
     const description =
       siteSettings?.siteDescription || tagline || fallbackDescription;
-    const title = tagline ? `${siteName} — ${tagline}` : siteName;
+    const title = tagline ? `${siteName} · ${tagline}` : siteName;
     const faviconUrl = siteSettings?.favicon?.url;
     const ogImageUrl = siteSettings?.ogImage?.url;
     return {

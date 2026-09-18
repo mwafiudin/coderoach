@@ -37,9 +37,9 @@ export async function generateMetadata({
   const payload = await getPayload({ config });
   const { docs } = await payload.find({ collection: 'services', where: { slug: { equals: slug } }, limit: 1 });
   const s = docs[0] as any;
-  if (!s) return { title: 'Not found — Coderoach Studio' };
+  if (!s) return { title: 'Not found · Coderoach Studio' };
   return {
-    title: `${s.title} — Coderoach Studio`,
+    title: `${s.title} · Coderoach Studio`,
     description: s.heroLede || s.tagline,
   };
 }

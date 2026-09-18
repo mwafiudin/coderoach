@@ -13,8 +13,8 @@ import { StudioTimeline } from '../_components/studio/StudioTimeline';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Studio — Coderoach',
-  description: 'Studio engineering dari Jakarta — build, automate, dan ship intelligence untuk bisnis Indonesia.',
+  title: 'Studio · Coderoach',
+  description: 'Studio engineering dari Jakarta: build, automate, dan ship intelligence untuk bisnis Indonesia.',
 };
 
 export default async function StudioPage() {

@@ -36,7 +36,7 @@ export const Clients: CollectionConfig = {
     {
       name: 'website',
       type: 'text',
-      admin: { description: 'Optional outbound URL — wraps the logo in an <a>.' },
+      admin: { description: 'Optional outbound URL, wraps the logo in an <a>.' },
     },
   ],
 };

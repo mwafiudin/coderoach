@@ -35,6 +35,6 @@ export const Contact: GlobalConfig = {
         { name: 'emailFallback', type: 'text', defaultValue: 'hello@coderoach.studio' },
       ],
     },
-    { name: 'successHeading', type: 'text', defaultValue: 'Thanks — we got your brief.' },
+    { name: 'successHeading', type: 'text', defaultValue: 'Thanks, we got your brief.' },
   ],
 };
