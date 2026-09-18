@@ -38,7 +38,8 @@ export function rateLimited(req: NextRequest, route: string, max: number, window
 /**
  * The persistent half of the limit. The in-memory bucket above is the cheap first line; this one
  * survives deploys and would hold across instances if the service is ever scaled. A database that
- * cannot answer lets the request through: the request itself needs that database anyway.
+ * cannot answer lets the request through: the request itself needs that database anyway. The
+ * table is created by migration and is not a Payload collection, so document writes never touch it.
  */
 export async function rateLimitPersisted(
   payload: Payload,
