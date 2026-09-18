@@ -65,7 +65,9 @@ export async function POST(req: NextRequest) {
   }
 
   // Honeypot — if filled, treat as bot but return success silently.
-  if (!(await verifyTurnstile(body?.turnstileToken, ip))) {
+  const humanCheck = await verifyTurnstile(body?.turnstileToken, ip);
+  if (humanCheck === 'missing') console.warn('[contact] brief submitted without a Turnstile token');
+  if (humanCheck === 'failed') {
     return NextResponse.json(
       { ok: false, code: 'turnstile', error: 'Verifikasi keamanan gagal. Muat ulang halaman, lalu coba lagi.' },
       { status: 400 },

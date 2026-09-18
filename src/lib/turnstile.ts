@@ -8,15 +8,21 @@ export const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || 
 
 const VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 
+export type TurnstileResult = 'passed' | 'missing' | 'failed';
+
 /**
- * Server side of the check. Returns false only when Cloudflare says the token is bad: if the
- * secret is unset the form is not protected yet, and if Cloudflare cannot be reached we let the
- * submission through rather than lose a lead to an outage upstream.
+ * Server side of the check, with three answers instead of two:
+ *
+ * - `passed`: verified, or not configured, or Cloudflare could not be reached.
+ * - `missing`: the visitor sent no token. The widget can fail for reasons that are not the
+ *   visitor's fault — a blocked script, an extension, a misconfigured key — so callers accept
+ *   these and log them rather than turn a real lead away.
+ * - `failed`: Cloudflare looked at the token and rejected it. That one is worth refusing.
  */
-export async function verifyTurnstile(token: unknown, ip?: string): Promise<boolean> {
+export async function verifyTurnstile(token: unknown, ip?: string): Promise<TurnstileResult> {
   const secret = process.env.TURNSTILE_SECRET_KEY;
-  if (!secret) return true;
-  if (typeof token !== 'string' || !token) return false;
+  if (!secret) return 'passed';
+  if (typeof token !== 'string' || !token) return 'missing';
 
   const body = new URLSearchParams({ secret, response: token });
   if (ip && ip !== 'unknown') body.set('remoteip', ip);
@@ -24,9 +30,9 @@ export async function verifyTurnstile(token: unknown, ip?: string): Promise<bool
     const res = await fetch(VERIFY_URL, { method: 'POST', body, signal: AbortSignal.timeout(5000) });
     const data = (await res.json()) as { success?: boolean; 'error-codes'?: string[] };
     if (!data.success) console.warn('[turnstile] rejected', data['error-codes']);
-    return data.success === true;
+    return data.success ? 'passed' : 'failed';
   } catch (err) {
     console.error('[turnstile] verification unreachable, letting the submission through', err);
-    return true;
+    return 'passed';
   }
 }

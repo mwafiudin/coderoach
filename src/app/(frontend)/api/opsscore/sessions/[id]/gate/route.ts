@@ -46,9 +46,11 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   if (body.consent !== true) errors.consent = 'consent';
   if (Object.keys(errors).length) return json({ ok: false, code: 'invalid', errors }, 400);
 
-  if (!(await verifyTurnstile(body.turnstileToken, clientIp(req)))) {
+  const humanCheck = await verifyTurnstile(body.turnstileToken, clientIp(req));
+  if (humanCheck === 'failed') {
     return json({ ok: false, code: 'invalid', errors: { turnstile: 'turnstile' } }, 400);
   }
+  if (humanCheck === 'missing') console.warn('[opsscore] gate submitted without a Turnstile token');
 
   if (email && !(await domainAcceptsMail(emailDomain(email)))) {
     return json({ ok: false, code: 'invalid', errors: { email: 'emailDomain' } }, 400);
