@@ -35,6 +35,7 @@ export function GateForm({
   const [consent, setConsent] = useState(false);
   const [honeypot, setHoneypot] = useState('');
   const [turnstileToken, setTurnstileToken] = useState('');
+  const [turnstileBroken, setTurnstileBroken] = useState(false);
   const turnstile = useRef<TurnstileHandle | null>(null);
   const [errors, setErrors] = useState<Errors>({});
   const [formError, setFormError] = useState<string | null>(null);
@@ -61,8 +62,9 @@ export function GateForm({
       document.getElementById(`gate-${Object.keys(found)[0]}`)?.focus();
       return;
     }
-    // Turnstile answers on its own within a moment; only a click that beats it lands here.
-    if (TURNSTILE_SITE_KEY && !turnstileToken) {
+    // Turnstile answers on its own within a moment; only a click that beats it lands here. A widget
+    // that gave up is a different case: the server takes those and flags them, so let it through.
+    if (TURNSTILE_SITE_KEY && !turnstileToken && !turnstileBroken) {
       setFormError(GATE_COPY.errors.turnstilePending);
       return;
     }
@@ -200,7 +202,11 @@ export function GateForm({
         {errors.consent && <FieldError id="gate-consent-error">{GATE_COPY.errors[errors.consent]}</FieldError>}
       </div>
 
-      <TurnstileField onToken={setTurnstileToken} handleRef={turnstile} />
+      <TurnstileField
+        onToken={setTurnstileToken}
+        onUnavailable={() => setTurnstileBroken(true)}
+        handleRef={turnstile}
+      />
       {errors.turnstile && <FieldError id="gate-turnstile-error">{GATE_COPY.errors[errors.turnstile]}</FieldError>}
 
       <div className="flex flex-col gap-3 pt-1">

@@ -54,11 +54,14 @@ export type TurnstileHandle = { reset: () => void };
 
 export function TurnstileField({
   onToken,
+  onUnavailable,
   handleRef,
   theme = 'light',
   className = '',
 }: {
   onToken: (token: string) => void;
+  /** Called when the widget cannot produce a token: script blocked, bad key, or no answer in time. */
+  onUnavailable?: () => void;
   handleRef?: React.RefObject<TurnstileHandle | null>;
   theme?: 'light' | 'dark' | 'auto';
   className?: string;
@@ -66,6 +69,8 @@ export function TurnstileField({
   const hostRef = useRef<HTMLDivElement | null>(null);
   const tokenRef = useRef(onToken);
   tokenRef.current = onToken;
+  const unavailableRef = useRef(onUnavailable);
+  unavailableRef.current = onUnavailable;
 
   useEffect(() => {
     if (!TURNSTILE_SITE_KEY) return;
@@ -73,15 +78,31 @@ export function TurnstileField({
     if (!host) return;
     let widgetId: string | null = null;
     let cancelled = false;
+    let answered = false;
+    // Cloudflare normally answers in a second or two. Past this the form stops waiting for it.
+    const giveUp = window.setTimeout(() => {
+      if (!answered) unavailableRef.current?.();
+    }, 8000);
 
     loadTurnstile().then((turnstile) => {
-      if (!turnstile || cancelled || !hostRef.current) return;
+      if (cancelled) return;
+      if (!turnstile || !hostRef.current) {
+        unavailableRef.current?.();
+        return;
+      }
       widgetId = turnstile.render(hostRef.current, {
         sitekey: TURNSTILE_SITE_KEY,
         appearance: 'interaction-only',
         theme,
-        callback: (token) => tokenRef.current(token),
-        'error-callback': () => tokenRef.current(''),
+        callback: (token) => {
+          answered = true;
+          tokenRef.current(token);
+        },
+        'error-callback': () => {
+          answered = true;
+          tokenRef.current('');
+          unavailableRef.current?.();
+        },
         'expired-callback': () => tokenRef.current(''),
       });
       if (handleRef) {
@@ -96,6 +117,7 @@ export function TurnstileField({
 
     return () => {
       cancelled = true;
+      window.clearTimeout(giveUp);
       if (widgetId) window.turnstile?.remove(widgetId);
       if (handleRef) handleRef.current = null;
     };
