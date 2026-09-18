@@ -23,7 +23,7 @@ export function Services({ items }: { items: Service[] }) {
           category="Services"
           description="Yang kami bangun"
           heading="Four ways in."
-          lede="Bukan menjual jam — kami menjual hasil yang terukur. Build, automate, intelligence, dan augment. Pilih yang paling sesuai dengan masalah Anda."
+          lede="Bukan menjual jam. Kami menjual hasil yang terukur. Build, automate, intelligence, dan augment. Pilih yang paling sesuai dengan masalah Anda."
         />
         {/* Sticky-stack of service cards. Each card pins at its own staggered top
             offset so as you scroll, cards build a deck-of-cards stack with the

@@ -44,6 +44,12 @@ export const AssessmentLeads: CollectionConfig = {
       admin: { description: 'Normalised to 62… (no plus sign), ready for wa.me links.' },
     },
     { name: 'brand', type: 'text' },
+    { name: 'email', type: 'email', admin: { description: 'Optional, given at the gate.' } },
+    {
+      name: 'website',
+      type: 'text',
+      admin: { description: 'Website, marketplace, or social link given during the quiz.' },
+    },
     { name: 'industry', type: 'select', options: toSelect(INDUSTRY_OPTIONS) },
     { name: 'employees', type: 'select', options: toSelect(EMPLOYEE_OPTIONS) },
     {
@@ -79,6 +85,16 @@ export const AssessmentLeads: CollectionConfig = {
       admin: {
         position: 'sidebar',
         description: 'Tick for test or internal sessions, so they stay out of the benchmark averages.',
+      },
+    },
+    {
+      name: 'repeatContact',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+        description: 'This WhatsApp number already came in from another session.',
       },
     },
     { name: 'notes', type: 'textarea', admin: { description: 'Internal notes (admin only).' } },

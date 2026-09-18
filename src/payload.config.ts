@@ -84,7 +84,7 @@ export default buildConfig({
       collections: ['posts', 'projects', 'pages'],
     },
     meta: {
-      titleSuffix: `— ${siteName} Admin`,
+      titleSuffix: `· ${siteName} Admin`,
     },
   },
   editor: lexicalEditor(),

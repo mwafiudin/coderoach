@@ -102,7 +102,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true });
   } catch (err: any) {
     return NextResponse.json(
-      { ok: false, code: 'server_error', error: 'Gagal menyimpan brief. Server sedang bermasalah — coba lagi sebentar lagi atau email langsung agar kami segera proses.' },
+      { ok: false, code: 'server_error', error: 'Gagal menyimpan brief. Server sedang bermasalah, coba lagi sebentar lagi atau email langsung agar kami segera proses.' },
       { status: 500 },
     );
   }

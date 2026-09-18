@@ -45,7 +45,7 @@ export function Nav({ data }: { data: NavData | null }) {
       <div className="max-w-[1180px] mx-auto px-8 h-[72px] flex items-center justify-between gap-8">
         <a
           href="/"
-          aria-label={`${siteName} — home`}
+          aria-label={`${siteName}, home`}
           className="flex items-center gap-[10px]"
           onClick={close}
         >

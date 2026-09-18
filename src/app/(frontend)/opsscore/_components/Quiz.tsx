@@ -18,7 +18,9 @@ import {
 } from '@/lib/opsscore/flow';
 import {
   PROFILE_OPTIONS,
+  WEBSITE_MAX,
   isProfileAnswered,
+  isProfileOptional,
   sanitizeProfile,
   type Profile,
   type ProfileField,
@@ -38,6 +40,7 @@ import { AnimatedCount } from '../../_components/ui/AnimatedCount';
 import { OctagonMark } from '../../_components/ui/OctagonMark';
 import { ScoreBar } from './ScoreBar';
 import { SCENE_PANEL_GRID } from './scene-engine';
+import { ScoringConsole } from './ScoringConsole';
 import { SectionScene } from './SectionScene';
 
 const STORAGE_KEY = `opsscore.quiz.v${INSTRUMENT_VERSION}`;
@@ -99,7 +102,7 @@ const optionsFor = (step: Step): Option[] | null =>
 
 function isStepDone(step: Step, answers: Answers, profile: Profile) {
   if (step.kind === 'question') return isAnswered(QUESTION_BY_ID[step.id], answers[step.id]);
-  if (step.kind === 'profile') return isProfileAnswered(step.field, profile);
+  if (step.kind === 'profile') return isProfileOptional(step.field) || isProfileAnswered(step.field, profile);
   return true;
 }
 
@@ -116,6 +119,8 @@ function profilePrompt(field: ProfileField, profile: Profile) {
       return PROFILE_COPY.revenue.prompt(brand);
     case 'employees':
       return PROFILE_COPY.employees.prompt(brand);
+    case 'website':
+      return PROFILE_COPY.website.prompt(brand);
   }
 }
 
@@ -594,7 +599,7 @@ export function Quiz() {
           field={field}
           value={profile[field] ?? ''}
           prompt={profilePrompt(field, profile)}
-          hint={field === 'brand' ? PROFILE_COPY.brand.hint : undefined}
+          hint={field === 'brand' ? PROFILE_COPY.brand.hint : field === 'website' ? PROFILE_COPY.website.hint : undefined}
           greeting={field === 'brand' && profile.name ? PROFILE_COPY.brand.greeting(firstName(profile.name)) : undefined}
           headingRef={headingRef}
           onChange={(value) => typeProfile(field, value)}
@@ -905,7 +910,11 @@ function TextScreen({
   onNext: () => void;
 }) {
   const inputId = `profile-${field}`;
-  const placeholder = field === 'name' ? PROFILE_COPY.name.placeholder : PROFILE_COPY.brand.placeholder;
+  const text = {
+    name: { placeholder: PROFILE_COPY.name.placeholder, autoComplete: 'name', capitalize: 'words', max: 80 },
+    brand: { placeholder: PROFILE_COPY.brand.placeholder, autoComplete: 'organization', capitalize: 'words', max: 120 },
+    website: { placeholder: PROFILE_COPY.website.placeholder, autoComplete: 'url', capitalize: 'none', max: WEBSITE_MAX },
+  }[field as 'name' | 'brand' | 'website'];
 
   return (
     <>
@@ -946,11 +955,12 @@ function TextScreen({
               onNext();
             }
           }}
-          placeholder={placeholder}
-          autoComplete={field === 'name' ? 'name' : 'organization'}
-          autoCapitalize="words"
+          placeholder={text.placeholder}
+          autoComplete={text.autoComplete}
+          autoCapitalize={text.capitalize}
+          inputMode={field === 'website' ? 'url' : 'text'}
           enterKeyHint="next"
-          maxLength={field === 'name' ? 80 : 120}
+          maxLength={text.max}
           className="block w-full bg-transparent border-0 border-b-2 border-paper-200 focus:border-electric px-0 py-2 text-[24px] sm:text-[30px] font-semibold tracking-[-0.015em] text-ink placeholder:text-mist-400 caret-electric outline-none transition-colors duration-200"
         />
       </form>
@@ -1145,52 +1155,6 @@ function FeedbackScreen({
             </ul>
           )}
         </div>
-      </div>
-    </div>
-  );
-}
-
-/** Log lines play out while the result is computed, in the style of the site's deploy console. */
-function ScoringConsole({ answered, areas }: { answered: number; areas: number }) {
-  const lines = [
-    { prefix: '$', tone: 'text-electric', text: QUIZ_COPY.console.command, at: 0 },
-    { prefix: '→', tone: 'text-mist-500', text: QUIZ_COPY.console.read(answered), at: 250 },
-    { prefix: '→', tone: 'text-mist-500', text: QUIZ_COPY.console.areas(areas), at: 550 },
-    { prefix: '✓', tone: 'text-success', text: QUIZ_COPY.console.phase, at: 850 },
-    { prefix: '→', tone: 'text-mist-500', text: QUIZ_COPY.console.priorities, at: 1100 },
-    { prefix: '✓', tone: 'text-success', text: QUIZ_COPY.console.done, at: 1350 },
-  ];
-  const [shown, setShown] = useState(1);
-
-  useEffect(() => {
-    if (prefersReducedMotion()) {
-      setShown(lines.length);
-      return;
-    }
-    const timers = lines.slice(1).map((line, i) => window.setTimeout(() => setShown(i + 2), line.at));
-    return () => timers.forEach((timer) => window.clearTimeout(timer));
-    // The lines are fixed for the lifetime of this screen.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  return (
-    <div className="grid place-items-center py-6" role="status" aria-label={QUIZ_COPY.scoring}>
-      <div className="w-full max-w-[420px] bg-ink text-paper rounded-xl border border-shadow-700 shadow-[0_24px_60px_-24px_rgba(8,9,10,0.55)] overflow-hidden font-mono text-[13px] leading-[1.9] tabular">
-        <div className="flex items-center justify-between gap-3 px-4 h-10 border-b border-shadow-700 text-[11px] uppercase tracking-wider text-mist-500">
-          <span className="inline-flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse-dot" aria-hidden />
-            {QUIZ_COPY.brand}
-          </span>
-          <span>{QUIZ_COPY.scoring}</span>
-        </div>
-        <ol className="list-none m-0 px-4 py-4 min-h-[200px]">
-          {lines.slice(0, shown).map((line) => (
-            <li key={line.text} className="ops-line-in">
-              <span className={`${line.tone} mr-2`}>{line.prefix}</span>
-              {line.text}
-            </li>
-          ))}
-        </ol>
       </div>
     </div>
   );

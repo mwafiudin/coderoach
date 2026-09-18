@@ -101,10 +101,16 @@ export default function OpsScoreLandingPage() {
 
         <section className="border-t border-paper-200 bg-paper-50 py-16 lg:py-20">
           <div className="max-w-[1180px] mx-auto px-8">
-            <h2 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-mist-600 m-0">
+            <span className="block text-[11px] font-semibold uppercase tracking-[0.18em] text-mist-600">
               {LANDING_COPY.phasesTitle}
+            </span>
+            <h2 className="mt-4 mb-0 text-[clamp(30px,4vw,44px)] font-bold tracking-[-0.025em] leading-[1.05] text-balance">
+              {LANDING_COPY.phasesHeadline}
             </h2>
-            <ol className="list-none p-0 m-0 mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8">
+            <p className="mt-3 mb-0 max-w-[560px] text-[16px] sm:text-[17px] leading-[1.55] text-mist-600 text-pretty">
+              {LANDING_COPY.phasesLede}
+            </p>
+            <ol className="list-none p-0 m-0 mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8">
               {PHASES.map((phase) => {
                 const { from, to } = phaseRange(phase);
                 return (

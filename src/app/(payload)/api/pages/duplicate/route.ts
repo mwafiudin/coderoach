@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
     n += 1;
     candidateSlug = `${baseSlug}-copy-${n}`;
     if (n > 50) {
-      return NextResponse.json({ ok: false, error: 'Too many duplicates — clean up first.' }, { status: 409 });
+      return NextResponse.json({ ok: false, error: 'Too many duplicates, clean up first.' }, { status: 409 });
     }
     suffix = `copy-${n}`;
   }

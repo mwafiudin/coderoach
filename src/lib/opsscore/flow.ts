@@ -23,7 +23,7 @@ export const SECTIONS: Section[] = [
   { id: 'operations', label: 'Operasional & stok', areas: ['ops', 'stock'], openers: [] },
   { id: 'finance', label: 'Keuangan & kas', areas: ['finance'], openers: ['revenue'] },
   { id: 'team', label: 'Tim & peran owner', areas: ['people', 'owner'], openers: ['employees'] },
-  { id: 'digital', label: 'Digitalisasi & AI', areas: ['web', 'ai'], openers: [] },
+  { id: 'digital', label: 'Digitalisasi & AI', areas: ['web', 'ai'], openers: ['website'] },
 ];
 
 export const SECTION_LABELS = Object.fromEntries(SECTIONS.map((s) => [s.id, s.label])) as Record<SectionId, string>;

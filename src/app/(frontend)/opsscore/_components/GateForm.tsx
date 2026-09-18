@@ -3,12 +3,13 @@
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { GATE_COPY } from '@/lib/opsscore/copy';
+import { normalizeEmail } from '@/lib/opsscore/email';
 import { normalizePhone } from '@/lib/opsscore/phone';
 import { formatPhoneInput } from '@/lib/opsscore/profile';
 import { track } from '@/lib/opsscore/track';
 import { JUST_GATED_KEY } from './RevealReport';
 
-type Field = 'phone' | 'consent';
+type Field = 'phone' | 'email' | 'consent';
 type Errors = Partial<Record<Field, keyof typeof GATE_COPY.errors>>;
 
 /**
@@ -28,6 +29,7 @@ export function GateForm({
 }) {
   const router = useRouter();
   const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
   const [consent, setConsent] = useState(false);
   const [honeypot, setHoneypot] = useState('');
   const [errors, setErrors] = useState<Errors>({});
@@ -36,6 +38,7 @@ export function GateForm({
   const [refreshing, startRefresh] = useTransition();
 
   const phoneValid = Boolean(normalizePhone(phone));
+  const emailValid = !email.trim() || Boolean(normalizeEmail(email));
   const ready = phoneValid && consent;
   const busy = submitting || refreshing;
 
@@ -45,6 +48,7 @@ export function GateForm({
     const found: Errors = {};
     if (!phone.trim()) found.phone = 'required';
     else if (!phoneValid) found.phone = 'phone';
+    if (email.trim() && !emailValid) found.email = 'email';
     if (!consent) found.consent = 'consent';
     setErrors(found);
     setFormError(null);
@@ -58,7 +62,7 @@ export function GateForm({
       const res = await fetch(`/api/opsscore/sessions/${sessionId}/gate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone, consent, company_url: honeypot }),
+        body: JSON.stringify({ phone, email, consent, company_url: honeypot }),
       });
       const body = await res.json().catch(() => ({}));
       if (res.ok && body.ok) {
@@ -123,6 +127,36 @@ export function GateForm({
           )}
         </div>
         {errors.phone && <FieldError id="gate-phone-error">{GATE_COPY.errors[errors.phone]}</FieldError>}
+      </div>
+
+      <div>
+        <label htmlFor="gate-email" className="block text-[13px] font-semibold text-ink mb-1.5">
+          {GATE_COPY.emailLabel}
+        </label>
+        <input
+          id="gate-email"
+          type="email"
+          inputMode="email"
+          autoComplete="email"
+          placeholder={GATE_COPY.emailPlaceholder}
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setErrors((prev) => ({ ...prev, email: undefined }));
+          }}
+          aria-invalid={Boolean(errors.email)}
+          aria-describedby={errors.email ? 'gate-email-error' : 'gate-email-hint'}
+          className={`block w-full h-12 px-4 rounded-md border bg-paper-100 text-[15px] text-ink placeholder:text-mist-500 outline-none transition-[border-color,box-shadow] duration-200 focus:shadow-[0_0_0_3px_rgba(44,112,254,0.14)] ${
+            errors.email ? 'border-error' : 'border-paper-200 focus:border-electric'
+          }`}
+        />
+        {errors.email ? (
+          <FieldError id="gate-email-error">{GATE_COPY.errors[errors.email]}</FieldError>
+        ) : (
+          <p id="gate-email-hint" className="mt-1.5 mb-0 text-[12px] leading-[1.45] text-mist-600">
+            {GATE_COPY.emailHint}
+          </p>
+        )}
       </div>
 
       <div>

@@ -123,7 +123,7 @@ export const Projects: CollectionConfig = {
       type: 'text',
       admin: {
         position: 'sidebar',
-        description: 'e.g. "2024" — shown in "[ // SHIPPED 2024 ]" labels.',
+        description: 'e.g. "2024", shown in "[ // SHIPPED 2024 ]" labels.',
       },
     },
 

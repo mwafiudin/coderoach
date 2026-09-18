@@ -47,7 +47,7 @@ export const Hero: GlobalConfig = {
       type: 'group',
       fields: [
         { name: 'label', type: 'text', defaultValue: '// TRUSTED BY 40+ OPERATORS' },
-        { name: 'tagline', type: 'text', defaultValue: 'Across Indonesia & SEA — F&B, logistics, finance, agencies.' },
+        { name: 'tagline', type: 'text', defaultValue: 'Across Indonesia & SEA: F&B, logistics, finance, agencies.' },
       ],
     },
   ],

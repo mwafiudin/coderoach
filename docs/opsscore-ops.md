@@ -8,7 +8,7 @@ Brief dan aturan skor: [`opsscore-brief.md`](./opsscore-brief.md). Dokumen ini m
 | --- | --- |
 | Pertanyaan, opsi, area, opsi profil | `src/lib/opsscore/questions.ts` |
 | Urutan layar, posisi layar profil | `src/lib/opsscore/flow.ts` |
-| Validasi profil, format nomor WA | `src/lib/opsscore/profile.ts` |
+| Validasi profil, alamat website, format nomor WA, email | `src/lib/opsscore/profile.ts`, `phone.ts`, `email.ts` |
 | Bobot, ambang fase, aturan prioritas dan kelas layanan | `src/lib/opsscore/scoring.ts` |
 | Semua teks: fase, feedback, tindakan, fakta sekilas, benchmark, landing, quiz, gate, report, admin | `src/lib/opsscore/copy.ts` |
 | Estimasi benchmark per bidang, ambang 30 sesi | `src/lib/opsscore/benchmark.ts` |
@@ -107,6 +107,19 @@ npm run opsscore:og
 ```
 
 Butuh Google Chrome. Kalau Chrome tidak di lokasi default macOS, set `CHROME_PATH`.
+
+## Keamanan form
+
+Yang sudah terpasang di jalur kuis dan gate:
+
+- **Rate limit per IP** di semua route `/api/opsscore` (buat sesi 10, autosave 120, gate 10 per 10 menit). Hitungannya di memori proses, jadi ikut reset tiap deploy.
+- **Honeypot** `company_url` di form gate: kalau terisi, server menjawab sukses tanpa menyimpan apa pun.
+- **Batas body** 32 KB dan hanya JSON object; id sesi wajib berformat UUID.
+- **Nomor WA** wajib format Indonesia, dan nomor isian asal seperti `081111111111` atau `081234567890` ditolak (`phone.ts`).
+- **Email** opsional, tapi kalau diisi harus valid dan bukan domain sekali pakai (`email.ts`).
+- **Nomor berulang**: kalau nomor yang sama sudah pernah masuk dari sesi lain, lead-nya ditandai `repeatContact`. Tidak diblokir, hanya ditandai untuk tim.
+
+Yang belum, dan perlu diputuskan: Cloudflare Turnstile di gate, proxy Cloudflare menyala supaya WAF dan bot protection aktif, rate limit yang disimpan di database, dan Cloudflare Access untuk `/admin`.
 
 ## Tracking
 

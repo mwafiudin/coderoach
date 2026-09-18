@@ -42,7 +42,7 @@ export function FooterCopyLink({
         const value = extractValue();
         try {
           navigator.clipboard?.writeText(value);
-          toast.success(`${value} tersalin`, 'Sudah masuk clipboard — bisa ditempel langsung.');
+          toast.success(`${value} tersalin`, 'Sudah masuk clipboard, bisa ditempel langsung.');
         } catch {
           // Silent fail — link still navigates
         }

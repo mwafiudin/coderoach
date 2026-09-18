@@ -23,7 +23,7 @@ export function Products({ items }: { items: StudioProject[] }) {
           category="Products"
           description="Produk in-house"
           heading="Products we build, use, and maintain."
-          lede="Ujian paling jujur untuk tim engineering bukan brief klien — melainkan produk sendiri yang harus survive di tangan user nyata, revenue nyata, dan edge case nyata."
+          lede="Ujian paling jujur untuk tim engineering bukan brief klien, melainkan produk sendiri yang harus survive di tangan user nyata, revenue nyata, dan edge case nyata."
         />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-12 reveal-stagger">
           {items.map((p) => (

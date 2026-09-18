@@ -72,6 +72,18 @@ export async function findSession(payload: Payload, id: string) {
 
 export const truncate = (value: string | null | undefined, max = 500) => (value || '').slice(0, max);
 
+/** True when this WhatsApp number already reached us from another session. Flagged, never blocked. */
+export async function phoneSeenBefore(payload: Payload, sessionId: string, phoneE164: string) {
+  const { docs } = await payload.find({
+    collection: LEADS,
+    where: { and: [{ phoneE164: { equals: phoneE164 } }, { session: { not_equals: sessionId } }] },
+    limit: 1,
+    depth: 0,
+    overrideAccess: true,
+  });
+  return docs.length > 0;
+}
+
 type LeadData = RequiredDataFromCollectionSlug<'assessment-leads'>;
 
 /**
@@ -82,7 +94,7 @@ export async function upsertLead(
   payload: Payload,
   sessionId: string,
   profile: Profile,
-  contact: { phoneE164?: string; consentAt?: string } = {},
+  contact: { phoneE164?: string; email?: string; consentAt?: string; repeatContact?: boolean } = {},
 ) {
   const data: Partial<LeadData> = {
     ...(profile.name ? { name: profile.name } : {}),
@@ -90,6 +102,7 @@ export async function upsertLead(
     ...(profile.industry ? { industry: profile.industry as LeadData['industry'] } : {}),
     ...(profile.employees ? { employees: profile.employees as LeadData['employees'] } : {}),
     ...(profile.revenue ? { revenueBand: profile.revenue as LeadData['revenueBand'] } : {}),
+    ...(profile.website ? { website: profile.website } : {}),
     ...contact,
   };
   const find = () =>

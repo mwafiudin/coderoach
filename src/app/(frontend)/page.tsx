@@ -48,7 +48,7 @@ export default async function HomePage() {
               [ NO HOME PAGE FOUND ]
             </span>
             <h1 className="text-[clamp(36px,5vw,56px)] font-bold tracking-[-0.02em] mb-4">
-              Welcome — almost there.
+              Welcome, almost there.
             </h1>
             <p className="text-[16px] leading-[1.55] text-mist-600 mb-6">
               Create a Page with slug <code className="font-mono text-ink bg-paper-100 px-1.5 py-0.5 rounded">home</code> in the admin to render this homepage.
