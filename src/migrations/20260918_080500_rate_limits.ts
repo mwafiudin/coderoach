@@ -1,5 +1,10 @@
 import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-postgres'
 
+/**
+ * Counter rows for the API rate limits. Deliberately not a Payload collection: a collection would
+ * pull the table into payload_locked_documents_rels and every document write would join against it.
+ */
+
 export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
    CREATE TABLE IF NOT EXISTS "rate_limits" (
