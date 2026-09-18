@@ -2,7 +2,6 @@
  * Server-only helpers for the /api/opsscore route handlers.
  */
 import { randomBytes } from 'node:crypto';
-import { sql } from '@payloadcms/db-postgres';
 import { NextResponse, type NextRequest } from 'next/server';
 import type { Payload, RequiredDataFromCollectionSlug } from 'payload';
 import type { Profile } from './profile';
@@ -16,7 +15,12 @@ export const json = (body: Record<string, unknown>, status = 200, headers?: Head
 export const clientIp = (req: NextRequest) =>
   req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || req.headers.get('x-real-ip') || 'unknown';
 
-// In-memory, per server instance — same trade-off as /api/contact. Keyed per route.
+/**
+ * In-memory, per server instance, and reset by every deploy. That is deliberate: the counters lived
+ * in Postgres for one afternoon and the schema coupling took the quiz down twice. Anything that has
+ * to hold across restarts belongs at the edge, where a Cloudflare rate limiting rule can refuse the
+ * request before it reaches us at all.
+ */
 const buckets = new Map<string, { count: number; resetAt: number }>();
 
 export function rateLimited(req: NextRequest, route: string, max: number, windowMs = 10 * 60 * 1000) {
@@ -33,41 +37,6 @@ export function rateLimited(req: NextRequest, route: string, max: number, window
   }
   bucket.count += 1;
   return null;
-}
-
-/**
- * The persistent half of the limit. The in-memory bucket above is the cheap first line; this one
- * survives deploys and would hold across instances if the service is ever scaled. A database that
- * cannot answer lets the request through: the request itself needs that database anyway. The
- * table is created by migration and is not a Payload collection, so document writes never touch it.
- */
-export async function rateLimitPersisted(
-  payload: Payload,
-  req: NextRequest,
-  route: string,
-  max: number,
-  windowSeconds = 60 * 60,
-) {
-  const key = `${route}:${clientIp(req)}`;
-  try {
-    const result = await (payload.db as unknown as { drizzle: { execute: (query: unknown) => Promise<{ rows: Array<{ count: number | string; reset_at: string }> }> } }).drizzle.execute(sql`
-      INSERT INTO rate_limits (key, count, reset_at)
-      VALUES (${key}, 1, now() + make_interval(secs => ${windowSeconds}))
-      ON CONFLICT (key) DO UPDATE SET
-        count = CASE WHEN rate_limits.reset_at < now() THEN 1 ELSE rate_limits.count + 1 END,
-        reset_at = CASE WHEN rate_limits.reset_at < now()
-          THEN now() + make_interval(secs => ${windowSeconds})
-          ELSE rate_limits.reset_at END
-      RETURNING count, reset_at
-    `);
-    const row = result.rows?.[0];
-    if (!row || Number(row.count) <= max) return null;
-    const retryAfterSec = Math.max(1, Math.ceil((new Date(row.reset_at).getTime() - Date.now()) / 1000));
-    return json({ ok: false, code: 'rate_limited' }, 429, { 'Retry-After': String(retryAfterSec) });
-  } catch (err) {
-    console.error('[opsscore] persisted rate limit unavailable', err);
-    return null;
-  }
 }
 
 /**

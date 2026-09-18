@@ -9,7 +9,7 @@ Brief dan aturan skor: [`opsscore-brief.md`](./opsscore-brief.md). Dokumen ini m
 | Pertanyaan, opsi, area, opsi profil | `src/lib/opsscore/questions.ts` |
 | Urutan layar, posisi layar profil | `src/lib/opsscore/flow.ts` |
 | Validasi profil, alamat website, format nomor WA, email | `src/lib/opsscore/profile.ts`, `phone.ts`, `email.ts`, `email-server.ts` |
-| Rate limit, origin check, upsert lead | `src/lib/opsscore/api.ts`, `src/collections/RateLimits.ts` |
+| Rate limit, origin check, upsert lead | `src/lib/opsscore/api.ts` |
 | Turnstile | `src/lib/turnstile.ts`, `_components/TurnstileField.tsx` |
 | Bobot, ambang fase, aturan prioritas dan kelas layanan | `src/lib/opsscore/scoring.ts` |
 | Semua teks: fase, feedback, tindakan, fakta sekilas, benchmark, landing, quiz, gate, report, admin | `src/lib/opsscore/copy.ts` |
@@ -115,7 +115,7 @@ Butuh Google Chrome. Kalau Chrome tidak di lokasi default macOS, set `CHROME_PAT
 Lapisan yang sudah terpasang di jalur kuis, gate, dan form brief:
 
 - **Cloudflare Turnstile** di form gate dan form brief. Mati selama `NEXT_PUBLIC_TURNSTILE_SITE_KEY` dan `TURNSTILE_SECRET_KEY` kosong, jadi aman dipakai sebelum key-nya diisi. Mode `interaction-only`: pengunjung normal tidak melihat apa pun. Kalau Cloudflare tidak bisa dihubungi, submit tetap diloloskan supaya lead tidak hilang karena gangguan di luar kita.
-- **Rate limit dua lapis.** Lapis pertama di memori proses (buat sesi 10, autosave 120, gate 10 per 10 menit), cepat dan tanpa query. Lapis kedua di tabel `rate_limits` (buat sesi 30, gate 20 per jam), tahan restart dan deploy. Kalau query-nya gagal, request diloloskan.
+- **Rate limit per IP** di memori proses: buat sesi 10, autosave 120, complete 30, gate 10 per 10 menit. Hitungannya ikut reset tiap deploy, dan itu disengaja. Versi yang disimpan di database pernah dicoba pada 18 September 2026 dan dicabut lagi: menjadikannya koleksi Payload membuat setiap penulisan dokumen ikut join ke tabelnya, dan skema production yang dikelola dev push tidak punya kolom relasinya, sehingga kuis gagal di langkah terakhir. Untuk pembatas yang tahan restart, pakai **rate limiting rule di Cloudflare**: request ditolak di edge sebelum sampai ke aplikasi.
 - **Origin check**: POST dari situs lain ditolak 403. Request tanpa header Origin diserahkan ke rate limit.
 - **Honeypot** `company_url` di kedua form: kalau terisi, server menjawab sukses tanpa menyimpan apa pun.
 - **Batas body** 32 KB dan hanya JSON object; id sesi wajib berformat UUID.
@@ -139,7 +139,9 @@ npx tsx --env-file=.env.local scripts/opsscore-prune.ts --apply     # hapus
 
 Menghapus sesi yang tidak pernah sampai gate dan lebih tua dari 12 bulan, beserta lead parsialnya. Sesi yang sudah gated tidak disentuh.
 
-Yang masih di tangan Anda, di dashboard Cloudflare: menyalakan proxy (orange cloud) supaya WAF, Bot Fight Mode, dan rate limiting di edge ikut aktif, serta Cloudflare Access untuk mengunci `/admin`.
+Rate limiting rule yang disarankan di Cloudflare (plan gratis dapat satu rule): path `/api/opsscore/*`, 30 request per menit per IP, aksi Block. Sisanya di dashboard: Cloudflare Access untuk mengunci `/admin`.
+
+Pelajaran yang jangan diulang: skema production dikelola lewat dev push, bukan migrasi, jadi **menambah koleksi Payload baru berarti menambah kolom relasi di `payload_locked_documents_rels` juga**. Kalau kolom itu tidak ikut dibuat di production, semua penulisan dokumen gagal. Untuk data yang bukan dokumen, jangan dijadikan koleksi.
 
 ## Tracking
 

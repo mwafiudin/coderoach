@@ -8,7 +8,6 @@ import {
   json,
   newShareSlug,
   rateLimited,
-  rateLimitPersisted,
   readJson,
   truncate,
 } from '@/lib/opsscore/api';
@@ -31,8 +30,6 @@ export async function POST(req: NextRequest) {
 
   try {
     const payload = await getPayload({ config });
-    const flooding = await rateLimitPersisted(payload, req, 'opsscore:create', 30);
-    if (flooding) return flooding;
     const session = await payload.create({
       collection: SESSIONS,
       data: {

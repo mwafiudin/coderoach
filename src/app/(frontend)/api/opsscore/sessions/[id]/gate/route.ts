@@ -9,7 +9,6 @@ import {
   json,
   phoneSeenBefore,
   rateLimited,
-  rateLimitPersisted,
   readJson,
   upsertLead,
 } from '@/lib/opsscore/api';
@@ -58,8 +57,6 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
 
   try {
     const payload = await getPayload({ config });
-    const flooding = await rateLimitPersisted(payload, req, 'opsscore:gate', 20);
-    if (flooding) return flooding;
     const session = await findSession(payload, id);
     if (!session) return json({ ok: false, code: 'not_found' }, 404);
     if (session.status === 'gated') return json({ ok: true });
