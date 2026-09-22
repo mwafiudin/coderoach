@@ -34,11 +34,15 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
+  const { isEnabled: isDraftMode } = await draftMode();
   const payload = await getPayload({ config });
+  // Same access as the page itself, so a draft's name never reaches the <title> of its 404.
   const { docs } = await payload.find({
     collection: 'projects',
     where: { slug: { equals: slug } },
     limit: 1,
+    draft: isDraftMode,
+    overrideAccess: isDraftMode,
   });
   const p = docs[0] as any;
   if (!p) return { title: 'Not found · Coderoach Studio' };
