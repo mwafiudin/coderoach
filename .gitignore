@@ -36,8 +36,6 @@ next-env.d.ts
 # Payload uploads on local disk (production keeps them on the Railway volume)
 /media/
 
-# Vercel
-.vercel/
 
 # Claude / agent artifacts
 .claude/

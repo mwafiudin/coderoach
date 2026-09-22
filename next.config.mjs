@@ -35,12 +35,6 @@ const cspHeader = [{ key: 'Content-Security-Policy', value: csp }];
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  images: {
-    remotePatterns: [
-      // Vercel Blob storage URLs
-      { protocol: 'https', hostname: '*.public.blob.vercel-storage.com' },
-    ],
-  },
   experimental: {
     reactCompiler: false,
   },

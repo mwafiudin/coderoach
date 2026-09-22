@@ -1,13 +1,13 @@
 # Coderoach Studio Template
 
-A productized Payload v3 + Next.js 15 template for **company profile sites and landing pages**. Each new client engagement forks this repo, swaps brand and copy in admin, and ships to Vercel — typically in days, not weeks.
+A productized Payload v3 + Next.js 15 template for **company profile sites and landing pages**. Each new client engagement forks this repo, swaps brand and copy in admin, and ships to Railway — typically in days, not weeks.
 
 ## What's in the box
 
 - **Next.js 15** (App Router, React 19, Turbopack dev)
 - **Payload CMS v3** with native drafts + Live Preview + autosave
-- **Postgres** database (Vercel/Supabase/Neon compatible)
-- **Vercel Blob** media storage with auto-generated image variants
+- **Postgres** database (Railway in production; any Postgres works)
+- **Media uploads** on local disk (a Railway volume in production) with auto-generated image variants
 - **Resend** email adapter for contact form notifications
 - **Tailwind v4** + custom design tokens
 - **Block-based Pages** — drag-and-drop page builder with 12 ready-made blocks
@@ -55,8 +55,7 @@ cp .env.example .env.local
 
 Fill in:
 - `PAYLOAD_SECRET` — long random string (`openssl rand -hex 32`)
-- `DATABASE_URI` — Postgres connection string (or `POSTGRES_URL` / `DATABASE_URL`)
-- `BLOB_READ_WRITE_TOKEN` — from Vercel Blob (auto-set when integrated via Vercel dashboard)
+- `DATABASE_URI` — Postgres connection string (or `DATABASE_URL`)
 - `NEXT_PUBLIC_SERVER_URL` — full site URL
 - `NEXT_PUBLIC_SITE_NAME` — first-boot fallback brand name
 - `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `RESEND_TO_EMAIL` — for contact form (optional in dev)
@@ -81,14 +80,12 @@ The site reflects changes within the 60s ISR window, or instantly on collection 
 
 ### 5. Deploy
 
-Push to a Vercel project linked to:
-- A Postgres database (Vercel Postgres, Supabase, or Neon)
-- A Vercel Blob store
-- Resend (set `RESEND_*` env vars)
+Create a Railway project with a Postgres service and a web service that deploys this repo from `main`. Build, start, and healthcheck come from `railway.json`. On the web service:
 
-```bash
-vercel deploy --prod
-```
+- set `DATABASE_URI` to `${{Postgres.DATABASE_URL}}`, plus `PAYLOAD_SECRET`, `NEXT_PUBLIC_SERVER_URL`, `NEXT_PUBLIC_SITE_NAME`, and the `RESEND_*` variables
+- mount a volume at `/app/media` so uploads survive redeploys
+
+Builds cannot reach Railway's private network, so no page may read Payload while prerendering. See `docs/opsscore-ops.md` → **Deploy (Railway)** for this site's setup.
 
 ## Building new pages with blocks
 
