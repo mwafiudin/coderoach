@@ -1,10 +1,13 @@
 import { SectionHead } from './SectionHead';
+import { CoverPlaceholder, ProjectCover } from './archive/ProjectCover';
 
 type StudioProject = {
   id: string | number;
   slug: string;
   client: string; // product name
   tagline: string;
+  meta?: string | null;
+  coverImage?: any;
   publishedYear?: string | null;
   studio?: {
     vizType?: 'laporta' | 'viralytics' | 'none' | null;
@@ -29,7 +32,19 @@ export function Products({ items }: { items: StudioProject[] }) {
           {items.map((p) => (
             <article key={p.id} className="bg-paper-50 border border-paper-200 rounded-2xl overflow-hidden flex flex-col shadow-[inset_0_1px_0_rgba(255,255,255,0.6)]">
               <a href={`/work/${p.slug}`} className="h-[280px] relative bg-paper-100 border-b border-paper-200 overflow-hidden block group">
-                {p.studio?.vizType === 'laporta' ? <LaportaViz /> : p.studio?.vizType === 'viralytics' ? <ViralyticsViz /> : null}
+                {p.coverImage?.url ? (
+                  <ProjectCover
+                    project={p}
+                    sizesAttr="(min-width: 1024px) 560px, 100vw"
+                    imageClassName="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                  />
+                ) : p.studio?.vizType === 'laporta' ? (
+                  <LaportaViz />
+                ) : p.studio?.vizType === 'viralytics' ? (
+                  <ViralyticsViz />
+                ) : (
+                  <CoverPlaceholder client={p.client} meta={p.meta} />
+                )}
               </a>
               <div className="p-8 flex flex-col gap-4">
                 <div className="flex justify-between items-baseline">

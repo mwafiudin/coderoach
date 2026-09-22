@@ -117,9 +117,12 @@ export function ProjectArchiveClient({ projects }: { projects: Project[] }) {
           {filtered.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 reveal-stagger items-stretch" style={{ gridAutoFlow: 'dense' }}>
               {filtered.map((p, i) => {
-                // Magazine pattern: index 0 = feature 2-col (lg), index 5 = wide 2-col, others default.
-                const span = i === 0 ? 'md:col-span-2 lg:col-span-2' : i === 5 ? 'md:col-span-2 lg:col-span-2' : '';
-                const variant = i === 0 ? 'feature' : i === 5 ? 'wide' : 'default';
+                // Magazine pattern: the first card is a 2-col feature. The last card turns wide only when
+                // that closes the final row of the 3-col grid, so no filter leaves a two-cell gap.
+                const isLast = i === filtered.length - 1;
+                const closesRow = i > 0 && isLast && (filtered.length + 1) % 3 === 2;
+                const span = i === 0 || closesRow ? 'md:col-span-2 lg:col-span-2' : '';
+                const variant = i === 0 ? 'feature' : closesRow ? 'wide' : 'default';
                 return (
                   <div key={p.id} className={`${span} h-full`}>
                     <ProjectCard project={p} variant={variant} />

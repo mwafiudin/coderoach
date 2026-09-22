@@ -4,6 +4,8 @@ import { Products } from '../Products';
 
 export async function ProductsBlockRenderer({ block }: { block: any }) {
   const payload = await getPayload({ config });
+  // The Local API skips access control, so drafts have to be filtered out here.
+  const published = { _status: { equals: 'published' } } as const;
   let items: any[] = [];
   if (Array.isArray(block?.products) && block.products.length > 0) {
     const ids = block.products.map((p: any) => (typeof p === 'object' ? p.id : p)).filter(Boolean);
@@ -11,7 +13,7 @@ export async function ProductsBlockRenderer({ block }: { block: any }) {
       const res = await payload
         .find({
           collection: 'projects',
-          where: { and: [{ id: { in: ids } }, { kind: { equals: 'studio' } }] },
+          where: { and: [{ id: { in: ids } }, { kind: { equals: 'studio' } }, published] },
           sort: 'order',
           limit: 100,
         })
@@ -22,7 +24,7 @@ export async function ProductsBlockRenderer({ block }: { block: any }) {
     const res = await payload
       .find({
         collection: 'projects',
-        where: { kind: { equals: 'studio' } },
+        where: { and: [{ kind: { equals: 'studio' } }, published] },
         sort: 'order',
         limit: 100,
       })

@@ -4,6 +4,8 @@ import { Work } from '../Work';
 
 export async function WorkBlockRenderer({ block }: { block: any }) {
   const payload = await getPayload({ config });
+  // The Local API skips access control, so drafts have to be filtered out here.
+  const published = { _status: { equals: 'published' } } as const;
   // Strategy:
   // - Featured: explicit relation OR project with featured=true (any kind).
   // - List: explicit list relation OR all client projects (excluding featured).
@@ -14,7 +16,7 @@ export async function WorkBlockRenderer({ block }: { block: any }) {
       const res = await payload
         .find({
           collection: 'projects',
-          where: { id: { in: ids } },
+          where: { and: [{ id: { in: ids } }, published] },
           sort: 'order',
           limit: 100,
           depth: 1,
@@ -26,7 +28,7 @@ export async function WorkBlockRenderer({ block }: { block: any }) {
     const res = await payload
       .find({
         collection: 'projects',
-        where: { or: [{ kind: { equals: 'client' } }, { featured: { equals: true } }] },
+        where: { and: [published, { or: [{ kind: { equals: 'client' } }, { featured: { equals: true } }] }] },
         sort: 'order',
         limit: 100,
         depth: 1,
@@ -43,7 +45,7 @@ export async function WorkBlockRenderer({ block }: { block: any }) {
       const exists = cases.find((c: any) => c.id === id);
       if (!exists) {
         const res = await payload
-          .find({ collection: 'projects', where: { id: { equals: id } }, limit: 1, depth: 1 })
+          .find({ collection: 'projects', where: { and: [{ id: { equals: id } }, published] }, limit: 1, depth: 1 })
           .catch(() => ({ docs: [] }));
         if (res.docs[0]) cases = [{ ...(res.docs[0] as any), featured: true }, ...cases];
       }

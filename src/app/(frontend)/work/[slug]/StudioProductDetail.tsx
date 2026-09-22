@@ -1,6 +1,7 @@
 import { Badge } from '../../_components/ui/Badge';
 import { Breadcrumbs } from '../../_components/detail/Breadcrumbs';
 import { ProseRenderer } from '../../_components/detail/ProseRenderer';
+import { CoverPlaceholder, ProjectCover } from '../../_components/archive/ProjectCover';
 import { Icon } from '@/lib/icons';
 
 type Project = any;
@@ -84,6 +85,28 @@ function ProductViz({ vizType }: { vizType?: string | null }) {
   return null;
 }
 
+// Cover image first, then the drawn product viz, then a placeholder until a cover is uploaded.
+function HeroVisual({ project }: { project: Project }) {
+  const cover = project.coverImage;
+  if (cover?.url) {
+    return (
+      <div
+        className="relative rounded-2xl overflow-hidden border border-paper-200 bg-paper-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)]"
+        style={{ aspectRatio: cover.width && cover.height ? `${cover.width} / ${cover.height}` : '3 / 2' }}
+      >
+        <ProjectCover project={project} variant="hero" priority sizesAttr="(min-width: 1024px) 540px, 100vw" />
+      </div>
+    );
+  }
+  const vizType = project.studio?.vizType;
+  if (vizType === 'laporta' || vizType === 'viralytics') return <ProductViz vizType={vizType} />;
+  return (
+    <div className="relative aspect-video rounded-2xl overflow-hidden border border-paper-200">
+      <CoverPlaceholder client={project.client} meta={project.meta} />
+    </div>
+  );
+}
+
 export function StudioProductDetail({ project }: { project: Project }) {
   return (
     <main>
@@ -116,7 +139,7 @@ export function StudioProductDetail({ project }: { project: Project }) {
                 </a>
               )}
             </div>
-            <ProductViz vizType={project.studio?.vizType} />
+            <HeroVisual project={project} />
           </div>
         </div>
       </section>
