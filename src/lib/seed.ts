@@ -6,8 +6,11 @@
  * Idempotent — clears collections and recreates with placeholder data.
  * Requires DATABASE_URI + PAYLOAD_SECRET env vars (loaded via --env-file=.env.local).
  */
+import path from 'node:path';
 import { getPayload } from 'payload';
 import config from '../payload.config';
+import { HIDDEN_PROJECT_SLUGS, PORTFOLIO } from './portfolio/projects';
+import { syncPortfolio } from './portfolio/sync';
 
 async function seed() {
   const payload = await getPayload({ config });
@@ -329,65 +332,12 @@ async function seed() {
   const serviceMap = Object.fromEntries(serviceDocs.map((s: any) => [s.slug, s.id]));
 
   // ============ PROJECTS (cases + studio products) ============
+  // The published portfolio lives in src/lib/portfolio/projects.ts, shared with scripts/portfolio-sync.ts.
+  // These two are kept as drafts: off the site, not deleted.
 
   await reset('projects', [
-    // Featured studio product — Laporta
     {
-      order: 1,
-      slug: 'laporta',
-      kind: 'studio',
-      client: 'Laporta',
-      tagline: 'Profit intelligence layer di atas POS, untuk operator F&B Indonesia.',
-      meta: 'F&B OPS · STUDIO PRODUCT',
-      industry: 'fb',
-      service: serviceMap.build,
-      pills: [{ pill: 'NEXT.JS' }, { pill: 'POSTGRES' }, { pill: 'METABASE' }],
-      featured: true,
-      _status: 'published',
-      publishedYear: '2024',
-      excerpt: 'Menjembatani SPV dan Accounting di operasi F&B multi-cabang. Memangkas 50% budget salary accounting, memangkas waktu processing data, sistem yang scalable.',
-      featuredDetails: {
-        badgeLabel: 'FEATURED · STUDIO PRODUCT',
-        shippedLabel: '✓ SHIPPED',
-        metaLine: 'F&B OPS · STUDIO PRODUCT · MULTI-CABANG',
-        headline: 'Laporta — bridging SPV dan Accounting di operasi F&B multi-cabang.',
-        description: 'Aplikasi yang menyederhanakan alur data dari cabang ke head office. Petty Cash, Stock Opname, Waste, dan data non-POS lainnya diproses cepat melalui satu workflow — termonitor langsung oleh Area Manager, Investor, dan Decision Maker. Dibangun untuk operator F&B Indonesia yang sudah melampaui kapasitas spreadsheet, namun belum cocok dengan enterprise ERP.',
-        metrics: [
-          { num: '50', accent: '%', label: 'CUT BUDGET ACCOUNTING' },
-          { num: '↓', accent: '4×', label: 'WAKTU PROCESSING' },
-          { num: '∞', accent: '', label: 'SCALABLE MULTI-CABANG' },
-        ],
-        codePanel: {
-          tag: '[ .TS ]',
-          path: 'apps/laporta/sync.ts',
-          lines: [
-            { line: '<span style="color:#C4C0C5">export async function</span> syncOutlet() {' },
-            { line: '&nbsp;&nbsp;<span style="color:#C4C0C5">const</span> cash&nbsp; = <span style="color:#C4C0C5">await</span> outlet.pettyCash()' },
-            { line: '&nbsp;&nbsp;<span style="color:#C4C0C5">const</span> stock = <span style="color:#C4C0C5">await</span> outlet.stockOpname()' },
-            { line: '&nbsp;&nbsp;<span style="color:#C4C0C5">const</span> waste = <span style="color:#C4C0C5">await</span> outlet.waste()' },
-            { line: '&nbsp;&nbsp;<span style="color:#C4C0C5">const</span> book&nbsp; = ledger(cash, stock, waste)' },
-            { line: '&nbsp;&nbsp;<span style="color:#C4C0C5">await</span> push(<span style="color:#2C70FE">"hq.dashboard"</span>, book)' },
-            { line: '&nbsp;&nbsp;<span style="color:#C4C0C5">return</span> book' },
-            { line: '}' },
-          ],
-        },
-        stack: [{ tech: 'NEXT.JS' }, { tech: 'POSTGRES' }, { tech: 'METABASE' }, { tech: 'VERCEL' }],
-      },
-      studio: {
-        vizType: 'laporta',
-        usage: 'F&B MULTI-CABANG',
-        externalLink: { label: 'laporta.id', href: 'https://laporta.id' },
-        bullets: [
-          { bullet: 'Petty Cash · Stock Opname · Waste' },
-          { bullet: 'Bridge SPV ↔ Accounting' },
-          { bullet: 'Dashboard Area Manager' },
-          { bullet: 'Multi-cabang aggregation' },
-        ],
-      },
-    },
-    // Real client work
-    {
-      order: 2,
+      order: 90,
       slug: 'ads-multiplatform-dashboard',
       kind: 'client',
       client: 'Digital Marketing Agency',
@@ -396,54 +346,12 @@ async function seed() {
       industry: 'agency',
       service: serviceMap.intelligence,
       pills: [{ pill: 'AIRFLOW' }, { pill: 'LOOKER STUDIO' }],
-      _status: 'published',
+      _status: 'draft',
       publishedYear: '2025',
       excerpt: 'Reporting yang dulu manual 4 jam sehari, sekarang otomatis 30 menit. Tim ops bisa support pertumbuhan campaign 3× tanpa nambah orang.',
     },
     {
-      order: 3,
-      slug: 'pt-raja-roti-cemerlang',
-      kind: 'client',
-      client: 'PT Raja Roti Cemerlang Tbk',
-      tagline: 'Company website + corporate page untuk perusahaan F&B publik.',
-      meta: 'F&B · BUILD',
-      industry: 'fb',
-      service: serviceMap.build,
-      pills: [{ pill: 'NEXT.JS' }, { pill: 'CMS' }],
-      _status: 'published',
-      publishedYear: '2025',
-      excerpt: 'Refresh company site dengan content management yang mudah digunakan tim internal — tanpa perlu meminta bantuan developer untuk setiap pembaruan.',
-    },
-    {
-      order: 4,
-      slug: 'uruzin',
-      kind: 'client',
-      client: 'Uruzin',
-      tagline: 'Brand site dengan struktur konten yang mudah dipelihara.',
-      meta: 'BRAND · BUILD',
-      industry: 'other',
-      service: serviceMap.build,
-      pills: [{ pill: 'NEXT.JS' }, { pill: 'TAILWIND' }],
-      _status: 'published',
-      publishedYear: '2024',
-      excerpt: 'Brand site dengan struktur halaman yang fleksibel, performance yang ringan, dan editorial flow yang sesuai dengan identitas brand.',
-    },
-    {
-      order: 5,
-      slug: 'tumtim-cookies',
-      kind: 'client',
-      client: 'Tumtim Cookies',
-      tagline: 'Company website lengkap dengan katalog produk dan order flow.',
-      meta: 'F&B · BUILD',
-      industry: 'fb',
-      service: serviceMap.build,
-      pills: [{ pill: 'NEXT.JS' }, { pill: 'CMS' }],
-      _status: 'published',
-      publishedYear: '2024',
-      excerpt: 'Site untuk brand cookies dengan katalog produk, order inquiry, dan tone yang sesuai dengan brand voice mereka.',
-    },
-    {
-      order: 11,
+      order: 91,
       slug: 'viralytics',
       kind: 'studio',
       client: 'Viralytics',
@@ -451,7 +359,7 @@ async function seed() {
       meta: 'KOL OS · STUDIO PRODUCT',
       industry: 'agency',
       pills: [{ pill: 'TIKTOK API' }, { pill: 'NODE.JS' }],
-      _status: 'published',
+      _status: 'draft',
       publishedYear: '2025',
       excerpt: 'KOL campaign management tanpa spreadsheet. Sourcing → contract → live tracking dalam satu workspace.',
       studio: {
@@ -467,7 +375,12 @@ async function seed() {
       },
     },
   ]);
-  console.log(`✓ Projects (6) — 1 featured studio product + 4 client cases + 1 studio product`);
+  await syncPortfolio(payload, {
+    apply: true,
+    assetsDir: path.resolve(process.cwd(), 'scripts/portfolio-assets'),
+    log: () => {},
+  });
+  console.log(`✓ Projects (${PORTFOLIO.length} published + ${HIDDEN_PROJECT_SLUGS.length} drafts)`);
 
   // ============ PROCESS / TENETS / FAQs / CLIENTS ============
 

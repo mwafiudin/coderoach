@@ -33,6 +33,9 @@ next-env.d.ts
 
 # Payload generated types are committed: `next build` type-checks against them on the server.
 
+# Payload uploads on local disk (production keeps them on the Railway volume)
+/media/
+
 # Vercel
 .vercel/
 
