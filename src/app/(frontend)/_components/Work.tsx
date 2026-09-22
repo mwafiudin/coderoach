@@ -1,4 +1,5 @@
 import { SectionHead } from './SectionHead';
+import { PayloadImage } from './ui/PayloadImage';
 import { formatChipLabel } from './ui/chipLabel';
 
 type Project = {
@@ -10,6 +11,7 @@ type Project = {
   meta?: string | null;
   publishedYear?: string | null;
   pills?: Array<{ pill: string }> | null;
+  coverImage?: any;
   featured?: boolean | null;
   featuredDetails?: {
     badgeLabel?: string | null;
@@ -117,7 +119,18 @@ export function Work({ cases }: { cases: Project[] }) {
               </a>
             </div>
             <div className="relative z-[1]">
-              {featured.featuredDetails.codePanel && (
+              {featured.coverImage?.url ? (
+                <div className="relative aspect-[3/2] rounded-xl overflow-hidden border border-shadow-700 bg-paper-100 shadow-[0_24px_48px_-24px_rgba(0,0,0,0.6)]">
+                  <PayloadImage
+                    media={featured.coverImage}
+                    variant="hero"
+                    alt={featured.coverImage.alt || featured.client}
+                    sizesAttr="(min-width: 1024px) 520px, 100vw"
+                    className="object-cover"
+                    fill
+                  />
+                </div>
+              ) : featured.featuredDetails.codePanel && (
                 <div className="bg-shadow-900 text-paper border border-shadow-700 rounded-lg px-[22px] py-5 font-mono text-[13px] leading-[1.7] overflow-hidden tabular">
                   <div className="text-mist-600 mb-2 flex justify-between">
                     <span>{featured.featuredDetails.codePanel.tag}</span>
@@ -175,7 +188,7 @@ export function Work({ cases }: { cases: Project[] }) {
                     className="absolute left-0 top-1/2 -translate-y-1/2 h-12 w-[2px] bg-electric origin-top scale-y-0 group-hover:scale-y-100 transition-transform duration-300 ease-[var(--ease-out-quint)]"
                   />
                   <span className="font-mono text-xs text-mist-500 tracking-wider tabular pl-3">
-                    [ {String(c.order ?? i + 2).padStart(2, '0')} ]
+                    [ {String(i + 2).padStart(2, '0')} ]
                   </span>
                   <span className="font-mono text-xs text-mist-500 tracking-wider tabular">
                     {c.publishedYear || '—'}

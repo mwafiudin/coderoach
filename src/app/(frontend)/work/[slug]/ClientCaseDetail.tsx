@@ -2,10 +2,14 @@ import { Badge } from '../../_components/ui/Badge';
 import { Breadcrumbs } from '../../_components/detail/Breadcrumbs';
 import { ProseRenderer } from '../../_components/detail/ProseRenderer';
 import { PayloadImage } from '../../_components/ui/PayloadImage';
+import { ProjectCover } from '../../_components/archive/ProjectCover';
 
 type Project = any;
 
 export function ClientCaseDetail({ project }: { project: Project }) {
+  // featuredDetails carries default badge labels on every project, so only the featured one may use it.
+  const fd = project.featured ? project.featuredDetails : null;
+  const cover = project.coverImage;
   return (
     <main>
       {/* Hero — dark cinematic */}
@@ -20,25 +24,34 @@ export function ClientCaseDetail({ project }: { project: Project }) {
             <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Work', href: '/work' }, { label: project.client }]} />
           </div>
           <div className="flex gap-2 flex-wrap mb-5">
-            {project.featuredDetails?.badgeLabel && <Badge variant="dark">{project.featuredDetails.badgeLabel}</Badge>}
-            {project.featuredDetails?.shippedLabel && <Badge variant="success">{project.featuredDetails.shippedLabel}</Badge>}
+            {fd ? (
+              <>
+                {fd.badgeLabel && <Badge variant="dark">{fd.badgeLabel}</Badge>}
+                {fd.shippedLabel && <Badge variant="success">{fd.shippedLabel}</Badge>}
+              </>
+            ) : (
+              <>
+                <Badge variant="dark">CLIENT CASE</Badge>
+                {project.publishedYear && <Badge variant="success">{`SHIPPED ${project.publishedYear}`}</Badge>}
+              </>
+            )}
           </div>
-          {(project.featuredDetails?.metaLine || project.meta) && (
+          {(fd?.metaLine || project.meta) && (
             <span className="block font-mono text-[11px] uppercase tracking-wider text-mist-500 mb-4 tabular">
-              {project.featuredDetails?.metaLine || project.meta}
+              {fd?.metaLine || project.meta}
             </span>
           )}
           <h1 className="text-[clamp(40px,5.5vw,72px)] font-bold tracking-[-0.025em] leading-[1.05] my-6 max-w-[20ch] text-balance">
-            {project.featuredDetails?.headline || `${project.client}: ${project.tagline}`}
+            {fd?.headline || `${project.client}: ${project.tagline}`}
           </h1>
-          {project.featuredDetails?.description && (
+          {(fd?.description || project.excerpt) && (
             <p className="text-[19px] leading-[1.55] text-mist-400 max-w-[640px] mb-10 text-pretty">
-              {project.featuredDetails.description}
+              {fd?.description || project.excerpt}
             </p>
           )}
-          {project.featuredDetails?.metrics && project.featuredDetails.metrics.length > 0 && (
+          {fd?.metrics && fd.metrics.length > 0 && (
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-10 pt-10 border-t border-shadow-700 tabular">
-              {project.featuredDetails.metrics.map((m: any, i: number) => (
+              {fd.metrics.map((m: any, i: number) => (
                 <div key={i}>
                   <div className="text-[56px] font-bold tracking-[-0.025em] leading-none">
                     {m.num}
@@ -49,6 +62,18 @@ export function ClientCaseDetail({ project }: { project: Project }) {
               ))}
             </div>
           )}
+        </div>
+      </section>
+
+      {/* Cover — the uploaded image at its own proportions, or a placeholder until there is one */}
+      <section className="pt-12 lg:pt-16">
+        <div className="max-w-[1180px] mx-auto px-8">
+          <div
+            className="relative rounded-2xl overflow-hidden border border-paper-200 bg-paper-100"
+            style={{ aspectRatio: cover?.url && cover.width && cover.height ? `${cover.width} / ${cover.height}` : '3 / 1' }}
+          >
+            <ProjectCover project={project} variant="hero" priority sizesAttr="(min-width: 1180px) 1116px, 100vw" />
+          </div>
         </div>
       </section>
 
@@ -69,13 +94,13 @@ export function ClientCaseDetail({ project }: { project: Project }) {
             )}
           </div>
           <aside className="lg:sticky lg:top-24 self-start space-y-6">
-            {project.featuredDetails?.codePanel && (
+            {fd?.codePanel?.lines?.length > 0 && (
               <div className="bg-shadow-900 text-paper border border-shadow-700 rounded-lg px-[22px] py-5 font-mono text-[13px] leading-[1.7] overflow-hidden tabular">
                 <div className="text-mist-600 mb-2 flex justify-between">
-                  <span>{project.featuredDetails.codePanel.tag}</span>
-                  <span>{project.featuredDetails.codePanel.path}</span>
+                  <span>{fd.codePanel.tag}</span>
+                  <span>{fd.codePanel.path}</span>
                 </div>
-                {project.featuredDetails.codePanel.lines?.map((l: any, i: number) => (
+                {fd.codePanel.lines.map((l: any, i: number) => (
                   <div key={i} className="flex">
                     <span className="text-mist-600 inline-block w-[22px]">{i + 1}</span>
                     <span dangerouslySetInnerHTML={{ __html: l.line || '' }} />
@@ -88,7 +113,7 @@ export function ClientCaseDetail({ project }: { project: Project }) {
                 Stack
               </h3>
               <div className="flex flex-wrap gap-2">
-                {(project.featuredDetails?.stack || project.pills || []).map((s: any) => (
+                {(fd?.stack?.length ? fd.stack : project.pills || []).map((s: any) => (
                   <Badge key={s.tech || s.pill}>{s.tech || s.pill}</Badge>
                 ))}
               </div>

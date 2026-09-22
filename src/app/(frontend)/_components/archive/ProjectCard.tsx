@@ -1,6 +1,5 @@
 import { Badge } from '../ui/Badge';
-import { PayloadImage } from '../ui/PayloadImage';
-import { formatChipLabel } from '../ui/chipLabel';
+import { ProjectCover } from './ProjectCover';
 
 type Project = {
   id: string | number;
@@ -45,23 +44,19 @@ export function ProjectCard({ project, variant = 'default' }: { project: Project
       <div
         className={`${aspect} bg-paper-100 border-b border-paper-200 relative overflow-hidden ${imgSizeClass}`}
       >
-        {project.coverImage?.url ? (
-          <PayloadImage
-            media={project.coverImage}
-            variant="card"
-            alt={project.coverImage.alt || project.client}
-            sizesAttr={variant === 'feature' ? '(min-width: 1024px) 55vw, 100vw' : '(min-width: 1024px) 33vw, 100vw'}
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-            fill
-          />
-        ) : (
-          <div className="absolute inset-0 grid place-items-center">
-            <span className="font-mono text-mist-400 text-xs tracking-wider uppercase tabular">
-              {formatChipLabel(project.kind === 'client' ? 'CLIENT CASE' : 'STUDIO PRODUCT')}
-            </span>
-          </div>
-        )}
-        <div className="absolute top-4 left-4 z-[1]">
+        <ProjectCover
+          project={project}
+          sizesAttr={
+            variant === 'feature'
+              ? '(min-width: 1024px) 55vw, 100vw'
+              : variant === 'wide'
+                ? '(min-width: 1024px) 66vw, 100vw'
+                : '(min-width: 1024px) 33vw, 100vw'
+          }
+          imageClassName="object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+        {/* Opaque backing: the badge tints are translucent and would pick up the cover image behind them. */}
+        <div className="absolute top-4 left-4 z-[1] rounded-full bg-paper-50">
           <Badge variant={project.kind === 'studio' ? 'electric' : 'neutral'}>
             {project.kind === 'studio' ? 'STUDIO' : 'CLIENT'}
           </Badge>

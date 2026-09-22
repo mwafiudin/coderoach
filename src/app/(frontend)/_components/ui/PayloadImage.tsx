@@ -10,6 +10,9 @@ type PayloadMedia = {
   alt?: string | null;
   width?: number | null;
   height?: number | null;
+  /** Focal point in percent, set in the admin. Used as object-position when the image fills its box. */
+  focalX?: number | null;
+  focalY?: number | null;
   sizes?: Record<string, { url?: string | null; width?: number | null; height?: number | null }> | null;
 };
 
@@ -58,6 +61,7 @@ export function PayloadImage({
         sizes={sizesAttr || '100vw'}
         className={className}
         priority={priority}
+        style={{ objectPosition: `${media.focalX ?? 50}% ${media.focalY ?? 50}%` }}
       />
     );
   }
