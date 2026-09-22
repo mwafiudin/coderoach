@@ -5,6 +5,7 @@ import { postgresAdapter } from '@payloadcms/db-postgres';
 import { lexicalEditor } from '@payloadcms/richtext-lexical';
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob';
 import { resendAdapter } from '@payloadcms/email-resend';
+import sharp from 'sharp';
 
 // Collections
 import { Users } from './collections/Users';
@@ -88,6 +89,8 @@ export default buildConfig({
     },
   },
   editor: lexicalEditor(),
+  // Resizes uploads into the Media imageSizes and applies focal-point crops. Without it only the original is kept.
+  sharp,
   collections: [
     Users,
     Media,
