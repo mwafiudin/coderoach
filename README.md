@@ -7,9 +7,9 @@ Senior product engineering studio in Jakarta. This repo is the marketing site + 
 - **Frontend**: Next.js 15 (App Router), React 19, TypeScript
 - **Styling**: Tailwind CSS v4 (with Coderoach design tokens)
 - **CMS**: Payload v3 (mounted at `/admin`)
-- **Database**: Postgres (Neon, connected via Vercel Marketplace)
-- **Media storage**: Vercel Blob
-- **Hosting**: Vercel
+- **Database**: Postgres (Railway in production)
+- **Media storage**: local disk in `media/`, a Railway volume at `/app/media` in production
+- **Hosting**: Railway, deployed from `main`
 
 ## Phase status
 
@@ -26,27 +26,13 @@ pnpm install
 # or: npm install / yarn install
 ```
 
-### 2. Setup database (Neon)
+### 2. Setup database
 
-Two options:
+Any Postgres works for local development, for example a free Neon project. Put its connection string in `DATABASE_URI` in `.env.local`. Production runs on Railway Postgres, which is reachable only from Railway's private network.
 
-**Option A — Vercel Marketplace (recommended, easiest)**:
-1. Push this repo to GitHub.
-2. Import to Vercel.
-3. In Vercel project → Storage → Create Database → choose **Neon Postgres**.
-4. Vercel auto-injects `DATABASE_URI` env var. Done.
+### 3. Media uploads
 
-**Option B — Direct Neon signup**:
-1. Sign up at https://neon.tech (free tier).
-2. Create a new project. Copy the connection string.
-3. Set `DATABASE_URI` in `.env.local`.
-
-### 3. Setup Vercel Blob (for media uploads)
-
-1. In Vercel project → Storage → Create Database → choose **Blob**.
-2. `BLOB_READ_WRITE_TOKEN` env var auto-injected.
-
-For local dev, copy the token from Vercel dashboard → `.env.local`.
+Uploads are written to `media/` in the project root, which is gitignored. In production the same path is a Railway volume mounted at `/app/media`, so uploads survive redeploys.
 
 ### 4. Configure environment
 
@@ -56,8 +42,7 @@ cp .env.example .env.local
 
 Fill in:
 - `PAYLOAD_SECRET` — generate via `openssl rand -base64 32`
-- `DATABASE_URI` — from Neon
-- `BLOB_READ_WRITE_TOKEN` — from Vercel Blob (optional in dev)
+- `DATABASE_URI` — your Postgres connection string
 - `NEXT_PUBLIC_SERVER_URL` — `http://localhost:3000` for dev
 
 ### 5. Initialize database
@@ -136,10 +121,7 @@ Colors and typography tokens are defined in `src/app/globals.css` via Tailwind v
 
 ## Deployment
 
-```bash
-# Vercel (auto-deploys on push)
-git push origin main
-```
+Railway deploys `main` automatically: build `npm run build`, start `npm run start`, healthcheck `/opsscore` (`railway.json`). Environment variables, the media volume, and database access are documented in `docs/opsscore-ops.md` under **Deploy (Railway)**.
 
 Production URL set via `NEXT_PUBLIC_SERVER_URL` env var.
 

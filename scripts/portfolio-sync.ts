@@ -18,7 +18,7 @@ import { syncPortfolio } from '../src/lib/portfolio/sync';
 
 const apply = process.argv.includes('--apply');
 
-const connection = process.env.DATABASE_URI || process.env.POSTGRES_URL || process.env.DATABASE_URL || '';
+const connection = process.env.DATABASE_URI || process.env.DATABASE_URL || '';
 let host = 'unknown';
 try {
   host = new URL(connection).host;
@@ -26,7 +26,7 @@ try {
   // Leave "unknown"; getPayload below reports the real problem.
 }
 console.log(`Database: ${host}`);
-console.log(`Media storage: ${process.env.BLOB_READ_WRITE_TOKEN ? 'Vercel Blob' : 'local disk (./media)'}`);
+console.log(`Media storage: ${path.resolve(process.cwd(), 'media')}`);
 console.log(apply ? 'Applying.\n' : 'Dry run. Re-run with --apply to write.\n');
 
 const payload = await getPayload({ config });
