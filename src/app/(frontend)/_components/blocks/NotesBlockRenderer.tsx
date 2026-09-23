@@ -15,5 +15,5 @@ export async function NotesBlockRenderer({ block }: { block: any }) {
     })
     .catch(() => ({ docs: [] }));
   if (res.docs.length === 0) return null;
-  return <HomeNotes posts={res.docs as any[]} />;
+  return <HomeNotes posts={res.docs as any[]} head={block} />;
 }

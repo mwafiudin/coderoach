@@ -32,5 +32,5 @@ export async function ProductsBlockRenderer({ block }: { block: any }) {
     items = res.docs as any[];
   }
   if (items.length === 0) return null;
-  return <Products items={items as any} />;
+  return <Products items={items as any} head={block} />;
 }

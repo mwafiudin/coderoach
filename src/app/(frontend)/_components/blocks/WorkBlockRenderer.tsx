@@ -52,5 +52,5 @@ export async function WorkBlockRenderer({ block }: { block: any }) {
     }
   }
 
-  return <Work cases={cases as any} />;
+  return <Work cases={cases as any} head={block} />;
 }

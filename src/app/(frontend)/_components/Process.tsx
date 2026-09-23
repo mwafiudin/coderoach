@@ -1,5 +1,5 @@
 import { Icon, type IconName } from '@/lib/icons';
-import { SectionHead } from './SectionHead';
+import { SectionHead, type SectionHeadCopy } from './SectionHead';
 
 type Phase = {
   id: string | number;
@@ -10,16 +10,16 @@ type Phase = {
   deliv: string;
 };
 
-export function Process({ phases }: { phases: Phase[] }) {
+export function Process({ phases, head }: { phases: Phase[]; head?: SectionHeadCopy }) {
   return (
     <section id="process" className="py-[120px] relative">
       <div className="max-w-[1180px] mx-auto px-8">
         <SectionHead
-          marker="[ 04 / 07 ]"
-          category="Process"
-          description="Cara kami kerja"
-          heading="Brief to production, in four phases."
-          lede="Setiap proyek mengikuti pola yang sama. Scope berbeda, stack berbeda, disiplin shipping tetap konsisten."
+          marker={head?.sectionMarker ?? "[ 04 / 07 ]"}
+          category={head?.category ?? "Process"}
+          description={head?.description ?? "Cara kami kerja"}
+          heading={head?.heading ?? "Brief to production, in four phases."}
+          lede={head?.lede ?? "Setiap proyek mengikuti pola yang sama. Scope berbeda, stack berbeda, disiplin shipping tetap konsisten."}
         />
         <div
           className="grid grid-cols-1 md:grid-cols-4 relative pt-14 mt-14 [--progress:0]"
