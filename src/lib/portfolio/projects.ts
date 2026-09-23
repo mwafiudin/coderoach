@@ -6,7 +6,11 @@
  * keeps its current cover, so an image uploaded in the admin survives the next sync.
  */
 
-export type PortfolioBlock = string | { h2: string };
+import { toLexical, type LexicalBlock } from '../lexical';
+
+export { toLexical };
+
+export type PortfolioBlock = LexicalBlock;
 
 export type PortfolioCover = {
   /** File name inside scripts/portfolio-assets/. Also the Media filename used to find it again. */
@@ -35,6 +39,8 @@ export type PortfolioEntry = {
   excerpt: string;
   body: PortfolioBlock[];
   cover?: PortfolioCover;
+  /** Kept in the database as a draft: off the site, copy preserved for later. */
+  hidden?: boolean;
   featured?: boolean;
   featuredDetails?: {
     badgeLabel: string;
@@ -286,6 +292,7 @@ export const PORTFOLIO: PortfolioEntry[] = [
   },
   {
     slug: 'pt-raja-roti-cemerlang',
+    hidden: true,
     order: 7,
     kind: 'client',
     client: 'PT Raja Roti Cemerlang Tbk',
@@ -308,6 +315,7 @@ export const PORTFOLIO: PortfolioEntry[] = [
   },
   {
     slug: 'tumtim-cookies',
+    hidden: true,
     order: 8,
     kind: 'client',
     client: 'Tumtim Cookies',
@@ -329,47 +337,3 @@ export const PORTFOLIO: PortfolioEntry[] = [
     ],
   },
 ];
-
-const textNode = (text: string) => ({
-  type: 'text',
-  text,
-  mode: 'normal',
-  style: '',
-  detail: 0,
-  format: 0,
-  version: 1,
-});
-
-/** Lexical state for Projects.richContent: `{ h2 }` blocks become headings, strings become paragraphs. */
-export function toLexical(blocks: PortfolioBlock[]) {
-  return {
-    root: {
-      type: 'root',
-      format: '' as const,
-      indent: 0,
-      version: 1,
-      direction: 'ltr' as const,
-      children: blocks.map((block) =>
-        typeof block === 'string'
-          ? {
-              type: 'paragraph',
-              format: '' as const,
-              indent: 0,
-              version: 1,
-              direction: 'ltr' as const,
-              textFormat: 0,
-              children: [textNode(block)],
-            }
-          : {
-              type: 'heading',
-              tag: 'h2',
-              format: '' as const,
-              indent: 0,
-              version: 1,
-              direction: 'ltr' as const,
-              children: [textNode(block.h2)],
-            },
-      ),
-    },
-  };
-}

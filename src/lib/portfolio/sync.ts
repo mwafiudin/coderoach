@@ -143,6 +143,6 @@ function toProjectData(entry: PortfolioEntry, serviceId: number | undefined, cov
           },
         }
       : {}),
-    _status: 'published',
+    _status: entry.hidden ? 'draft' : 'published',
   };
 }
