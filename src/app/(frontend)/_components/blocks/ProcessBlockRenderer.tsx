@@ -20,5 +20,5 @@ export async function ProcessBlockRenderer({ block }: { block: any }) {
     phases = res.docs as any[];
   }
   if (phases.length === 0) return null;
-  return <Process phases={phases as any} />;
+  return <Process phases={phases as any} head={block} />;
 }

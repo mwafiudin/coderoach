@@ -1,3 +1,12 @@
+/** Section head copy as stored on a page block. Every field is optional; components keep a default. */
+export type SectionHeadCopy = {
+  sectionMarker?: string | null;
+  category?: string | null;
+  description?: string | null;
+  heading?: string | null;
+  lede?: string | null;
+};
+
 type Props = {
   marker: string;
   category: string;

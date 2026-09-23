@@ -20,8 +20,5 @@ export async function ServiceListBlockRenderer({ block }: { block: any }) {
       .catch(() => ({ docs: [] }));
     items = res.docs as any[];
   }
-  // Override section head from block if provided — Services component renders its own.
-  // For now, just render Services as-is (it has hard-coded section head).
-  // TODO: pass block.heading/lede through Services component when we generalize.
-  return <Services items={items as any} />;
+  return <Services items={items as any} head={block} />;
 }

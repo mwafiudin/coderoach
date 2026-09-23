@@ -1,4 +1,4 @@
-import { SectionHead } from './SectionHead';
+import { SectionHead, type SectionHeadCopy } from './SectionHead';
 import { CoverPlaceholder, ProjectCover } from './archive/ProjectCover';
 
 type StudioProject = {
@@ -17,16 +17,16 @@ type StudioProject = {
   } | null;
 };
 
-export function Products({ items }: { items: StudioProject[] }) {
+export function Products({ items, head }: { items: StudioProject[]; head?: SectionHeadCopy }) {
   return (
     <section id="products" className="py-[120px] relative bg-paper-50 border-y border-paper-200">
       <div className="max-w-[1180px] mx-auto px-8">
         <SectionHead
-          marker="[ 03 / 07 ]"
-          category="Products"
-          description="Produk in-house"
-          heading="Products we build, use, and maintain."
-          lede="Ujian paling jujur untuk tim engineering bukan brief klien, melainkan produk sendiri yang harus survive di tangan user nyata, revenue nyata, dan edge case nyata."
+          marker={head?.sectionMarker ?? "[ 03 / 07 ]"}
+          category={head?.category ?? "Products"}
+          description={head?.description ?? "Produk in-house"}
+          heading={head?.heading ?? "Products we build, use, and maintain."}
+          lede={head?.lede ?? "Ujian paling jujur untuk tim engineering bukan brief klien, melainkan produk sendiri yang harus survive di tangan user nyata, revenue nyata, dan edge case nyata."}
         />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-12 reveal-stagger">
           {items.map((p) => (

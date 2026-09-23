@@ -1,4 +1,4 @@
-import { SectionHead } from './SectionHead';
+import { SectionHead, type SectionHeadCopy } from './SectionHead';
 import { PayloadImage } from './ui/PayloadImage';
 import { formatChipLabel } from './ui/chipLabel';
 
@@ -25,7 +25,7 @@ type Project = {
   } | null;
 };
 
-export function Work({ cases }: { cases: Project[] }) {
+export function Work({ cases, head }: { cases: Project[]; head?: SectionHeadCopy }) {
   const featured = cases.find((c) => c.featured);
   const list = cases.filter((c) => !c.featured);
   const featuredBadgeLabel = formatChipLabel(featured?.featuredDetails?.badgeLabel);
@@ -34,11 +34,11 @@ export function Work({ cases }: { cases: Project[] }) {
     <section id="work" className="py-[120px] relative">
       <div className="max-w-[1180px] mx-auto px-8">
         <SectionHead
-          marker="[ 02 / 07 ]"
-          category="Work"
-          description="Beberapa proyek terpilih"
-          heading="Work we've shipped."
-          lede="Sebagian proyek yang telah berjalan, dari company website sampai data pipeline. Case study lengkap tersedia atas permintaan."
+          marker={head?.sectionMarker ?? "[ 02 / 07 ]"}
+          category={head?.category ?? "Work"}
+          description={head?.description ?? "Beberapa proyek terpilih"}
+          heading={head?.heading ?? "Work we've shipped."}
+          lede={head?.lede ?? "Sebagian proyek yang telah berjalan, dari company website sampai data pipeline. Case study lengkap tersedia atas permintaan."}
         />
 
         {featured?.featuredDetails && (
@@ -172,11 +172,8 @@ export function Work({ cases }: { cases: Project[] }) {
                 <a
                   key={c.id}
                   href={`/work/${c.slug}`}
-                  className="relative isolate grid items-center cursor-pointer transition-colors group"
+                  className="group relative isolate flex flex-col gap-2.5 py-6 pl-3 cursor-pointer transition-colors lg:grid lg:grid-cols-[64px_56px_1.4fr_2fr_1fr_1fr_28px] lg:items-center lg:gap-5 lg:py-[26px] lg:pl-0"
                   style={{
-                    gridTemplateColumns: '64px 56px 1.4fr 2fr 1fr 1fr 28px',
-                    gap: '20px',
-                    padding: '26px 0',
                     borderTop: i === 0 ? '0' : '1px solid var(--color-paper-200)',
                     borderBottom: i === list.length - 1 ? '1px solid var(--color-paper-200)' : '0',
                   }}
@@ -187,13 +184,15 @@ export function Work({ cases }: { cases: Project[] }) {
                     aria-hidden
                     className="absolute left-0 top-1/2 -translate-y-1/2 h-12 w-[2px] bg-electric origin-top scale-y-0 group-hover:scale-y-100 transition-transform duration-300 ease-[var(--ease-out-quint)]"
                   />
-                  <span className="font-mono text-xs text-mist-500 tracking-wider tabular pl-3">
-                    [ {String(i + 2).padStart(2, '0')} ]
+                  <span className="flex items-center gap-4 lg:contents">
+                    <span className="font-mono text-xs text-mist-500 tracking-wider tabular lg:pl-3">
+                      [ {String(i + 2).padStart(2, '0')} ]
+                    </span>
+                    <span className="font-mono text-xs text-mist-500 tracking-wider tabular">
+                      {c.publishedYear || '—'}
+                    </span>
                   </span>
-                  <span className="font-mono text-xs text-mist-500 tracking-wider tabular">
-                    {c.publishedYear || '—'}
-                  </span>
-                  <span className="text-[22px] font-bold tracking-[-0.01em] group-hover:text-electric transition-colors">
+                  <span className="text-[20px] lg:text-[22px] font-bold tracking-[-0.01em] leading-tight group-hover:text-electric transition-colors text-balance">
                     {c.client}
                   </span>
                   <span className="text-[15px] text-mist-600 leading-[1.4]">{c.tagline}</span>
@@ -205,7 +204,7 @@ export function Work({ cases }: { cases: Project[] }) {
                       </span>
                     ))}
                   </span>
-                  <span className="text-mist-500 group-hover:text-electric group-hover:translate-x-1 transition-[color,transform] text-right">→</span>
+                  <span className="hidden lg:block text-mist-500 group-hover:text-electric group-hover:translate-x-1 transition-[color,transform] text-right">→</span>
                 </a>
               ))}
             </div>

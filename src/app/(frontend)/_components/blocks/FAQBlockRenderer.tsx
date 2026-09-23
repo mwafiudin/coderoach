@@ -19,5 +19,5 @@ export async function FAQBlockRenderer({ block }: { block: any }) {
     items = res.docs as any;
   }
   if (items.length === 0) return null;
-  return <FAQ items={items as any} />;
+  return <FAQ items={items as any} head={block} />;
 }

@@ -1,5 +1,5 @@
 import { type IconName } from '@/lib/icons';
-import { SectionHead } from './SectionHead';
+import { SectionHead, type SectionHeadCopy } from './SectionHead';
 import { ServiceViz } from './ui/ServiceViz';
 
 type Service = {
@@ -14,16 +14,16 @@ type Service = {
   stack: Array<{ tech: string }>;
 };
 
-export function Services({ items }: { items: Service[] }) {
+export function Services({ items, head }: { items: Service[]; head?: SectionHeadCopy }) {
   return (
     <section id="services" className="py-[120px] relative">
       <div className="max-w-[1180px] mx-auto px-8">
         <SectionHead
-          marker="[ 01 / 07 ]"
-          category="Services"
-          description="Yang kami bangun"
-          heading="Four ways in."
-          lede="Bukan menjual jam. Kami menjual hasil yang terukur. Build, automate, intelligence, dan augment. Pilih yang paling sesuai dengan masalah Anda."
+          marker={head?.sectionMarker ?? "[ 01 / 07 ]"}
+          category={head?.category ?? "Services"}
+          description={head?.description ?? "Yang kami bangun"}
+          heading={head?.heading ?? "Four ways in."}
+          lede={head?.lede ?? "Bukan menjual jam. Kami menjual hasil yang terukur. Build, automate, intelligence, dan augment. Pilih yang paling sesuai dengan masalah Anda."}
         />
         {/* Sticky-stack of service cards. Each card pins at its own staggered top
             offset so as you scroll, cards build a deck-of-cards stack with the
