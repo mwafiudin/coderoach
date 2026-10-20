@@ -35,13 +35,13 @@ export const METADATA = {
   // Both halves are required fields; the title joins them: "Coderoach Studio | Jasa Pembuatan ERP & Sistem Custom".
   heroHeadline: { lead: 'Jasa Pembuatan ERP &', accent: 'Sistem Custom' },
   siteDescription:
-    'Software house Jakarta yang membangun ERP custom, aplikasi internal, otomasi, dan dashboard sesuai proses bisnis Anda. Source code milik Anda.',
+    'Software house Jakarta yang membangun ERP custom, aplikasi internal, otomasi, dan dashboard sesuai proses bisnis Anda, dengan akses penuh untuk menjalankannya.',
 };
 
 export const HERO = {
   pillText: 'Sistem internal untuk bisnis Indonesia',
   headline: { lead: 'Punya sistem sendiri,', accent: 'tanpa tagihan yang membesar tiap tambah orang.' },
-  lede: 'Kami membangun ERP, aplikasi internal, otomasi, dan dashboard yang mengikuti proses bisnis Anda. Sekitar satu bulan sudah ada versi yang bisa dicoba tim Anda, dan source code-nya milik Anda.',
+  lede: 'Kami membangun ERP, aplikasi internal, otomasi, dan dashboard yang mengikuti proses bisnis Anda. Sekitar satu bulan sudah ada versi yang bisa dicoba tim Anda, dan Anda memegang kendali penuh untuk menjalankannya.',
   ctaPrimary: { label: 'Konsultasi gratis 30 menit', href: '#contact' },
   ctaSecondary: { label: 'Cek kesiapan operasi (5 menit)', href: '/opsscore' },
   trustedBy: {
@@ -139,7 +139,7 @@ export const SECTIONS: LandingSection[] = [
         ul: [
           'Dibayar di awal, lalu jadi aset',
           'Tambah pengguna, tagihan tetap',
-          'Source code milik Anda',
+          'Akses penuh ke sistemnya',
           'Software ikut proses',
           'Satu tempat untuk semua data',
         ],
@@ -290,9 +290,9 @@ export const TENETS = [
   {
     order: 3,
     icon: 'shield',
-    title: 'Sistemnya milik Anda, kami tetap ada.',
+    title: 'Kendali di tangan Anda, kami tetap ada.',
     description:
-      'Source code, database, dan dokumentasi sepenuhnya milik Anda sejak hari pertama. Kami tetap menjadi partner pengembangan selama dibutuhkan, karena Anda memilih, bukan karena terkunci.',
+      'Anda mendapat akses penuh untuk menjalankan, memakai, dan mengembangkan sistemnya, lengkap dengan database dan dokumentasi. Source code-nya kami pelihara agar tetap aman dan terawat, dan transfer penuh bisa diatur kapan pun Anda membutuhkannya. Kami tetap jadi partner karena Anda memilih, bukan karena terkunci.',
   },
 ];
 
@@ -319,7 +319,7 @@ export const FAQS = [
     order: 4,
     question: 'Apakah source code menjadi milik kami?',
     answer:
-      'Ya. Source code, database, dan dokumentasi milik Anda sejak hari pertama, termasuk akses ke infrastrukturnya. Anda bisa melanjutkan bersama kami, atau memindahkannya ke tim lain kapan pun.',
+      'Anda menguasai penuh sistemnya untuk dijalankan dan dikembangkan, beserta database, dokumentasi, dan akses ke infrastrukturnya. Source code-nya kami pelihara agar tetap aman dan terawat. Bila Anda ingin memegangnya sendiri atau memindahkannya ke tim lain, itu kami atur lewat kesepakatan transfer. Tidak ada penguncian.',
   },
   {
     order: 5,

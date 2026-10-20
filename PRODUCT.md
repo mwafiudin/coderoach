@@ -33,9 +33,12 @@ What it should evoke: the feeling of talking to someone who has already run this
 4. **One accent.** Electric blue `#2C70FE` is the only colour that ever means something. Everything else is paper and ink.
 5. **Art direction per section.** Narrative sections may each have their own composition — asymmetry, oversized type, rules that cut across the grid — as long as the voice holds.
 
-## Exception: project pages (draft, to agree with wafi in the PR)
+## Exception: project pages
 
-ADR 0003 gives `/work/[slug]` the full apple.com product-page manner. That stretches two lines above, so the exception is written down instead of drifting:
+Recorded in [ADR 0012](docs/decisions/0012-pengecualian-product-md-halaman-proyek.md)
+(farrez's call; wafi concurs when he is back on 23 Oct). ADR 0003 gives
+`/work/[slug]` the full apple.com product-page manner. That stretches two lines
+above, so the exception is written down instead of drifting:
 
 - **Allowed there only:** the product-page formula (name, one line, then one idea per section), motion bound to scroll, one dark chapter that holds the tour (never the hero), and the blueprint ornaments where a picture is missing.
 - **Still binding:** one accent (`#2C70FE`), proof over adjectives (every number footnoted to its source), plain Indonesian, and the accessibility rules below.
