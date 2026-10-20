@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { SectionHead, type SectionHeadCopy } from './SectionHead';
 import { PayloadImage } from './ui/PayloadImage';
 import { formatChipLabel } from './ui/chipLabel';
@@ -166,9 +167,9 @@ export function Work({ cases, head }: { cases: Project[]; head?: SectionHeadCopy
               <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-mist-600">
                 Proyek lainnya
               </span>
-              <a href="/work" className="text-[11px] font-semibold uppercase tracking-[0.18em] text-electric hover:underline">
+              <Link href="/work" className="text-[11px] font-semibold uppercase tracking-[0.18em] text-electric hover:underline">
                 Lihat semua <span aria-hidden>→</span>
-              </a>
+              </Link>
             </div>
             <div className="flex flex-col">
               {list.map((c, i) => (

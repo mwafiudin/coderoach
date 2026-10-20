@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Badge } from '../../_components/ui/Badge';
 import { Meta } from '../../_components/ui/Meta';
 import { CodeLine } from '../../_components/ui/CodeLine';
@@ -89,10 +90,10 @@ export function ClientCaseDetail({ project, as: Root = 'main' }: { project: Proj
             ) : (
               <div className="text-mist-600 italic">
                 Full case study coming soon. In the meantime,{' '}
-                <a href="/#contact" className="text-electric underline underline-offset-2">
+                <Link href="/#contact" className="text-electric underline underline-offset-2">
                   get in touch
-                </a>{' '}
-                if you'd like to hear how we shipped this.
+                </Link>{' '}
+                if you&apos;d like to hear how we shipped this.
               </div>
             )}
           </div>
@@ -123,7 +124,7 @@ export function ClientCaseDetail({ project, as: Root = 'main' }: { project: Proj
             </div>
             {project.testimonial?.quote && (
               <blockquote className="border-l-2 border-electric pl-5 py-3">
-                <p className="text-[16px] leading-[1.5] text-ink m-0">"{project.testimonial.quote}"</p>
+                <p className="text-[16px] leading-[1.5] text-ink m-0">&quot;{project.testimonial.quote}&quot;</p>
                 <footer className="font-mono text-[11px] uppercase tracking-wider text-mist-600 mt-3 tabular">
                   — {project.testimonial.author}, {project.testimonial.role}
                 </footer>

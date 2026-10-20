@@ -16,6 +16,7 @@ export default async function ProjectOverlayPage({ params }: { params: Promise<{
       <ProjectOverlay slug={slug} title="Proyek tidak ditemukan">
         <div className="max-w-[640px] mx-auto px-8 py-24">
           <p className="text-[24px] font-bold tracking-tight m-0 mb-2">Proyek ini tidak ada, atau belum tayang.</p>
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- hard nav cleanly closes the intercept overlay */}
           <a href="/work" className="text-electric underline underline-offset-2">
             Kembali ke daftar karya
           </a>

@@ -7,6 +7,7 @@
  */
 import { getPayload } from 'payload';
 import config from '@payload-config';
+import Link from 'next/link';
 
 const card = {
   background: 'var(--theme-elevation-50, #fafafa)',
@@ -100,31 +101,31 @@ export default async function Dashboard() {
       <section>
         <h2 style={eyebrow}>Quick actions</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 12, marginTop: 8 }}>
-          <a href="/admin/collections/pages" style={card}>
+          <Link href="/admin/collections/pages" style={card}>
             <div style={{ fontWeight: 600, fontSize: 15, marginBottom: 4 }}>Pages</div>
             <div style={{ fontSize: 13, color: 'var(--theme-elevation-500, #888)' }}>
               Edit homepage + landing pages with blocks
             </div>
-          </a>
-          <a href="/admin/globals/site-settings" style={card}>
+          </Link>
+          <Link href="/admin/globals/site-settings" style={card}>
             <div style={{ fontWeight: 600, fontSize: 15, marginBottom: 4 }}>Site settings</div>
             <div style={{ fontSize: 13, color: 'var(--theme-elevation-500, #888)' }}>
               Brand name, logo, footer, social links
             </div>
-          </a>
-          <a href="/admin/globals/hero" style={card}>
+          </Link>
+          <Link href="/admin/globals/hero" style={card}>
             <div style={{ fontWeight: 600, fontSize: 15, marginBottom: 4 }}>Hero global</div>
             <div style={{ fontSize: 13, color: 'var(--theme-elevation-500, #888)' }}>
               Default hero copy used as fallback
             </div>
-          </a>
-          <a href="/admin/globals/contact" style={card}>
+          </Link>
+          <Link href="/admin/globals/contact" style={card}>
             <div style={{ fontWeight: 600, fontSize: 15, marginBottom: 4 }}>Contact</div>
             <div style={{ fontSize: 13, color: 'var(--theme-elevation-500, #888)' }}>
               Form copy, scopes, success message
             </div>
-          </a>
-          <a href="/admin/collections/submissions" style={{ ...card, position: 'relative' }}>
+          </Link>
+          <Link href="/admin/collections/submissions" style={{ ...card, position: 'relative' }}>
             <div style={{ fontWeight: 600, fontSize: 15, marginBottom: 4, display: 'flex', alignItems: 'center', gap: 8 }}>
               Inbox
               {submissionCount > 0 && (
@@ -145,13 +146,13 @@ export default async function Dashboard() {
             <div style={{ fontSize: 13, color: 'var(--theme-elevation-500, #888)' }}>
               Contact form submissions
             </div>
-          </a>
-          <a href="/admin/collections/posts" style={card}>
+          </Link>
+          <Link href="/admin/collections/posts" style={card}>
             <div style={{ fontWeight: 600, fontSize: 15, marginBottom: 4 }}>Field notes</div>
             <div style={{ fontSize: 13, color: 'var(--theme-elevation-500, #888)' }}>
               Blog posts
             </div>
-          </a>
+          </Link>
         </div>
       </section>
 
@@ -166,7 +167,7 @@ export default async function Dashboard() {
           <ul style={{ listStyle: 'none', padding: 0, margin: '8px 0 0', display: 'flex', flexDirection: 'column', gap: 8 }}>
             {drafts.map((d) => (
               <li key={`${d.collection}-${d.id}`}>
-                <a
+                <Link
                   href={`/admin/collections/${d.collection}/${d.id}`}
                   style={{ ...card, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
                 >
@@ -177,7 +178,7 @@ export default async function Dashboard() {
                     </span>
                   </span>
                   <span style={{ color: 'var(--theme-elevation-500, #888)', fontSize: 13 }}>→</span>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import Link from 'next/link';
 import { FilterBar } from '../_components/archive/FilterBar';
 import type { CardPreviewMedia } from '../_components/archive/CardPreview';
 import { ProjectCard } from '../_components/archive/ProjectCard';
@@ -100,6 +101,7 @@ export function CatalogClient({
           <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
             <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Work' }]} />
             {/* A plain link: a soft navigation would be caught by the @modal intercept as a project slug. */}
+            {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- see above: must be a hard nav */}
             <a
               href="/work/presentasi"
               className="font-mono text-xs uppercase tracking-wider text-ink/65 hover:text-ink transition-colors tabular focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric"
@@ -152,6 +154,7 @@ export function CatalogClient({
             <div className="py-32 text-center">
               <p className="text-[24px] font-bold tracking-tight text-ink mb-2">Belum ada proyek untuk saringan ini.</p>
               <p className="text-ink">
+                {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- the onClick resets filters in place; the href is only the no-JS fallback */}
                 <a
                   href="/work#katalog"
                   onClick={(e) => {
@@ -163,9 +166,9 @@ export function CatalogClient({
                   Lihat semua proyek
                 </a>{' '}
                 atau{' '}
-                <a href="/#contact" className="text-electric underline underline-offset-2">
+                <Link href="/#contact" className="text-electric underline underline-offset-2">
                   ceritakan kebutuhan Anda
-                </a>
+                </Link>
                 .
               </p>
             </div>
@@ -200,12 +203,12 @@ export function CatalogClient({
               </p>
             </div>
 
-            <a
+            <Link
               href="/#contact"
               className="relative h-12 px-5 rounded-md bg-electric text-paper text-sm font-semibold inline-flex items-center hover:bg-[#2562E0] active:scale-[0.98] transition-[background,transform] flex-shrink-0 shadow-[0_8px_24px_-8px_rgba(44,112,254,0.4)]"
             >
               Konsultasi gratis 30 menit <span aria-hidden>→</span>
-            </a>
+            </Link>
           </div>
         </div>
       </section>

@@ -27,6 +27,7 @@ export default async function PresentasiPage() {
         <div className="flex flex-wrap items-center gap-3">
           <OfflineKit enabled={process.env.NEXT_PUBLIC_PRESENTASI_OFFLINE === 'on'} pages={pages} />
           <Presenter back="/work" />
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- exits the presentation route group (and its service-worker scope); a hard nav is wanted */}
           <a
             href="/work"
             className="h-10 px-3.5 rounded-md inline-flex items-center font-mono text-[11px] uppercase tracking-wider text-mist-500 hover:text-paper focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-electric"

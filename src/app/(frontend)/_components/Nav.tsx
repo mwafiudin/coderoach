@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { CtaLabel } from './ui/CtaLabel';
 
 type NavData = {
@@ -44,18 +45,19 @@ export function Nav({ data }: { data: NavData | null }) {
   return (
     <div className="sticky top-0 z-40 bg-paper-100/85 backdrop-blur-md border-b border-paper-200">
       <div className="max-w-[1180px] mx-auto px-8 h-[72px] flex items-center justify-between gap-8">
-        <a
+        <Link
           href="/"
           aria-label={`${siteName}, home`}
           className="flex items-center gap-[10px]"
           onClick={close}
         >
+          {/* eslint-disable-next-line @next/next/no-img-element -- brand logo (CMS URL, no intrinsic size); next/image adds nothing for a fixed-height mark */}
           <img src={logoUrl} alt="" className="h-8 w-auto" />
           <span className="flex flex-col leading-none tracking-[-0.02em] gap-[2px] text-ink">
             <span className="font-sans text-[14px] font-semibold lowercase">{line1}</span>
             {line2 && <span className="font-sans text-[14px] font-normal lowercase">{line2}</span>}
           </span>
-        </a>
+        </Link>
 
         <nav className="hidden md:flex gap-7 items-center">
           {NAV_LINKS.map((l) => (

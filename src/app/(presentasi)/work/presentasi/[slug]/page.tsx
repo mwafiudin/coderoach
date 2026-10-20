@@ -31,6 +31,7 @@ export default async function PresentasiProjectPage({ params }: { params: Promis
   return (
     <>
       <nav aria-label="Presentasi" className="sticky top-0 z-40 flex items-center justify-between gap-3 px-4 sm:px-8 h-12 bg-ink/95 text-paper">
+        {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- presentation nav stays plain anchors so each step is a hard nav served from the SW cache */}
         <a href="/work/presentasi" className={link}>
           <span aria-hidden>←&nbsp;</span>Semua proyek (Esc)
         </a>

@@ -185,7 +185,7 @@ export function StudioProductDetail({ project, as: Root = 'main' }: { project: P
             Built by Coderoach Studio
           </span>
           <p className="text-[24px] leading-[1.4] font-semibold tracking-[-0.01em] text-balance">
-            The same engineers who built {project.client} are the ones who'll ship your client work.
+            The same engineers who built {project.client} are the ones who&apos;ll ship your client work.
           </p>
         </div>
       </section>

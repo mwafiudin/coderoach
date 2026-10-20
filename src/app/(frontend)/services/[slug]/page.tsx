@@ -241,7 +241,7 @@ export default async function ServiceDetailPage({
               Ready to ship {service.title}?
             </span>
             <p className="text-[28px] font-bold tracking-[-0.015em] mt-3 text-paper">
-              Tell us what you're trying to ship.
+              Tell us what you&apos;re trying to ship.
             </p>
           </div>
           <a

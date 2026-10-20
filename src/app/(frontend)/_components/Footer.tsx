@@ -31,12 +31,14 @@ export function Footer({ data }: { data: FooterData | null }) {
           <div>
             <div className="flex items-center gap-[10px] mb-[18px]">
               {logoUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element -- brand logo (CMS URL, no intrinsic size); next/image adds nothing for a fixed-height mark
                 <img
                   src={logoUrl}
                   alt=""
                   className={`h-8 w-auto ${useInvert ? 'invert-[0.96]' : ''}`}
                 />
               ) : (
+                // eslint-disable-next-line @next/next/no-img-element -- static brand SVG; next/image adds nothing for a vector mark
                 <img src="/assets/coderoach_logo.svg" alt="" className="h-8 w-auto invert-[0.96]" />
               )}
               <span className="flex flex-col leading-none tracking-[-0.02em] gap-[2px] text-paper">
