@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { getPayload } from 'payload';
 import config from '@payload-config';
 import type { Metadata } from 'next';
@@ -356,12 +357,12 @@ export default async function StudioPage() {
               </p>
             </div>
 
-            <a
+            <Link
               href="/#contact"
               className="relative h-12 px-5 rounded-md bg-electric text-paper text-sm font-semibold inline-flex items-center hover:bg-[#2562E0] active:scale-[0.98] transition-[background,transform] flex-shrink-0 shadow-[0_8px_24px_-8px_rgba(44,112,254,0.55)]"
             >
               Mulai brief proyek <span aria-hidden>→</span>
-            </a>
+            </Link>
           </div>
         </div>
       </section>

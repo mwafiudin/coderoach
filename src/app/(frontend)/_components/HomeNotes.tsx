@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { PostCard } from './archive/PostCard';
 import { SectionHead, type SectionHeadCopy } from './SectionHead';
 
@@ -15,12 +16,12 @@ export function HomeNotes({ posts, head }: { posts: Post[]; head?: SectionHeadCo
             heading={head?.heading ?? "Latest from the studio."}
             lede={head?.lede ?? "Engineering, operasional, dan hal-hal di antara keduanya."}
           />
-          <a
+          <Link
             href="/notes"
             className="text-[11px] font-semibold uppercase tracking-[0.18em] text-electric hover:underline self-start lg:self-auto whitespace-nowrap"
           >
             Lihat semua <span aria-hidden>→</span>
-          </a>
+          </Link>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 reveal-stagger">
           {posts.slice(0, 3).map((p) => (

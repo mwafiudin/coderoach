@@ -53,6 +53,7 @@ export default async function HomePage() {
             <p className="text-[16px] leading-[1.55] text-mist-600 mb-6">
               Create a Page with slug <code className="font-mono text-ink bg-paper-100 px-1.5 py-0.5 rounded">home</code> in the admin to render this homepage.
             </p>
+            {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- leaves the public site for the Payload admin shell; a hard nav is wanted */}
             <a
               href="/admin/collections/pages/create"
               className="h-12 px-5 rounded-md bg-electric text-paper text-sm font-semibold inline-flex items-center hover:bg-[#2562E0] transition-colors"

@@ -408,7 +408,7 @@ export function Contact({ data }: { data: ContactData | null }) {
                   </span>
                 )}
                 <span className="font-mono text-xs tracking-wide text-mist-600">
-                  // atau email langsung ke{' '}
+                  {'//'} atau email langsung ke{' '}
                   <a
                     href={`mailto:${data?.formLabels?.emailFallback}`}
                     className="text-mist-400 border-b border-current pb-px hover:text-electric"

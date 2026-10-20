@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Icon, type IconName } from '@/lib/icons';
 import { AnimatedCount } from './ui/AnimatedCount';
 import { Meta } from './ui/Meta';
@@ -36,12 +37,12 @@ export function Studio({ data, tenets }: { data: StudioData | null; tenets: Tene
           <h2 className="text-[clamp(40px,5vw,64px)] leading-none tracking-[-0.02em] font-bold mt-[18px] max-w-[880px] text-paper">
             {data?.heading}
           </h2>
-          <a
+          <Link
             href="/studio"
             className="text-[11px] font-semibold uppercase tracking-[0.18em] text-electric hover:underline mt-6 inline-block"
           >
             Lihat selengkapnya <span aria-hidden>→</span>
-          </a>
+          </Link>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-20 mt-14 items-start">
           <div className="flex flex-col gap-10">

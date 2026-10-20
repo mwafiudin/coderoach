@@ -1,6 +1,7 @@
 import { getPayload } from 'payload';
 import config from '@payload-config';
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getProject } from '@/lib/portfolio/queries';
 import { SectionShell } from '../../_components/detail/SectionShell';
@@ -136,12 +137,12 @@ export default async function ProjectDetailPage({
               Mulai dari konsultasi gratis 30 menit.
             </p>
           </div>
-          <a
+          <Link
             href="/#contact"
             className="h-12 px-5 rounded-md bg-electric text-paper text-sm font-semibold inline-flex items-center hover:bg-[#2562E0] transition-colors"
           >
             Ceritakan kebutuhan Anda <span aria-hidden>→</span>
-          </a>
+          </Link>
         </div>
       </section>
     </SectionShell>

@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { getPayload } from 'payload';
 import config from '@payload-config';
 import type { Metadata } from 'next';
@@ -283,15 +284,15 @@ export default async function PostDetailPage({
                 Shipping something similar?
               </span>
               <p className="text-[28px] font-bold tracking-[-0.015em] mt-3 text-paper">
-                Tell us what you're trying to ship.
+                Tell us what you&apos;re trying to ship.
               </p>
             </div>
-            <a
+            <Link
               href="/#contact"
               className="h-12 px-5 rounded-md bg-electric text-paper text-sm font-semibold inline-flex items-center hover:bg-[#2562E0] transition-colors"
             >
               Start a 48-hour discovery <span aria-hidden>→</span>
-            </a>
+            </Link>
           </div>
         </section>
       </main>

@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { SectionShell } from './_components/detail/SectionShell';
 
 export default function NotFound() {
@@ -15,18 +16,18 @@ export default function NotFound() {
             URL yang Anda buka tidak cocok dengan halaman manapun yang kami ship. Kemungkinan halaman dipindahkan atau link salah ketik.
           </p>
           <div className="flex items-center justify-center gap-3 flex-wrap">
-            <a
+            <Link
               href="/"
               className="h-12 px-5 rounded-md bg-electric text-paper text-sm font-semibold inline-flex items-center hover:bg-[#2562E0] transition-colors"
             >
               <span aria-hidden>←</span> Kembali ke home
-            </a>
-            <a
+            </Link>
+            <Link
               href="/work"
               className="h-12 px-5 rounded-md bg-transparent text-ink border border-mist-400 text-sm font-semibold inline-flex items-center hover:bg-ink/[0.04] transition-colors"
             >
               Lihat hasil kami
-            </a>
+            </Link>
           </div>
         </div>
       </main>
