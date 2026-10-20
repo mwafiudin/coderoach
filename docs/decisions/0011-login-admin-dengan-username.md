@@ -35,5 +35,12 @@ Option 2, with `requireUsername: false`.
   guess than an email, so the lockout after 5 failed attempts (Payload default)
   matters more; it is unchanged.
 - The login form now reads "Email or Username".
+- Payload's forgot-password form then takes a username only, even with email
+  login allowed, and its server reads the identifier before any hook runs. An
+  account without a username could not reset its password. So a new account
+  gets its email's local part as username when none is typed, and the existing
+  account was given one (`farrez`) on 2026-10-20.
+- Reset emails need `RESEND_API_KEY`; production had none, so until it is set,
+  a reset link is made server-side with `payload.forgotPassword({ disableEmail: true })`.
 - Revisit if the admin gains users who should not be able to log in by email,
   or if a username has to become required (needs every account filled first).
