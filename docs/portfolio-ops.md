@@ -69,7 +69,8 @@ Coderoach OS.
    (Media), karena `/api/media/file/...` tetap publik selama berkasnya ada. Saat ini:
    `portfolio-laporta.webp` (sampul lama Laporta, memuat data outlet sungguhan dan URL produksi),
    dan tujuh berkas `nds-etl-*` (aset Rencana RO dengan nama lama; namanya menyebut singkatan
-   portal prinsipal, isinya sama dengan `rencana-ro-*`).
+   portal prinsipal), dan tujuh berkas `rencana-ro-*.v1.*` (rekaman lama yang masih memuat
+   istilah skema bonus prinsipal; diganti `.v2`).
 
 Template halaman proyek berganti ke halaman cerita begitu `summary.problem` terisi. Rekaman demo
 dibuat dari database demo berdata fiktif dan wajib membawa `demoNote` yang mengatakannya.

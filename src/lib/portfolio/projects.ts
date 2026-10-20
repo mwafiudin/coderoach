@@ -659,8 +659,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
     excerpt:
       'SaaS milik studio yang setiap jam menarik data jaringan distributor dari back office, lalu menjawab empat pertanyaan mingguan mereka lewat dashboard, email, kalender, dan push di ponsel.',
     cover: {
-      file: 'rencana-ro-dashboard.v1.webp',
-      alt: 'Beranda Rencana RO dengan empat kartu jawaban: bonus cair, saran pembelian, posisi untuk member baru, dan tenggat repeat order',
+      file: 'rencana-ro-dashboard.v2.webp',
+      alt: 'Beranda Rencana RO dengan empat kartu jawaban: bonus cair, saran pembelian, posisi untuk member baru, dan tiga repeat order prioritas dalam tiga hari ke depan',
       focalX: 50,
       focalY: 15,
     },
@@ -699,12 +699,12 @@ export const PORTFOLIO: PortfolioEntry[] = [
     },
     showcase: {
       frame: 'browser',
-      screen: { file: 'rencana-ro-dashboard.v1.webp', alt: 'Beranda Rencana RO dengan empat kartu jawaban: bonus cair, saran pembelian, posisi untuk member baru, dan tenggat repeat order' },
-      screenPhone: { file: 'rencana-ro-dashboard-ponsel.v1.webp', alt: 'Beranda yang sama di ponsel: kartu jawaban ditumpuk satu kolom dengan navigasi bawah' },
-      tour: { file: 'rencana-ro-tur.v1.mp4', alt: 'Tur Rencana RO: beranda, bonus cair, rencana repeat order, kalender, riwayat tarikan, dan pengaturan pengingat' },
-      tourPoster: { file: 'rencana-ro-tur.v1.poster.webp', alt: 'Beranda Rencana RO' },
+      screen: { file: 'rencana-ro-dashboard.v2.webp', alt: 'Beranda Rencana RO dengan empat kartu jawaban: bonus cair, saran pembelian, posisi untuk member baru, dan tiga repeat order prioritas dalam tiga hari ke depan' },
+      screenPhone: { file: 'rencana-ro-dashboard-ponsel.v2.webp', alt: 'Beranda yang sama di ponsel: kartu jawaban ditumpuk satu kolom dengan navigasi bawah' },
+      tour: { file: 'rencana-ro-tur.v2.mp4', alt: 'Tur Rencana RO: beranda, bonus cair, rencana repeat order, kalender, riwayat tarikan, dan pengaturan pengingat' },
+      tourPoster: { file: 'rencana-ro-tur.v2.poster.webp', alt: 'Beranda Rencana RO' },
       tourTranscript:
-        'Tur tanpa suara, sekitar satu menit. Beranda yang terisi, lalu bonus yang sudah cair. Rencana repeat order per kaki dengan jumlah unit, biaya, dan alasannya. Kalender repeat order bulanan. Riwayat dan log tarikan data per jam. Pengaturan pengingat dan jadwal tarikan, lalu lonceng notifikasi.',
+        'Tur tanpa suara, sekitar 50 detik. Beranda dengan tiga tenggat repeat order terdekat, lalu bonus yang sudah cair. Daftar pengingat repeat order satu sampai tiga hari ke depan. Kalender repeat order bulanan. Riwayat dan log tarikan data per jam. Pengaturan pengingat dan jadwal tarikan, lalu lonceng notifikasi berisi pengingat yang sama.',
       demoNote:
         'Direkam dari build lokal di atas jaringan fiktif: nama, nomor anggota, poin, dan rupiah dibangkitkan mesin. Tidak ada data atau akun distributor sungguhan.',
       consent: 'studio',
@@ -713,22 +713,22 @@ export const PORTFOLIO: PortfolioEntry[] = [
       {
         title: 'Empat jawaban di satu layar',
         body: 'Bonus yang sudah cair, pembelian yang disarankan beserta perkiraan bonusnya, posisi untuk member baru, dan tenggat repeat order. Setiap angka menyebut tanggal datanya, dan yang bergantung asumsi diberi label perkiraan.',
-        screen: { file: 'rencana-ro-dashboard-ponsel.v1.webp', alt: 'Beranda di ponsel: kartu jawaban ditumpuk satu kolom' },
+        screen: { file: 'rencana-ro-dashboard-ponsel.v2.webp', alt: 'Beranda di ponsel: kartu jawaban ditumpuk satu kolom' },
       },
       {
         title: 'Rencana repeat order dengan alasan',
         body: 'Mesin aturan berlapis menyimulasikan pembelian di atas pohon jaringan distributor sendiri: siapa di kaki mana, berapa unit, berapa biayanya, dan kenapa. Rencana disimpan terstruktur per run, jadi tampilan baru berlaku mundur ke run lama.',
-        screen: { file: 'rencana-ro-rencana-ro.v1.webp', alt: 'Bilah poin kaki kiri dan kanan sebelum dan sesudah, dan daftar repeat order yang disarankan' },
+        screen: { file: 'rencana-ro-rencana-ro.v2.webp', alt: 'Bilah poin kaki kiri dan kanan sebelum dan sesudah, dan daftar repeat order yang disarankan' },
       },
       {
         title: 'Pengingat yang diatur sendiri',
         body: 'Distributor memilih hari pengingat, target yang dikejar, kanal, dan jam tarikan otomatis. Kalender repeat order bulanan bisa diekspor ke aplikasi kalender.',
-        screen: { file: 'rencana-ro-kalender.v1.webp', alt: 'Kalender repeat order bulanan dengan nama fiktif per tanggal, berwarna menurut status' },
+        screen: { file: 'rencana-ro-kalender.v2.webp', alt: 'Kalender repeat order bulanan dengan nama fiktif per tanggal, berwarna menurut status' },
       },
       {
         title: 'Tarikan per jam yang bisa diaudit',
         body: 'Penjadwal berdetak tiap jam untuk distributor yang jadwalnya jatuh. Satu login hanya boleh punya satu sesi, jadi run yang berjalan sekaligus menjadi kunci, dan setiap run mencatat log, durasi per fase, dan laporan.',
-        screen: { file: 'rencana-ro-riwayat-run.v1.webp', alt: 'Riwayat proses: tarikan terjadwal berstatus berhasil dengan tautan log dan ekspor laporan' },
+        screen: { file: 'rencana-ro-riwayat-run.v2.webp', alt: 'Riwayat proses: tarikan terjadwal berstatus berhasil dengan tautan log dan ekspor laporan' },
       },
     ],
     timeline: [
@@ -740,7 +740,7 @@ export const PORTFOLIO: PortfolioEntry[] = [
       { date: '3 Okt 2026', title: 'Satu beranda menggantikan empat mode dan enam laci', sourceRef: 'rencana-ro@ee1d450' },
     ],
     darkChapter: {
-      eyebrow: 'TUR · 60 DETIK',
+      eyebrow: 'TUR · 50 DETIK',
       title: 'Dari data mentah back office ke rencana minggu ini.',
       body: 'Rekaman berikut berjalan di atas jaringan fiktif yang dibangkitkan mesin. Yang Anda lihat adalah aplikasinya sendiri, bukan maket.',
     },
