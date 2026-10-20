@@ -55,6 +55,7 @@ export default buildConfig({
         Icon: '@/components/admin/Icon',
       },
       afterNavLinks: ['@/components/admin/OpsScoreNavLink'],
+      providers: ['@/components/admin/PasswordReveal'],
       views: {
         dashboard: {
           Component: '@/components/admin/Dashboard',

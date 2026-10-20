@@ -24,6 +24,7 @@ import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0
 import { default as default_534076e2c753ea5d539a54b05f456b1b } from '@/components/admin/Icon'
 import { default as default_a44df17d0fc3dcd873dae43dc3bf66bd } from '@/components/admin/Logo'
 import { default as default_1a3f22e9e23fc8987cc34ba53ac492f4 } from '@/components/admin/OpsScoreNavLink'
+import { default as default_58b1d5056445184463695a445f2109f2 } from '@/components/admin/PasswordReveal'
 import { default as default_0e7b23c75ea046975e1784ba01f82886 } from '@/components/admin/Dashboard'
 import { default as default_3656d190e1b78011cd1f6cf95dbde055 } from '@/components/admin/OpsScoreView'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
@@ -56,6 +57,7 @@ export const importMap = {
   "@/components/admin/Icon#default": default_534076e2c753ea5d539a54b05f456b1b,
   "@/components/admin/Logo#default": default_a44df17d0fc3dcd873dae43dc3bf66bd,
   "@/components/admin/OpsScoreNavLink#default": default_1a3f22e9e23fc8987cc34ba53ac492f4,
+  "@/components/admin/PasswordReveal#default": default_58b1d5056445184463695a445f2109f2,
   "@/components/admin/Dashboard#default": default_0e7b23c75ea046975e1784ba01f82886,
   "@/components/admin/OpsScoreView#default": default_3656d190e1b78011cd1f6cf95dbde055,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
