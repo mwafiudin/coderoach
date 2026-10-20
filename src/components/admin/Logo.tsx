@@ -1,5 +1,6 @@
 import { getPayload } from 'payload';
 import config from '@payload-config';
+import { BrandMark } from './BrandMark';
 
 /**
  * Logo shown on the admin login screen.
@@ -19,9 +20,11 @@ export default async function Logo() {
   }
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-      {logoUrl && (
+      {logoUrl ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={logoUrl} alt="" style={{ height: 32, width: 'auto' }} />
+      ) : (
+        <BrandMark size={32} />
       )}
       <span style={{ fontSize: 22, fontWeight: 600, letterSpacing: '-0.02em' }}>
         {siteName}
