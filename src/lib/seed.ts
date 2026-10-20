@@ -106,7 +106,7 @@ async function seed() {
       about: {
         pageHeading: 'Studio engineering. Measured execution.',
         pageLede:
-          'Coderoach Studio adalah tim engineer senior yang membangun software, otomasi, dan sistem data untuk bisnis di Indonesia. Setiap kolaborasi dikerjakan langsung oleh tim inti dengan dokumentasi handoff yang lengkap dan transfer ownership di akhir proyek.',
+          'Coderoach Studio adalah tim engineer senior yang membangun software, otomasi, dan sistem data untuk bisnis di Indonesia. Setiap kolaborasi dikerjakan langsung oleh tim inti dengan dokumentasi handoff yang lengkap dan akses penuh untuk menjalankan sistemnya, dengan opsi transfer source code lewat kesepakatan.',
         mission:
           'Membantu bisnis dan operator Indonesia membangun software yang benar-benar dipakai dalam operasional harian, bukan deliverable yang berhenti di tahap testing.',
         story: lexParagraphs([
@@ -397,7 +397,7 @@ async function seed() {
     { order: 1, tag: 'PHASE 01', icon: 'discover', name: 'Discover', what: 'Kami memetakan masalah sebenarnya, bukan hanya output yang diminta. Wawancara stakeholder, audit sistem berjalan, dan pengetatan scope sampai jelas.', deliv: 'Brief tertulis · technical scope · success metric' },
     { order: 2, tag: 'PHASE 02', icon: 'design', name: 'Design', what: 'Wireframe, data model, system architecture. Kami mendesain sesuatu yang bisa kami pertahankan di code, bukan hanya di Figma.', deliv: 'Clickable prototype · technical spec · ERD' },
     { order: 3, tag: 'PHASE 03', icon: 'layers', name: 'Build', what: 'Sprint dua mingguan dengan demo di tiap akhir sprint. Tanpa kejutan di akhir proyek. Continuous deploy sejak hari pertama.', deliv: 'Working software · deploy berkala' },
-    { order: 4, tag: 'PHASE 04', icon: 'handoff', name: 'Handoff', what: 'Dokumentasi lengkap, training tim Anda, source code, dan akses infrastruktur. Kami berperan sebagai partner support, bukan dependency permanen.', deliv: 'Source · docs · credential infra · support 30 hari' },
+    { order: 4, tag: 'PHASE 04', icon: 'handoff', name: 'Handoff', what: 'Dokumentasi lengkap, training tim Anda, dan akses penuh ke infrastruktur untuk menjalankan sistemnya. Transfer source code diatur lewat kesepakatan. Kami berperan sebagai partner support, bukan dependency permanen.', deliv: 'Docs · credential infra · support 30 hari' },
   ]);
   console.log('✓ ProcessPhases (4)');
 
@@ -415,7 +415,7 @@ async function seed() {
     { order: 4, question: 'Anda berbasis di mana?', answer: 'Remote-first, dengan tim inti berbasis di Jakarta. Klien dapat berada di mana pun di Indonesia atau Asia Tenggara. Kami biasa berkolaborasi via Google Meet, WhatsApp, atau on-site untuk kickoff dan milestone besar.' },
     { order: 5, question: 'Stack apa yang Anda gunakan?', answer: 'Pragmatis dan modern: Next.js, React Native, Node.js, Python, Postgres, BigQuery, Airflow, Anthropic/OpenAI. Stack disesuaikan dengan problem klien, bukan dengan resume kami.' },
     { order: 6, question: 'Apakah tersedia NDA?', answer: 'Tersedia. Mutual NDA standar dapat ditandatangani sebelum diskusi detail teknis dan bisnis.' },
-    { order: 7, question: 'Bagaimana setelah proyek selesai?', answer: 'Source code, infrastructure, dan dokumentasi sepenuhnya menjadi milik Anda. Anda dapat melanjutkan dengan retainer untuk improvement berikutnya, atau handoff bersih ke tim internal. Pilihan ada di tangan Anda.' },
+    { order: 7, question: 'Bagaimana setelah proyek selesai?', answer: 'Anda menguasai penuh sistemnya untuk dijalankan dan dikembangkan, beserta infrastruktur dan dokumentasinya. Anda dapat melanjutkan dengan retainer untuk improvement berikutnya, atau menyepakati transfer source code untuk handoff ke tim internal. Pilihan ada di tangan Anda.' },
   ]);
   console.log('✓ FAQs (7)');
 
