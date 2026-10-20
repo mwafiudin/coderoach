@@ -1,4 +1,6 @@
 import { Badge } from '../../_components/ui/Badge';
+import { Meta } from '../../_components/ui/Meta';
+import { CodeLine } from '../../_components/ui/CodeLine';
 import { Breadcrumbs } from '../../_components/detail/Breadcrumbs';
 import { ProseRenderer } from '../../_components/detail/ProseRenderer';
 import { PayloadImage } from '../../_components/ui/PayloadImage';
@@ -6,12 +8,13 @@ import { ProjectCover } from '../../_components/archive/ProjectCover';
 
 type Project = any;
 
-export function ClientCaseDetail({ project }: { project: Project }) {
+/** `as="div"` inside the overlay, where the catalog page already holds the <main> landmark. */
+export function ClientCaseDetail({ project, as: Root = 'main' }: { project: Project; as?: 'main' | 'div' }) {
   // featuredDetails carries default badge labels on every project, so only the featured one may use it.
   const fd = project.featured ? project.featuredDetails : null;
   const cover = project.coverImage;
   return (
-    <main>
+    <Root>
       {/* Hero — dark cinematic */}
       <section className="relative bg-ink text-paper overflow-hidden isolate" data-theme="dark">
         <div
@@ -38,7 +41,7 @@ export function ClientCaseDetail({ project }: { project: Project }) {
           </div>
           {(fd?.metaLine || project.meta) && (
             <span className="block font-mono text-[11px] uppercase tracking-wider text-mist-500 mb-4 tabular">
-              {fd?.metaLine || project.meta}
+              <Meta parts={fd?.metaLine || project.meta} />
             </span>
           )}
           <h1 className="text-[clamp(40px,5.5vw,72px)] font-bold tracking-[-0.025em] leading-[1.05] my-6 max-w-[20ch] text-balance">
@@ -103,7 +106,7 @@ export function ClientCaseDetail({ project }: { project: Project }) {
                 {fd.codePanel.lines.map((l: any, i: number) => (
                   <div key={i} className="flex">
                     <span className="text-mist-600 inline-block w-[22px]">{i + 1}</span>
-                    <span dangerouslySetInnerHTML={{ __html: l.line || '' }} />
+                    <CodeLine line={l.line} />
                   </div>
                 ))}
               </div>
@@ -160,6 +163,6 @@ export function ClientCaseDetail({ project }: { project: Project }) {
           </div>
         </section>
       )}
-    </main>
+    </Root>
   );
 }

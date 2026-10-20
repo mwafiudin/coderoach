@@ -60,6 +60,9 @@
 
   a { color: inherit; text-decoration: none; }
 
+  /* The project overlay scrolls on its own; the catalog behind it stays put. */
+  html:has(dialog.project-overlay[open]) { overflow: hidden; }
+
   /* View Transitions API — smooth cross-fade between routes */
   ::view-transition-old(root) {
     animation: fadeOut 200ms var(--ease-out-quint);
@@ -126,6 +129,14 @@
   /* Trusted-by marquee */
   @keyframes marquee { to { transform: translateX(-50%); } }
   .animate-marquee { animation: marquee 50s linear infinite; }
+  [data-marquee]:hover .animate-marquee,
+  [data-marquee]:focus-within .animate-marquee,
+  [data-marquee][data-paused] .animate-marquee { animation-play-state: paused; }
+  /* Still, the row would just be cut off at the edge: wrap it and drop the loop's second copy. */
+  @media (prefers-reduced-motion: reduce) {
+    [data-marquee] .marquee-track { flex-wrap: wrap; flex-shrink: 1; row-gap: 20px; }
+    [data-marquee] .marquee-track[aria-hidden] { display: none; }
+  }
 
   /* Octagon spinner (loading states) */
   @keyframes octagonSpin {
@@ -146,10 +157,14 @@
   }
   .animate-ops-row-in { animation: opsRowIn 320ms var(--ease-out-quint); }
 
-  /* Section reveal stagger (IntersectionObserver-driven) */
-  .reveal { opacity: 0; transform: translateY(14px); transition: opacity 720ms var(--ease-out-quint), transform 720ms var(--ease-out-quint); }
+  /* Section reveal stagger (IntersectionObserver-driven). Content is visible by default
+     (PRODUCT.md); it only starts hidden where a script will reveal it and motion is welcome.
+     Without JavaScript, the /work grid used to stay invisible. */
+  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+    .reveal { opacity: 0; transform: translateY(14px); transition: opacity 720ms var(--ease-out-quint), transform 720ms var(--ease-out-quint); }
+    .reveal-stagger > * { opacity: 0; transform: translateY(10px); transition: opacity 640ms var(--ease-out-quint), transform 640ms var(--ease-out-quint); }
+  }
   .reveal.in { opacity: 1; transform: none; }
-  .reveal-stagger > * { opacity: 0; transform: translateY(10px); transition: opacity 640ms var(--ease-out-quint), transform 640ms var(--ease-out-quint); }
   .reveal-stagger.in > * { opacity: 1; transform: none; }
   .reveal-stagger.in > *:nth-child(1) { transition-delay: 0ms; }
   .reveal-stagger.in > *:nth-child(2) { transition-delay: 80ms; }
@@ -211,8 +226,11 @@
     animation-delay: calc(var(--n-i, 0) * 140ms + 300ms);
   }
 
-  :is(.reveal, .reveal-stagger):not(.in) :is(.narrative-grow, .narrative-fill, .narrative-pop, .narrative-rise) {
-    animation-play-state: paused;
+  /* Paused only where a script will add .in; without one they would freeze at scale 0. */
+  @media (scripting: enabled) {
+    :is(.reveal, .reveal-stagger):not(.in) :is(.narrative-grow, .narrative-fill, .narrative-pop, .narrative-rise) {
+      animation-play-state: paused;
+    }
   }
 
   /* Warning dot on the missing-figure tile */
@@ -226,6 +244,80 @@
     .narrative-grow, .narrative-fill, .narrative-pop, .narrative-rise, .animate-pulse-warn {
       animation: none !important;
     }
+  }
+}
+
+/* ============================================================
+   PROJECT STORY — /work/[slug] (ADR 0003, work/_story/).
+   Every rule that moves something reads --p with its resting value as the fallback,
+   so without JS, with reduced motion, and in the overlay the page is simply finished.
+   StoryEnhancer writes --p (0 to 1) on [data-scene] and sets data-motion="on".
+   ============================================================ */
+@layer components {
+  /* Hero: the laptop and the phone drift up at different rates as the hero leaves. */
+  .story-hero .story-rise { translate: 0 calc(var(--p, 0) * -36px); }
+  .story-hero .story-phone { translate: 0 calc(var(--p, 0) * -96px); }
+  @keyframes storyFloat { to { transform: translateY(-8px); } }
+  .story[data-motion='on'] .story-float { animation: storyFloat 5s var(--ease-default) infinite alternate; }
+
+  .story-phone video { opacity: 0; transition: opacity 500ms var(--ease-out-quint); }
+  .story-phone video.is-playing { opacity: 1; }
+  .story-loop-toggle[aria-pressed='false'] .story-icon-play,
+  .story-loop-toggle[aria-pressed='true'] .story-icon-pause { display: none; }
+
+  /* Metrics come up one after another, and go back down when scrolled back. */
+  .story-metric {
+    --t: clamp(0, calc(var(--p, 1) * 2.4 - var(--i, 0) * 0.45), 1);
+    opacity: var(--t);
+    translate: 0 calc((1 - var(--t)) * 28px);
+  }
+
+  /* The tour grows into place and its corners tighten. */
+  .story-tour {
+    scale: calc(0.9 + 0.1 * var(--p, 1));
+    border-radius: calc(30px - 12px * var(--p, 1));
+  }
+
+  .story-timeline__fill { scale: 1 var(--p, 1); transform-origin: top; }
+
+  .story-transcript summary::marker { color: var(--color-mist-500); }
+  /* The prose "##" ornament reads as a dev blog after a product page. */
+  .story .prose-coderoach h2::before { content: none; }
+
+  /* Features: rows by default (mobile, overlay, no JS, reduced motion)... */
+  .story-feature { display: grid; gap: 28px; align-items: center; }
+  .story-feature + .story-feature { margin-top: clamp(64px, 8vw, 112px); }
+  .story-feature__shot--tall { width: min(300px, 72%); margin-inline: auto; }
+  @media (min-width: 1024px) {
+    .story-feature { grid-template-columns: 1fr 1.35fr; gap: 64px; }
+
+    /* ...one pinned scene on a wide screen with motion: the shots share the second column's
+       full height, stick together, and cross-fade as each text reaches the middle. */
+    .story[data-motion='on'] .story-features { display: grid; grid-template-columns: 1fr 1.35fr; column-gap: 64px; }
+    .story[data-motion='on'] .story-feature { display: contents; }
+    .story[data-motion='on'] .story-feature__text {
+      grid-column: 1;
+      grid-row: var(--row);
+      min-height: 72vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      opacity: 0.45;
+      transition: opacity 400ms var(--ease-out-quint);
+    }
+    .story[data-motion='on'] .story-feature__shot {
+      grid-column: 2;
+      grid-row: 1 / span var(--n);
+      align-self: start;
+      position: sticky;
+      top: max(96px, calc(50vh - 230px));
+      opacity: 0;
+      scale: 0.96;
+      transition: opacity 500ms var(--ease-out-quint), scale 600ms var(--ease-out-quint);
+    }
+    .story[data-motion='on'] .story-feature__shot--tall { width: min(280px, 34vh); }
+    .story[data-motion='on'] .story-feature[data-current] .story-feature__text { opacity: 1; }
+    .story[data-motion='on'] .story-feature[data-current] .story-feature__shot { opacity: 1; scale: 1; }
   }
 }
 
@@ -281,7 +373,9 @@
   }
   .reveal-stagger.in .ops-highlight { animation: opsHighlight 1200ms var(--ease-out-quint) 500ms both; }
   /* Bars inside a list or card that is not revealed yet wait for it */
-  .reveal-stagger:not(.in) .ops-bar-fill { animation-play-state: paused; }
+  @media (scripting: enabled) {
+    .reveal-stagger:not(.in) .ops-bar-fill { animation-play-state: paused; }
+  }
   /* The area list has eight rows; the site's stagger stops at seven */
   .reveal-stagger.in > *:nth-child(8) { transition-delay: 560ms; }
 

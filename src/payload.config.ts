@@ -21,6 +21,8 @@ import { Submissions } from './collections/Submissions';
 import { Pages } from './collections/Pages';
 import { AssessmentSessions } from './collections/AssessmentSessions';
 import { AssessmentLeads } from './collections/AssessmentLeads';
+import { LinkChecks } from './collections/LinkChecks';
+import { checkLinksTask } from './jobs/checkLinks';
 
 // Globals
 import { Hero } from './globals/Hero';
@@ -105,10 +107,29 @@ export default buildConfig({
     Submissions,
     AssessmentSessions,
     AssessmentLeads,
+    LinkChecks,
   ],
   globals: [Hero, Studio, Contact, TopBar, SiteSettings, BlogSettings],
+  // Live-link checks (ADR 0007). Crons start only where getPayload runs with cron: true (requests,
+  // /api/health), never in `next build` or tsx scripts. Off unless PORTFOLIO_LINKCHECK=on in production;
+  // an empty autoRun means no ticks at all, which matters for `npm run dev` against production.
+  jobs: {
+    tasks: [checkLinksTask],
+    autoRun:
+      process.env.NODE_ENV === 'production' && process.env.PORTFOLIO_LINKCHECK === 'on'
+        ? [{ cron: '0 */5 * * * *', queue: 'linkcheck', limit: 1 }]
+        : [],
+    deleteJobOnComplete: true,
+    access: {
+      run: ({ req }) => Boolean(req.user),
+      queue: ({ req }) => Boolean(req.user),
+      cancel: ({ req }) => Boolean(req.user),
+    },
+  },
+  // Nothing here uses GraphQL, and its schema never built anyway: the "faq" block and the "faqs"
+  // collection both claim the type name Faq, so every request was a 500. Off is one less endpoint.
   graphQL: {
-    disablePlaygroundInProduction: true,
+    disable: true,
   },
   email: process.env.RESEND_API_KEY
     ? resendAdapter({

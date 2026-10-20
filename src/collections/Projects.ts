@@ -1,6 +1,16 @@
 import type { CollectionConfig } from 'payload';
+import { safeHref } from '../lib/portfolio/links';
+import { INDUSTRIES, RETIRED_INDUSTRIES } from '../lib/portfolio/taxonomy';
+import { validateCodeLine } from '../lib/codeLine';
 import { revalidateProject } from '../lib/revalidate';
 import { autoSlug } from '../lib/slugify';
+
+const media = (name: string, description?: string) => ({
+  name,
+  type: 'upload' as const,
+  relationTo: 'media' as const,
+  ...(description ? { admin: { description } } : {}),
+});
 
 export const Projects: CollectionConfig = {
   slug: 'projects',
@@ -66,6 +76,7 @@ export const Projects: CollectionConfig = {
       options: [
         { label: 'Client case study', value: 'client' },
         { label: 'Studio product', value: 'studio' },
+        { label: 'Lab (personal project)', value: 'lab' },
       ],
       admin: {
         position: 'sidebar',
@@ -97,14 +108,10 @@ export const Projects: CollectionConfig = {
       name: 'industry',
       type: 'select',
       index: true,
+      // One list with Clients and Coderoach OS (taxonomy.ts). Retired values stay so the enum only grows.
       options: [
-        { label: 'F&B', value: 'fb' },
-        { label: 'Logistics', value: 'logistics' },
-        { label: 'Finance', value: 'finance' },
-        { label: 'Agency', value: 'agency' },
-        { label: 'VC', value: 'vc' },
-        { label: 'Manufacturing', value: 'manufacturing' },
-        { label: 'Other', value: 'other' },
+        ...INDUSTRIES.map((i) => ({ label: i.label, value: i.value })),
+        ...RETIRED_INDUSTRIES.map((v) => ({ label: `${v} (lama)`, value: v })),
       ],
       admin: { position: 'sidebar' },
     },
@@ -170,7 +177,7 @@ export const Projects: CollectionConfig = {
               },
               fields: [
                 { name: 'badgeLabel', type: 'text', defaultValue: '[ FEATURED · 2026 ]' },
-                { name: 'shippedLabel', type: 'text', defaultValue: '[ ✓ SHIPPED ]' },
+                { name: 'shippedLabel', type: 'text', defaultValue: '[ SHIPPED ]' },
                 { name: 'metaLine', type: 'text' },
                 { name: 'headline', type: 'textarea' },
                 { name: 'description', type: 'textarea' },
@@ -190,7 +197,14 @@ export const Projects: CollectionConfig = {
                   fields: [
                     { name: 'tag', type: 'text', defaultValue: '[ .TS ]' },
                     { name: 'path', type: 'text' },
-                    { name: 'lines', type: 'array', fields: [{ name: 'line', type: 'text' }] },
+                    {
+                      name: 'lines',
+                      type: 'array',
+                      admin: {
+                        description: 'Plain text. Colour a word with <span style="color:#C4C0C5">word</span>, indent with &nbsp;.',
+                      },
+                      fields: [{ name: 'line', type: 'text', validate: validateCodeLine }],
+                    },
                   ],
                 },
                 { name: 'stack', type: 'array', fields: [{ name: 'tech', type: 'text', required: true }] },
@@ -253,6 +267,129 @@ export const Projects: CollectionConfig = {
           ],
         },
         {
+          label: 'Bukti & halaman',
+          description:
+            'The project page (ADR 0003). Written by scripts/portfolio-sync.ts from projects.ts; every client number, image, and quote needs a recorded permission (ADR 0009).',
+          fields: [
+            {
+              name: 'summary',
+              type: 'group',
+              admin: { description: 'Problem, solution, result: the first screen of the page.' },
+              fields: [
+                { name: 'problem', type: 'textarea' },
+                { name: 'solution', type: 'textarea' },
+                { name: 'result', type: 'textarea' },
+              ],
+            },
+            {
+              name: 'showcase',
+              type: 'group',
+              fields: [
+                {
+                  name: 'frame',
+                  type: 'select',
+                  defaultValue: 'laptop',
+                  options: ['laptop', 'phone', 'browser'].map((value) => ({ label: value, value })),
+                },
+                media('screen', 'Hero screenshot inside the device frame.'),
+                media('screenPhone', 'Optional phone screenshot beside the laptop.'),
+                media('loop', 'Muted 3-6 s preview loop (mp4, at most 600 KB).'),
+                media('loopPoster'),
+                media('tour', 'Tour recording (mp4, at most 8 MB).'),
+                media('tourPoster'),
+                media('tourCaptions', 'WebVTT captions for the tour.'),
+                { name: 'tourTranscript', type: 'textarea', admin: { description: 'Text alternative for the tour.' } },
+                { name: 'demoNote', type: 'text', admin: { description: 'e.g. "Data contoh, bukan data klien."' } },
+              ],
+            },
+            {
+              name: 'links',
+              type: 'array',
+              fields: [
+                {
+                  name: 'kind',
+                  type: 'select',
+                  defaultValue: 'live',
+                  options: ['live', 'demo', 'archive', 'repo'].map((value) => ({ label: value, value })),
+                },
+                { name: 'label', type: 'text' },
+                {
+                  name: 'href',
+                  type: 'text',
+                  // The page drops anything else anyway (safeHref); this says so while typing.
+                  validate: (value: string | null | undefined) =>
+                    !value || safeHref(value) !== null || 'Link harus https:// tanpa username/password.',
+                },
+                { name: 'check', type: 'checkbox', defaultValue: true, admin: { description: 'Probed by the checkLinks job.' } },
+                media('snapshot', 'Dated screenshot shown when the link is down.'),
+                { name: 'snapshotTakenAt', type: 'date' },
+              ],
+            },
+            {
+              name: 'metrics',
+              type: 'array',
+              admin: { description: 'Sourced numbers (src/lib/portfolio/metrics.ts).' },
+              fields: [
+                { name: 'key', type: 'text' },
+                { name: 'value', type: 'text' },
+                { name: 'unit', type: 'text' },
+                { name: 'label', type: 'text' },
+                { name: 'baselineValue', type: 'text' },
+                { name: 'baselineUnit', type: 'text' },
+                {
+                  name: 'status',
+                  type: 'select',
+                  defaultValue: 'measured',
+                  options: ['measured', 'target'].map((value) => ({ label: value, value })),
+                },
+                { name: 'measuredAt', type: 'date' },
+                { name: 'method', type: 'textarea' },
+                { name: 'sourceRef', type: 'text' },
+                { name: 'verifyUrl', type: 'text' },
+                { name: 'featured', type: 'checkbox', defaultValue: false },
+              ],
+            },
+            {
+              name: 'beforeAfter',
+              type: 'array',
+              fields: [
+                { name: 'label', type: 'text' },
+                media('before'),
+                media('after'),
+                { name: 'beforeDate', type: 'date' },
+                { name: 'afterDate', type: 'date' },
+                { name: 'caption', type: 'text' },
+                { name: 'sourceUrl', type: 'text' },
+              ],
+            },
+            {
+              name: 'features',
+              type: 'array',
+              fields: [{ name: 'title', type: 'text' }, { name: 'body', type: 'textarea' }, media('screen')],
+            },
+            {
+              name: 'timeline',
+              type: 'array',
+              fields: [
+                { name: 'date', type: 'text', admin: { description: 'As shown, e.g. "29 Jul 2026".' } },
+                { name: 'title', type: 'text' },
+                { name: 'detail', type: 'textarea' },
+                { name: 'sourceRef', type: 'text' },
+              ],
+            },
+            {
+              name: 'darkChapter',
+              type: 'group',
+              admin: { description: 'At most one dark section per page, never the hero.' },
+              fields: [
+                { name: 'eyebrow', type: 'text' },
+                { name: 'title', type: 'text' },
+                { name: 'body', type: 'textarea' },
+              ],
+            },
+          ],
+        },
+        {
           label: 'Testimonial & related',
           fields: [
             {
@@ -262,6 +399,8 @@ export const Projects: CollectionConfig = {
                 { name: 'quote', type: 'textarea' },
                 { name: 'author', type: 'text' },
                 { name: 'role', type: 'text' },
+                { name: 'company', type: 'text' },
+                { name: 'givenAt', type: 'date' },
               ],
             },
             {

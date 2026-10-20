@@ -1,25 +1,14 @@
 import type { Metadata } from 'next';
-import localFont from 'next/font/local';
-import { JetBrains_Mono } from 'next/font/google';
 import { getPayload } from 'payload';
 import config from '@payload-config';
 import '../globals.css';
+import { jetbrainsMono, satoshi } from '../fonts';
 import { ToastProvider } from './_components/ui/Toast';
 import { Analytics } from './_components/Analytics';
 
-const satoshi = localFont({
-  src: '../../../public/fonts/Satoshi-Variable.ttf',
-  variable: '--font-sans',
-  display: 'swap',
-  weight: '100 900',
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  variable: '--font-mono',
-  display: 'swap',
-  weight: ['400', '500', '700'],
-});
+// Media URLs are relative (/api/media/file/...). Without a base, Next resolved og:image against
+// localhost, so every shared project link previewed without its image.
+const metadataBase = new URL(process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000');
 
 export async function generateMetadata(): Promise<Metadata> {
   const fallbackName = process.env.NEXT_PUBLIC_SITE_NAME || 'Studio';
@@ -37,10 +26,11 @@ export async function generateMetadata(): Promise<Metadata> {
       : '';
     const description =
       siteSettings?.siteDescription || tagline || fallbackDescription;
-    const title = tagline ? `${siteName} · ${tagline}` : siteName;
+    const title = tagline ? `${siteName} | ${tagline}` : siteName;
     const faviconUrl = siteSettings?.favicon?.url;
     const ogImageUrl = siteSettings?.ogImage?.url;
     return {
+      metadataBase,
       title,
       description,
       icons: faviconUrl ? { icon: faviconUrl } : { icon: '/assets/coderoach_logo.svg' },
@@ -53,6 +43,7 @@ export async function generateMetadata(): Promise<Metadata> {
     };
   } catch {
     return {
+      metadataBase,
       title: fallbackName,
       description: fallbackDescription,
       icons: { icon: '/assets/coderoach_logo.svg' },

@@ -1,5 +1,6 @@
 import { SectionHead, type SectionHeadCopy } from './SectionHead';
 import { CoverPlaceholder, ProjectCover } from './archive/ProjectCover';
+import { Meta } from './ui/Meta';
 
 type StudioProject = {
   id: string | number;
@@ -60,7 +61,7 @@ export function Products({ items, head }: { items: StudioProject[]; head?: Secti
                   <ul className="list-none p-0 m-0 grid grid-cols-2 gap-x-4 gap-y-2 mt-2 mb-4">
                     {p.studio.bullets.map((b) => (
                       <li key={b.bullet} className="text-sm flex gap-2 text-ink">
-                        <span className="text-mist-500">—</span>
+                        <span aria-hidden className="text-mist-500">—</span>
                         {b.bullet}
                       </li>
                     ))}
@@ -68,9 +69,10 @@ export function Products({ items, head }: { items: StudioProject[]; head?: Secti
                 )}
                 <div className="border-t border-paper-200/60 pt-4 flex justify-between items-center gap-4 flex-wrap">
                   {(p.publishedYear || p.studio?.usage) && (
-                    <span className="font-mono text-xs uppercase tracking-wider text-mist-600 tabular">
-                      LIVE {p.publishedYear} {p.studio?.usage && `· ${p.studio.usage}`}
-                    </span>
+                    <Meta
+                      parts={[p.publishedYear ? `LIVE ${p.publishedYear}` : 'LIVE', p.studio?.usage]}
+                      className="font-mono text-xs uppercase tracking-wider text-mist-600 tabular"
+                    />
                   )}
                   <div className="flex items-center gap-3">
                     <a
@@ -120,17 +122,11 @@ function LaportaViz() {
   return (
     <div className="absolute inset-[18px] rounded-lg bg-paper-50 border border-paper-200 p-3.5 grid grid-cols-[1.4fr_1fr] grid-rows-[auto_1fr] gap-2.5 font-mono text-[11px] tabular">
       <div className="col-span-full flex justify-between text-mist-600 tracking-wide">
-        <span>[ LAPORTA · OUTLET-04 ]</span>
-        <span className="inline-flex items-center gap-1.5 text-[#5DD79A]">
-          <span className="relative flex w-1.5 h-1.5">
-            <span className="absolute inset-0 rounded-full bg-success animate-pulse-dot" />
-            <span className="relative w-1.5 h-1.5 rounded-full bg-success" />
-          </span>
-          LIVE
-        </span>
+        <span className="whitespace-nowrap">[ LAPORTA · OUTLET-04 ]</span>
+        <span title="Gambar contoh, bukan data langsung">ILUSTRASI</span>
       </div>
       <div className="bg-paper-100 rounded-md relative overflow-hidden p-2.5">
-        <svg viewBox="0 0 200 80" preserveAspectRatio="none" className="w-full h-full">
+        <svg aria-hidden viewBox="0 0 200 80" preserveAspectRatio="none" className="w-full h-full">
           <path d="M0,55 L20,48 L40,52 L60,38 L80,42 L100,28 L120,32 L140,18 L160,22 L180,12 L200,8" stroke="var(--color-electric)" strokeWidth="1.5" fill="none" pathLength="1" className="animate-draw-line" />
           <path d="M0,55 L20,48 L40,52 L60,38 L80,42 L100,28 L120,32 L140,18 L160,22 L180,12 L200,8 L200,80 L0,80 Z" fill="var(--color-electric)" opacity="0.10" />
           <line x1="0" y1="60" x2="200" y2="60" stroke="var(--color-paper-200)" strokeDasharray="2 2" />
@@ -158,15 +154,15 @@ function LaportaViz() {
 
 function ViralyticsViz() {
   const rows: Array<{ av: string; bg: string; name: string; tier: string; reach: string; delta: string; deltaColor?: string }> = [
-    { av: 'RA', bg: 'linear-gradient(135deg,var(--color-electric),#5DD79A)', name: '@rara.makan', tier: 'tier-3 · F&B', reach: '412k', delta: '+38%' },
-    { av: 'BD', bg: 'linear-gradient(135deg,#F2A93B,#E5484D)', name: '@bagasdoyan', tier: 'tier-2 · lifestyle', reach: '186k', delta: '+12%' },
-    { av: 'NK', bg: 'linear-gradient(135deg,#A7A2A9,#3A4140)', name: '@niko.kuliner', tier: 'tier-2 · review', reach: '94k', delta: '-3%', deltaColor: '#E5484D' },
-    { av: 'AS', bg: 'linear-gradient(135deg,#5DD79A,#2C70FE)', name: '@aulia.story', tier: 'tier-1 · macro', reach: '1.4M', delta: '+92%' },
+    { av: 'RA', bg: 'linear-gradient(135deg,var(--color-electric),#5DD79A)', name: '@contoh.kuliner', tier: 'tier-3 · F&B', reach: '412k', delta: '+38%' },
+    { av: 'BD', bg: 'linear-gradient(135deg,#F2A93B,#E5484D)', name: '@contoh.gaya', tier: 'tier-2 · lifestyle', reach: '186k', delta: '+12%' },
+    { av: 'NK', bg: 'linear-gradient(135deg,#A7A2A9,#3A4140)', name: '@contoh.ulasan', tier: 'tier-2 · review', reach: '94k', delta: '-3%', deltaColor: '#E5484D' },
+    { av: 'AS', bg: 'linear-gradient(135deg,#5DD79A,#2C70FE)', name: '@contoh.cerita', tier: 'tier-1 · macro', reach: '1.4M', delta: '+92%' },
   ];
   return (
     <div className="absolute inset-[18px] rounded-lg bg-shadow-900 text-paper p-4 font-mono text-[11px] flex flex-col gap-2 overflow-hidden tabular">
       <div className="flex justify-between text-mist-500 tracking-wider">
-        <span>[ AYANA-Q3 · 12/40 LIVE ]</span>
+        <Meta parts={['[ CONTOH KAMPANYE', 'ILUSTRASI ]']} />
         <span className="inline-flex items-center gap-1.5 text-[#5DD79A]">
           <span className="relative flex w-1.5 h-1.5">
             <span className="absolute inset-0 rounded-full bg-success animate-pulse-dot" />
@@ -182,7 +178,7 @@ function ViralyticsViz() {
           </div>
           <div>
             <div className="text-paper font-sans font-semibold text-[13px]">{r.name}</div>
-            <div className="text-mist-500">{r.tier}</div>
+            <Meta parts={r.tier} className="text-mist-500" />
           </div>
           <div className="text-mist-500 text-right">{r.reach}</div>
           <div className="text-right" style={{ color: r.deltaColor || 'var(--color-electric)' }}>{r.delta}</div>
