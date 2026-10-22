@@ -3,15 +3,7 @@ import { getPayload } from 'payload';
 import config from '@payload-config';
 import { clientIp, crossSite, findSession, rateLimited } from '@/lib/opsscore/api';
 import { verifyTurnstile } from '@/lib/turnstile';
-
-const ALLOWED_SCOPES = new Set([
-  'Build',
-  'Automate',
-  'Intelligence',
-  'Augment',
-  'Belum yakin',
-  'Other',
-]);
+import { scopeValue } from '@/lib/landing/scope';
 
 const MAX_PER_WINDOW = 5;
 
@@ -71,7 +63,7 @@ export async function POST(req: NextRequest) {
   if (brief.length > 5000) {
     return NextResponse.json({ ok: false, code: 'brief_too_long', error: 'Brief terlalu panjang. Maksimal 5000 karakter.' }, { status: 400 });
   }
-  const finalScope = ALLOWED_SCOPES.has(scope) ? scope : 'Other';
+  const finalScope = scopeValue(scope);
   const hasilId = typeof body?.hasil_id === 'string' ? body.hasil_id : '';
 
   try {
@@ -82,7 +74,7 @@ export async function POST(req: NextRequest) {
       collection: 'submissions',
       data: {
         email,
-        scope: finalScope as 'Build' | 'Automate' | 'Intelligence' | 'Augment' | 'Belum yakin' | 'Other',
+        scope: finalScope,
         brief,
         userAgent: req.headers.get('user-agent') || '',
         referrer: req.headers.get('referer') || '',

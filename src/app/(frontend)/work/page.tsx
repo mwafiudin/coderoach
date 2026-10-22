@@ -63,13 +63,15 @@ export default async function WorkArchivePage({ searchParams }: { searchParams: 
   }));
 
   const industries = new Set(projects.map((p) => p.industry || 'other'));
+  // "Lainnya" is a filter, not an industry we can claim.
+  const named = [...industries].filter((i) => i !== 'other').length;
 
   return (
     <SectionShell>
       <CatalogClient
         projects={projects}
         initial={{ pilar: one(params.pilar), bidang: one(params.bidang) }}
-        headline={`${projects.length} proyek, ${industries.size} bidang usaha.`}
+        headline={`${projects.length} proyek, ${named} bidang usaha.`}
         industryLabels={Object.fromEntries([...industries].map((i) => [i, industryLabel(i)]))}
       />
     </SectionShell>

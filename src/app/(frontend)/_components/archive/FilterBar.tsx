@@ -1,6 +1,6 @@
 'use client';
 
-type Option = { value: string; label: string; count?: number; href: string };
+type Option = { value: string; label: string; count?: number; href: string; disabled?: boolean };
 type Variant = 'segmented' | 'chips';
 
 /**
@@ -34,13 +34,22 @@ export function FilterBar({
         <div className="inline-flex items-center bg-paper-100 border border-paper-200 rounded-2xl sm:rounded-full p-1 gap-0.5 flex-wrap">
           {options.map((opt) => {
             const isActive = opt.value === active;
+            const base = 'h-8 px-4 rounded-full font-mono text-[11px] font-medium tracking-wider uppercase tabular flex items-center whitespace-nowrap';
+            if (opt.disabled) {
+              return (
+                <span key={opt.value} aria-disabled="true" className={`${base} text-mist-400 cursor-default`}>
+                  {opt.label}
+                  {opt.count !== undefined && <span className="ml-1.5 tabular">{opt.count}</span>}
+                </span>
+              );
+            }
             return (
               <a
                 key={opt.value}
                 href={opt.href}
                 onClick={click(opt)}
                 aria-current={isActive ? 'true' : undefined}
-                className={`h-8 px-4 rounded-full font-mono text-[11px] font-medium tracking-wider uppercase transition-all active:scale-[0.97] tabular flex items-center whitespace-nowrap
+                className={`${base} transition-all active:scale-[0.97]
                   ${isActive ? 'bg-ink text-paper shadow-[0_2px_6px_-2px_rgba(8,9,10,0.3)]' : 'text-mist-600 hover:text-ink'}`}
               >
                 {opt.label}
@@ -61,13 +70,22 @@ export function FilterBar({
       <span className="w-16 text-[11px] font-semibold uppercase tracking-[0.18em] text-mist-600 shrink-0 mr-2">{label}</span>
       {options.map((opt) => {
         const isActive = opt.value === active;
+        const base = 'h-7 px-2.5 rounded-md font-mono text-[10px] font-medium tracking-wider uppercase tabular flex items-center whitespace-nowrap border';
+        if (opt.disabled) {
+          return (
+            <span key={opt.value} aria-disabled="true" className={`${base} border-transparent text-mist-400 cursor-default`}>
+              {opt.label}
+              {opt.count !== undefined && <span className="ml-1">{opt.count}</span>}
+            </span>
+          );
+        }
         return (
           <a
             key={opt.value}
             href={opt.href}
             onClick={click(opt)}
             aria-current={isActive ? 'true' : undefined}
-            className={`h-7 px-2.5 rounded-md font-mono text-[10px] font-medium tracking-wider uppercase transition-colors active:scale-[0.97] tabular flex items-center whitespace-nowrap
+            className={`${base} transition-colors active:scale-[0.97]
               ${
                 isActive
                   ? 'bg-electric/[0.08] text-electric border border-electric/30'

@@ -6,6 +6,7 @@ import { FilterBar } from '../_components/archive/FilterBar';
 import type { CardPreviewMedia } from '../_components/archive/CardPreview';
 import { ProjectCard } from '../_components/archive/ProjectCard';
 import { Breadcrumbs } from '../_components/detail/Breadcrumbs';
+import { facetCounts, matches } from '@/lib/portfolio/facets';
 
 export type CatalogProject = {
   id: string | number;
@@ -51,37 +52,46 @@ export function CatalogClient({
 }) {
   const [filters, setFilters] = useState<Filters>(initial);
 
-  const pillarOptions = useMemo(() => {
-    const counts = new Map<string, { label: string; count: number }>();
-    for (const p of projects) {
-      if (!p.pillar) continue;
-      const c = counts.get(p.pillar.slug) ?? { label: p.pillar.label, count: 0 };
-      counts.set(p.pillar.slug, { ...c, count: c.count + 1 });
-    }
-    return [
-      { value: '', label: 'Semua', count: projects.length, href: hrefFor({ ...filters, pilar: '' }) },
-      ...[...counts].map(([slug, c]) => ({ value: slug, label: c.label, count: c.count, href: hrefFor({ ...filters, pilar: slug }) })),
-    ];
-  }, [projects, filters]);
-
-  const industryOptions = useMemo(() => {
-    const counts = new Map<string, number>();
-    for (const p of projects) counts.set(p.industry || 'other', (counts.get(p.industry || 'other') ?? 0) + 1);
-    return [
-      { value: '', label: 'Semua bidang', href: hrefFor({ ...filters, bidang: '' }) },
-      ...[...counts]
-        .sort(([a], [b]) => (industryLabels[a] ?? a).localeCompare(industryLabels[b] ?? b, 'id'))
-        .map(([value, count]) => ({ value, label: industryLabels[value] ?? value, count, href: hrefFor({ ...filters, bidang: value }) })),
-    ];
-  }, [projects, filters, industryLabels]);
-
-  const filtered = useMemo(
-    () =>
-      projects.filter(
-        (p) => (!filters.pilar || p.pillar?.slug === filters.pilar) && (!filters.bidang || (p.industry || 'other') === filters.bidang),
-      ),
-    [projects, filters],
+  const faceted = useMemo(
+    () => projects.map((p) => ({ pillar: p.pillar?.slug ?? '', industry: p.industry || 'other' })),
+    [projects],
   );
+  const counts = useMemo(() => facetCounts(faceted, filters), [faceted, filters]);
+
+  // Every option stays in place so the bar doesn't reflow; one that would empty the list is
+  // disabled rather than hidden. The active one never is, even when a shared URL combines two
+  // filters that have nothing in common.
+  const pillarOptions = useMemo(() => {
+    const labels = new Map(projects.flatMap((p) => (p.pillar ? [[p.pillar.slug, p.pillar.label] as const] : [])));
+    return [
+      { value: '', label: 'Semua', count: counts.allPillars, href: hrefFor({ ...filters, pilar: '' }) },
+      ...[...counts.pillar].map(([slug, count]) => ({
+        value: slug,
+        label: labels.get(slug) ?? slug,
+        count,
+        disabled: count === 0 && slug !== filters.pilar,
+        href: hrefFor({ ...filters, pilar: slug }),
+      })),
+    ];
+  }, [projects, counts, filters]);
+
+  const industryOptions = useMemo(
+    () => [
+      { value: '', label: 'Semua bidang', href: hrefFor({ ...filters, bidang: '' }) },
+      ...[...counts.industry]
+        .sort(([a], [b]) => (industryLabels[a] ?? a).localeCompare(industryLabels[b] ?? b, 'id'))
+        .map(([value, count]) => ({
+          value,
+          label: industryLabels[value] ?? value,
+          count,
+          disabled: count === 0 && value !== filters.bidang,
+          href: hrefFor({ ...filters, bidang: value }),
+        })),
+    ],
+    [counts, filters, industryLabels],
+  );
+
+  const filtered = useMemo(() => projects.filter((_, i) => matches(faceted[i], filters)), [projects, faceted, filters]);
 
   const select = (key: keyof Filters) => (value: string) => {
     const next = { ...filters, [key]: value };
