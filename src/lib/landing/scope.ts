@@ -13,9 +13,19 @@ const BY_LABEL: Record<string, ScopeValue> = {
   'belum yakin': 'Belum yakin',
 };
 
+for (const v of SCOPE_VALUES) BY_LABEL[v.toLowerCase()] = v;
+
 export function scopeValue(input: unknown): ScopeValue {
   if (typeof input !== 'string') return 'Other';
-  const s = input.trim();
-  if ((SCOPE_VALUES as readonly string[]).includes(s)) return s as ScopeValue;
-  return BY_LABEL[s.toLowerCase()] ?? 'Other';
+  return BY_LABEL[input.trim().toLowerCase()] ?? 'Other';
+}
+
+/**
+ * Picks the chip a link asked for (`/?scope=build#contact` from a service page). Service slugs
+ * match the stored values, so both sides go through scopeValue. No chip for it: nothing is picked.
+ */
+export function chipForScope(chips: string[], wanted: string | null): string | undefined {
+  const target = scopeValue(wanted);
+  if (target === 'Other') return undefined;
+  return chips.find((c) => scopeValue(c) === target);
 }

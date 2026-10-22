@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getProject } from '@/lib/portfolio/queries';
+import type { Kind } from '@/lib/portfolio/taxonomy';
 import { SectionShell } from '../../_components/detail/SectionShell';
 import { ClientCaseDetail } from './ClientCaseDetail';
 import { StudioProductDetail } from './StudioProductDetail';
@@ -12,6 +13,13 @@ import { PrevNext } from '../../_components/detail/PrevNext';
 import { hasStory, ProjectStory } from '../_story/ProjectStory';
 
 export const dynamic = 'force-dynamic';
+
+// Prev/next stay within one kind, so the label names that kind.
+const CONTEXT_LABELS: Record<Kind, string> = {
+  client: 'Studi kasus klien lainnya',
+  studio: 'Produk studio lainnya',
+  lab: 'Proyek lab lainnya',
+};
 
 export async function generateMetadata({
   params,
@@ -105,7 +113,7 @@ export default async function ProjectDetailPage({
         <StudioProductDetail project={project} />
       )}
       <PrevNext
-        contextLabel={project.kind === 'client' ? 'Studi kasus klien lainnya' : 'Produk studio lainnya'}
+        contextLabel={CONTEXT_LABELS[project.kind as Kind] ?? CONTEXT_LABELS.studio}
         prev={
           prevCase
             ? {
