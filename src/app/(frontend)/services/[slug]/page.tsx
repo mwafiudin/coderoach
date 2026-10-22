@@ -245,7 +245,7 @@ export default async function ServiceDetailPage({
             </p>
           </div>
           <a
-            href={`/#contact?scope=${service.title}`}
+            href={`/?scope=${encodeURIComponent(service.slug)}#contact`}
             className="h-12 px-5 rounded-md bg-electric text-paper text-sm font-semibold inline-flex items-center hover:bg-[#2562E0] transition-colors"
           >
             Start a 48-hour discovery <span aria-hidden>→</span>

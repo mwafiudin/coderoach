@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { chipForScope } from '@/lib/landing/scope';
 import { TURNSTILE_SITE_KEY } from '@/lib/turnstile';
 import { TurnstileField, type TurnstileHandle } from './TurnstileField';
 import { DeployConsole } from './DeployConsole';
@@ -65,13 +66,22 @@ export function Contact({ data }: { data: ContactData | null }) {
   };
 
   useEffect(() => {
-    const id = new URLSearchParams(window.location.search).get('hasil_id');
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('hasil_id');
     setHasilId(id);
-    // The streamed homepage does not jump to #contact on load, so do it for OpsScore visitors.
-    if (id && window.location.hash === '#contact') {
+    // The streamed homepage does not jump to #contact on load, so do it for OpsScore and service-page visitors.
+    if ((id || params.has('scope')) && window.location.hash === '#contact') {
       document.getElementById('contact')?.scrollIntoView({ behavior: 'instant' });
     }
   }, []);
+
+  // Service pages link here as /?scope=<slug>#contact.
+  const scopes = data?.scopes;
+  useEffect(() => {
+    const wanted = new URLSearchParams(window.location.search).get('scope');
+    const chip = chipForScope(scopes?.map((s) => s.scope) ?? [], wanted);
+    if (chip) setScope(chip);
+  }, [scopes]);
 
   useEffect(() => {
     setNow(new Date());

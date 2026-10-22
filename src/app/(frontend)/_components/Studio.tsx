@@ -31,9 +31,11 @@ export function Studio({ data, tenets }: { data: StudioData | null; tenets: Tene
       <StudioWaveBg className="opacity-55 -z-[2]" />
       <div className="max-w-[1180px] mx-auto px-8 relative z-[1]">
         <div className="reveal-stagger">
-          <span className="font-mono text-xs font-medium tracking-wider uppercase inline-flex items-center gap-2 flex-wrap text-mist-500 tabular">
-            [ 05 / 07 ] <span className="text-mist-400">·</span> Studio
-          </span>
+          <Meta
+            parts={data?.sectionMarker || '[ 05 / 07 ] · Studio'}
+            dotClassName="text-mist-400"
+            className="font-mono text-xs font-medium tracking-wider uppercase text-mist-500 tabular"
+          />
           <h2 className="text-[clamp(40px,5vw,64px)] leading-none tracking-[-0.02em] font-bold mt-[18px] max-w-[880px] text-paper">
             {data?.heading}
           </h2>
