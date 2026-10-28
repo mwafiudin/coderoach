@@ -74,7 +74,8 @@ produksi kecuali memang sedang mengubah skema dengan sadar.
 ## Skrip (sync portofolio, seed)
 
 Image hanya berisi server standalone, tanpa `tsx` dan tanpa `scripts/`. Pola Railway
-`railway ssh --service web -- "npx tsx scripts/portfolio-sync.ts"` tidak berlaku di container ini:
+`npx tsx scripts/run-in-production.ts portfolio-sync` (yang mengirim skripnya lewat `railway ssh`
+lalu menjalankannya dengan `tsx` di container) tidak berlaku di sini:
 jalankan skripnya dari checkout repo (laptop atau VPS) dengan `DATABASE_URI` ke database produksi
 dan `CODEROACH_OS_URL`/`CODEROACH_OS_TOKEN` (`portfolio-ops.md`). Aset portofolio yang ditulis
 sync masuk ke `media/` di mesin tempat skrip jalan, jadi di VPS jalankan dari direktori yang

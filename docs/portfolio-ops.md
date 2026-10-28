@@ -65,9 +65,12 @@ Coderoach OS.
    gambar garis.
 2. `npm test`.
 3. Lokal: `npx tsx --env-file=.env.local scripts/portfolio-sync.ts`, lalu `--apply`.
-4. Produksi, setelah deploy:
-   `railway ssh --service web -- "npx tsx scripts/portfolio-sync.ts"`, periksa hasilnya (baris
-   `blocked` = item tanpa izin yang ditahan), lalu ulangi dengan `--apply`.
+4. Produksi, setelah deploy, dari checkout utama (folder yang ter-`railway link`) di `origin/main`
+   persis: `npx tsx scripts/run-in-production.ts portfolio-sync`. Periksa hasilnya (baris
+   `blocked` = item tanpa izin yang ditahan, `upload`/`update` = yang akan berubah), lalu ulangi
+   dengan `--apply`. Image Railway tidak membawa `scripts/`, jadi skrip ini mengirim
+   `portfolio-sync.ts` dan `scripts/portfolio-assets` lewat stdin `railway ssh`, mencocokkan
+   sha256 di container, lalu menjalankannya di sana. Rahasia produksi tidak keluar dari Railway.
 5. Sync tidak pernah menghapus Media. Berkas yang tidak dipakai lagi dihapus manual di admin
    (Media), karena `/api/media/file/...` tetap publik selama berkasnya ada. Saat ini:
    `portfolio-laporta.webp` (sampul lama Laporta, memuat data outlet sungguhan dan URL produksi),

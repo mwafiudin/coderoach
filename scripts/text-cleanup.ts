@@ -9,7 +9,7 @@
  *   npx tsx --env-file=.env.local scripts/text-cleanup.ts --restore text-cleanup-backup-<time>.json
  *
  * In production, inside the web service (the backup lands in /app, copy it out before the next deploy):
- *   railway ssh --service web -- "cd /app && npx --yes tsx scripts/text-cleanup.ts"
+ *   npx tsx scripts/run-in-production.ts text-cleanup   (the image has no scripts/)
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { getPayload } from 'payload';

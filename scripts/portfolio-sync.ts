@@ -7,9 +7,10 @@
  *   npx tsx --env-file=.env.local scripts/portfolio-sync.ts
  *   npx tsx --env-file=.env.local scripts/portfolio-sync.ts --apply
  *
- * Production keeps uploads on the Railway volume at /app/media, so run it inside the web
- * service, where both the volume and the private database are reachable:
- *   railway ssh --service web -- "npx tsx scripts/portfolio-sync.ts --apply"
+ * Production keeps uploads on the Railway volume at /app/media, so it runs inside the web
+ * service, where both the volume and the private database are reachable. The image has no
+ * scripts/, so send it there with scripts/run-in-production.ts:
+ *   npx tsx scripts/run-in-production.ts portfolio-sync --apply
  *
  * Permissions (ADR 0009/0010): every IZN-… reference is checked against Coderoach OS through
  * CODEROACH_OS_URL and CODEROACH_OS_TOKEN; if that fails, nothing is written. On a local
