@@ -50,8 +50,9 @@
   font-variant-numeric: tabular-nums;
   line-height: 1;
 }
+/* Sized so eight tiles fit the hero column on one line, from 320px (30px tiles) to 1440px (72px). */
 .bk-yiheecam .yc-word--hero { flex-wrap: wrap; }
-.bk-yiheecam .yc-word--hero .yc-tile { width: clamp(30px, 6.6vw, 84px); height: clamp(54px, 9.4vw, 120px); font-size: clamp(34px, 6vw, 80px); }
+.bk-yiheecam .yc-word--hero .yc-tile { width: clamp(30px, 5vw, 72px); height: clamp(43px, 7.2vw, 103px); font-size: clamp(28px, 4.6vw, 66px); }
 
 /* Hero: the ride behind, darkened on the reading side so the text keeps its contrast. */
 .bk-yiheecam .yc-hero { position: relative; overflow: hidden; isolation: isolate; }
