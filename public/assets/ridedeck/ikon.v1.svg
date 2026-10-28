@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="18 18 72 72" width="216" height="216" role="img" aria-label="Ikon RideDeck: lampu indikator dengan bendera kuning dan bar hijau">
+  <!-- Translated 1:1 from rideDeck app/src/main/res/drawable/ic_launcher_{background,foreground}.xml, cropped to the adaptive-icon safe zone. -->
+  <rect x="0" y="0" width="108" height="108" rx="16" fill="#8A9093"/>
+  <circle cx="54" cy="54" r="34" fill="#B4BABD"/>
+  <circle cx="54" cy="54" r="30.5" fill="#5E6467"/>
+  <circle cx="54" cy="54" r="29" fill="#050506"/>
+  <g transform="translate(35 30.5) scale(1.55)">
+    <path fill="#FFB000" d="M3.5,1.5 L5.75,1.5 L5.75,22.5 L3.5,22.5 Z M5.75,2.5 C8.8,1.6 11,4.6 14,3.8 C16.4,3.1 18.4,2.8 21,3.3 L21,13.3 C18.4,12.8 16.4,13.1 14,13.8 C11,14.6 8.8,11.6 5.75,12.5 Z"/>
+  </g>
+  <g fill="#3DDC5A">
+    <rect x="39.6" y="67" width="4" height="3.4"/><rect x="44.6" y="67" width="4" height="3.4"/>
+    <rect x="49.6" y="67" width="4" height="3.4"/><rect x="54.6" y="67" width="4" height="3.4"/>
+  </g>
+  <g fill="#0D2412"><rect x="59.6" y="67" width="4" height="3.4"/><rect x="64.6" y="67" width="4" height="3.4"/></g>
+</svg>
