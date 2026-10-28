@@ -19,5 +19,5 @@ _legacy
 docs
 scripts
 *.md
-Dockerfile
+Dockerfile.selfhost
 .dockerignore

@@ -1,9 +1,13 @@
 # Self-host (Docker)
 
-Produksi masih di Railway (Railpack, `railway.json`). `Dockerfile` ini disiapkan untuk pindah ke
-VPS: satu container di belakang Cloudflare Tunnel + Caddy, Postgres terpisah. Railway tidak
-membaca `Dockerfile`, dan `output: "standalone"` hanya aktif bila `NEXT_OUTPUT=standalone`
-(diset di dalam `Dockerfile`), jadi build Railway tidak berubah.
+Produksi masih di Railway (Railpack, `railway.json`). `Dockerfile.selfhost` disiapkan untuk pindah
+ke VPS: satu container di belakang Cloudflare Tunnel + Caddy, Postgres terpisah.
+
+Namanya sengaja bukan `Dockerfile`. Begitu ada `Dockerfile` di root, Railway memakainya walaupun
+`railway.json` menulis `builder: RAILPACK`, lalu menolak instruksi `VOLUME` di dalamnya. Itu yang
+terjadi saat berkas ini pertama di-merge (deploy c1360f5 gagal, 28 Okt 2026). `output: "standalone"`
+hanya aktif bila `NEXT_OUTPUT=standalone` (diset di dalam `Dockerfile.selfhost`), jadi build
+Railway tidak berubah.
 
 ## Build
 
@@ -48,7 +52,7 @@ Daftar lengkap dan mana yang hanya untuk skrip: `.env.example`.
 
 Koleksi Media tidak memakai plugin storage dan tidak menyetel `staticDir`, jadi Payload menulis ke
 `media/` relatif terhadap direktori kerja, yaitu `/app/media` di container (sama dengan volume
-Railway). `Dockerfile` menyiapkan direktori itu milik user `node` dan menandainya `VOLUME`.
+Railway). `Dockerfile.selfhost` menyiapkan direktori itu milik user `node` dan menandainya `VOLUME`.
 **Wajib dipasang volume bernama atau bind mount**; tanpa itu upload hilang saat container diganti.
 Bind mount dari host harus bisa ditulis uid 1000. Pindah dari Railway: salin isi `/app/media`
 volume Railway ke volume ini sebelum DNS dialihkan.
