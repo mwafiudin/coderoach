@@ -11,6 +11,7 @@ import { StudioProductDetail } from './StudioProductDetail';
 import { RelatedGrid } from '../../_components/detail/RelatedGrid';
 import { PrevNext } from '../../_components/detail/PrevNext';
 import { hasStory, ProjectStory } from '../_story/ProjectStory';
+import { BESPOKE } from '../_bespoke/registry';
 
 export const dynamic = 'force-dynamic';
 
@@ -100,12 +101,15 @@ export default async function ProjectDetailPage({
       limit: 1,
     }),
   ]);
+  const Bespoke = BESPOKE[project.slug];
   const prevCase = (prevRes.docs[0] as any) || null;
   const nextCase = (nextRes.docs[0] as any) || null;
 
   return (
     <SectionShell>
-      {hasStory(project) ? (
+      {Bespoke && hasStory(project) ? (
+        <Bespoke project={project} />
+      ) : hasStory(project) ? (
         <ProjectStory project={project} mode="page" />
       ) : project.kind === 'client' ? (
         <ClientCaseDetail project={project} />

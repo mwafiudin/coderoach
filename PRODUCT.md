@@ -43,6 +43,7 @@ above, so the exception is written down instead of drifting:
 - **Allowed there only:** the product-page formula (name, one line, then one idea per section), motion bound to scroll, one dark chapter that holds the tour (never the hero), and the blueprint ornaments where a picture is missing.
 - **Still binding:** one accent (`#2C70FE`), proof over adjectives (every number footnoted to its source), plain Indonesian, and the accessibility rules below.
 - **Not extended:** the landing, services, notes, and studio pages keep the rules above as they are.
+- **Bespoke pages ([ADR 0013](docs/decisions/0013-halaman-proyek-bespoke.md), farrez's call, 28 Oct 2026):** `/work/laporta`, `/work/jeda`, and `/work/yiheecam` wear their product's own colours and type instead of the one accent, and YiheeCam's page sits on its app's dark ground from the hero down. That ground is the product's, not drama. Proof over adjectives, plain Indonesian, and the accessibility rules still bind there.
 
 ## Accessibility
 
