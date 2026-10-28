@@ -11,13 +11,19 @@ export const RIDEDECK_FILES = {
   before: 'dasbor-22okt.v1.webp',
   iconSheet: 'konsep-ikon.v1.webp',
   icon: 'ikon.v1.svg',
+  heroLoop: 'hero-jalan-loop.v1.mp4',
+  heroPoster: 'hero-jalan-loop.v1.poster.webp',
 } as const;
 
-/** Budget in KB per file type: the model loads late but on a phone connection, so it stays small. */
+/**
+ * Budget in KB per file type. Loop and poster follow ADR 0006 like the rest of the portfolio; the
+ * model loads late but on a phone connection, so it stays small too.
+ */
 export function ridedeckBudget(file: string): number {
   if (file.endsWith('.glb')) return 512;
   if (file.endsWith('.svg')) return 10;
-  if (file.endsWith('.mp4')) return 2 * 1024;
+  if (/-loop\.v\d+\.mp4$/.test(file)) return 600;
+  if (file.includes('.poster.')) return 150;
   return 300;
 }
 

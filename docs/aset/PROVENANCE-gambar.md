@@ -41,7 +41,23 @@ Bukan foto suasana, jadi masing-masing diberi keterangan sendiri di bawah gambar
 |---|---|---|
 | `public/assets/ridedeck/konsep-ikon.v1.webp` | Lembar tiga konsep ikon dari Gemini (Nano Banana, Flash High), akun Google AI Pro farrez, 22 Okt 2026. Asli: `rideDeck-lab/gemini/lembar.png`, diperkecil ke 1200 px, WebP q84. Prompt di `docs/brief-gambar-ikon.md` repo rideDeck-ayam. | "Konsep buatan AI (Gemini), hanya acuan." |
 | `public/assets/ridedeck/ronin.v1.glb` | Model TVS Ronin buatan AI dari foto produk publik TVS Motor: bentuk Tencent Hunyuan3D-2 (Space anonim), warna diproyeksikan dari foto, 22 Okt 2026. Asli `rideDeck-lab/ronin3d/ronin.glb` (1,97 MB), dikompres `@gltf-transform/cli@4.5.1 meshopt` ke 433 KB. Alur lengkap: `rideDeck-lab/ronin3d/PROVENANCE.md`. Lisensi bentuk: Tencent Hunyuan 3D 2.0 Community License (Indonesia termasuk wilayahnya, wajib atribusi). Bentuk dan warna turunan desain TVS; dipakai atas keputusan farrez 28 Okt 2026 (ADR 0014), tanpa logo TVS. | "Model buatan AI dari foto publik TVS Ronin, bukan model resmi TVS Motor..." beserta atribusi lisensi |
+| `public/assets/ridedeck/hero-jalan-loop.v1.mp4` dan `.poster.webp` | Foto suasana jalan gunung senja dari atas motor: Google Flow, Nano Banana 2.1 (16:9, 2 varian, 0 kredit), varian kedua dipilih karena tanpa speedometer pabrikan; lalu Frames to video Omni 1.1 Flash 720p 4 detik x1, 7 kredit (saldo 887 sebelum, sekitar 880 sesudah). Akun Google AI Pro farrez, 28 Okt 2026. Diolah ffmpeg: audio dibuang, crossfade 0,7 detik di sambungan supaya loop mulus, H.264 CRF 27, 3,4 detik, 568 KB; poster dari bingkai pertama. Asli di `D:\downloads\claudeREPLACE_PATH`. Prompt di bawah. | "Video ilustrasi buatan AI (Google Flow), bukan rekaman perjalanan." |
 | `public/assets/ridedeck/ronin-poster.v1.webp` | Render model di atas dengan three.js 0.186.1, cahaya dan kamera yang sama dengan viewer, 1200x800, WebP q86. | sama dengan model |
 
 `ikon.v1.svg` bukan buatan AI: diterjemahkan 1:1 dari vektor `ic_launcher_*` app. `dasbor-22okt.v1.webp`
 adalah tangkapan layar asli HP pemilik (22 Okt 2026, 00.05), status bar dipotong.
+
+**ridedeck-hero (gambar):** Photorealistic first-person view from a motorcyclist at blue hour on a
+winding mountain road in Java, Indonesia. The warm beam of a round headlight lights the wet asphalt
+ahead. At the bottom edge, gloved hands on a matte black handlebar, softly out of focus. Distant town
+lights glitter in the valley below, a last thin orange glow on the horizon, light mist between the
+hills. Wide 16:9 frame, natural colours, slight motion blur at the road edges, full-frame camera at
+24mm. No text, no logos, no brand names, no phone, no screens, no other people, no watermark.
+
+**ridedeck-hero (klip, bingkai awal = gambar di atas):** Single continuous shot with no cuts,
+first-person view from the rider. The camera rolls slowly and steadily forward along the road at a
+calm touring pace, the handlebars and gloved hands stay fixed at the bottom of the frame with only a
+gentle vibration. The headlight beam moves ahead on the wet asphalt, mist drifts slowly between the
+hills, the town lights in the valley twinkle softly. The scene stays the same place and the same
+light from start to end. No text, no logos, no people besides the rider's hands, no phone, no
+screens. Silent.

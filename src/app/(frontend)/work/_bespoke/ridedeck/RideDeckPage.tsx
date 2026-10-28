@@ -9,6 +9,7 @@ import { linkViews } from '../../_story/ProjectStory';
 import { Sources } from '../../_story/Sources';
 import { StoryEnhancer } from '../../_story/StoryEnhancer';
 import { archivo } from '../fonts';
+import { HeroLoop } from './HeroLoop';
 import { RoninViewer } from './RoninViewer';
 import { Segments } from './Segments';
 import './ridedeck.css';
@@ -28,6 +29,14 @@ const RONIN = {
 const BEFORE = {
   src: at(F.before),
   alt: 'Dasbor rideDeck versi pertama: tombol teks Peta, Rute, Mulai, Atur, angka kecepatan besar, tiga baris readout, dan ubin app',
+};
+
+/** The ride behind the hero. Made with AI and said so under it: mood, not a recording. */
+const RIDE = {
+  src: at(F.heroLoop),
+  poster: at(F.heroPoster),
+  alt: 'Jalan pegunungan basah saat senja dilihat dari atas motor, lampu depan menyorot aspal, lampu kota di lembah',
+  credit: 'Video ilustrasi buatan AI (Google Flow), bukan rekaman perjalanan.',
 };
 
 const ICON_SHEET = {
@@ -67,7 +76,8 @@ export async function RideDeckPage({ project }: { project: Project }) {
   return (
     <main id={rootId} className={`story bk-ridedeck ${archivo.variable}`}>
       <section className="rd-hero" data-scene="exit">
-        <div className="max-w-[1180px] mx-auto px-5 sm:px-8 pt-6 sm:pt-12 pb-14 sm:pb-20">
+        <HeroLoop src={RIDE.src} poster={RIDE.poster} alt={RIDE.alt} />
+        <div className="relative max-w-[1180px] mx-auto px-5 sm:px-8 pt-6 sm:pt-12 pb-14 sm:pb-20">
           <div className="hidden sm:block mb-12">
             <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Work', href: '/work' }, { label: project.client }]} />
           </div>
@@ -95,6 +105,7 @@ export async function RideDeckPage({ project }: { project: Project }) {
               </div>
             )}
           </div>
+          <p className="rd-hero__credit">{RIDE.credit}</p>
         </div>
       </section>
 

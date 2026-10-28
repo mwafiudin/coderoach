@@ -44,7 +44,7 @@ describe('RideDeck page files', () => {
   });
 
   test('names are versioned, so a changed file never hides behind a cached URL', () => {
-    for (const file of named) assert.match(file, /\.v\d+\.(?:webp|glb|svg|mp4)$/, file);
+    for (const file of named) assert.match(file, /\.v\d+\.(?:poster\.)?(?:webp|glb|svg|mp4)$/, file);
   });
 
   test('nothing in the folder goes unused (public, and every byte ships with the repo)', () => {
