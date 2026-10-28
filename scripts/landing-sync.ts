@@ -7,7 +7,7 @@
  *   npx tsx --env-file=.env.local scripts/landing-sync.ts --apply
  *
  * In production, run it inside the web service, where the private database is reachable:
- *   railway ssh --service web -- "cd /app && npx --yes tsx scripts/landing-sync.ts --apply"
+ *   npx tsx scripts/run-in-production.ts landing-sync --apply   (the image has no scripts/)
  */
 import { getPayload } from 'payload';
 import config from '../src/payload.config';
