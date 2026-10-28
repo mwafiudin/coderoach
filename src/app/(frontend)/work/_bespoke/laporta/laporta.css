@@ -45,15 +45,16 @@
 
 /* The scene: pinned for a few screens when motion is on, a plain section otherwise. */
 .bk-laporta .lp-scene {
-  /* --p runs 0.2 to 0.87 while the stage is pinned in a 300vh section; --q spreads that over 0 to 1. */
-  --q: clamp(0, calc((var(--p, 1) - 0.2) / 0.6), 1);
+  /* --p runs 0.27 to 0.82 while the stage is pinned in a 220vh section; --q spreads that over 0 to 1. */
+  --q: clamp(0, calc((var(--p, 1) - 0.27) / 0.52), 1);
   background: var(--color-paper);
   border-top: 1px solid var(--color-paper-200);
   padding-block: clamp(72px, 9vw, 120px);
 }
 /* Pinned only where the text and the whole receipt fit one screen; elsewhere it prints as it passes. */
 @media (min-width: 1024px) and (min-height: 760px) {
-  .bk-laporta[data-motion='on'] .lp-scene { height: 300vh; padding-block: 0; }
+  /* 220vh: a little over one held screen. Longer holds read as a stuck page (NN/g, Scrolljacking 101). */
+  .bk-laporta[data-motion='on'] .lp-scene { height: 220vh; padding-block: 0; }
   .bk-laporta[data-motion='on'] .lp-scene__stage {
     position: sticky;
     top: 0;
