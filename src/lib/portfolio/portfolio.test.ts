@@ -246,6 +246,11 @@ describe('portfolio assets', () => {
     }
   });
 
+  test('every project shown on /work has a cover, so no card falls back to the drawn placeholder', () => {
+    const shown = PORTFOLIO.filter((e) => !e.hidden && !HIDDEN_PROJECT_SLUGS.includes(e.slug));
+    for (const e of shown) assert.ok(e.cover, `${e.slug} has no cover`);
+  });
+
   test('nothing in the folder goes unused (it is public, and every byte ships with the repo)', () => {
     const used = new Set(named.map((a) => a.file));
     for (const file of readdirSync(dir)) assert.ok(used.has(file), `${file} is not named by any entry`);

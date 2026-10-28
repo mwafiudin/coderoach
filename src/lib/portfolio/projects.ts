@@ -334,6 +334,13 @@ export const PORTFOLIO: PortfolioEntry[] = [
     pills: ['NEXT.JS', 'PRISMA', 'GOOGLE PLACES', 'OSM'],
     excerpt:
       'Tempel satu link Google Maps, dapatkan skor kelayakan lokasi beserta alasannya. Kompetitor, demografi, dan kepadatan jalan dikumpulkan otomatis, lalu dikalibrasi dengan performa outlet yang sudah berjalan.',
+    // Database demo dengan data Places tiruan (MOCK_MODE); nama outlet fiktif.
+    cover: {
+      file: 'locascore-kelayakan.v1.webp',
+      alt: 'LocaScore, kesimpulan kelayakan satu calon lokasi dengan data contoh: skor 82 dari 100, rekomendasi GO, dan skor per faktor',
+      focalX: 1,
+      focalY: 1,
+    },
     studio: {
       vizType: 'none',
       usage: 'SITE SCORING',
@@ -367,7 +374,7 @@ export const PORTFOLIO: PortfolioEntry[] = [
   },
   {
     slug: 'the-global-review',
-    consent: 'legacy',
+    consent: 'IZN-2026-002',
     order: 4,
     kind: 'client',
     client: 'The Global Review',
@@ -379,6 +386,13 @@ export const PORTFOLIO: PortfolioEntry[] = [
     pills: ['NEXT.JS', 'HEADLESS WORDPRESS', 'I18N'],
     excerpt:
       'Situs baru untuk kanal analisis geopolitik milik Global Future Institute. Redaksi tetap bekerja di wp-admin; pembaca mendapat situs dua bahasa, dan redaksi mendapat halaman statistiknya sendiri.',
+    // Situs produksi, 14 Okt 2026. Nama penulis di byline adalah byline terbit, bukan data pribadi.
+    cover: {
+      file: 'the-global-review-beranda.v1.webp',
+      alt: 'Beranda The Global Review: isu utama dengan judul besar, kolom Sorotan, dan menu rubrik dua bahasa',
+      focalX: 1,
+      focalY: 1,
+    },
     summary: {
       problem:
         'Tampilan situs tertinggal dari bobot tulisannya, tetapi redaksi terbiasa menulis di wp-admin. Memaksa mereka pindah CMS adalah cara tercepat membuat proyek ini gagal.',
@@ -442,7 +456,7 @@ export const PORTFOLIO: PortfolioEntry[] = [
   },
   {
     slug: 'chicken-wow',
-    consent: 'legacy',
+    consent: 'IZN-2026-001',
     order: 6,
     kind: 'client',
     client: 'Chicken Wow',
@@ -454,6 +468,13 @@ export const PORTFOLIO: PortfolioEntry[] = [
     pills: ['STATIC SITE', 'LARAVEL', 'FILAMENT', 'CPANEL'],
     excerpt:
       'Situs untuk jaringan gerai Chicken Wow (Masaya Food), dengan menu dan daftar gerai yang dibaca dari berkas data dan halaman link-in-bio milik sendiri. Aset dipangkas dari 20,3 MB menjadi 9,4 MB.',
+    // Situs produksi, 14 Okt 2026.
+    cover: {
+      file: 'chicken-wow-beranda.v1.webp',
+      alt: 'Beranda Chicken Wow: judul Wow Sambelnya, Wow Rasanya, harga mulai 10 ribu, tombol GoFood dan ShopeeFood, dan foto paket nasi ayam geprek',
+      focalX: 1,
+      focalY: 50,
+    },
     summary: {
       problem:
         'Menu dan daftar gerai tertanam di HTML, jadi setiap perubahan berarti seseorang menyunting markup lalu mengunggahnya manual, dan beberapa halaman utama berujung 404.',
@@ -488,6 +509,12 @@ export const PORTFOLIO: PortfolioEntry[] = [
     pills: ['NEXT.JS', 'POSTGRES', 'DRIZZLE', 'MCP'],
     excerpt:
       'Alat internal yang menjalankan studio dua orang: klien, penawaran, proyek dan story, jam kerja, invoice, kas, dan pembukuan double-entry yang dijaga database, ditambah server MCP supaya Claude Code membaca status story dari sumbernya.',
+    cover: {
+      file: 'coderoach-os-beranda.v2.webp',
+      alt: 'Coderoach OS, Beranda: saldo kas, piutang, pendapatan dan laba bulan berjalan, tugas, dan proyek berjalan',
+      focalX: 1,
+      focalY: 1,
+    },
     summary: {
       problem:
         'Penawaran, proyek, jam kerja, tagihan, dan pajak studio tersebar di spreadsheet terpisah, sehingga margin sebuah proyek baru ketahuan setelah semuanya direkap.',

@@ -1,6 +1,8 @@
 'use client';
 
-type Option = { value: string; label: string; count?: number; href: string; disabled?: boolean };
+import type { ReactNode } from 'react';
+
+type Option = { value: string; label: string; count?: number; href: string; disabled?: boolean; icon?: ReactNode };
 type Variant = 'segmented' | 'chips';
 
 /**
@@ -34,7 +36,7 @@ export function FilterBar({
         <div className="inline-flex items-center bg-paper-100 border border-paper-200 rounded-2xl sm:rounded-full p-1 gap-0.5 flex-wrap">
           {options.map((opt) => {
             const isActive = opt.value === active;
-            const base = 'h-8 px-4 rounded-full font-mono text-[11px] font-medium tracking-wider uppercase tabular flex items-center whitespace-nowrap';
+            const base = 'h-8 px-3 sm:px-4 rounded-full font-mono text-[11px] font-medium tracking-wider uppercase tabular flex items-center whitespace-nowrap';
             if (opt.disabled) {
               return (
                 <span key={opt.value} aria-disabled="true" className={`${base} text-mist-400 cursor-default`}>
@@ -70,10 +72,11 @@ export function FilterBar({
       <span className="w-16 text-[11px] font-semibold uppercase tracking-[0.18em] text-mist-600 shrink-0 mr-2">{label}</span>
       {options.map((opt) => {
         const isActive = opt.value === active;
-        const base = 'h-7 px-2.5 rounded-md font-mono text-[10px] font-medium tracking-wider uppercase tabular flex items-center whitespace-nowrap border';
+        const base = 'h-7 px-2.5 rounded-md font-mono text-[10px] font-medium tracking-wider uppercase tabular flex items-center gap-1.5 whitespace-nowrap border';
         if (opt.disabled) {
           return (
             <span key={opt.value} aria-disabled="true" className={`${base} border-transparent text-mist-400 cursor-default`}>
+              {opt.icon}
               {opt.label}
               {opt.count !== undefined && <span className="ml-1">{opt.count}</span>}
             </span>
@@ -92,6 +95,7 @@ export function FilterBar({
                   : 'bg-transparent text-mist-600 border border-transparent hover:text-ink hover:bg-paper-100'
               }`}
           >
+            {opt.icon}
             {opt.label}
             {opt.count !== undefined && (
               <span className={`ml-1 ${isActive ? 'text-electric/70' : 'text-mist-600'}`}>{opt.count}</span>

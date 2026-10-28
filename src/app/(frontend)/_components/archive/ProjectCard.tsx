@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { industryLabel } from '@/lib/portfolio/taxonomy';
 import { Badge } from '../ui/Badge';
+import { IndustryIcon } from '../ui/IndustryIcon';
 import { CardPreview, type CardPreviewMedia } from './CardPreview';
 import { ProjectCover } from './ProjectCover';
 
@@ -97,15 +98,16 @@ export function ProjectCard({
         <p className={`${variant === 'feature' ? 'text-[16px]' : 'text-[14px]'} leading-[1.5] text-ink/65 m-0 flex-1`}>
           {project.excerpt || project.tagline}
         </p>
-        <div className="flex items-center justify-between pt-3 border-t border-paper-200/60 mt-auto flex-wrap gap-2">
+        <div className="flex items-center justify-between pt-3 border-t border-paper-200/60 mt-auto gap-3">
           {project.industry && (
-            <span className="font-mono text-[11px] uppercase tracking-wider text-ink/65 tabular">
+            <span className="inline-flex min-w-0 items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider text-ink/65 tabular">
+              <IndustryIcon industry={project.industry} />
               {industryLabel(project.industry)}
             </span>
           )}
           <span
             aria-hidden
-            className="font-mono text-[11px] tracking-wider text-ink/65 group-hover:text-electric group-hover:translate-x-1 transition-[color,transform] motion-reduce:group-hover:translate-x-0"
+            className="ml-auto shrink-0 font-mono text-[11px] tracking-wider text-ink/65 group-hover:text-electric group-hover:translate-x-1 transition-[color,transform] motion-reduce:group-hover:translate-x-0"
           >
             Baca →
           </span>

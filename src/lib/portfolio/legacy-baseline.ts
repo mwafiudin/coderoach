@@ -13,9 +13,7 @@ export const LEGACY_CLIENT_NAMES = ['Geprek Wow', 'RPN Agro', 'Chicken Wow', 'Ur
 /** Per client case study: the numbers its copy contained, and the image files it used. */
 export const LEGACY_ENTRIES: Record<string, { numbers: readonly string[]; files: readonly string[] }> = {
   'rpn-os': { numbers: ['2026', '23', '25', '33,9', '397', '580', '62', '643'], files: ['portfolio-rpn-os.webp'] },
-  'the-global-review': { numbers: ['18', '2026', '24'], files: [] },
   uruzin: { numbers: ['2023', '2026'], files: ['portfolio-uruzin-os.webp'] },
-  'chicken-wow': { numbers: ['2026', '20,3', '38', '404', '9,4'], files: [] },
   'pt-raja-roti-cemerlang': { numbers: ['2024'], files: [] },
   'tumtim-cookies': { numbers: ['2015', '2024'], files: [] },
 };
