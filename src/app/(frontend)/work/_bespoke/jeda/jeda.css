@@ -37,25 +37,17 @@
 }
 
 .bk-jeda .jd-scene {
-  /* --p runs 0.2 to 0.87 while pinned in a 280vh section; --q spreads it over 0 to 1. */
-  --q: clamp(0, calc((var(--p, 1) - 0.21) / 0.6), 1);
+  /* --p is read at a line 60% down the screen as the scene passes; the cross happens in its middle. */
+  --q: clamp(0, calc((var(--p, 1) - 0.15) / 0.55), 1);
   --cross: clamp(0, calc((var(--q) - 0.3) / 0.4), 1);
   --arrive: clamp(0, calc((var(--q) - 0.62) * 5), 1);
   background: var(--color-paper);
   padding-block: clamp(72px, 9vw, 120px);
 }
-/* Pinned only where both desks fit side by side on one screen; stacked, they cross as they pass. */
-@media (min-width: 900px) and (min-height: 700px) {
-  .bk-jeda[data-motion='on'] .jd-scene { height: 280vh; padding-block: 0; }
-  .bk-jeda[data-motion='on'] .jd-scene__stage {
-    position: sticky;
-    top: 0;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    padding-block: 40px;
-  }
-}
+/*
+  Never pinned. A calm product for readers who may be sensitive to motion gets a slow cross as the
+  scene scrolls past, not a held screen (DESIGN.md, Motion vocabulary: "quiet reveal").
+*/
 
 .bk-jeda .jd-steps { display: flex; flex-wrap: wrap; gap: 8px 28px; font-size: 16px; color: var(--color-mist-600); }
 .bk-jeda .jd-steps li { opacity: calc(0.45 + 0.55 * clamp(0, calc((var(--q) * 3 - var(--i)) * 4), 1)); }

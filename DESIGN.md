@@ -283,7 +283,23 @@ The one place this file does not govern colour and type. Each page wears the pro
 - **Jeda:** Nunito Sans, warm grey paper `#eeebe6`, faded blue ink `#4e6a84`. Scene: one made-up note crosses from the client's phone to the psychologist's table and lands marked "Baru sejak terakhir dibuka". Slow, small movement only.
 - **YiheeCam:** Barlow Condensed, dark ground `#0e0e0d`, split-flap tiles, the record lamp `#ff3b36`. Scene: ASCII bytes flip to REC, BATT, SD; the bytes are those letters' own codes, labelled as an illustration.
 - **Mood photos** (`Suasana`, and YiheeCam's hero backdrop) are AI-made, captioned "Foto ilustrasi buatan AI" under the picture, and show the place the product is used in, never the product. Screens stay real screenshots; YiheeCam's live view is cropped below its test pattern instead of being painted over. Provenance in `docs/aset/PROVENANCE-gambar.md`.
-- **Pinning** happens only where the stage fits one screen (Laporta ≥1024×760, Jeda ≥900×700, YiheeCam ≥640 tall); below that the scene plays as it scrolls past.
+- **Pinning** happens only where the stage fits one screen (Laporta ≥1024×760, YiheeCam ≥768×640); below that the scene plays as it scrolls past. Jeda never pins.
+
+#### Motion vocabulary (bespoke pages)
+Each bespoke page picks its choreography from this list by the kind of story it tells, and says which in its CSS. Research and sources: `docs/riset/2026-10-koreografi-scroll.md`.
+
+| Choreography | Fits | Rules | Used on |
+|---|---|---|---|
+| Pin and scrub | One artefact changing state step by step (a workflow, a mode change) | Hold at most about 220vh, wide screens only; text stays in the DOM | Laporta (receipt), YiheeCam (flap board) |
+| Quiet reveal | Calm or sensitive subjects | No pin, no parallax, opacity and small shifts only, slow | Jeda (note crossing) |
+| Sticky stack | Several equal modules, one screen each | Each card shorter than the screen on a phone | not yet |
+| Wipe in one frame | Before and after | Same frame for both; two images side by side without motion | not yet |
+| Shared element | Same data seen two ways (raw rows to a report) | Becomes a crossfade under reduced motion | not yet |
+| Image sequence | Physical hardware changing shape | One still replaces it on phones and slow links | not yet |
+| Progress rail | Long or staged stories | Clickable, never covers content | not yet |
+| Number reveal | Measured results only | Final value already in the HTML | not yet |
+
+Not used: horizontal scroll inside a pin (direction change confuses, NN/g) and decorative parallax (vestibular trigger, WCAG 2.3.3). The only parallax allowed is a few pixels on a mood photo.
 
 ### Presentation Shelf (`/work/presentasi`)
 The ops console grown to a room: ink background, a mono header (`CODEROACH · PRESENTASI · 08 PROYEK`) with the offline readout, and one 640px shadow-900 card per project in a horizontal snap row, each with a `[ 01 / 08 ]` position. Keyboard first: arrows, Enter, F, Esc.
