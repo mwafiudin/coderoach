@@ -1,8 +1,8 @@
 #!/bin/sh
 # Opt in once per clone:  git config core.hooksPath .githooks
 #
-# This repository is public and has no CI. Anything committed is published the moment it is
-# pushed, so the permission and schema checks have to pass before the commit exists, not after.
+# This repository is public and CI only runs after a push. Anything committed is published the
+# moment it is pushed, so the permission and schema checks have to pass before the commit exists, not after.
 out=$(npm test --silent 2>&1) && exit 0
 printf '%s\n' "$out" | grep -E 'not ok|# (pass|fail)|Error|expected|actual|needs' | head -40
 echo "pre-commit: npm test failed, nothing was committed."
