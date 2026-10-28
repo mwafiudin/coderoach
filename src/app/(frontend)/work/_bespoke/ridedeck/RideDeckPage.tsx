@@ -150,14 +150,14 @@ export async function RideDeckPage({ project }: { project: Project }) {
               dan peta serta simulasi masuk ke dasbor.
             </p>
             <div className="rd-compare mt-12">
-              <figure className="m-0" data-scene="enter">
+              <figure className="m-0">
                 <Tape tone="rd-tape--black">22 Okt 2026</Tape>
                 <div className="rd-phone mt-4">
                   {/* eslint-disable-next-line @next/next/no-img-element -- a fixed local file, already sized */}
                   <img src={BEFORE.src} alt={BEFORE.alt} width={780} height={1576} loading="lazy" decoding="async" className="block w-full h-auto" />
                 </div>
               </figure>
-              <figure className="m-0" data-scene="enter">
+              <figure className="m-0">
                 <Tape tone="rd-tape--green">28 Okt 2026</Tape>
                 <div className="mt-4">
                   <Phone media={screen} />
@@ -181,7 +181,7 @@ export async function RideDeckPage({ project }: { project: Project }) {
             </h2>
             <div className="mt-6 flex items-center gap-5">
               {/* eslint-disable-next-line @next/next/no-img-element -- an SVG drawn from the app's own vector */}
-              <img src={at(F.icon)} alt="" width={96} height={96} className="rounded-[22px] shrink-0" />
+              <img src={at(F.icon)} alt="Ikon akhir rideDeck: lampu indikator dengan bendera kuning dan bar hijau" width={96} height={96} className="rounded-[22px] shrink-0" />
               <p className="m-0 text-[16px] leading-[1.6] rd-dim text-pretty">
                 Pemilik memilih konsep pertama, lampu indikator dengan bendera. Ikon akhirnya digambar ulang sebagai vektor datar mengikuti
                 DESIGN.md app. Gambar AI tidak dipakai langsung, salah satunya karena konsep kedua menulis huruf acak di layarnya.

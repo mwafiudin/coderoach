@@ -32,3 +32,16 @@ light, muted warm grey tones, calm and quiet mood, the window shows a blurred da
 readable text, no faces, no logos.
 
 Varian yang tidak terpakai tetap di proyek Flow "Oct 28 - 16:47" milik akun itu.
+
+## RideDeck (`/work/ridedeck`, 28 Okt 2026)
+
+Bukan foto suasana, jadi masing-masing diberi keterangan sendiri di bawah gambarnya.
+
+| Berkas | Isi dan asal | Keterangan di halaman |
+|---|---|---|
+| `public/assets/ridedeck/konsep-ikon.v1.webp` | Lembar tiga konsep ikon dari Gemini (Nano Banana, Flash High), akun Google AI Pro farrez, 22 Okt 2026. Asli: `rideDeck-lab/gemini/lembar.png`, diperkecil ke 1200 px, WebP q84. Prompt di `docs/brief-gambar-ikon.md` repo rideDeck-ayam. | "Konsep buatan AI (Gemini), hanya acuan." |
+| `public/assets/ridedeck/ronin.v1.glb` | Model TVS Ronin buatan AI dari foto produk publik TVS Motor: bentuk Tencent Hunyuan3D-2 (Space anonim), warna diproyeksikan dari foto, 22 Okt 2026. Asli `rideDeck-lab/ronin3d/ronin.glb` (1,97 MB), dikompres `@gltf-transform/cli@4.5.1 meshopt` ke 433 KB. Alur lengkap: `rideDeck-lab/ronin3d/PROVENANCE.md`. Lisensi bentuk: Tencent Hunyuan 3D 2.0 Community License (Indonesia termasuk wilayahnya, wajib atribusi). Bentuk dan warna turunan desain TVS; dipakai atas keputusan farrez 28 Okt 2026 (ADR 0014), tanpa logo TVS. | "Model buatan AI dari foto publik TVS Ronin, bukan model resmi TVS Motor..." beserta atribusi lisensi |
+| `public/assets/ridedeck/ronin-poster.v1.webp` | Render model di atas dengan three.js 0.186.1, cahaya dan kamera yang sama dengan viewer, 1200x800, WebP q86. | sama dengan model |
+
+`ikon.v1.svg` bukan buatan AI: diterjemahkan 1:1 dari vektor `ic_launcher_*` app. `dasbor-22okt.v1.webp`
+adalah tangkapan layar asli HP pemilik (22 Okt 2026, 00.05), status bar dipotong.
