@@ -58,6 +58,8 @@ const cspHeader = [{ key: 'Content-Security-Policy', value: csp }];
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Only the Docker image asks for standalone (docs/self-host.md). Railway's build leaves it unset.
+  ...(process.env.NEXT_OUTPUT === 'standalone' ? { output: 'standalone' } : {}),
   reactStrictMode: true,
   reactCompiler: false,
   async headers() {

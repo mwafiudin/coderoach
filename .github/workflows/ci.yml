@@ -1,0 +1,59 @@
+name: CI
+
+# Railway deploys main on its own, independent of this workflow. CI is the check a PR has to pass
+# before that happens; it never deploys and holds no secrets.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Lint, typecheck, test, build
+    # This repository is PUBLIC: leave the CI_RUNNER variable empty. A self-hosted runner on a
+    # public repo runs code from any fork's pull request on that machine. Same switch as
+    # coderoach-app (ADR 0048 there), kept only so the jobs look alike.
+    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
+    timeout-minutes: 20
+
+    env:
+      NEXT_TELEMETRY_DISABLED: 1
+      # Build placeholders. The tests touch no database, and no page reads one at build time,
+      # so nothing listens on port 1: a stray query fails the build instead of passing quietly.
+      PAYLOAD_SECRET: ci-only-not-a-secret
+      DATABASE_URI: postgresql://ci:ci@127.0.0.1:1/ci
+
+    steps:
+      # Actions pinned to a commit SHA, version in the comment. A tag can be moved to other code.
+      # SHA from `gh api repos/<owner>/<repo>/git/ref/tags/<tag>`.
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci --no-audit --no-fund
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      - name: Test
+        run: npm test
+
+      # The build Railway runs. The Docker image adds only NEXT_OUTPUT=standalone on top.
+      - name: Build
+        run: npm run build
