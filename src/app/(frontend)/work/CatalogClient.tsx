@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { FilterBar } from '../_components/archive/FilterBar';
 import type { CardPreviewMedia } from '../_components/archive/CardPreview';
 import { ProjectCard } from '../_components/archive/ProjectCard';
+import { IndustryIcon } from '../_components/ui/IndustryIcon';
 import { Breadcrumbs } from '../_components/detail/Breadcrumbs';
 import { facetCounts, matches } from '@/lib/portfolio/facets';
 
@@ -83,6 +84,7 @@ export function CatalogClient({
         .map(([value, count]) => ({
           value,
           label: industryLabels[value] ?? value,
+          icon: <IndustryIcon industry={value} />,
           count,
           disabled: count === 0 && value !== filters.bidang,
           href: hrefFor({ ...filters, bidang: value }),
