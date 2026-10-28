@@ -52,6 +52,34 @@
 }
 .bk-yiheecam .yc-word--hero .yc-tile { width: clamp(38px, 6.6vw, 84px); height: clamp(54px, 9.4vw, 120px); font-size: clamp(34px, 6vw, 80px); }
 
+/* Hero: the ride behind, darkened on the reading side so the text keeps its contrast. */
+.bk-yiheecam .yc-hero { position: relative; overflow: hidden; isolation: isolate; }
+.bk-yiheecam .yc-hero__photo {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 70%;
+  scale: 1.06;
+  translate: 0 calc(var(--p, 0) * 60px);
+}
+.bk-yiheecam .yc-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(to right, rgb(14 14 13 / 0.88) 0%, rgb(14 14 13 / 0.6) 40%, rgb(14 14 13 / 0) 75%),
+    linear-gradient(to bottom, rgb(14 14 13 / 0) 60%, rgb(14 14 13 / 0.95));
+}
+@media (max-width: 767px) {
+  .bk-yiheecam .yc-hero::after { background: rgb(14 14 13 / 0.8); }
+}
+.bk-yiheecam .yc-hero__credit { margin: 32px 0 0; font-size: 12px; color: var(--color-mist-500); }
+
+.bk-yiheecam .yc-shot--cropped { aspect-ratio: 780 / 1000; overflow: hidden; border-radius: 23px; }
 .bk-yiheecam .yc-phone { padding: 8px; border-radius: 30px; background: var(--yc-edge); }
 .bk-yiheecam .yc-phone img { border-radius: 23px; }
 .bk-yiheecam .yc-panel { background: var(--color-paper-200); border: 1px solid var(--color-paper-200); border-radius: 12px; overflow: hidden; }

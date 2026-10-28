@@ -1,4 +1,4 @@
-import type { Project } from '@/payload-types';
+import type { Media, Project } from '@/payload-types';
 import { industryLabel, KIND_LABELS } from '@/lib/portfolio/taxonomy';
 import { Breadcrumbs } from '../../../_components/detail/Breadcrumbs';
 import { Meta } from '../../../_components/ui/Meta';
@@ -22,6 +22,30 @@ const BOARD: Array<[string, string]> = [
 ];
 
 const STAGES = ['Byte mentah', 'Dikelompokkan', 'Terurai', 'Terbaca'];
+
+/** The ride behind the hero. Made with AI and said so on the page: it is mood, not a recording. */
+const RIDE = {
+  src: '/assets/suasana/yiheecam-kebun-teh.v1.webp',
+  alt: 'Jalan kebun teh berkabut dilihat dari kamera di dagu helm, setang motor di bawah',
+  credit: 'Foto ilustrasi buatan AI (Google Flow), bukan rekaman kamera.',
+};
+
+/**
+ * Screens whose live view shows the mock camera's test pattern. The pattern fills the top third,
+ * so only the part below it is shown: the board and buttons, which are the real app.
+ */
+const TEST_PATTERN = /^yiheecam-yakin/;
+
+function Shot({ media, priority = false }: { media: Media; priority?: boolean }) {
+  if (!TEST_PATTERN.test(media.filename ?? '')) {
+    return <MediaImg media={media} priority={priority} sizes="260px" className="block w-full h-auto" />;
+  }
+  return (
+    <div className="yc-shot--cropped">
+      <MediaImg media={media} priority={priority} sizes="260px" className="block w-full h-full object-cover object-bottom" />
+    </div>
+  );
+}
 
 const hex = (ch: string) => ch.charCodeAt(0).toString(16).toUpperCase().padStart(2, '0');
 
@@ -60,8 +84,18 @@ export async function YiheeCamPage({ project }: { project: Project }) {
 
   return (
     <main id={rootId} className={`story bk-yiheecam ${barlowCondensed.variable}`}>
-      <section className="pt-6 sm:pt-12 pb-16 sm:pb-24">
-        <div className="max-w-[1180px] mx-auto px-5 sm:px-8">
+      <section className="yc-hero" data-scene="exit">
+        {/* eslint-disable-next-line @next/next/no-img-element -- a fixed local file, already sized */}
+        <img
+          src={RIDE.src}
+          alt={RIDE.alt}
+          width={1376}
+          height={768}
+          fetchPriority="high"
+          decoding="async"
+          className="yc-hero__photo"
+        />
+        <div className="relative max-w-[1180px] mx-auto px-5 sm:px-8 pt-6 sm:pt-12 pb-14 sm:pb-20">
           <div className="hidden sm:block mb-12">
             <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Work', href: '/work' }, { label: project.client }]} />
           </div>
@@ -87,10 +121,16 @@ export async function YiheeCamPage({ project }: { project: Project }) {
             </div>
             {screen && (
               <div className="yc-phone max-w-[260px] w-full mx-auto">
-                <MediaImg media={screen} priority sizes="260px" className="block w-full h-auto" />
+                <Shot media={screen} priority />
               </div>
             )}
           </div>
+          <p className="yc-hero__credit">{RIDE.credit}</p>
+        </div>
+      </section>
+
+      <section className="pt-12 pb-16 sm:pb-24">
+        <div className="max-w-[1180px] mx-auto px-5 sm:px-8">
           {summary.length > 0 && (
             <dl className="m-0 mt-16 grid grid-cols-1 md:grid-cols-3 gap-px yc-panel">
               {summary.map(([label, text]) => (
@@ -155,7 +195,7 @@ export async function YiheeCamPage({ project }: { project: Project }) {
                     </div>
                     {shot && (
                       <figure className="m-0 yc-phone yc-feature__shot">
-                        <MediaImg media={shot} sizes="240px" className="block w-full h-auto" />
+                        <Shot media={shot} />
                       </figure>
                     )}
                   </article>

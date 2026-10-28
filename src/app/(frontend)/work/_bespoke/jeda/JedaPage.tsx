@@ -10,6 +10,7 @@ import { Sources } from '../../_story/Sources';
 import { StoryEnhancer } from '../../_story/StoryEnhancer';
 import { TourChapter } from '../../_story/TourChapter';
 import { nunitoSans } from '../fonts';
+import { Suasana } from '../Suasana';
 import './jeda.css';
 
 /** A made-up entry, the same kind the tour records: nobody's real note. */
@@ -95,6 +96,12 @@ export async function JedaPage({ project }: { project: Project }) {
           )}
         </div>
       </section>
+
+      <Suasana
+        src="/assets/suasana/jeda-kereta.v1.webp"
+        alt="Penumpang kereta komuter menulis di buku catatan di dekat jendela, dinding terowongan buram di luar"
+        caption="Di kereta, tanpa sinyal: tempat catatan ditulis."
+      />
 
       <section aria-labelledby="meja-judul" className="jd-scene" data-scene="read">
         <div className="jd-scene__stage">

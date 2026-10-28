@@ -282,6 +282,7 @@ The one place this file does not govern colour and type. Each page wears the pro
 - **Laporta:** Montserrat and JetBrains Mono, amber `#b45309` for text and `#f59e0b` as a fill, neutral ink. Scene: a till receipt prints the seven shift steps, then a journal whose debit and credit balance, stamped SEIMBANG; the measured numbers are the receipt's totals.
 - **Jeda:** Nunito Sans, warm grey paper `#eeebe6`, faded blue ink `#4e6a84`. Scene: one made-up note crosses from the client's phone to the psychologist's table and lands marked "Baru sejak terakhir dibuka". Slow, small movement only.
 - **YiheeCam:** Barlow Condensed, dark ground `#0e0e0d`, split-flap tiles, the record lamp `#ff3b36`. Scene: ASCII bytes flip to REC, BATT, SD; the bytes are those letters' own codes, labelled as an illustration.
+- **Mood photos** (`Suasana`, and YiheeCam's hero backdrop) are AI-made, captioned "Foto ilustrasi buatan AI" under the picture, and show the place the product is used in, never the product. Screens stay real screenshots; YiheeCam's live view is cropped below its test pattern instead of being painted over. Provenance in `docs/aset/PROVENANCE-gambar.md`.
 - **Pinning** happens only where the stage fits one screen (Laporta ≥1024×760, Jeda ≥900×700, YiheeCam ≥640 tall); below that the scene plays as it scrolls past.
 
 ### Presentation Shelf (`/work/presentasi`)

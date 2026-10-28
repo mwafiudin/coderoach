@@ -10,6 +10,7 @@ import { Sources } from '../../_story/Sources';
 import { StoryEnhancer } from '../../_story/StoryEnhancer';
 import { TourChapter } from '../../_story/TourChapter';
 import { montserrat } from '../fonts';
+import { Suasana } from '../Suasana';
 import './laporta.css';
 
 /** The seven steps of closing a shift, in the order the crew's phone asks for them. */
@@ -93,6 +94,12 @@ export async function LaportaPage({ project }: { project: Project }) {
           )}
         </div>
       </section>
+
+      <Suasana
+        src="/assets/suasana/laporta-kasir.v1.webp"
+        alt="Meja kasir warung ayam goreng saat tutup, printer struk mengeluarkan gulungan kertas panjang"
+        caption="Jam tutup di outlet: saat crew menyerahkan shift."
+      />
 
       <section aria-labelledby="struk-judul" className="lp-scene" data-scene="read">
         <div className="lp-scene__stage">
