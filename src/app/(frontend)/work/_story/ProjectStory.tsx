@@ -85,7 +85,7 @@ export async function ProjectStory({ project, mode }: { project: Project; mode: 
   );
 }
 
-async function linkViews(links: NonNullable<Project['links']>): Promise<LinkView[]> {
+export async function linkViews(links: NonNullable<Project['links']>): Promise<LinkView[]> {
   const usable = links
     .map((l) => ({ ...l, href: safeHref(l.href) }))
     .filter((l): l is typeof l & { href: string } => Boolean(l.href && l.label));

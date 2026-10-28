@@ -277,6 +277,13 @@ The project page in the manner of a product page, used once a project has its su
 - **Secondary text is ink at 65%** (6.3:1 on paper-100), not mist-600, which measures 4.13:1 and is too light for reading text.
 - **Motion** reads `--p` (0 to 1) with its resting value as the fallback, so no JS, reduced motion, and the overlay all show the finished page. Scroll is never hijacked; only the value read from it is smoothed.
 
+### Bespoke project pages (`/work/laporta`, `/work/jeda`, `/work/yiheecam`, ADR 0013)
+The one place this file does not govern colour and type. Each page wears the product's own identity, taken from that app's repo, and remaps the site tokens (`--color-ink`, `--color-paper-*`, `--color-electric`, …) on its root so the shared tour and Sumber follow along. What stays from the Project Story: the hero answers first (name, tagline, problem, solution, result), every number links to Sumber, motion reads `--p` and rests finished, AA contrast, and the overlay and presentation keep the shared template.
+- **Laporta:** Montserrat and JetBrains Mono, amber `#b45309` for text and `#f59e0b` as a fill, neutral ink. Scene: a till receipt prints the seven shift steps, then a journal whose debit and credit balance, stamped SEIMBANG; the measured numbers are the receipt's totals.
+- **Jeda:** Nunito Sans, warm grey paper `#eeebe6`, faded blue ink `#4e6a84`. Scene: one made-up note crosses from the client's phone to the psychologist's table and lands marked "Baru sejak terakhir dibuka". Slow, small movement only.
+- **YiheeCam:** Barlow Condensed, dark ground `#0e0e0d`, split-flap tiles, the record lamp `#ff3b36`. Scene: ASCII bytes flip to REC, BATT, SD; the bytes are those letters' own codes, labelled as an illustration.
+- **Pinning** happens only where the stage fits one screen (Laporta ≥1024×760, Jeda ≥900×700, YiheeCam ≥640 tall); below that the scene plays as it scrolls past.
+
 ### Presentation Shelf (`/work/presentasi`)
 The ops console grown to a room: ink background, a mono header (`CODEROACH · PRESENTASI · 08 PROYEK`) with the offline readout, and one 640px shadow-900 card per project in a horizontal snap row, each with a `[ 01 / 08 ]` position. Keyboard first: arrows, Enter, F, Esc.
 
