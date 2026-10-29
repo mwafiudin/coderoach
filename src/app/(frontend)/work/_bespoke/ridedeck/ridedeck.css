@@ -2,7 +2,7 @@
   RideDeck's project page (ADR 0013, 0014). Tokens remapped to the app's night theme (rideDeck
   DESIGN.md): black windows in brushed-steel frames, tape labels, segment readouts. Everything
   that moves reads --p with its resting value, so without motion the page is already complete.
-  Choreography (DESIGN.md, motion vocabulary): pin and scrub for the Ronin, wide screens only;
+  Choreography (DESIGN.md, motion vocabulary): pin and scrub for the bike-to-phone morph, wide screens only;
   the before and after is two shots side by side without motion.
 */
 .bk-ridedeck {
@@ -67,17 +67,6 @@
   .bk-ridedeck .rd-hero__video { transition: none; }
 }
 
-/* Transfer scene: the same loop as the hero, in a framed 16:9 window instead of behind the text. */
-.bk-ridedeck .rd-clip { position: relative; aspect-ratio: 16 / 9; border-radius: 16px; overflow: hidden; background: var(--rd-window); box-shadow: inset 0 0 0 1px var(--color-paper-200); }
-.bk-ridedeck .rd-clip__media { position: absolute; inset: 0; }
-.bk-ridedeck .rd-clip__poster,
-.bk-ridedeck .rd-clip__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.bk-ridedeck .rd-clip__video { opacity: 0; transition: opacity 600ms ease; }
-.bk-ridedeck .rd-clip__media[data-shown='on'] .rd-clip__video { opacity: 1; }
-@media (prefers-reduced-motion: reduce) {
-  .bk-ridedeck .rd-clip__video { transition: none; }
-}
-
 /* Tape: Dymo-style label, wide caps, the colour of the app's card it names. */
 .bk-ridedeck .rd-tape {
   display: inline-block;
@@ -119,21 +108,42 @@
   .bk-ridedeck[data-motion='on'] .rd-scene { height: 200vh; padding-block: 0; }
   .bk-ridedeck[data-motion='on'] .rd-scene__stage { position: sticky; top: 0; min-height: 100vh; display: flex; align-items: center; padding-block: 40px; }
 }
-.bk-ridedeck .rd-viewer {
+/* Simulator: the rig on the left, the cards on the right, one ride model between them. */
+.bk-ridedeck .rd-sim { display: grid; grid-template-columns: 1fr; gap: 20px; }
+@media (min-width: 1024px) { .bk-ridedeck .rd-sim { grid-template-columns: 1.35fr 1fr; align-items: start; } }
+.bk-ridedeck .rd-sim__stage { position: sticky; top: 72px; }
+.bk-ridedeck .rd-sim__view {
   position: relative;
-  aspect-ratio: 3 / 2;
+  aspect-ratio: 4 / 3;
   border-radius: 16px;
   overflow: hidden;
   background: radial-gradient(ellipse at 50% 60%, #1c1f22 0%, var(--rd-window) 70%);
   box-shadow: inset 0 0 0 1px var(--color-paper-200);
+  cursor: grab;
+  touch-action: none;
+  outline-offset: 3px;
 }
-.bk-ridedeck .rd-viewer__poster,
-.bk-ridedeck .rd-viewer__canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
-.bk-ridedeck .rd-viewer__poster { object-fit: cover; transition: opacity 400ms ease; }
-.bk-ridedeck .rd-viewer[data-live='on'] .rd-viewer__poster { opacity: 0; }
-.bk-ridedeck .rd-viewer__canvas { cursor: grab; }
-.bk-ridedeck .rd-viewer__canvas:active { cursor: grabbing; }
-.bk-ridedeck .rd-viewer__hint {
+.bk-ridedeck .rd-sim__view:active { cursor: grabbing; }
+.bk-ridedeck .rd-sim__view:focus-visible { outline: 2px solid var(--color-electric); }
+.bk-ridedeck .rd-sim__poster,
+.bk-ridedeck .rd-sim__canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.bk-ridedeck .rd-sim__poster { object-fit: cover; transition: opacity 400ms ease; }
+.bk-ridedeck .rd-sim__view[data-live='on'] .rd-sim__poster { opacity: 0; }
+.bk-ridedeck .rd-sim__rain {
+  position: absolute;
+  inset: -20% 0 0;
+  pointer-events: none;
+  opacity: 0;
+  background: repeating-linear-gradient(100deg, transparent 0 14px, rgb(233 235 236 / 0.18) 14px 15px, transparent 15px 21px);
+  transition: opacity 500ms ease;
+}
+.bk-ridedeck .rd-sim__view[data-rain='on'] .rd-sim__rain { opacity: 1; animation: rd-rain 700ms linear infinite; }
+@keyframes rd-rain { to { transform: translateY(60px); } }
+@media (prefers-reduced-motion: reduce) {
+  .bk-ridedeck .rd-sim__view[data-rain='on'] .rd-sim__rain { animation: none; }
+  .bk-ridedeck .rd-sim__poster { transition: none; }
+}
+.bk-ridedeck .rd-sim__hint {
   position: absolute;
   right: 12px;
   bottom: 10px;
@@ -146,9 +156,80 @@
   color: var(--color-mist-500);
   pointer-events: none;
 }
-@media (prefers-reduced-motion: reduce) {
-  .bk-ridedeck .rd-viewer__poster { transition: none; }
+.bk-ridedeck .rd-sim__controls { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 12px; }
+.bk-ridedeck .rd-sim__btn {
+  min-height: 56px;
+  padding: 8px 6px;
+  border-radius: 6px;
+  border: 1px solid var(--color-paper-200);
+  background: var(--color-paper-50);
+  color: var(--color-ink);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
+.bk-ridedeck .rd-sim__btn:disabled { opacity: 0.4; }
+.bk-ridedeck .rd-sim__btn[aria-pressed='true'] { background: var(--rd-tape-amber); border-color: var(--rd-tape-amber); color: var(--rd-tape-text); }
+.bk-ridedeck .rd-sim__btn--gas[aria-pressed='true'] { background: var(--rd-tape-green); border-color: var(--rd-tape-green); }
+.bk-ridedeck .rd-sim__btn--brake[aria-pressed='true'] { background: var(--rd-tape-red); border-color: var(--rd-tape-red); }
+.bk-ridedeck .rd-sim__btn:focus-visible { outline: 2px solid var(--color-electric); outline-offset: 2px; }
+@media (max-width: 479px) {
+  .bk-ridedeck .rd-sim__controls { grid-template-columns: repeat(3, 1fr); }
+  .bk-ridedeck .rd-sim__btn { font-size: 13px; }
+}
+
+.bk-ridedeck .rd-sim__cards { display: grid; gap: 12px; }
+.bk-ridedeck .rd-sim__card { padding: 14px 16px; }
+.bk-ridedeck .rd-sim__card .rd-window__readout { margin-top: 10px; }
+.bk-ridedeck .rd-sim__card .rd-seg { height: clamp(44px, 5vw, 64px); }
+.bk-ridedeck .rd-sim__gear { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-mist-500); font-variant-numeric: tabular-nums; }
+.bk-ridedeck .rd-sim__gear strong { color: var(--rd-seg-on); font-size: 14px; }
+.bk-ridedeck .rd-sim__dial { display: block; width: 100%; height: auto; margin-top: 10px; }
+.bk-ridedeck .rd-sim__value { margin: 6px 0 0; font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums; color: var(--rd-seg-on); }
+.bk-ridedeck .rd-sim__compass { position: relative; margin-top: 10px; height: 34px; overflow: hidden; border-radius: 4px; background: #000; box-shadow: inset 0 0 0 1px var(--color-paper-200); }
+.bk-ridedeck .rd-sim__compass-strip { position: absolute; left: 50%; top: 0; display: grid; grid-auto-flow: column; grid-auto-columns: 12.5%; width: 400%; height: 100%; margin-left: -25%; will-change: transform; }
+.bk-ridedeck .rd-sim__compass-strip span { display: grid; place-items: center; font-size: 13px; font-weight: 800; letter-spacing: 0.1em; color: var(--color-mist-500); border-left: 1px solid var(--color-paper-200); }
+.bk-ridedeck .rd-sim__compass-needle { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: var(--rd-seg-on); }
+.bk-ridedeck .rd-sim__tank { display: grid; grid-template-columns: repeat(9, 1fr); gap: 4px; margin-top: 12px; }
+.bk-ridedeck .rd-sim__tank span { height: 10px; border-radius: 2px; background: var(--rd-tape-amber); opacity: 0.25; }
+.bk-ridedeck .rd-sim__tank span.on { opacity: 1; background: #ffb000; }
+.bk-ridedeck .rd-sim__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px 12px; margin: 12px 0 0; }
+.bk-ridedeck .rd-sim__grid dt { font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-mist-500); font-variation-settings: 'wdth' 118; }
+.bk-ridedeck .rd-sim__grid dd { margin: 2px 0 0; font-size: 18px; font-weight: 800; font-variant-numeric: tabular-nums; color: #ffb000; }
+
+/* Morph: pinned scene, scrubbed by --p. The screenshot sits where the points gather. */
+.bk-ridedeck .rd-morph {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  border-radius: 16px;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 60%, #1c1f22 0%, var(--rd-window) 70%);
+  box-shadow: inset 0 0 0 1px var(--color-paper-200);
+  --shot: 1;
+}
+.bk-ridedeck .rd-morph__poster,
+.bk-ridedeck .rd-morph__canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.bk-ridedeck .rd-morph__poster { object-fit: cover; }
+.bk-ridedeck .rd-morph[data-live='on'] .rd-morph__poster { opacity: 0; }
+.bk-ridedeck .rd-morph__phone {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 17%;
+  translate: -50% -50%;
+  padding: 1.3%;
+  border-radius: 9% / 4.5%;
+  background: var(--color-paper-200);
+  opacity: var(--shot);
+}
+.bk-ridedeck .rd-morph__phone img { display: block; width: 100%; height: auto; border-radius: 7% / 3.5%; }
+/* Without the scene (no JS, reduced motion, no WebGL) the poster and the phone sit side by side. */
+.bk-ridedeck .rd-morph[data-live='off'] .rd-morph__phone { left: 72%; width: 26%; }
+.bk-ridedeck .rd-morph[data-live='off'] .rd-morph__poster { object-position: 20% 50%; }
 
 .bk-ridedeck .rd-compare { display: grid; grid-template-columns: repeat(2, minmax(0, 280px)); justify-content: center; gap: clamp(16px, 5vw, 72px); }
 

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { describe, test } from 'node:test';
-import { leanAt, MAX_LEAN, RIDEDECK_DIR, RIDEDECK_FILES, ridedeckBudget } from './ridedeck';
+import { leanAt, MAX_LEAN, RIDEDECK_DIR, RIDEDECK_FILES, RIG_PARTS, RIG_TOTAL_BUDGET_KB, ridedeckBudget } from './ridedeck';
 
 const near = (a: number, b: number) => assert.ok(Math.abs(a - b) < 1e-9, `${a} vs ${b}`);
 // 32 degrees, worked out by hand so the test does not borrow the constant it checks.
@@ -33,14 +33,19 @@ describe('RideDeck lean curve', () => {
 describe('RideDeck page files', () => {
   const dir = path.join(process.cwd(), 'public', RIDEDECK_DIR);
   const named = Object.values(RIDEDECK_FILES) as string[];
+  const kbOf = (file: string) => Math.round((statSync(path.join(dir, file), { throwIfNoEntry: false })?.size ?? Number.NaN) / 1024);
 
   test('every file the page names exists and fits its budget', () => {
     for (const file of named) {
-      const bytes = statSync(path.join(dir, file), { throwIfNoEntry: false })?.size;
-      assert.ok(bytes !== undefined, `${file} is missing`);
-      const kb = Math.round(bytes / 1024);
+      const kb = kbOf(file);
+      assert.ok(Number.isFinite(kb), `${file} is missing`);
       assert.ok(kb <= ridedeckBudget(file), `${file} is ${kb} KB, budget ${ridedeckBudget(file)} KB`);
     }
+  });
+
+  test('the seven rig parts together stay under the rig budget', () => {
+    const total = RIG_PARTS.reduce((n, f) => n + kbOf(f), 0);
+    assert.ok(total <= RIG_TOTAL_BUDGET_KB, `rig is ${total} KB, budget ${RIG_TOTAL_BUDGET_KB} KB`);
   });
 
   test('names are versioned, so a changed file never hides behind a cached URL', () => {
@@ -51,12 +56,14 @@ describe('RideDeck page files', () => {
     for (const file of readdirSync(dir)) assert.ok(named.includes(file), `${file} is not named by the page`);
   });
 
-  test('the model is meshopt-compressed, so the viewer needs only the decoder three already ships', () => {
-    const glb = readFileSync(path.join(dir, RIDEDECK_FILES.ronin));
-    assert.equal(glb.toString('ascii', 0, 4), 'glTF');
-    const jsonLength = glb.readUInt32LE(12);
-    const json = JSON.parse(glb.toString('utf8', 20, 20 + jsonLength)) as { extensionsRequired?: string[] };
-    assert.ok(json.extensionsRequired?.includes('EXT_meshopt_compression'), JSON.stringify(json.extensionsRequired));
+  test('each model is meshopt-compressed, so the scenes need only the decoder three already ships', () => {
+    for (const file of RIG_PARTS) {
+      const glb = readFileSync(path.join(dir, file));
+      assert.equal(glb.toString('ascii', 0, 4), 'glTF', file);
+      const jsonLength = glb.readUInt32LE(12);
+      const json = JSON.parse(glb.toString('utf8', 20, 20 + jsonLength)) as { extensionsRequired?: string[] };
+      assert.ok(json.extensionsRequired?.includes('EXT_meshopt_compression'), `${file}: ${JSON.stringify(json.extensionsRequired)}`);
+    }
   });
 
   test('the drawn icon carries no script and no outside reference', () => {

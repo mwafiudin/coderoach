@@ -10,7 +10,8 @@ import { Sources } from '../../_story/Sources';
 import { StoryEnhancer } from '../../_story/StoryEnhancer';
 import { archivo } from '../fonts';
 import { HeroLoop } from './HeroLoop';
-import { RoninViewer } from './RoninViewer';
+import { RoninMorph } from './RoninMorph';
+import { RoninSim } from './RoninSim';
 import { Segments } from './Segments';
 import './ridedeck.css';
 
@@ -20,7 +21,6 @@ const at = (file: string) => `${RIDEDECK_DIR}/${file}`;
 const TAPES = ['rd-tape--red', 'rd-tape--green', 'rd-tape--amber'] as const;
 
 const RONIN = {
-  src: at(F.ronin),
   poster: at(F.roninPoster),
   alt: 'Model 3D motor TVS Ronin dari sudut tiga perempat depan, abu-abu polos',
 };
@@ -37,14 +37,6 @@ const RIDE = {
   poster: at(F.heroPoster),
   alt: 'Jalan pegunungan basah saat senja dilihat dari atas motor, lampu depan menyorot aspal, lampu kota di lembah',
   credit: 'Video ilustrasi buatan AI (Google Flow), bukan rekaman perjalanan.',
-};
-
-/** Motorcycle into phone. Made with AI from two AI stills, and said so: the real screens are below. */
-const TRANSFER = {
-  src: at(F.transferLoop),
-  poster: at(F.transferPoster),
-  alt: 'Motor retro abu-abu terurai menjadi partikel cahaya amber dari hub roda depan, lalu mengalir masuk ke HP di dudukan stang',
-  credit: 'Animasi ilustrasi buatan AI (Google Flow). Layar RideDeck yang sebenarnya ada di tangkapan di bawah.',
 };
 
 const ICON_SHEET = {
@@ -134,46 +126,38 @@ export async function RideDeckPage({ project }: { project: Project }) {
         </section>
       )}
 
-      <section aria-labelledby="ronin-judul" className="rd-scene" data-scene="read">
-        <div className="rd-scene__stage">
-          <div className="max-w-[1180px] mx-auto px-5 sm:px-8 w-full grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-10 items-center">
-            <div>
-              <Tape tone="rd-tape--amber">Lean</Tape>
-              <h2 id="ronin-judul" className="m-0 mt-4 rd-display text-[clamp(32px,4.6vw,56px)] leading-[1.02] text-balance">
-                Motor pemiliknya ikut di dalam aplikasi.
-              </h2>
-              <p className="m-0 mt-5 max-w-[46ch] text-[17px] leading-[1.6] rd-dim text-pretty">
-                rideDeck menggambar motor pemiliknya, sebuah TVS Ronin, untuk simulasi lean dan pitch dari sensor HP. Di halaman ini
-                kemiringannya mengikuti gulir sebagai ilustrasi, bukan data perjalanan.
-              </p>
-            </div>
-            <figure className="m-0">
-              <RoninViewer src={RONIN.src} poster={RONIN.poster} posterAlt={RONIN.alt} />
-              <figcaption className="mt-3 text-[12px] leading-[1.5] rd-dim">
-                Model buatan AI dari foto publik TVS Ronin, bukan model resmi TVS Motor. Bentuk dari Tencent Hunyuan3D-2, dipakai di
-                bawah Tencent Hunyuan 3D 2.0 Community License.
-              </figcaption>
-            </figure>
+      <section aria-labelledby="sim-judul" className="py-[clamp(72px,9vw,120px)] rd-band">
+        <div className="max-w-[1180px] mx-auto px-5 sm:px-8">
+          <Tape tone="rd-tape--amber">Coba sendiri</Tape>
+          <h2 id="sim-judul" className="m-0 mt-4 rd-display text-[clamp(32px,4.6vw,56px)] leading-[1.02] text-balance">
+            Motor pemiliknya, dan dasbor yang membacanya.
+          </h2>
+          <p className="m-0 mt-4 max-w-[58ch] text-[17px] leading-[1.6] rd-dim text-pretty">
+            Model TVS Ronin yang sama dengan di dalam app. Tarik gas, rem, belokkan, miringkan, atau nyalakan hujan: kartu di
+            sebelahnya menghitung ulang kecepatan, gigi, lean, gaya g, arah, dan bensin dengan rumus yang dipakai app
+            (massa, hambatan udara, dan konsumsi mesin dari buku manual Ronin, sisanya asumsi yang ditandai di kode app).
+          </p>
+          <div className="mt-10">
+            <RoninSim poster={RONIN.poster} posterAlt={RONIN.alt} />
           </div>
         </div>
       </section>
 
-      <section aria-labelledby="transfer-judul" className="py-[clamp(72px,9vw,120px)]">
-        <div className="max-w-[1180px] mx-auto px-5 sm:px-8">
-          <Tape tone="rd-tape--green">Sensor</Tape>
-          <h2 id="transfer-judul" className="m-0 mt-4 rd-display text-[clamp(32px,4.6vw,56px)] leading-[1.02] text-balance">
-            Dari motor ke layar.
-          </h2>
-          <p className="m-0 mt-4 max-w-[56ch] text-[17px] leading-[1.6] rd-dim text-pretty">
-            HP di dudukan stang membaca kemiringan, tanjakan, dan guncangan motor lewat sensornya sendiri, lalu dasbor menggambarnya
-            ulang sebagai instrumen dan simulasi.
-          </p>
-          <figure className="m-0 mt-10">
-            <div className="rd-clip">
-              <HeroLoop base="rd-clip" src={TRANSFER.src} poster={TRANSFER.poster} alt={TRANSFER.alt} priority={false} />
+      <section aria-labelledby="transfer-judul" className="rd-scene" data-scene="read">
+        <div className="rd-scene__stage">
+          <div className="max-w-[1180px] mx-auto px-5 sm:px-8 w-full grid grid-cols-1 lg:grid-cols-[1fr_1.6fr] gap-10 items-center">
+            <div>
+              <Tape tone="rd-tape--green">Sensor</Tape>
+              <h2 id="transfer-judul" className="m-0 mt-4 rd-display text-[clamp(32px,4.6vw,56px)] leading-[1.02] text-balance">
+                Dari motor ke layar.
+              </h2>
+              <p className="m-0 mt-4 max-w-[46ch] text-[17px] leading-[1.6] rd-dim text-pretty">
+                HP di dudukan stang membaca kemiringan, tanjakan, dan guncangan motor lewat sensornya sendiri, lalu dasbor
+                menggambarnya ulang sebagai instrumen. Gulir: motor terurai dari hub roda depan dan menyusun dirinya jadi layar.
+              </p>
             </div>
-            <figcaption className="mt-3 text-[12px] leading-[1.5] rd-dim">{TRANSFER.credit}</figcaption>
-          </figure>
+            {screen && <RoninMorph poster={RONIN.poster} posterAlt={RONIN.alt} screen={screen.url ?? ''} screenAlt={screen.alt ?? ''} />}
+          </div>
         </div>
       </section>
 
@@ -211,7 +195,6 @@ export async function RideDeckPage({ project }: { project: Project }) {
           <figure className="m-0">
             {/* eslint-disable-next-line @next/next/no-img-element -- a fixed local file, already sized */}
             <img src={ICON_SHEET.src} alt={ICON_SHEET.alt} width={1200} height={400} loading="lazy" decoding="async" className="block w-full h-auto rounded-xl" />
-            <figcaption className="mt-3 text-[12px] leading-[1.5] rd-dim">Konsep buatan AI (Gemini), hanya acuan.</figcaption>
           </figure>
           <div>
             <h2 id="ikon-judul" className="m-0 rd-display text-[clamp(28px,3.4vw,44px)] leading-[1.05] text-balance">
