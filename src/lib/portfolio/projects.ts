@@ -1145,7 +1145,7 @@ export const PORTFOLIO: PortfolioEntry[] = [
     excerpt:
       'Launcher Android untuk HP di dudukan stang: navigasi, musik, telepon, dan app touring dalam satu dasbor instrumen, dengan tombol pulang yang selalu ada.',
     cover: {
-      file: 'ridedeck-tangki.v1.webp',
+      file: 'ridedeck-tangki.v2.webp',
       alt: 'Dasbor RideDeck: dial lean, ketinggian, kartu tangki bensin dengan liter, persen, km lagi, dan km per liter, lalu cuaca dan suhu',
       focalX: 50,
       focalY: 45,
@@ -1174,12 +1174,12 @@ export const PORTFOLIO: PortfolioEntry[] = [
       {
         title: 'Instrumen yang jujur soal batas',
         body: 'Lean, tanjakan, dan gaya g dari sensor HP ditandai sebagai indikatif. Kalibrasi ditolak saat motor melaju atau HP masih goyang, dan tangki bensin menyebut seberapa yakin perkiraannya.',
-        screen: { file: 'ridedeck-tangki.v1.webp', alt: 'Dial lean dengan tombol Kalibrasi, pita ketinggian, dan kartu tangki bensin berlabel YAKIN TINGGI' },
+        screen: { file: 'ridedeck-tangki.v2.webp', alt: 'Dial lean di nol setelah Kalibrasi, pita ketinggian, kartu tangki bensin berlabel YAKIN TINGGI, cuaca, dan suhu' },
       },
       {
         title: 'Motor dan pengendara dalam simulasi',
         body: 'Gerak HP di dudukan diterjemahkan ke model motor dan pengendara 3D atau 2D, di dasbor maupun saat memutar ulang perjalanan, lengkap dengan gigi, lean, dan pitch.',
-        screen: { file: 'ridedeck-simulasi.v1.webp', alt: 'Kartu simulasi: model motor dan pengendara 3D dengan angka gigi, lean, dan pitch' },
+        screen: { file: 'ridedeck-simulasi.v2.webp', alt: 'Kartu simulasi: motor dan pengendara 3D tegak dengan gigi N, lean 0, dan pitch 0, di atas kartu kecepatan' },
       },
       {
         title: 'Tidak berebut tombol dengan app lain',
