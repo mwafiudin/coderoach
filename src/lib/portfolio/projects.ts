@@ -1136,7 +1136,7 @@ export const PORTFOLIO: PortfolioEntry[] = [
     order: 25,
     kind: 'lab',
     client: 'RideDeck',
-    tagline: 'Dasbor touring di HP yang terpasang di stang motor, tempat semua app touring kembali.',
+    tagline: 'Satu dasbor di HP yang terpasang di stang motor, untuk membuka navigasi, musik, dan telepon tanpa mencari-cari app.',
     meta: 'LAB · ANDROID & TOURING',
     industry: 'travel',
     service: 'build',
@@ -1166,7 +1166,7 @@ export const PORTFOLIO: PortfolioEntry[] = [
     },
     features: [
       {
-        title: 'Selalu ada jalan pulang',
+        title: 'Selalu bisa kembali ke dasbor',
         body: 'Tombol Kembali, Beranda, dan Ganti app selalu di bawah layar dan bisa dipasang ke remote stang. Saat aksesibilitas mati dan tombol-tombol itu tidak bisa bekerja, dasbor mengatakannya terang-terangan dan menunjukkan cara menyalakannya lagi.',
         screen: { file: 'ridedeck-dasbor.v1.webp', alt: 'Dasbor dengan pita AKSESIBILITAS MATI dan tombol Nyalakan di Pengaturan di atas kartu instrumen' },
       },
@@ -1181,7 +1181,7 @@ export const PORTFOLIO: PortfolioEntry[] = [
         screen: { file: 'ridedeck-simulasi.v1.webp', alt: 'Kartu simulasi: model motor dan pengendara 3D dengan angka gigi, lean, dan pitch' },
       },
       {
-        title: 'Berbagi stang dengan app lain',
+        title: 'Tidak berebut tombol dengan app lain',
         body: 'Musik dikendalikan tanpa membuat sesi media sendiri, supaya knob helm tetap dipegang YiheeCam. Kartu kamera dan helm hanya menampilkan status dan membuka app pemiliknya.',
         screen: { file: 'ridedeck-musik.v1.webp', alt: 'Kartu musik dengan pilihan sumber Spotify, YouTube Music, dan YouTube, lalu kartu kamera YiheeCam dan baterai helm' },
       },
