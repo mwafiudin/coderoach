@@ -22,7 +22,7 @@ const TAPES = ['rd-tape--red', 'rd-tape--green', 'rd-tape--amber'] as const;
 const RONIN = {
   src: at(F.ronin),
   poster: at(F.roninPoster),
-  alt: 'Model 3D motor TVS Ronin dari sudut tiga perempat depan, abu-abu dengan aksen jingga di tangki dan garpu depan',
+  alt: 'Model 3D motor TVS Ronin dari sudut tiga perempat depan, abu-abu polos',
 };
 
 /** The dashboard as it was the night after the first build, against the one in the showcase. */
@@ -37,6 +37,14 @@ const RIDE = {
   poster: at(F.heroPoster),
   alt: 'Jalan pegunungan basah saat senja dilihat dari atas motor, lampu depan menyorot aspal, lampu kota di lembah',
   credit: 'Video ilustrasi buatan AI (Google Flow), bukan rekaman perjalanan.',
+};
+
+/** Motorcycle into phone. Made with AI from two AI stills, and said so: the real screens are below. */
+const TRANSFER = {
+  src: at(F.transferLoop),
+  poster: at(F.transferPoster),
+  alt: 'Motor retro abu-abu terurai menjadi partikel cahaya amber dari hub roda depan, lalu mengalir masuk ke HP di dudukan stang',
+  credit: 'Animasi ilustrasi buatan AI (Google Flow). Layar RideDeck yang sebenarnya ada di tangkapan di bawah.',
 };
 
 const ICON_SHEET = {
@@ -132,7 +140,7 @@ export async function RideDeckPage({ project }: { project: Project }) {
             <div>
               <Tape tone="rd-tape--amber">Lean</Tape>
               <h2 id="ronin-judul" className="m-0 mt-4 rd-display text-[clamp(32px,4.6vw,56px)] leading-[1.02] text-balance">
-                Motor yang sama ada di dalam dasbor.
+                Motor pemiliknya ikut di dalam aplikasi.
               </h2>
               <p className="m-0 mt-5 max-w-[46ch] text-[17px] leading-[1.6] rd-dim text-pretty">
                 rideDeck menggambar motor pemiliknya, sebuah TVS Ronin, untuk simulasi lean dan pitch dari sensor HP. Di halaman ini
@@ -150,15 +158,34 @@ export async function RideDeckPage({ project }: { project: Project }) {
         </div>
       </section>
 
+      <section aria-labelledby="transfer-judul" className="py-[clamp(72px,9vw,120px)]">
+        <div className="max-w-[1180px] mx-auto px-5 sm:px-8">
+          <Tape tone="rd-tape--green">Sensor</Tape>
+          <h2 id="transfer-judul" className="m-0 mt-4 rd-display text-[clamp(32px,4.6vw,56px)] leading-[1.02] text-balance">
+            Dari motor ke layar.
+          </h2>
+          <p className="m-0 mt-4 max-w-[56ch] text-[17px] leading-[1.6] rd-dim text-pretty">
+            HP di dudukan stang membaca kemiringan, tanjakan, dan guncangan motor lewat sensornya sendiri, lalu dasbor menggambarnya
+            ulang sebagai instrumen dan simulasi.
+          </p>
+          <figure className="m-0 mt-10">
+            <div className="rd-clip">
+              <HeroLoop base="rd-clip" src={TRANSFER.src} poster={TRANSFER.poster} alt={TRANSFER.alt} priority={false} />
+            </div>
+            <figcaption className="mt-3 text-[12px] leading-[1.5] rd-dim">{TRANSFER.credit}</figcaption>
+          </figure>
+        </div>
+      </section>
+
       {screen && (
         <section aria-labelledby="iterasi-judul" className="py-[clamp(72px,9vw,120px)]">
           <div className="max-w-[1180px] mx-auto px-5 sm:px-8">
             <h2 id="iterasi-judul" className="m-0 rd-display text-[clamp(32px,4.6vw,56px)] leading-[1.02] text-balance">
-              Satu minggu di dudukan stang.
+              Dari versi pertama ke versi sekarang.
             </h2>
             <p className="m-0 mt-4 max-w-[56ch] text-[17px] leading-[1.6] rd-dim text-pretty">
-              Versi pertama hanya angka dan tombol teks. Setelah dipakai dan diuji di HP, tombol mendapat ikon, angka menjadi instrumen,
-              dan peta serta simulasi masuk ke dasbor.
+              Versi pertama, 22 Okt 2026, hanya berisi angka dan tombol teks. Setelah dipakai dan diuji di HP, tombol mendapat ikon,
+              angka menjadi instrumen, lalu peta dan simulasi motor masuk ke dasbor.
             </p>
             <div className="rd-compare mt-12">
               <figure className="m-0">

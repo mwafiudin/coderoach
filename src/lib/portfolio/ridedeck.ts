@@ -7,12 +7,14 @@ export const RIDEDECK_DIR = '/assets/ridedeck';
 
 export const RIDEDECK_FILES = {
   ronin: 'ronin.v1.glb',
-  roninPoster: 'ronin-poster.v1.webp',
+  roninPoster: 'ronin-poster.v2.webp',
   before: 'dasbor-22okt.v1.webp',
   iconSheet: 'konsep-ikon.v1.webp',
   icon: 'ikon.v1.svg',
   heroLoop: 'hero-jalan-loop.v1.mp4',
   heroPoster: 'hero-jalan-loop.v1.poster.webp',
+  transferLoop: 'transfer-loop.v1.mp4',
+  transferPoster: 'transfer-loop.v1.poster.webp',
 } as const;
 
 /**

@@ -5,6 +5,7 @@ import {
   Group,
   HemisphereLight,
   Mesh,
+  MeshStandardMaterial,
   PerspectiveCamera,
   Scene,
   SRGBColorSpace,
@@ -34,8 +35,8 @@ export async function mountRonin(host: HTMLElement, { src, reduce, onReady }: Op
   canvas.setAttribute('aria-hidden', 'true');
 
   const scene = new Scene();
-  scene.add(new HemisphereLight(0xe9ebec, 0x16181a, 0.9));
-  const key = new DirectionalLight(0xffffff, 1.8);
+  scene.add(new HemisphereLight(0xe9ebec, 0x16181a, 1.5));
+  const key = new DirectionalLight(0xffffff, 2.6);
   key.position.set(3, 4, 2.5);
   scene.add(key);
   const rim = new DirectionalLight(0xffb000, 1.1);
@@ -47,6 +48,15 @@ export async function mountRonin(host: HTMLElement, { src, reduce, onReady }: Op
   const loader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
   const gltf = await loader.loadAsync(src);
   const bike = gltf.scene;
+  // One plain graphite instead of the colours projected from the photos: those smear into blotches
+  // on a 76k-triangle mesh, and a clay finish reads as a model, not as a photo of the real bike.
+  const clay = new MeshStandardMaterial({ color: 0x6b7177, metalness: 0.45, roughness: 0.42 });
+  bike.traverse((o) => {
+    if (o instanceof Mesh) {
+      for (const m of [o.material].flat()) m.dispose();
+      o.material = clay;
+    }
+  });
   const lean = new Group();
   lean.add(bike);
   scene.add(lean);
@@ -114,11 +124,9 @@ export async function mountRonin(host: HTMLElement, { src, reduce, onReady }: Op
     sizes.disconnect();
     controls.dispose();
     bike.traverse((o) => {
-      if (o instanceof Mesh) {
-        o.geometry.dispose();
-        for (const m of [o.material].flat()) m.dispose();
-      }
+      if (o instanceof Mesh) o.geometry.dispose();
     });
+    clay.dispose();
     renderer.dispose();
     canvas.remove();
   };
