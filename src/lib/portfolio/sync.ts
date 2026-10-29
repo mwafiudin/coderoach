@@ -25,6 +25,9 @@ type SyncOptions = {
 type ProjectData = Omit<Project, 'id' | 'createdAt' | 'updatedAt'>;
 type MediaIds = Map<string, number | undefined>;
 
+/** Media id a dry run gives to a file it would upload. Never written: a dry run writes nothing. */
+const PENDING_UPLOAD = -1;
+
 /**
  * Writes PORTFOLIO to the database: assets into Media (matched by filename), entries into Projects
  * (matched by slug, then published), and HIDDEN_PROJECT_SLUGS back to draft without touching their copy.
@@ -139,7 +142,9 @@ async function ensureMedia(
     return existing.id;
   }
   log(`upload     media   ${asset.file}`);
-  if (!apply) return undefined;
+  // A dry run has no id for a file it would upload. Undefined would drop the field from the diff
+  // and report the project as "same"; a placeholder no real row has shows it as changed.
+  if (!apply) return PENDING_UPLOAD;
   const created = await payload.create({
     collection: 'media',
     data,

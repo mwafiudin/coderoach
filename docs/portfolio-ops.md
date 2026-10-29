@@ -1,7 +1,7 @@
 # Portofolio /work — operasi
 
 Peta berkas, aturan izin, dan urutan kerja untuk mengubah portofolio di coderoach.id/work.
-Keputusannya ada di `docs/decisions/0001`–`0010`.
+Keputusannya ada di `docs/decisions/0001`–`0014`.
 
 ## Peta berkas
 
@@ -17,6 +17,7 @@ Keputusannya ada di `docs/decisions/0001`–`0010`.
 | `src/lib/portfolio/legacy-baseline.ts` | Yang sudah tayang per 14 Okt 2026. Hanya boleh menyusut. |
 | `src/lib/portfolio/metrics.ts` | Bentuk angka bersumber: nilai, satuan, tanggal, metode, sumber, izin. |
 | `src/lib/portfolio/taxonomy.ts` | Daftar bidang untuk Projects dan Clients (nilainya sama dengan `klien.bidang` di Coderoach OS). |
+| `src/app/(frontend)/_components/ui/IndustryIcon.tsx` | Ikon Phosphor per bidang (ADR 0014). Bidang baru di `taxonomy.ts` gagal typecheck sampai diberi ikon. |
 | `src/lib/linkcheck/` | Pemeriksa link live beserta pagar SSRF-nya. |
 | `src/lib/schema/` | Tes bahwa skema Payload hanya bertambah (`baseline.json`). |
 | `scripts/portfolio-assets/` | Gambar dan video sumber. Nama berkas berversi: `laporta-tur.v2.mp4`. Anggaran: loop 600 KB, tur 8 MB, poster 150 KB, still 300 KB (`npm test`). |
@@ -60,11 +61,16 @@ Coderoach OS.
 
 1. Ubah `projects.ts`. Aset baru masuk ke `scripts/portfolio-assets/` dengan nama baru (sync tidak
    pernah mengunggah ulang berkas dengan nama yang sama).
+   Setiap proyek yang tampil wajib punya `cover`; `npm test` menolak kartu yang jatuh ke sampul
+   gambar garis.
 2. `npm test`.
 3. Lokal: `npx tsx --env-file=.env.local scripts/portfolio-sync.ts`, lalu `--apply`.
-4. Produksi, setelah deploy:
-   `railway ssh --service web -- "npx tsx scripts/portfolio-sync.ts"`, periksa hasilnya (baris
-   `blocked` = item tanpa izin yang ditahan), lalu ulangi dengan `--apply`.
+4. Produksi, setelah deploy, dari checkout utama (folder yang ter-`railway link`) di `origin/main`
+   persis: `npx tsx scripts/run-in-production.ts portfolio-sync`. Periksa hasilnya (baris
+   `blocked` = item tanpa izin yang ditahan, `upload`/`update` = yang akan berubah), lalu ulangi
+   dengan `--apply`. Image Railway tidak membawa `scripts/`, jadi skrip ini mengirim
+   `portfolio-sync.ts` dan `scripts/portfolio-assets` lewat stdin `railway ssh`, mencocokkan
+   sha256 di container, lalu menjalankannya di sana. Rahasia produksi tidak keluar dari Railway.
 5. Sync tidak pernah menghapus Media. Berkas yang tidak dipakai lagi dihapus manual di admin
    (Media), karena `/api/media/file/...` tetap publik selama berkasnya ada. Saat ini:
    `portfolio-laporta.webp` (sampul lama Laporta, memuat data outlet sungguhan dan URL produksi),

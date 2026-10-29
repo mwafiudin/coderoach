@@ -1,0 +1,23 @@
+# Keep the build context small and free of secrets: no .env* may land in any image layer.
+.git
+.github
+.githooks
+.claude
+.agents
+.impeccable
+.next
+node_modules
+media
+.env*
+!.env.example
+*.tsbuildinfo
+npm-debug.log*
+text-cleanup-backup-*.json
+
+# Not needed by `next build` or at runtime.
+_legacy
+docs
+scripts
+*.md
+Dockerfile.selfhost
+.dockerignore

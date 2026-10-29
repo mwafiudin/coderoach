@@ -121,7 +121,9 @@ Colors and typography tokens are defined in `src/app/globals.css` via Tailwind v
 
 ## Deployment
 
-Railway deploys `main` automatically: build `npm run build`, start `npm run start`, healthcheck `/opsscore` (`railway.json`). Environment variables, the media volume, and database access are documented in `docs/opsscore-ops.md` under **Deploy (Railway)**.
+Railway deploys `main` automatically: build `npm run build`, start `npm run start`, healthcheck `/api/health` (`railway.json`). Environment variables, the media volume, and database access are documented in `docs/opsscore-ops.md` under **Deploy (Railway)**. CI (`.github/workflows/ci.yml`) runs lint, typecheck, tests, and the build on every PR and push to `main`; it does not deploy.
+
+The Docker image for self-hosting (VPS) is described in `docs/self-host.md`.
 
 Production URL set via `NEXT_PUBLIC_SERVER_URL` env var.
 
