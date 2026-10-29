@@ -1182,6 +1182,11 @@ export const PORTFOLIO: PortfolioEntry[] = [
         screen: { file: 'ridedeck-simulasi.v2.webp', alt: 'Kartu simulasi: motor dan pengendara 3D tegak dengan gigi N, lean 0, dan pitch 0, di atas kartu kecepatan' },
       },
       {
+        title: 'Satu layar ala kokpit pesawat',
+        body: 'Kartu Kokpit memuat semua yang dibaca sekilas: pita kompas ala HUD game dengan arah matahari terbit dan terbenam yang dihitung dari posisi, indikator sikap dengan garis tegak dan sumbu motor, pita kecepatan dan ketinggian, tangki, cuaca, dan musik. Kompas bisa mengikuti arah atau dikunci ke utara.',
+        screen: { file: 'ridedeck-kokpit.v1.webp', alt: 'Kartu Kokpit: pita kompas dengan penanda terbit 05.28 dan terbenam 17.47, arah sensor 124 TG, indikator sikap berisi motor 3D di dalam cincin arah, pita kecepatan dan mdpl, tangki, cuaca 6 jam, dan tombol Ikut arah' },
+      },
+      {
         title: 'Tidak berebut tombol dengan app lain',
         body: 'Musik dikendalikan tanpa membuat sesi media sendiri, supaya knob helm tetap dipegang YiheeCam. Kartu kamera dan helm hanya menampilkan status dan membuka app pemiliknya.',
         screen: { file: 'ridedeck-musik.v1.webp', alt: 'Kartu musik dengan pilihan sumber Spotify, YouTube Music, dan YouTube, lalu kartu kamera YiheeCam dan baterai helm' },
@@ -1193,6 +1198,7 @@ export const PORTFOLIO: PortfolioEntry[] = [
       { date: '22 Okt 2026', title: 'Instrumen hidup, peta tertanam, dan Maps berdampingan', sourceRef: 'rideDeck-ayam@2e4c878' },
       { date: '23 Okt 2026', title: 'Simulasi motor dan pengendara dari sensor HP', sourceRef: 'rideDeck-ayam@b553ed0' },
       { date: '25 Okt 2026', title: 'Laju bensin per detik dan skala tangki', sourceRef: 'rideDeck-ayam@ca5c4f9' },
+      { date: '29 Okt 2026', title: 'Kartu Kokpit: kompas ala HUD game dan instrumen sikap', sourceRef: 'rideDeck-ayam@07177c0' },
     ],
     body: [
       { h2: 'Uji di HP dulu, janji kemudian' },
