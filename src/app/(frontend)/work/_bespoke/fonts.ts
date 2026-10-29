@@ -1,4 +1,4 @@
-import { Barlow_Condensed, Montserrat, Nunito_Sans } from 'next/font/google';
+import { Archivo, Barlow_Condensed, Montserrat, Nunito_Sans } from 'next/font/google';
 
 /**
  * The faces each product uses in its own app (ADR 0013). Declared here, not in app/fonts.ts, so
@@ -23,4 +23,12 @@ export const barlowCondensed = Barlow_Condensed({
   variable: '--font-yiheecam',
   display: 'swap',
   weight: ['500', '600'],
+});
+
+/** Variable in weight and width: RideDeck's tape labels open the width axis to 118 (rideDeck DESIGN.md). */
+export const archivo = Archivo({
+  subsets: ['latin'],
+  variable: '--font-ridedeck',
+  display: 'swap',
+  axes: ['wdth'],
 });

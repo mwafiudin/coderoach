@@ -277,23 +277,24 @@ The project page in the manner of a product page, used once a project has its su
 - **Secondary text is ink at 65%** (6.3:1 on paper-100), not mist-600, which measures 4.13:1 and is too light for reading text.
 - **Motion** reads `--p` (0 to 1) with its resting value as the fallback, so no JS, reduced motion, and the overlay all show the finished page. Scroll is never hijacked; only the value read from it is smoothed.
 
-### Bespoke project pages (`/work/laporta`, `/work/jeda`, `/work/yiheecam`, ADR 0013)
+### Bespoke project pages (`/work/laporta`, `/work/jeda`, `/work/yiheecam`, `/work/ridedeck`, ADR 0013)
 The one place this file does not govern colour and type. Each page wears the product's own identity, taken from that app's repo, and remaps the site tokens (`--color-ink`, `--color-paper-*`, `--color-electric`, …) on its root so the shared tour and Sumber follow along. What stays from the Project Story: the hero answers first (name, tagline, problem, solution, result), every number links to Sumber, motion reads `--p` and rests finished, AA contrast, and the overlay and presentation keep the shared template.
 - **Laporta:** Montserrat and JetBrains Mono, amber `#b45309` for text and `#f59e0b` as a fill, neutral ink. Scene: a till receipt prints the seven shift steps, then a journal whose debit and credit balance, stamped SEIMBANG; the measured numbers are the receipt's totals.
 - **Jeda:** Nunito Sans, warm grey paper `#eeebe6`, faded blue ink `#4e6a84`. Scene: one made-up note crosses from the client's phone to the psychologist's table and lands marked "Baru sejak terakhir dibuka". Slow, small movement only.
 - **YiheeCam:** Barlow Condensed, dark ground `#0e0e0d`, split-flap tiles, the record lamp `#ff3b36`. Scene: ASCII bytes flip to REC, BATT, SD; the bytes are those letters' own codes, labelled as an illustration.
-- **Mood photos** (`Suasana`, and YiheeCam's hero backdrop) are AI-made, captioned "Foto ilustrasi buatan AI" under the picture, and show the place the product is used in, never the product. Screens stay real screenshots; YiheeCam's live view is cropped below its test pattern instead of being painted over. Provenance in `docs/aset/PROVENANCE-gambar.md`.
-- **Pinning** happens only where the stage fits one screen (Laporta ≥1024×760, YiheeCam ≥768×640); below that the scene plays as it scrolls past. Jeda never pins.
+- **RideDeck:** Archivo variable (labels at width 118), night ground `#0a0b0c`, black windows in brushed-steel frames, Dymo-style tapes in the app's red, green, and amber, numbers drawn from segments. Scene: the Ronin in three.js (ADR 0014), leaning with scroll as an illustration of the lean dial, captioned as AI-made from public photos, not an official TVS model. Poster render first; three loads only near the viewport. Hero: an AI-made clip of a mountain road at dusk from the saddle (no phone, no screen), poster first, played only without reduced motion or Save-Data, paused off screen.
+- **Mood photos** (`Suasana`, YiheeCam's hero backdrop, and RideDeck's hero clip) are AI-made, captioned "Foto ilustrasi buatan AI" under the picture, and show the place the product is used in, never the product. Screens stay real screenshots; YiheeCam's live view is cropped below its test pattern instead of being painted over. Provenance in `docs/aset/PROVENANCE-gambar.md`.
+- **Pinning** happens only where the stage fits one screen (Laporta ≥1024×760, YiheeCam ≥768×640, RideDeck ≥1024×640); below that the scene plays as it scrolls past. Jeda never pins.
 
 #### Motion vocabulary (bespoke pages)
 Each bespoke page picks its choreography from this list by the kind of story it tells, and says which in its CSS. Research and sources: `docs/riset/2026-10-koreografi-scroll.md`.
 
 | Choreography | Fits | Rules | Used on |
 |---|---|---|---|
-| Pin and scrub | One artefact changing state step by step (a workflow, a mode change) | Hold at most about 220vh, wide screens only; text stays in the DOM | Laporta (receipt), YiheeCam (flap board) |
+| Pin and scrub | One artefact changing state step by step (a workflow, a mode change) | Hold at most about 220vh, wide screens only; text stays in the DOM | Laporta (receipt), YiheeCam (flap board), RideDeck (Ronin lean) |
 | Quiet reveal | Calm or sensitive subjects | No pin, no parallax, opacity and small shifts only, slow | Jeda (note crossing) |
 | Sticky stack | Several equal modules, one screen each | Each card shorter than the screen on a phone | not yet |
-| Wipe in one frame | Before and after | Same frame for both; two images side by side without motion | not yet |
+| Wipe in one frame | Before and after | Same frame for both; two images side by side without motion | RideDeck (22 and 28 Oct dashboards) |
 | Shared element | Same data seen two ways (raw rows to a report) | Becomes a crossfade under reduced motion | not yet |
 | Image sequence | Physical hardware changing shape | One still replaces it on phones and slow links | not yet |
 | Progress rail | Long or staged stories | Clickable, never covers content | not yet |

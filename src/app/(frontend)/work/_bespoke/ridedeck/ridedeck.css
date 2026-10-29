@@ -1,0 +1,152 @@
+/*
+  RideDeck's project page (ADR 0013, 0014). Tokens remapped to the app's night theme (rideDeck
+  DESIGN.md): black windows in brushed-steel frames, tape labels, segment readouts. Everything
+  that moves reads --p with its resting value, so without motion the page is already complete.
+  Choreography (DESIGN.md, motion vocabulary): pin and scrub for the Ronin, wide screens only;
+  the before and after is two shots side by side without motion.
+*/
+.bk-ridedeck {
+  --color-ink: #e9ebec;
+  --color-paper: #0a0b0c;
+  --color-paper-50: #16181a;
+  --color-paper-100: #0a0b0c;
+  --color-paper-200: #2a2d30;
+  --color-mist-400: #4a5053;
+  --color-mist-500: #8a9093;
+  --color-mist-600: #8a9093;
+  --color-shadow-800: #e9ebec;
+  --color-electric: #ffb000;
+  --rd-window: #050506;
+  --rd-steel-light: #9ca2a5;
+  --rd-steel-dark: #7e8487;
+  --rd-tape-black: #121314;
+  --rd-tape-red: #7a1712;
+  --rd-tape-green: #17491f;
+  --rd-tape-amber: #6b4a06;
+  --rd-tape-text: #f3f3f3;
+  --rd-seg-on: #3ddc5a;
+  --rd-seg-off: #0d2412;
+  background: var(--color-paper-100);
+  color: var(--color-ink);
+  font-family: var(--font-ridedeck), system-ui, sans-serif;
+  font-variation-settings: 'wdth' 100;
+}
+.bk-ridedeck .rd-dim { color: var(--color-mist-500); }
+.bk-ridedeck .rd-display { font-weight: 800; letter-spacing: -0.01em; }
+.bk-ridedeck .rd-wordmark { font-size: clamp(48px, 9vw, 112px); font-weight: 900; line-height: 0.95; letter-spacing: -0.02em; }
+.bk-ridedeck .rd-label {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-variation-settings: 'wdth' 118;
+  color: var(--color-mist-500);
+}
+
+/* Hero: the ride behind, darkened on the reading side so the text keeps its contrast. */
+.bk-ridedeck .rd-hero { position: relative; overflow: hidden; isolation: isolate; }
+.bk-ridedeck .rd-hero__media { position: absolute; inset: 0; z-index: -2; }
+.bk-ridedeck .rd-hero__poster,
+.bk-ridedeck .rd-hero__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; }
+.bk-ridedeck .rd-hero__video { opacity: 0; transition: opacity 600ms ease; }
+.bk-ridedeck .rd-hero__media[data-shown='on'] .rd-hero__video { opacity: 1; }
+.bk-ridedeck .rd-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(to right, rgb(10 11 12 / 0.92) 0%, rgb(10 11 12 / 0.7) 45%, rgb(10 11 12 / 0.25) 80%),
+    linear-gradient(to bottom, rgb(10 11 12 / 0) 55%, rgb(10 11 12 / 1));
+}
+@media (max-width: 767px) {
+  .bk-ridedeck .rd-hero::after { background: rgb(10 11 12 / 0.82); }
+}
+.bk-ridedeck .rd-hero__credit { margin: 32px 0 0; font-size: 12px; color: var(--color-mist-500); }
+@media (prefers-reduced-motion: reduce) {
+  .bk-ridedeck .rd-hero__video { transition: none; }
+}
+
+/* Tape: Dymo-style label, wide caps, the colour of the app's card it names. */
+.bk-ridedeck .rd-tape {
+  display: inline-block;
+  padding: 3px 10px 4px;
+  border-radius: 2px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  line-height: 1.3;
+  text-transform: uppercase;
+  font-variation-settings: 'wdth' 118;
+  color: var(--rd-tape-text);
+  background: var(--rd-tape-black);
+}
+.bk-ridedeck .rd-tape--red { background: var(--rd-tape-red); }
+.bk-ridedeck .rd-tape--green { background: var(--rd-tape-green); }
+.bk-ridedeck .rd-tape--amber { background: var(--rd-tape-amber); }
+
+/* Steel frame around a black window, the app's instrument card. */
+.bk-ridedeck .rd-steel {
+  padding: 8px;
+  border-radius: 4px;
+  background: repeating-linear-gradient(90deg, var(--rd-steel-light) 0 1px, var(--rd-steel-dark) 1px 3px);
+}
+.bk-ridedeck .rd-window { padding: 20px; border-radius: 2px; background: var(--rd-window); box-shadow: inset 0 0 0 1px var(--color-paper-200); }
+.bk-ridedeck .rd-window__readout { display: flex; align-items: flex-end; gap: 14px; margin-top: 14px; }
+.bk-ridedeck .rd-unit { font-size: 18px; font-weight: 700; color: var(--rd-seg-on); padding-bottom: 6px; }
+
+.bk-ridedeck .rd-seg { height: clamp(56px, 7vw, 84px); width: auto; }
+.bk-ridedeck .rd-seg__on { fill: var(--rd-seg-on); }
+.bk-ridedeck .rd-seg__off { fill: var(--rd-seg-off); }
+
+.bk-ridedeck .rd-phone { padding: 8px; border-radius: 30px; background: var(--color-paper-200); }
+.bk-ridedeck .rd-phone img { border-radius: 23px; }
+
+/* The Ronin scene. Pinned on wide screens only: a held screen on a phone fights the thumb. */
+.bk-ridedeck .rd-scene { border-block: 1px solid var(--color-paper-200); padding-block: clamp(72px, 9vw, 120px); }
+@media (min-width: 1024px) and (min-height: 640px) {
+  .bk-ridedeck[data-motion='on'] .rd-scene { height: 200vh; padding-block: 0; }
+  .bk-ridedeck[data-motion='on'] .rd-scene__stage { position: sticky; top: 0; min-height: 100vh; display: flex; align-items: center; padding-block: 40px; }
+}
+.bk-ridedeck .rd-viewer {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  border-radius: 16px;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 60%, #1c1f22 0%, var(--rd-window) 70%);
+  box-shadow: inset 0 0 0 1px var(--color-paper-200);
+}
+.bk-ridedeck .rd-viewer__poster,
+.bk-ridedeck .rd-viewer__canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.bk-ridedeck .rd-viewer__poster { object-fit: cover; transition: opacity 400ms ease; }
+.bk-ridedeck .rd-viewer[data-live='on'] .rd-viewer__poster { opacity: 0; }
+.bk-ridedeck .rd-viewer__canvas { cursor: grab; }
+.bk-ridedeck .rd-viewer__canvas:active { cursor: grabbing; }
+.bk-ridedeck .rd-viewer__hint {
+  position: absolute;
+  right: 12px;
+  bottom: 10px;
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-variation-settings: 'wdth' 118;
+  color: var(--color-mist-500);
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .bk-ridedeck .rd-viewer__poster { transition: none; }
+}
+
+.bk-ridedeck .rd-compare { display: grid; grid-template-columns: repeat(2, minmax(0, 280px)); justify-content: center; gap: clamp(16px, 5vw, 72px); }
+
+.bk-ridedeck .rd-band { background: var(--color-paper-50); border-block: 1px solid var(--color-paper-200); }
+
+.bk-ridedeck .rd-feature { display: grid; grid-template-columns: 1fr; gap: 28px; align-items: center; padding-block: clamp(36px, 5vw, 64px); border-top: 1px solid var(--color-paper-200); }
+.bk-ridedeck .rd-feature__shot { width: min(260px, 72%); margin-inline: auto; }
+@media (min-width: 900px) {
+  .bk-ridedeck .rd-feature { grid-template-columns: 1fr 1fr; gap: 72px; }
+  .bk-ridedeck .rd-feature--flip > div { order: 2; }
+}
+.bk-ridedeck[data-motion='on'] .rd-feature__shot { opacity: calc(0.3 + var(--p, 1) * 0.7); translate: 0 calc((1 - var(--p, 1)) * 28px); }

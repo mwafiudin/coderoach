@@ -2,6 +2,7 @@ import type { Project } from '@/payload-types';
 import type { BespokeSlug } from '@/lib/portfolio/bespoke';
 import { JedaPage } from './jeda/JedaPage';
 import { LaportaPage } from './laporta/LaportaPage';
+import { RideDeckPage } from './ridedeck/RideDeckPage';
 import { YiheeCamPage } from './yiheecam/YiheeCamPage';
 
 type BespokePage = (props: { project: Project }) => Promise<React.JSX.Element>;
@@ -10,6 +11,7 @@ const PAGES: Record<BespokeSlug, BespokePage> = {
   laporta: LaportaPage,
   jeda: JedaPage,
   yiheecam: YiheeCamPage,
+  ridedeck: RideDeckPage,
 };
 
 /**
