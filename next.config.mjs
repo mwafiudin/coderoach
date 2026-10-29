@@ -27,7 +27,9 @@ const withSerwist = withSerwistInit({
  * Content security policy for the public site. The admin and the API are left out: Payload ships
  * its own inline assets and the API returns JSON. Scripts stay inline-allowed because Next's
  * bootstrap is inline, but only our own origin and the three services we actually load can supply
- * script files: Turnstile, GA4, and the Meta pixel.
+ * script files: Turnstile, GA4, and the Meta pixel. 'wasm-unsafe-eval' lets our own scripts compile
+ * WebAssembly, which three's meshopt decoder needs for the RideDeck model (ADR 0014); unlike
+ * 'unsafe-eval' it does not allow eval() or new Function().
  */
 const csp = [
   "default-src 'self'",
@@ -38,7 +40,7 @@ const csp = [
   "img-src 'self' data: blob: https:",
   "font-src 'self' data:",
   "style-src 'self' 'unsafe-inline'",
-  `script-src 'self' 'unsafe-inline'${isProd ? '' : " 'unsafe-eval'"} https://challenges.cloudflare.com https://static.cloudflareinsights.com https://www.googletagmanager.com https://connect.facebook.net`,
+  `script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'${isProd ? '' : " 'unsafe-eval'"} https://challenges.cloudflare.com https://static.cloudflareinsights.com https://www.googletagmanager.com https://connect.facebook.net`,
   "connect-src 'self' https://challenges.cloudflare.com https://static.cloudflareinsights.com https://cloudflareinsights.com https://www.google-analytics.com https://region1.google-analytics.com https://connect.facebook.net",
   'frame-src https://challenges.cloudflare.com',
   "worker-src 'self'",
