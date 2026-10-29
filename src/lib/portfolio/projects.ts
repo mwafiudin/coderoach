@@ -1131,6 +1131,76 @@ export const PORTFOLIO: PortfolioEntry[] = [
     ],
   },
   {
+    slug: 'ridedeck',
+    consent: 'studio',
+    order: 25,
+    kind: 'lab',
+    client: 'RideDeck',
+    tagline: 'Dasbor touring di HP yang terpasang di stang motor, tempat semua app touring kembali.',
+    meta: 'LAB · ANDROID & TOURING',
+    industry: 'travel',
+    service: 'build',
+    publishedYear: '2026',
+    pills: ['KOTLIN', 'COMPOSE', 'MAPLIBRE', 'ROOM'],
+    excerpt:
+      'Launcher Android untuk HP di dudukan stang: navigasi, musik, telepon, dan app touring dalam satu dasbor instrumen, dengan tombol pulang yang selalu ada.',
+    cover: {
+      file: 'ridedeck-tangki.v1.webp',
+      alt: 'Dasbor RideDeck: dial lean, ketinggian, kartu tangki bensin dengan liter, persen, km lagi, dan km per liter, lalu cuaca dan suhu',
+      focalX: 50,
+      focalY: 45,
+    },
+    summary: {
+      problem:
+        'Saat touring, membuka navigasi, musik, telepon, dan app tracking berarti bolak-balik ke Recents dan mencari app satu per satu di HP yang bergetar di stang, kadang dengan sarung tangan.',
+      solution:
+        'RideDeck menjadi launcher default: satu dasbor instrumen yang membuka app lain dengan satu sentuhan atau tombol remote stang, dan memberi tombol Kembali, Beranda, dan Ganti app sendiri. Batas Android ditulis apa adanya, misalnya app lain tidak bisa berjalan di dalam jendelanya.',
+      result:
+        'Satu tempat kembali yang terbaca sekilas, dengan fitur yang rapuh atau hanya indikatif diberi tanda di layar, dan data sensitif seperti isi notifikasi tidak pernah keluar dari HP.',
+    },
+    showcase: {
+      frame: 'phone',
+      screen: { file: 'ridedeck-dasbor.v1.webp', alt: 'Dasbor RideDeck: tombol Peta, Rute, Mulai, Atur, kartu gas dan rem, tujuan, peta, dan tombol Kembali, Beranda, Ganti app, Hujan' },
+      demoNote: 'Tangkapan dari HP pemilik saat motor tidak berjalan, jadi kecepatan, tujuan, dan gaya g bernilai nol. Status bar HP dipotong.',
+      consent: 'studio',
+    },
+    features: [
+      {
+        title: 'Selalu ada jalan pulang',
+        body: 'Tombol Kembali, Beranda, dan Ganti app selalu di bawah layar dan bisa dipasang ke remote stang. Saat aksesibilitas mati dan tombol-tombol itu tidak bisa bekerja, dasbor mengatakannya terang-terangan dan menunjukkan cara menyalakannya lagi.',
+        screen: { file: 'ridedeck-dasbor.v1.webp', alt: 'Dasbor dengan pita AKSESIBILITAS MATI dan tombol Nyalakan di Pengaturan di atas kartu instrumen' },
+      },
+      {
+        title: 'Instrumen yang jujur soal batas',
+        body: 'Lean, tanjakan, dan gaya g dari sensor HP ditandai sebagai indikatif. Kalibrasi ditolak saat motor melaju atau HP masih goyang, dan tangki bensin menyebut seberapa yakin perkiraannya.',
+        screen: { file: 'ridedeck-tangki.v1.webp', alt: 'Dial lean dengan tombol Kalibrasi, pita ketinggian, dan kartu tangki bensin berlabel YAKIN TINGGI' },
+      },
+      {
+        title: 'Motor dan pengendara dalam simulasi',
+        body: 'Gerak HP di dudukan diterjemahkan ke model motor dan pengendara 3D atau 2D, di dasbor maupun saat memutar ulang perjalanan, lengkap dengan gigi, lean, dan pitch.',
+        screen: { file: 'ridedeck-simulasi.v1.webp', alt: 'Kartu simulasi: model motor dan pengendara 3D dengan angka gigi, lean, dan pitch' },
+      },
+      {
+        title: 'Berbagi stang dengan app lain',
+        body: 'Musik dikendalikan tanpa membuat sesi media sendiri, supaya knob helm tetap dipegang YiheeCam. Kartu kamera dan helm hanya menampilkan status dan membuka app pemiliknya.',
+        screen: { file: 'ridedeck-musik.v1.webp', alt: 'Kartu musik dengan pilihan sumber Spotify, YouTube Music, dan YouTube, lalu kartu kamera YiheeCam dan baterai helm' },
+      },
+    ],
+    timeline: [
+      { date: '20 Okt 2026', title: 'Riset kelayakan per fitur dan uji di HP sebelum MVP', sourceRef: 'rideDeck-ayam@ea35f90' },
+      { date: '21 Okt 2026', title: 'Dasbor pertama sebagai launcher default', sourceRef: 'rideDeck-ayam@7163672' },
+      { date: '22 Okt 2026', title: 'Instrumen hidup, peta tertanam, dan Maps berdampingan', sourceRef: 'rideDeck-ayam@2e4c878' },
+      { date: '23 Okt 2026', title: 'Simulasi motor dan pengendara dari sensor HP', sourceRef: 'rideDeck-ayam@b553ed0' },
+      { date: '25 Okt 2026', title: 'Laju bensin per detik dan skala tangki', sourceRef: 'rideDeck-ayam@ca5c4f9' },
+    ],
+    body: [
+      { h2: 'Uji di HP dulu, janji kemudian' },
+      'Sebelum MVP ditulis, setiap kemampuan diuji langsung di HP: split screen, launcher default, panel di atas app lain, angkat telepon, dan remote Bluetooth. Yang ditolak sistem HP, seperti split screen, diganti jalur cadangan, bukan dijanjikan.',
+      { h2: 'Data tetap di HP' },
+      'Isi notifikasi WhatsApp, telepon, dan Maps hanya diproses di memori, tidak disimpan dan tidak dikirim ke jaringan. Layanan aksesibilitasnya tidak membaca isi layar app lain, dan setiap keputusan besar dicatat sebagai ADR.',
+    ],
+  },
+  {
     slug: 'pt-raja-roti-cemerlang',
     consent: 'legacy',
     hidden: true,
