@@ -6,28 +6,47 @@
 export const RIDEDECK_DIR = '/assets/ridedeck';
 
 export const RIDEDECK_FILES = {
-  ronin: 'ronin.v1.glb',
+  // The app's own jointed Ronin (rideDeck-ayam app/src/main/assets/models/sim), meshopt-compressed.
+  rigBody: 'ronin-body.v1.glb',
+  rigSteer: 'ronin-steer.v1.glb',
+  rigWheelFront: 'ronin-wheel-front.v1.glb',
+  rigWheelRear: 'ronin-wheel-rear.v1.glb',
+  rigLightHead: 'ronin-light-head.v1.glb',
+  rigLightBrake: 'ronin-light-brake.v1.glb',
+  rigLightTail: 'ronin-light-tail.v1.glb',
   roninPoster: 'ronin-poster.v2.webp',
   before: 'dasbor-22okt.v1.webp',
   iconSheet: 'konsep-ikon.v1.webp',
   icon: 'ikon.v1.svg',
   heroLoop: 'hero-jalan-loop.v1.mp4',
   heroPoster: 'hero-jalan-loop.v1.poster.webp',
-  transferLoop: 'transfer-loop.v1.mp4',
-  transferPoster: 'transfer-loop.v1.poster.webp',
 } as const;
+
+/** Every rig part the scenes load, so the tests can check each one is compressed. */
+export const RIG_PARTS = [
+  RIDEDECK_FILES.rigBody,
+  RIDEDECK_FILES.rigSteer,
+  RIDEDECK_FILES.rigWheelFront,
+  RIDEDECK_FILES.rigWheelRear,
+  RIDEDECK_FILES.rigLightHead,
+  RIDEDECK_FILES.rigLightBrake,
+  RIDEDECK_FILES.rigLightTail,
+] as const;
 
 /**
  * Budget in KB per file type. Loop and poster follow ADR 0006 like the rest of the portfolio; the
- * model loads late but on a phone connection, so it stays small too.
+ * models load late but on a phone connection, so each part stays small and all seven together
+ * under half a megabyte.
  */
 export function ridedeckBudget(file: string): number {
-  if (file.endsWith('.glb')) return 512;
+  if (file.endsWith('.glb')) return 256;
   if (file.endsWith('.svg')) return 10;
   if (/-loop\.v\d+\.mp4$/.test(file)) return 600;
   if (file.includes('.poster.')) return 150;
   return 300;
 }
+
+export const RIG_TOTAL_BUDGET_KB = 512;
 
 /** Widest the illustration leans, either side. The app's dial reads past this; the page keeps it calm. */
 export const MAX_LEAN = (32 * Math.PI) / 180;

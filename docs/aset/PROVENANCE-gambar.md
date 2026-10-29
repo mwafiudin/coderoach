@@ -40,9 +40,8 @@ Bukan foto suasana, jadi masing-masing diberi keterangan sendiri di bawah gambar
 | Berkas | Isi dan asal | Keterangan di halaman |
 |---|---|---|
 | `public/assets/ridedeck/konsep-ikon.v1.webp` | Lembar tiga konsep ikon dari Gemini (Nano Banana, Flash High), akun Google AI Pro farrez, 22 Okt 2026. Asli: `rideDeck-lab/gemini/lembar.png`, diperkecil ke 1200 px, WebP q84. Prompt di `docs/brief-gambar-ikon.md` repo rideDeck-ayam. | "Konsep buatan AI (Gemini), hanya acuan." |
-| `public/assets/ridedeck/ronin.v1.glb` | Model TVS Ronin buatan AI dari foto produk publik TVS Motor: bentuk Tencent Hunyuan3D-2 (Space anonim), warna diproyeksikan dari foto, 22 Okt 2026. Asli `rideDeck-lab/ronin3d/ronin.glb` (1,97 MB), dikompres `@gltf-transform/cli@4.5.1 meshopt` ke 433 KB. Alur lengkap: `rideDeck-lab/ronin3d/PROVENANCE.md`. Lisensi bentuk: Tencent Hunyuan 3D 2.0 Community License (Indonesia termasuk wilayahnya, wajib atribusi). Bentuk dan warna turunan desain TVS; dipakai atas keputusan farrez 28 Okt 2026 (ADR 0014), tanpa logo TVS. | "Model buatan AI dari foto publik TVS Ronin, bukan model resmi TVS Motor..." beserta atribusi lisensi |
-| `public/assets/ridedeck/hero-jalan-loop.v1.mp4` dan `.poster.webp` | Foto suasana jalan gunung senja dari atas motor: Google Flow, Nano Banana 2.1 (16:9, 2 varian, 0 kredit), varian kedua dipilih karena tanpa speedometer pabrikan; lalu Frames to video Omni 1.1 Flash 720p 4 detik x1, 7 kredit (saldo 887 sebelum, sekitar 880 sesudah). Akun Google AI Pro farrez, 28 Okt 2026. Diolah ffmpeg: audio dibuang, crossfade 0,7 detik di sambungan supaya loop mulus, H.264 CRF 27, 3,4 detik, 568 KB; poster dari bingkai pertama. Asli di `D:\downloads\claude\2026-10-28-flow-ridedeck-hero\`. Prompt di bawah. | "Video ilustrasi buatan AI (Google Flow), bukan rekaman perjalanan." |
-| `public/assets/ridedeck/ronin-poster.v2.webp` | Render model di atas dengan three.js 0.186.1, cahaya, kamera, dan material yang sama dengan viewer, 1200x800, WebP q86. Sejak 29 Okt 2026 warna hasil proyeksi foto tidak dipakai: model tampil dengan satu material grafit polos (permintaan farrez, lebih bersih). | sama dengan model |
+| `public/assets/ridedeck/ronin-{body,steer,wheel-front,wheel-rear,light-head,light-brake,light-tail}.v1.glb` | Sejak 29 Okt 2026: model bersendi yang dipakai app (rideDeck-ayam `app/src/main/assets/models/sim`, commit 15b2d60). Bentuk dari Tencent Hunyuan3D-2 atas gambar acuan Google Flow (bukan foto TVS), lalu diselaraskan ke ukuran buku manual TVS Ronin 2026 (jarak sumbu 1.357 mm, caster 27 derajat, tinggi jok 795 mm); roda dan lampu prosedural; tanpa standar. Alur lengkap `rideDeck-lab/sim3d/PROVENANCE.md`. Dikompres meshopt, total 364 KB. Lisensi: Tencent Hunyuan 3D 2.0 Community License (atribusi wajib, ditulis di Sumber). Bentuk meniru desain TVS Motor; dipakai atas keputusan farrez (ADR 0014), tanpa logo. Model lama `ronin.v1.glb` (dari foto TVS) dihapus. | Atribusi di bagian Sumber; label per gambar dihapus atas permintaan farrez 29 Okt 2026 |
+| `public/assets/ridedeck/ronin-poster.v2.webp` | Render model lama (ronin.glb dari foto TVS) dengan three.js 0.186.1 dan material grafit polos, 1200x800, WebP q86; dipakai sebagai poster sebelum rig bersendi dimuat. | sama dengan model |
 
 `ikon.v1.svg` bukan buatan AI: diterjemahkan 1:1 dari vektor `ic_launcher_*` app. `dasbor-22okt.v1.webp`
 adalah tangkapan layar asli HP pemilik (22 Okt 2026, 00.05), status bar dipotong.
@@ -62,7 +61,8 @@ hills, the town lights in the valley twinkle softly. The scene stays the same pl
 light from start to end. No text, no logos, no people besides the rider's hands, no phone, no
 screens. Silent.
 
-**ridedeck-transfer (29 Okt 2026):** `public/assets/ridedeck/transfer-loop.v1.mp4` dan `.poster.webp`,
+**ridedeck-transfer (29 Okt 2026, tidak dipakai lagi sejak hari yang sama):** klip Flow 20 kredit diganti morph partikel three.js yang di-scrub gulir (permintaan farrez). Catatan asalnya tetap di sini.
+**ridedeck-transfer (asli):** `public/assets/ridedeck/transfer-loop.v1.mp4` dan `.poster.webp`,
 bagian "Dari motor ke layar". Dua gambar Nano Banana 2.1 (0 kredit), bingkai awal motor roadster retro
 generik grafit tanpa logo dan bingkai akhir HP di dudukan stang dengan layar cahaya amber abstrak (tanpa
 UI yang terbaca), lalu Frames to video Omni 1.1 Flash 720p 6 detik x2, 20 kredit. Varian 2 dipilih
