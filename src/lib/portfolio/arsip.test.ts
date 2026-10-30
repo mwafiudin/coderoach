@@ -4,8 +4,8 @@ import { describe, test } from 'node:test';
 import { PORTFOLIO } from './projects';
 
 /**
- * Screens pulled from the site but kept for restoring later. They move to docs/portfolio-arsip/aset
- * because scripts/portfolio-assets may only hold what the site uses (portfolio.test.ts).
+ * Screens pulled from the site. The files are kept outside this public repo (the note says where),
+ * so only the restore note is checked here.
  */
 const WITHDRAWN = [{ slug: 'rencana-ro', file: 'rencana-ro-rencana-ro.v2.webp', note: 'docs/portfolio-arsip/rencana-ro.md' }];
 
@@ -19,9 +19,9 @@ const used = (slug: string) => {
 
 describe('withdrawn portfolio assets', () => {
   for (const w of WITHDRAWN) {
-    test(`${w.file} stays off ${w.slug}, and its file and restore note stay in the repo`, () => {
+    test(`${w.file} stays off ${w.slug}, and its restore note stays in the repo`, () => {
       assert.ok(!used(w.slug).includes(w.file), 'still referenced in projects.ts');
-      assert.ok(existsSync(`docs/portfolio-arsip/aset/${w.file}`), 'the file itself must be kept in the archive');
+      assert.ok(!existsSync(`docs/portfolio-arsip/aset/${w.file}`) && !existsSync(`scripts/portfolio-assets/${w.file}`), 'the file must stay out of this public repo');
       assert.ok(existsSync(w.note), 'restore note missing');
     });
   }
