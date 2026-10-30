@@ -1,4 +1,4 @@
-import { Archivo, Barlow_Condensed, Montserrat, Nunito_Sans } from 'next/font/google';
+import { Archivo, Barlow_Condensed, Montserrat, Nunito, Nunito_Sans, PT_Sans } from 'next/font/google';
 
 /**
  * The faces each product uses in its own app (ADR 0013). Declared here, not in app/fonts.ts, so
@@ -31,4 +31,19 @@ export const archivo = Archivo({
   variable: '--font-ridedeck',
   display: 'swap',
   axes: ['wdth'],
+});
+
+/** LocaScore pairs a rounded display face for its numbers with an upright body face (locascore DESIGN.md). */
+export const nunito = Nunito({
+  subsets: ['latin'],
+  variable: '--font-locascore-display',
+  display: 'swap',
+  weight: ['700', '800'],
+});
+
+export const ptSans = PT_Sans({
+  subsets: ['latin'],
+  variable: '--font-locascore',
+  display: 'swap',
+  weight: ['400', '700'],
 });

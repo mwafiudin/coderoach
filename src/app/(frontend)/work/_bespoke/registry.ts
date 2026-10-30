@@ -2,6 +2,7 @@ import type { Project } from '@/payload-types';
 import type { BespokeSlug } from '@/lib/portfolio/bespoke';
 import { JedaPage } from './jeda/JedaPage';
 import { LaportaPage } from './laporta/LaportaPage';
+import { LocaScorePage } from './locascore/LocaScorePage';
 import { RideDeckPage } from './ridedeck/RideDeckPage';
 import { YiheeCamPage } from './yiheecam/YiheeCamPage';
 
@@ -12,6 +13,7 @@ const PAGES: Record<BespokeSlug, BespokePage> = {
   jeda: JedaPage,
   yiheecam: YiheeCamPage,
   ridedeck: RideDeckPage,
+  locascore: LocaScorePage,
 };
 
 /**
