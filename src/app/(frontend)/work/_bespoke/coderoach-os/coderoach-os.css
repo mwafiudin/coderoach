@@ -1,0 +1,110 @@
+/*
+  Coderoach OS's project page (ADR 0013). The app is built on the studio's own design system
+  (coderoach-app DESIGN.md: ink, paper, one electric accent, Satoshi, JetBrains Mono for whatever
+  speaks as the system), so only the few values where the app differs are remapped: its electric,
+  its darker mist-600 for muted text on light (AA), electric-700 for electric text, and its error
+  reds. Choreography: wipe in one frame (docs/konsep/coderoach-os.md). On wide
+  screens with motion the two sides share one frame and a divider slides from the spreadsheet to
+  the log; everywhere else they stand side by side or stacked. Everything rests finished.
+*/
+.bk-os {
+  --color-electric: #2467f4;
+  --color-mist-600: #6d696f;
+  --os-electric-text: #1a5de9;
+  /* error-300: the app's signal red for text on dark surfaces */
+  --os-error-dark: #eb4e52;
+}
+
+.bk-os .os-scene {
+  --q: 1;
+  border-top: 1px solid var(--color-paper-200);
+  padding-block: clamp(72px, 9vw, 120px);
+}
+@media (min-width: 1024px) and (min-height: 900px) {
+  /* 200vh: one held screen while the divider crosses. */
+  .bk-os[data-motion='on'] .os-scene { height: 200vh; padding-block: 0; --q: clamp(0, calc((var(--p, 1) - 0.3) / 0.45), 1); }
+  .bk-os[data-motion='on'] .os-scene__stage { position: sticky; top: 0; min-height: 100vh; display: flex; align-items: center; padding-block: 32px; }
+  .bk-os[data-motion='on'] .os-frame { grid-template-columns: 1fr; position: relative; }
+  /* The divider rides on the frame, outside the clipped side, so it stays visible. */
+  .bk-os[data-motion='on'] .os-frame::before {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    bottom: 0;
+    left: calc((1 - var(--q)) * 100%);
+    width: 2px;
+    background: var(--color-electric);
+    opacity: calc(1 - var(--q));
+  }
+  .bk-os[data-motion='on'] .os-side { grid-area: 1 / 1; }
+  /* The log covers the spreadsheet from the right as the divider moves left. */
+  .bk-os[data-motion='on'] .os-side--os {
+    clip-path: inset(0 0 0 calc((1 - var(--q)) * 100%));
+  }
+}
+
+.bk-os .os-frame { display: grid; grid-template-columns: 1fr; gap: 20px; margin-top: 40px; }
+@media (min-width: 768px) {
+  .bk-os .os-frame { grid-template-columns: 1fr 1fr; }
+}
+.bk-os .os-side {
+  min-width: 0;
+  padding: 22px 24px;
+  border: 1px solid var(--color-paper-200);
+  border-radius: 12px;
+  background: var(--color-paper-50);
+}
+.bk-os .os-side--os { background: var(--color-ink); color: var(--color-paper-50); border-color: var(--color-ink); }
+.bk-os .os-side__name { margin: 0 0 16px; font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-mist-600); }
+.bk-os .os-side--os .os-side__name { color: var(--color-mist-500); }
+.bk-os .os-side__verdict { margin: 18px 0 0; font-size: 16px; line-height: 1.55; }
+
+.bk-os .os-sheet { width: 100%; border-collapse: collapse; font-size: 14px; }
+.bk-os .os-sheet th,
+.bk-os .os-sheet td { padding: 8px 10px; border: 1px solid var(--color-paper-200); text-align: left; }
+.bk-os .os-sheet thead th { font-family: var(--font-mono); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-mist-600); background: var(--color-paper-100); }
+.bk-os .os-sheet tbody th { font-weight: 600; }
+.bk-os .os-sheet td:last-child { text-align: right; white-space: nowrap; }
+
+.bk-os .os-log {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.bk-os .os-log__dim { color: var(--color-mist-500); }
+.bk-os .os-log__err { display: inline-block; margin-top: 6px; color: var(--os-error-dark); }
+
+/* The thread: one code, six stops. */
+.bk-os .os-thread { margin: 40px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; }
+.bk-os .os-thread li {
+  display: grid;
+  gap: 6px;
+  padding: 14px 16px;
+  border: 1px solid var(--color-paper-200);
+  border-radius: 12px;
+  background: var(--color-paper-50);
+}
+.bk-os .os-thread__no { font-family: var(--font-mono); font-size: 11px; color: var(--color-mist-600); }
+.bk-os .os-thread__code { font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: var(--os-electric-text); }
+.bk-os .os-thread__stop { font-size: 16px; font-weight: 600; }
+.bk-os[data-motion='on'] .os-thread li { opacity: calc(0.2 + var(--p, 1) * 0.8); translate: 0 calc((1 - var(--p, 1)) * 16px); }
+
+.bk-os .os-feature {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  column-gap: 24px;
+  row-gap: 28px;
+  padding-block: clamp(40px, 5vw, 64px);
+  border-top: 1px solid var(--color-paper-200);
+}
+.bk-os .os-feature__no { margin: 0; padding-top: 8px; font-family: var(--font-mono); font-size: 13px; color: var(--color-mist-600); }
+.bk-os .os-feature__shot { grid-column: 2; max-width: 760px; }
+.bk-os[data-motion='on'] .os-feature__shot { translate: 0 calc((1 - var(--p, 1)) * 32px); opacity: calc(0.25 + var(--p, 1) * 0.75); }
+@media (max-width: 639px) {
+  .bk-os .os-feature { grid-template-columns: 1fr; }
+  .bk-os .os-feature__shot { grid-column: 1; }
+}
