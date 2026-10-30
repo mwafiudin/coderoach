@@ -300,7 +300,7 @@ export const PORTFOLIO: PortfolioEntry[] = [
     },
     summary: {
       problem:
-        'Cabai dibeli dari pasar dengan harga yang berubah tiap pekan, diolah beberapa hari, lalu dikirim ke banyak outlet. Tanpa jejak dari bahan ke batch ke surat jalan, HPP hanya tebakan rata-rata.',
+        'Bahan dibeli dari pasar dan supplier, diolah bertahap, lalu dikirim ke banyak outlet. Tanpa jejak dari bahan ke batch ke surat jalan, HPP hanya tebakan rata-rata.',
       solution:
         'Satu rantai dokumen dari pembelian sampai pembayaran outlet. Setiap kedatangan bahan menjadi lapisan FIFO dengan harganya sendiri, batch produksi mengambil dari lapisan itu, dan jurnal double-entry tertulis di bawah setiap langkah.',
       result:
@@ -308,7 +308,7 @@ export const PORTFOLIO: PortfolioEntry[] = [
     },
     body: [
       { h2: 'Harga yang berubah di setiap tahap' },
-      'RPN Agro memasak sambal dan greens untuk jaringan outlet Geprek Wow. Bahannya datang dari pasar dan supplier dengan harga yang tidak pernah sama dua kali, diolah bertahap, lalu dikirim dengan surat jalan dan ditagih dengan invoice. HPP yang bisa dipertanggungjawabkan harus bisa ditelusuri sampai harga bahan yang benar-benar masuk ke batch itu.',
+      'RPN Agro memasak sambal dan greens untuk jaringan outlet Geprek Wow. Bahannya datang dari pasar dan supplier, diolah bertahap, lalu dikirim dengan surat jalan dan ditagih dengan invoice. HPP yang bisa dipertanggungjawabkan harus bisa ditelusuri sampai harga bahan yang benar-benar masuk ke batch itu.',
       { h2: 'Satu rantai dokumen' },
       'Pembelian berjalan dari PO, kedatangan barang, faktur supplier, sampai pembayaran, dengan jalur sendiri untuk belanja pasar yang memang tidak pernah punya PO. Setiap kedatangan membentuk lapisan FIFO dengan harga satuannya.',
       'Batch produksi mengambil bahan dari lapisan itu dan boleh berjalan beberapa hari: dicatat harian, dipanen saat hasilnya bisa ditimbang, dan sambal melewati tahap antara (Cabe Selep) sebelum dimasak. Dari situ HPP aktual dan yield terbentuk. Susut proses masuk ke HPP, sedangkan kerugian nyata dicatat terpisah sebagai write-off, supaya keduanya tidak saling menyamar.',
