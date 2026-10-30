@@ -1,0 +1,131 @@
+/*
+  Viralytics's project page (ADR 0013). Tokens remapped to the app's dark theme (Design System
+  colors_and_type.css in its repo): true black ground, #0b0f19 cards, brand blue #2563eb with its
+  glow, Satoshi for display (already the site's sans) and Inter for text. The glow appears once on
+  the page, on the baton. Choreography: progress rail (docs/konsep/viralytics.md), held briefly on
+  wide screens while the baton crosses the four zones. Everything rests finished.
+*/
+.bk-vr {
+  --color-ink: #f8fafc;
+  --color-paper: #000000;
+  --color-paper-50: #0b0f19;
+  --color-paper-100: #000000;
+  --color-paper-200: rgb(255 255 255 / 0.14);
+  --color-mist-400: #475569;
+  --color-mist-500: #94a3b8;
+  --color-mist-600: #94a3b8;
+  --color-shadow-700: #1e293b;
+  --color-shadow-800: #0f172a;
+  --color-shadow-900: #020617;
+  /* blue-400 for links and labels on black (7.6:1); the brand blue itself fills the baton */
+  --color-electric: #60a5fa;
+  --vr-blue: #2563eb;
+  --vr-glow: rgb(37 99 235 / 0.7);
+  --vr-card: #0b0f19;
+  --vr-soft: #cbd5e1;
+  --vr-faint: #94a3b8;
+  background: var(--color-paper-100);
+  color: var(--color-ink);
+  font-family: var(--font-viralytics), system-ui, sans-serif;
+  font-feature-settings: normal;
+}
+.bk-vr .vr-display { font-family: var(--font-sans), system-ui, sans-serif; font-weight: 700; }
+.bk-vr .vr-label { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--vr-faint); }
+.bk-vr .vr-link { color: var(--color-electric); }
+.bk-vr .vr-soft { color: var(--vr-soft); }
+.bk-vr .vr-faint { color: var(--vr-faint); }
+.bk-vr .vr-mono { font-family: var(--font-mono); font-size: 13px; }
+.bk-vr .vr-num { font-variant-numeric: tabular-nums; font-weight: 600; }
+
+/* The track. */
+.bk-vr .vr-scene { --q: 1; border-top: 1px solid var(--color-paper-200); padding-block: clamp(72px, 9vw, 120px); }
+@media (min-width: 1024px) and (min-height: 900px) {
+  .bk-vr[data-motion='on'] .vr-scene { height: 200vh; padding-block: 0; --q: clamp(0, calc((var(--p, 1) - 0.3) / 0.45), 1); }
+  .bk-vr[data-motion='on'] .vr-scene__stage { position: sticky; top: 0; min-height: 100vh; display: flex; align-items: center; padding-block: 32px; }
+}
+.bk-vr .vr-track { position: relative; height: 24px; margin-top: 48px; }
+.bk-vr .vr-track__line { position: absolute; left: 0; right: 0; top: 11px; height: 2px; background: rgb(255 255 255 / 0.14); }
+/* The run is the track minus the baton; moving it by --q of its own width keeps the baton on the
+   compositor (translate, not left). The baton is the only glow on the page, at the finish at rest. */
+.bk-vr .vr-run { position: absolute; top: 2px; left: 0; width: calc(100% - 20px); translate: calc(var(--q) * 100%) 0; }
+.bk-vr .vr-baton {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--vr-blue);
+  box-shadow: 0 0 0 4px rgb(37 99 235 / 0.25), 0 0 24px 6px var(--vr-glow);
+}
+.bk-vr .vr-zones { margin: 20px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.bk-vr .vr-zone {
+  padding: 16px;
+  border: 1px solid var(--color-paper-200);
+  border-radius: 16px;
+  background: var(--vr-card);
+  /* lit once the baton has reached it; text stays readable (AA) before, only the frame waits */
+  opacity: clamp(0.78, calc((var(--q) * 3 - var(--z) + 0.5) * 3), 1);
+}
+.bk-vr .vr-zone__phase { margin: 0; font-family: var(--font-sans), sans-serif; font-size: 18px; font-weight: 700; }
+.bk-vr .vr-zone__no { margin-right: 6px; font-family: var(--font-mono); font-size: 12px; font-weight: 400; color: var(--vr-faint); }
+.bk-vr .vr-zone__act { margin: 8px 0 0; font-size: 14px; line-height: 1.5; color: var(--vr-soft); }
+.bk-vr .vr-zone__plate { margin: 12px 0 0; padding-top: 10px; border-top: 1px dashed rgb(255 255 255 / 0.16); font-size: 13px; line-height: 1.6; color: var(--vr-soft); }
+.bk-vr .vr-zone__plate strong { color: var(--color-ink); font-weight: 600; }
+@media (max-width: 767px) {
+  .bk-vr .vr-track { display: none; }
+  .bk-vr .vr-zones { grid-template-columns: 1fr; }
+}
+
+/* Lanes. */
+.bk-vr .vr-lanes-wrap { margin-top: 32px; overflow-x: auto; }
+.bk-vr .vr-lanes { width: 100%; min-width: 640px; border-collapse: separate; border-spacing: 0 8px; font-size: 14px; }
+.bk-vr .vr-lanes thead th { padding: 0 12px 4px; text-align: left; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--vr-faint); }
+.bk-vr .vr-lanes tbody th { padding: 12px; text-align: left; font-family: var(--font-mono); font-size: 13px; font-weight: 400; background: var(--vr-card); border-radius: 12px 0 0 12px; }
+.bk-vr .vr-leg { padding: 12px; background: var(--vr-card); color: #64748b; }
+.bk-vr .vr-leg:last-child { border-radius: 0 12px 12px 0; }
+/* the phase name rides along only where the column headers are hidden (phones) */
+.bk-vr .vr-leg__phase { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.bk-vr .vr-leg--lewat { color: var(--vr-soft); }
+.bk-vr .vr-leg--di-sini { color: #93c5fd; font-weight: 600; }
+.bk-vr .vr-leg--gugur { color: #fca5a5; }
+.bk-vr .vr-leg--kembali { color: #fcd34d; }
+@media (max-width: 767px) {
+  /* each lane becomes a card on phones and small tablets: no sideways scroll */
+  .bk-vr .vr-lanes { min-width: 0; }
+  .bk-vr .vr-lanes thead { display: none; }
+  .bk-vr .vr-lanes tbody tr { display: grid; margin-bottom: 10px; border-radius: 12px; overflow: hidden; background: var(--vr-card); }
+  .bk-vr .vr-lanes tbody th { border-radius: 0; }
+  .bk-vr .vr-leg { border-radius: 0 !important; padding: 6px 12px; }
+  .bk-vr .vr-leg:empty, .bk-vr .vr-leg:has(> .sr-only) { display: none; }
+  .bk-vr .vr-leg__phase { position: static; width: auto; height: auto; overflow: visible; clip-path: none; color: var(--vr-faint); }
+}
+
+/* Finish: one link followed. */
+.bk-vr .vr-finish { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; counter-reset: f; }
+.bk-vr .vr-finish li {
+  display: grid;
+  gap: 4px;
+  padding: 14px 18px;
+  border: 1px solid var(--color-paper-200);
+  border-radius: 14px;
+  background: var(--vr-card);
+}
+.bk-vr .vr-finish__step { font-size: 13px; color: var(--vr-faint); }
+.bk-vr .vr-finish__value { font-size: 17px; overflow-wrap: anywhere; }
+.bk-vr .vr-pill { justify-self: start; padding: 2px 10px; border-radius: 999px; background: rgb(34 197 94 / 0.15); color: #86efac; font-size: 14px; font-weight: 600; }
+.bk-vr[data-motion='on'] .vr-finish li { opacity: calc(0.2 + var(--p, 1) * 0.8); translate: 0 calc((1 - var(--p, 1)) * 16px); }
+
+.bk-vr .vr-feature { display: grid; grid-template-columns: 1fr; gap: 24px; padding-block: clamp(36px, 5vw, 56px); border-top: 1px solid var(--color-paper-200); }
+@media (min-width: 1024px) {
+  .bk-vr .vr-feature { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); align-items: center; gap: 48px; }
+}
+.bk-vr[data-motion='on'] .vr-feature__shot { translate: 0 calc((1 - var(--p, 1)) * 28px); opacity: calc(0.25 + var(--p, 1) * 0.75); }
+
+/* The shared tour is an ink panel; on this black page ink is light, so it is put back to dark here. */
+.bk-vr #tur {
+  --color-ink: #0b0f19;
+  --color-paper: #f8fafc;
+  /* the tour sets its lead in mist-400, which is a border tone on this page */
+  --color-mist-400: #cbd5e1;
+}

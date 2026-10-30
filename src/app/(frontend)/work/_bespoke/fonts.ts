@@ -1,4 +1,4 @@
-import { Archivo, Barlow_Condensed, Cardo, Montserrat, Nunito, Nunito_Sans, Poppins, PT_Sans } from 'next/font/google';
+import { Archivo, Barlow_Condensed, Cardo, Inter, Montserrat, Nunito, Nunito_Sans, Poppins, PT_Sans } from 'next/font/google';
 
 /**
  * The faces each product uses in its own app (ADR 0013). Declared here, not in app/fonts.ts, so
@@ -75,4 +75,12 @@ export const nunitoBody = Nunito({
   variable: '--font-cw-body',
   display: 'swap',
   weight: ['400', '700'],
+});
+
+/** Viralytics sets body text, labels, and numbers in Inter; Satoshi, its display face, is already the site's. */
+export const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-viralytics',
+  display: 'swap',
+  weight: ['400', '500', '600'],
 });
