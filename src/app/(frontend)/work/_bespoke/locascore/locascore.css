@@ -23,6 +23,10 @@
   --lc-muted: #eef2f8;
   --lc-go: #15803d;
   --lc-go-bg: #dcfce7;
+  /* road classes, darkest for the widest; arteri reaches 3:1 on white (WCAG 1.4.11) */
+  --lc-road-1: #8c95a6;
+  --lc-road-2: #a9b2c2;
+  --lc-road-3: #c6cdd9;
   background: var(--color-paper-100);
   color: var(--color-ink);
   font-family: var(--font-locascore), system-ui, sans-serif;
@@ -41,7 +45,7 @@
   background: var(--color-paper-50);
   border: 1px solid var(--lc-border);
   border-top: 3px solid var(--lc-navy);
-  border-radius: 12px;
+  border-radius: 0 0 12px 12px;
   color: var(--lc-navy);
 }
 .bk-locascore .lc-stub p { margin: 0; }
@@ -61,7 +65,8 @@
     linear-gradient(90deg, var(--lc-border) 1px, transparent 1px) 0 0 / 48px 48px,
     var(--color-paper);
 }
-@media (min-width: 1024px) and (min-height: 860px) {
+/* 900px: the sheet is about 700px tall, so text zoom still leaves the verdict on screen while held. */
+@media (min-width: 1024px) and (min-height: 900px) {
   /* 220vh: a little over one held screen. Longer holds read as a stuck page (NN/g, Scrolljacking 101). */
   /* --p runs about 0.27 to 0.82 while the stage is held; --q spreads that over 0 to 1. */
   .bk-locascore[data-motion='on'] .lc-scene { height: 220vh; padding-block: 0; --q: clamp(0, calc((var(--p, 1) - 0.27) / 0.52), 1); }
@@ -130,7 +135,9 @@
   font-style: italic;
   color: var(--color-mist-600);
 }
-.bk-locascore .lc-hunch::after {
+.bk-locascore .lc-hunch--holds { display: inline-flex; align-items: center; gap: 4px; }
+.bk-locascore .lc-tick { width: 14px; height: 14px; color: var(--lc-navy); opacity: clamp(0, calc((var(--q) - var(--t, 0)) * 14), 1); }
+.bk-locascore .lc-hunch--wrong::after {
   content: '';
   position: absolute;
   left: -2px;
@@ -145,16 +152,16 @@
 .bk-locascore .lc-fill { opacity: clamp(0, calc((var(--q) - var(--t, 0)) * 14 + 0.15), 1); }
 
 /* Sketch */
-.bk-locascore .lc-sketch svg { display: block; width: 100%; height: auto; max-width: 230px; margin-inline: auto; }
+.bk-locascore .lc-sketch svg { display: block; width: 100%; height: auto; max-width: 280px; margin-inline: auto; }
 .bk-locascore .lc-ring { fill: none; stroke: var(--color-mist-400); stroke-dasharray: 3 4; }
 .bk-locascore .lc-road { fill: none; stroke: var(--lc-muted); stroke-linecap: round; }
-.bk-locascore .lc-road--arteri { stroke: #d6dcea; stroke-width: 14; }
-.bk-locascore .lc-road--kolektor { stroke: #dde3ed; stroke-width: 8; }
-.bk-locascore .lc-road--lokal { stroke: #e6ebf3; stroke-width: 4; }
+.bk-locascore .lc-road--arteri { stroke: var(--lc-road-1); stroke-width: 12; }
+.bk-locascore .lc-road--kolektor { stroke: var(--lc-road-2); stroke-width: 7; }
+.bk-locascore .lc-road--lokal { stroke: var(--lc-road-3); stroke-width: 3; }
 .bk-locascore .lc-pt { opacity: clamp(0, calc((var(--q) - var(--t, 0)) * 20), 1); }
 .bk-locascore .lc-pt--comp { fill: var(--lc-navy); }
 .bk-locascore .lc-pt__ring { fill: var(--color-paper-50); stroke: var(--lc-navy); stroke-width: 1.5; }
-.bk-locascore .lc-pt__code { font-family: var(--font-locascore), sans-serif; font-size: 9px; font-weight: 700; fill: var(--lc-navy); }
+.bk-locascore .lc-pt__code { font-family: var(--font-locascore), sans-serif; font-size: 11px; font-weight: 700; fill: var(--lc-navy); }
 .bk-locascore .lc-pin circle { fill: var(--color-electric); fill-opacity: 0.18; stroke: var(--color-electric); stroke-width: 2; }
 .bk-locascore .lc-pin .lc-pin__dot { fill: var(--color-electric); fill-opacity: 1; stroke: none; }
 .bk-locascore .lc-legend { margin: 10px 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 12px; }

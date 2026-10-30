@@ -1,3 +1,4 @@
+import { Check } from '@phosphor-icons/react/dist/ssr/Check';
 import type { Project } from '@/payload-types';
 import { industryLabel, KIND_LABELS } from '@/lib/portfolio/taxonomy';
 import { Breadcrumbs } from '../../../_components/detail/Breadcrumbs';
@@ -28,11 +29,14 @@ const FACTORS: Array<[string, number]> = [
   ['Kompetitor', 15],
 ];
 
-/** What the surveyor wrote down that afternoon, and the line on the sheet that answers it. */
-const HUNCHES: Array<[string, string]> = [
-  ['"Ramai kok"', 'Traffic 100, diperkirakan dari kelas jalan OSM di sekitar titik'],
-  ['"Dekat sekolah"', 'Sekolah salah satu dari 14 kategori yang dihitung; ekosistem 95'],
-  ['"Kompetitornya cuma satu"', '18 kompetitor langsung dalam radius'],
+/**
+ * What the surveyor wrote down that afternoon, and the line on the sheet that answers it. A hunch
+ * the data bears out gets a tick; only the wrong one is struck.
+ */
+const HUNCHES: Array<{ said: string; answer: string; holds: boolean }> = [
+  { said: '"Ramai kok"', answer: 'Traffic 100, diperkirakan dari kelas jalan OSM di sekitar titik', holds: true },
+  { said: '"Dekat sekolah"', answer: 'Sekolah salah satu dari 14 kategori yang dihitung; ekosistem 95', holds: true },
+  { said: '"Kompetitornya cuma satu"', answer: 'Ternyata 18 kompetitor langsung dalam radius', holds: false },
 ];
 
 /**
@@ -73,7 +77,7 @@ export async function LocaScorePage({ project }: { project: Project }) {
     ['Hasil', project.summary?.result],
   ].filter((row): row is [string, string] => Boolean(row[1]));
   const points = COMPETITORS.length + OTHERS.length;
-  // Fill order on the held stage: the points on the sketch, the table rows, then the hunches get struck.
+  // Fill order on the held stage: the points on the sketch, the table rows, then the hunches get their tick or strike.
   const at = (t: number) => ({ '--t': t.toFixed(3) }) as React.CSSProperties;
 
   return (
@@ -143,9 +147,17 @@ export async function LocaScorePage({ project }: { project: Project }) {
               <div className="lc-sheet__block">
                 <h3 className="lc-sheet__title">Kesan survei</h3>
                 <ul className="lc-hunches">
-                  {HUNCHES.map(([said, answer], i) => (
+                  {HUNCHES.map(({ said, answer, holds }, i) => (
                     <li key={said} style={at(0.62 + i * 0.07)}>
-                      <s className="lc-hunch">{said}</s>
+                      {holds ? (
+                        <span className="lc-hunch lc-hunch--holds">
+                          <Check aria-hidden weight="bold" className="lc-tick" />
+                          {said}
+                          <span className="sr-only">, terbukti</span>
+                        </span>
+                      ) : (
+                        <s className="lc-hunch lc-hunch--wrong">{said}</s>
+                      )}
                       <span className="lc-answer">{answer}</span>
                     </li>
                   ))}
@@ -176,8 +188,8 @@ export async function LocaScorePage({ project }: { project: Project }) {
                     ))}
                     {OTHERS.map(([x, y, c], i) => (
                       <g key={`o${i}`} className="lc-pt" style={at(0.06 + ((COMPETITORS.length + i) / points) * 0.3)}>
-                        <circle cx={x} cy={y} r="8" className="lc-pt__ring" />
-                        <text x={x} y={y + 3.5} textAnchor="middle" className="lc-pt__code">
+                        <circle cx={x} cy={y} r="10" className="lc-pt__ring" />
+                        <text x={x} y={y + 4} textAnchor="middle" className="lc-pt__code">
                           {c}
                         </text>
                       </g>
@@ -224,7 +236,7 @@ export async function LocaScorePage({ project }: { project: Project }) {
                     ))}
                   </tbody>
                 </table>
-                <footer className="lc-verdict" aria-label="Putusan: GO, skor 82, balik modal 15,8 bulan, keyakinan rendah, data contoh">
+                <div role="group" className="lc-verdict" aria-label="Putusan: GO, skor 82, balik modal 15,8 bulan, keyakinan rendah, data contoh">
                   <p className="lc-verdict__tier">GO</p>
                   <div>
                     <p className="m-0 lc-display text-[28px] leading-none text-[color:var(--lc-navy)] tabular">
@@ -232,7 +244,7 @@ export async function LocaScorePage({ project }: { project: Project }) {
                     </p>
                     <p className="m-0 mt-1 text-[14px] leading-[1.45]">Balik modal 15,8 bulan, di bawah batas 18 bulan. Keyakinan rendah.</p>
                   </div>
-                </footer>
+                </div>
               </div>
 
             </article>

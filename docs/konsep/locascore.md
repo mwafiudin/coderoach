@@ -187,8 +187,13 @@ GD5 (desain) memakai pratinjau berjalan, bukan kanvas statis, karena halaman ini
 ## Produksi
 
 - Dibangun di `src/app/(frontend)/work/_bespoke/locascore/` (pin dan scrub hanya di layar
-  ≥1024×860; di bawah itu lembar tampil terisi penuh, karena lembar yang terisi sambil lewat akan
+  ≥1024×900; di bawah itu lembar tampil terisi penuh, karena lembar yang terisi sambil lewat akan
   menjawab kesan survei sesudah pembaca melewatinya).
 - Kuota: Flow 0 kredit, Gemini 0 permintaan. Konsep ini tidak butuh gambar; semua digambar HTML/SVG.
 - GD5: pratinjau lokal di 1440×900 dan 320 px (tanpa luber, lembar dan putusan terbaca) dan audit
   `impeccable` oleh subagen terpisah.
+- Audit `impeccable` (subagen, dari kode): 15/20. Diterapkan: kesan yang terbukti benar ("ramai
+  kok", "dekat sekolah") dicentang, hanya "kompetitornya cuma satu" yang dicoret; putusan jadi
+  `role="group"` berlabel; kode titik sketsa diperbesar; ambang pin naik ke tinggi 900 px supaya
+  zoom teks tidak memotong putusan; garis jalan digelapkan sampai 3:1; garis atas stub tanpa radius.
+  Dibiarkan: label Signal Blue (pola Laporta), grid 48px (milik app).
