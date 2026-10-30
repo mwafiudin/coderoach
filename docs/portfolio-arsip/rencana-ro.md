@@ -1,13 +1,16 @@
 # Arsip: tangkapan Rencana RO yang ditarik
 
 Ditarik 30 Okt 2026 dari `/work/rencana-ro` atas keputusan Komando (izin penuh Farrez,
-30 Okt 2026). Berkasnya tidak dihapus: dipindah ke `docs/portfolio-arsip/aset/`, karena
-`scripts/portfolio-assets/` hanya boleh berisi yang dipakai situs (`portfolio.test.ts`).
-`src/lib/portfolio/arsip.test.ts` menagih berkas dan catatan ini tetap ada.
+30 Okt 2026). Berkasnya tidak dihapus, tetapi disimpan di luar repo karena repo ini publik:
+`D:\Projectsyam\_referensi\portfolio-arsipencana-roencana-ro-rencana-ro.v2.webp`
+(folder bersama studio, bukan git). `src/lib/portfolio/arsip.test.ts` menagih catatan ini tetap
+ada dan tangkapannya tidak dirujuk lagi. Berkas itu masih ada di riwayat git repo ini (di
+`public/` dan `scripts/portfolio-assets/` dulu); membersihkan riwayat butuh force-push dan menunggu
+keputusan Farrez.
 
 ## Yang ditarik
 
-`rencana-ro-rencana-ro.v2.webp` (kini `docs/portfolio-arsip/aset/`), dulu dipakai sebagai `screen` fitur
+`rencana-ro-rencana-ro.v2.webp` (kini di folder arsip di luar repo), dulu dipakai sebagai `screen` fitur
 "Rencana repeat order dengan alasan" di `src/lib/portfolio/projects.ts`.
 
 Alasannya: rekaman v2 mengganti istilah skema bonus prinsipal di browser saat merekam, tetapi
@@ -19,7 +22,7 @@ netral, jadi tetap dipakai.
 
 ## Cara memulihkan
 
-1. Pindahkan berkasnya kembali ke `scripts/portfolio-assets/`, atau rekam ulang dengan peta istilah yang diperluas (`_referensi/portofolio/_alat/rekam-nds.mjs`,
+1. Salin berkasnya dari folder arsip di atas ke `scripts/portfolio-assets/`, atau rekam ulang dengan peta istilah yang diperluas (`_referensi/portofolio/_alat/rekam-nds.mjs`,
    peta `ISTILAH`, di luar repo) dan simpan sebagai `rencana-ro-rencana-ro.v3.webp`. Hapus
    entrinya dari `WITHDRAWN` di `arsip.test.ts`.
 2. Kembalikan baris ini ke fitur tersebut di `projects.ts`:
