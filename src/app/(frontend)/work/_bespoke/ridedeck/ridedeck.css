@@ -28,7 +28,7 @@
   --rd-seg-off: #0d2412;
   background: var(--color-paper-100);
   color: var(--color-ink);
-  font-family: var(--font-ridedeck), system-ui, sans-serif;
+  font-family: var(--font-archivo), system-ui, sans-serif;
   font-variation-settings: 'wdth' 100;
 }
 .bk-ridedeck .rd-dim { color: var(--color-mist-500); }
