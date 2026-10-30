@@ -1,4 +1,4 @@
-import { Archivo, Barlow_Condensed, Cardo, Montserrat, Nunito, Nunito_Sans, PT_Sans } from 'next/font/google';
+import { Archivo, Barlow_Condensed, Cardo, Montserrat, Nunito, Nunito_Sans, Poppins, PT_Sans } from 'next/font/google';
 
 /**
  * The faces each product uses in its own app (ADR 0013). Declared here, not in app/fonts.ts, so
@@ -56,4 +56,23 @@ export const cardo = Cardo({
   display: 'swap',
   weight: ['400', '700'],
   style: ['normal', 'italic'],
+});
+
+/**
+ * Chicken Wow: heavy Poppins for headlines and buttons, Nunito for body text, as on chickenwow.id
+ * (read from its pages, 14 Oct 2026). Body weights are their own instance so LocaScore's page does
+ * not preload them.
+ */
+export const poppins = Poppins({
+  subsets: ['latin'],
+  variable: '--font-cw-display',
+  display: 'swap',
+  weight: ['700', '800', '900'],
+});
+
+export const nunitoBody = Nunito({
+  subsets: ['latin'],
+  variable: '--font-cw-body',
+  display: 'swap',
+  weight: ['400', '700'],
 });
