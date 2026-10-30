@@ -4,6 +4,7 @@ import { AkarKitaPage } from './akarkita/AkarKitaPage';
 import { ChickenWowPage } from './chicken-wow/ChickenWowPage';
 import { CoderoachOsPage } from './coderoach-os/CoderoachOsPage';
 import { DDayPage } from './d-day/DDayPage';
+import { FiFoFunPage } from './fifofun/FiFoFunPage';
 import { JedaPage } from './jeda/JedaPage';
 import { LaportaPage } from './laporta/LaportaPage';
 import { LocaScorePage } from './locascore/LocaScorePage';
@@ -28,6 +29,7 @@ const PAGES: Record<BespokeSlug, BespokePage> = {
   'rencana-ro': RencanaRoPage,
   akarkita: AkarKitaPage,
   'd-day': DDayPage,
+  fifofun: FiFoFunPage,
 };
 
 /**
