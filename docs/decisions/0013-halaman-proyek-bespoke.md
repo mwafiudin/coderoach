@@ -1,7 +1,7 @@
 # 0013 — Bespoke project pages in each product's own identity
 
 - Date: 2026-10-28
-- Status: Accepted (pilot: laporta, jeda, yiheecam)
+- Status: Accepted (pilot: laporta, jeda, yiheecam; wave 2 from 30 Oct 2026)
 
 ## Context
 
@@ -45,3 +45,15 @@ so those shared parts take the app's colours. Copy stays in `projects.ts`.
 - Each new bespoke page is its own design job (GD5 per page). Revisit if the
   site starts reading as many brands, or if a page breaks the ADR 0003
   guardrails (LCP ≤2.5s, CLS <0.1, readable without JS).
+
+## Wave 2: concept gate run by the agent (30 Oct 2026)
+
+From 29 Oct 2026 every bespoke page passes the `alur-desain` 1.3.0 concept stage before any asset:
+a brief from real material, several separate ideation rounds, a separate rater, three scripted
+concepts, then gate GK. For the remaining pages (locascore, the-global-review, chicken-wow,
+coderoach-os, viralytics, rencana-ro, akarkita, d-day, fifofun) Farrez handed GK and GD5 to the
+agent on 30 Oct 2026: "Tanpa izin semuanya saya izinkan. Jadi tidak perlu kamu minta saya untuk
+intervensi lagi". So GK is decided by a rater subagent that did not write the ideas, and GD5 is
+judged on the running preview plus an `impeccable` audit. Each page records the choice, its
+reasons, and the two concepts that lost in `docs/konsep/<slug>.md`. Farrez can still reopen any of
+them; the losing concepts stay written out for that.

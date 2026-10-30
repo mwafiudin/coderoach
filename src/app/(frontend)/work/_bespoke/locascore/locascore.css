@@ -1,0 +1,222 @@
+/*
+  LocaScore's project page (ADR 0013). Tokens remapped to the app's "Briefing Room" (locascore
+  DESIGN.md): cool workspace, navy-tinted ink and borders, Signal Blue for links, colour only on
+  the verdict, and one lift, on the verdict badge. Choreography: pin and scrub on wide screens, one sheet
+  filling in (docs/konsep/locascore.md). Everything that moves reads --q, which rests at 1: no JS, reduced
+  motion, and the overlay all show the sheet filled in.
+*/
+.bk-locascore {
+  --color-ink: #0e1a36;
+  --color-paper: #f4f7fb;
+  --color-paper-50: #ffffff;
+  --color-paper-100: #f4f7fb;
+  --color-paper-200: #dde3ed;
+  --color-mist-400: #bfc6d6;
+  --color-mist-500: #8c95a6;
+  --color-mist-600: #5b6678;
+  --color-shadow-700: #0a2f72;
+  --color-shadow-800: #052258;
+  --color-shadow-900: #052258;
+  --color-electric: #0b5efe;
+  --lc-navy: #052258;
+  --lc-border: rgb(5 34 88 / 0.1);
+  --lc-muted: #eef2f8;
+  --lc-go: #15803d;
+  --lc-go-bg: #dcfce7;
+  /* road classes, darkest for the widest; arteri reaches 3:1 on white (WCAG 1.4.11) */
+  --lc-road-1: #8c95a6;
+  --lc-road-2: #a9b2c2;
+  --lc-road-3: #c6cdd9;
+  background: var(--color-paper-100);
+  color: var(--color-ink);
+  font-family: var(--font-locascore), system-ui, sans-serif;
+  font-feature-settings: normal;
+}
+.bk-locascore .lc-display { font-family: var(--font-locascore-display), system-ui, sans-serif; font-weight: 800; }
+.bk-locascore .lc-label { font-size: 12px; font-weight: 700; letter-spacing: 0.02em; text-transform: uppercase; }
+.bk-locascore .lc-mono { font-family: var(--font-mono); font-size: 12px; font-variant-numeric: tabular-nums; color: var(--color-mist-600); }
+.bk-locascore .tabular { font-variant-numeric: tabular-nums; }
+
+/* Hero: the head of the sheet, waiting for its link. */
+.bk-locascore .lc-stub {
+  width: 240px;
+  margin-top: 28px;
+  padding: 16px 18px 18px;
+  background: var(--color-paper-50);
+  border: 1px solid var(--lc-border);
+  border-top: 3px solid var(--lc-navy);
+  border-radius: 0 0 12px 12px;
+  color: var(--lc-navy);
+}
+.bk-locascore .lc-stub p { margin: 0; }
+.bk-locascore .lc-stub .lc-display { font-size: 17px; }
+.bk-locascore .lc-stub__line { margin-top: 14px !important; padding-top: 10px; border-top: 1px dashed var(--color-mist-400); font-size: 14px; color: var(--color-mist-600); }
+
+/* The scene: pinned for a little over a screen when motion is on and the sheet fits, a plain section otherwise. */
+.bk-locascore .lc-scene {
+  /* Filled in, unless the stage is held (below): a sheet filling in as it scrolls past would answer
+     the hunches after the reader has gone by them. */
+  --q: 1;
+  border-top: 1px solid var(--color-paper-200);
+  padding-block: clamp(72px, 9vw, 120px);
+  /* the 48px grid wash the app lays under its workspace */
+  background:
+    linear-gradient(var(--lc-border) 1px, transparent 1px) 0 0 / 48px 48px,
+    linear-gradient(90deg, var(--lc-border) 1px, transparent 1px) 0 0 / 48px 48px,
+    var(--color-paper);
+}
+/* 900px: the sheet is about 700px tall, so text zoom still leaves the verdict on screen while held. */
+@media (min-width: 1024px) and (min-height: 900px) {
+  /* 220vh: a little over one held screen. Longer holds read as a stuck page (NN/g, Scrolljacking 101). */
+  /* --p runs about 0.27 to 0.82 while the stage is held; --q spreads that over 0 to 1. */
+  .bk-locascore[data-motion='on'] .lc-scene { height: 220vh; padding-block: 0; --q: clamp(0, calc((var(--p, 1) - 0.27) / 0.52), 1); }
+  .bk-locascore[data-motion='on'] .lc-scene__stage {
+    position: sticky;
+    top: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-block: 32px;
+  }
+}
+
+/* The sheet: one white surface, navy hairlines, filled in block by block. */
+.bk-locascore .lc-sheet {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--color-paper-50);
+  border: 1px solid var(--lc-border);
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.bk-locascore .lc-sheet__head {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 16px;
+  padding: 14px 18px;
+  border-bottom: 2px solid var(--lc-navy);
+  color: var(--lc-navy);
+}
+.bk-locascore .lc-sheet__demo {
+  margin-left: auto !important;
+  padding: 2px 8px;
+  border: 1px solid var(--lc-border);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-mist-600);
+}
+.bk-locascore .lc-sheet__block { padding: 12px 18px 14px; border-bottom: 1px solid var(--lc-border); min-width: 0; }
+.bk-locascore .lc-sheet__block:nth-of-type(1),
+.bk-locascore .lc-sheet__input { grid-column: 1 / -1; }
+.bk-locascore .lc-sheet__input { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 14px; }
+.bk-locascore .lc-sheet__input .lc-sheet__title { flex-basis: 100%; }
+.bk-locascore .lc-sheet__block:nth-of-type(3) { border-right: 1px solid var(--lc-border); }
+.bk-locascore .lc-sheet__title {
+  margin: 0 0 8px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-mist-600);
+}
+
+/* Hunches: struck through once the line that answers them is on the sheet. */
+.bk-locascore .lc-hunches { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+.bk-locascore .lc-hunches li { display: grid; grid-template-columns: minmax(0, 13em) 1fr; gap: 4px 14px; align-items: baseline; }
+.bk-locascore .lc-hunch {
+  position: relative;
+  justify-self: start;
+  text-decoration: none;
+  font-style: italic;
+  color: var(--color-mist-600);
+}
+.bk-locascore .lc-hunch--holds { display: inline-flex; align-items: center; gap: 4px; }
+.bk-locascore .lc-tick { width: 14px; height: 14px; color: var(--lc-navy); opacity: clamp(0, calc((var(--q) - var(--t, 0)) * 14), 1); }
+.bk-locascore .lc-hunch--wrong::after {
+  content: '';
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  top: 55%;
+  height: 2px;
+  background: var(--lc-navy);
+  transform-origin: left;
+  scale: clamp(0, calc((var(--q) - var(--t, 0)) * 14), 1) 1;
+}
+.bk-locascore .lc-answer { font-weight: 700; color: var(--lc-navy); opacity: clamp(0, calc((var(--q) - var(--t, 0)) * 14), 1); }
+.bk-locascore .lc-fill { opacity: clamp(0, calc((var(--q) - var(--t, 0)) * 14 + 0.15), 1); }
+
+/* Sketch */
+.bk-locascore .lc-sketch svg { display: block; width: 100%; height: auto; max-width: 280px; margin-inline: auto; }
+.bk-locascore .lc-ring { fill: none; stroke: var(--color-mist-400); stroke-dasharray: 3 4; }
+.bk-locascore .lc-road { fill: none; stroke: var(--lc-muted); stroke-linecap: round; }
+.bk-locascore .lc-road--arteri { stroke: var(--lc-road-1); stroke-width: 12; }
+.bk-locascore .lc-road--kolektor { stroke: var(--lc-road-2); stroke-width: 7; }
+.bk-locascore .lc-road--lokal { stroke: var(--lc-road-3); stroke-width: 3; }
+.bk-locascore .lc-pt { opacity: clamp(0, calc((var(--q) - var(--t, 0)) * 20), 1); }
+.bk-locascore .lc-pt--comp { fill: var(--lc-navy); }
+.bk-locascore .lc-pt__ring { fill: var(--color-paper-50); stroke: var(--lc-navy); stroke-width: 1.5; }
+.bk-locascore .lc-pt__code { font-family: var(--font-locascore), sans-serif; font-size: 11px; font-weight: 700; fill: var(--lc-navy); }
+.bk-locascore .lc-pin circle { fill: var(--color-electric); fill-opacity: 0.18; stroke: var(--color-electric); stroke-width: 2; }
+.bk-locascore .lc-pin .lc-pin__dot { fill: var(--color-electric); fill-opacity: 1; stroke: none; }
+.bk-locascore .lc-legend { margin: 10px 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 12px; }
+.bk-locascore .lc-legend li { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+.bk-locascore .lc-legend__mark { display: inline-grid; place-items: center; width: 16px; height: 16px; border: 1.5px solid var(--lc-navy); border-radius: 50%; font-size: 9px; font-weight: 700; color: var(--lc-navy); line-height: 1; }
+.bk-locascore .lc-legend li:first-child .lc-legend__mark { border: 0; font-size: 12px; }
+
+/* Table: factor, a bar drawn to its value, and the value; one row per factor at every width. */
+.bk-locascore .lc-table { width: 100%; border-collapse: collapse; }
+.bk-locascore .lc-table th { text-align: left; font-weight: 700; padding: 5px 8px 5px 0; white-space: nowrap; }
+.bk-locascore .lc-table td { padding: 5px 0; width: 100%; }
+.bk-locascore .lc-cell { display: flex; align-items: center; gap: 8px; }
+.bk-locascore .lc-bar {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--lc-navy) calc(var(--v) * 100%), var(--lc-muted) 0);
+}
+.bk-locascore .lc-value { min-width: 3ch; text-align: right; font-family: var(--font-locascore-display), sans-serif; font-weight: 800; font-variant-numeric: tabular-nums; color: var(--lc-navy); }
+
+/* The verdict: the one lifted surface, as in the app. */
+.bk-locascore .lc-verdict {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--color-paper-50);
+  border: 1px solid var(--lc-border);
+  box-shadow: 0 6px 24px rgb(5 34 88 / 0.1);
+  opacity: clamp(0, calc((var(--q) - 0.82) * 8), 1);
+  translate: 0 calc((1 - clamp(0, calc((var(--q) - 0.82) * 8), 1)) * 10px);
+}
+.bk-locascore .lc-verdict__tier {
+  margin: 0;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--lc-go-bg);
+  color: var(--lc-go);
+  font-family: var(--font-locascore-display), sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.bk-locascore .lc-shot { max-width: 1120px; }
+.bk-locascore[data-motion='on'] [data-scene='enter'] .lc-shot {
+  translate: 0 calc((1 - var(--p, 1)) * 32px);
+  opacity: calc(0.25 + var(--p, 1) * 0.75);
+}
+
+@media (max-width: 639px) {
+  .bk-locascore .lc-sheet { grid-template-columns: 1fr; }
+  .bk-locascore .lc-sheet__block:nth-of-type(3) { border-right: 0; }
+  .bk-locascore .lc-hunches li { grid-template-columns: 1fr; gap: 0; padding-bottom: 6px; }
+  .bk-locascore .lc-sheet__demo { margin-left: 0 !important; }
+}
