@@ -1,0 +1,128 @@
+/*
+  The Global Review's project page (ADR 0013). Tokens remapped to the client's own site
+  (the-global-review-website globals.css): warm grey canvas, black ink, navy accent, archive paper,
+  Montserrat for headlines and Cardo for reading text. Choreography: sticky stack without holding
+  the scroll (docs/konsep/the-global-review.md): the source card sticks in its column on wide
+  screens while the prints scroll past and fade in once. Everything rests finished, and the
+  highlighter never moves: it is the editors' choice, shown as the site shows it on its lead story.
+*/
+.bk-tgr {
+  --color-ink: #111111;
+  --color-paper: #f8f8f6;
+  --color-paper-50: #ffffff;
+  --color-paper-100: #f8f8f6;
+  --color-paper-200: #e8e8e8;
+  --color-mist-400: #c4c4c4;
+  --color-mist-500: #9a9a9a;
+  --color-mist-600: #4a4a4a;
+  --color-shadow-700: #1a1a1a;
+  --color-shadow-800: #111111;
+  --color-shadow-900: #111111;
+  --color-electric: #0b3d91;
+  /* the highlighter's navy, a shade deeper than the link accent */
+  --tg-mark: #012258;
+  --tg-paper: #f6efdc;
+  background: var(--color-paper-100);
+  color: var(--color-ink);
+  font-family: var(--font-montserrat), system-ui, sans-serif;
+  font-feature-settings: normal;
+}
+.bk-tgr .tg-display { font-family: var(--font-montserrat), system-ui, sans-serif; font-weight: 800; }
+.bk-tgr .tg-serif { font-family: var(--font-tgr-serif), Georgia, serif; }
+.bk-tgr .tg-kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
+.bk-tgr .tg-label { font-family: var(--font-montserrat), sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-mist-600); }
+.bk-tgr .tg-code { font-family: var(--font-mono); font-size: 13px; line-height: 1.5; color: var(--color-mist-600); }
+.bk-tgr .tg-note {
+  margin: 14px 0 0;
+  font-family: var(--font-montserrat), sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-mist-600);
+}
+
+/* The site's highlighter: navy block, white text, slightly drawn corners; a broken line keeps the block on each line. */
+.bk-tgr .tg-mk {
+  padding: 0 0.16em;
+  border-radius: 6px 11px 7px 12px;
+  background: var(--tg-mark);
+  color: #ffffff;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* The press: source on the left, prints on the right; one column on phones. */
+.bk-tgr .tg-scene { padding-block: clamp(72px, 9vw, 120px); border-top: 1px solid var(--color-paper-200); }
+.bk-tgr .tg-press { display: grid; grid-template-columns: 1fr; gap: 40px; margin-top: 48px; }
+@media (min-width: 1024px) {
+  .bk-tgr .tg-press { grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: 64px; align-items: start; }
+  .bk-tgr .tg-press__source { position: sticky; top: 96px; }
+}
+
+.bk-tgr .tg-source {
+  padding: 22px 22px 18px;
+  background: var(--tg-paper);
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.06);
+  font-family: var(--font-tgr-serif), Georgia, serif;
+}
+.bk-tgr .tg-source__fields { display: grid; gap: 14px; margin: 16px 0 0; }
+.bk-tgr .tg-source__fields dt { font-family: var(--font-montserrat), sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-mist-600); }
+.bk-tgr .tg-source__fields dd { margin: 4px 0 0; font-size: 20px; line-height: 1.4; }
+.bk-tgr .tg-source__rule {
+  margin: 18px 0 0;
+  padding-top: 12px;
+  border-top: 1px dashed rgb(0 0 0 / 0.2);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.bk-tgr .tg-press__prints { margin: 0; padding: 0; list-style: none; display: grid; gap: clamp(48px, 7vw, 88px); }
+.bk-tgr .tg-print__name { margin: 0 0 12px; font-size: 14px; font-weight: 700; }
+/* The site's gold, darkened to 5.5:1 on the canvas; the number is hidden from screen readers. */
+.bk-tgr .tg-print__no { margin-right: 8px; font-family: var(--font-mono); font-size: 12px; color: #8a5f00; }
+.bk-tgr .tg-sheet {
+  padding: 22px 24px;
+  background: var(--color-paper-50);
+  border: 1px solid var(--color-paper-200);
+  border-radius: 12px;
+}
+.bk-tgr .tg-url { overflow-wrap: anywhere; padding: 8px 12px; border-radius: 999px; background: var(--color-paper-100); }
+.bk-tgr .tg-archive li { padding-block: 12px; border-top: 1px solid var(--color-paper-200); font-weight: 700; line-height: 1.35; }
+.bk-tgr .tg-archive li:first-child { border-top: 0; }
+
+.bk-tgr .tg-share { max-width: 440px; background: var(--color-paper-50); border: 1px solid var(--color-paper-200); border-radius: 12px; overflow: hidden; }
+.bk-tgr .tg-share__image {
+  position: relative;
+  aspect-ratio: 1200 / 630;
+  /* stands in for the article photo under the card's navy overlay */
+  background:
+    linear-gradient(200deg, rgb(1 15 43 / 0.15), rgb(1 15 43 / 0.85)),
+    repeating-linear-gradient(135deg, #3b4a63 0 14px, #34425a 14px 28px);
+}
+.bk-tgr .tg-share__image span {
+  position: absolute;
+  left: 6%;
+  bottom: 9%;
+  color: #ffffff;
+  font-family: var(--font-tgr-serif), Georgia, serif;
+  font-size: clamp(12px, 2.6vw, 16px);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+.bk-tgr .tg-share__text { padding: 12px 16px 0; }
+.bk-tgr .tg-share .tg-note { padding: 0 16px 14px; }
+
+/* Each print fades up once as it enters; at rest, and without JS, it simply sits there. */
+.bk-tgr[data-motion='on'] .tg-print {
+  opacity: calc(0.15 + var(--p, 1) * 0.85);
+  translate: 0 calc((1 - var(--p, 1)) * 24px);
+}
+
+.bk-tgr .tg-paper { background: var(--tg-paper); }
+.bk-tgr .tg-shot { max-width: 1120px; }
+.bk-tgr[data-motion='on'] [data-scene='enter'] .tg-shot {
+  translate: 0 calc((1 - var(--p, 1)) * 32px);
+  opacity: calc(0.25 + var(--p, 1) * 0.75);
+}

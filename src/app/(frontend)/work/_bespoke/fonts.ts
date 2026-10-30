@@ -1,12 +1,13 @@
-import { Archivo, Barlow_Condensed, Montserrat, Nunito, Nunito_Sans, PT_Sans } from 'next/font/google';
+import { Archivo, Barlow_Condensed, Cardo, Montserrat, Nunito, Nunito_Sans, PT_Sans } from 'next/font/google';
 
 /**
  * The faces each product uses in its own app (ADR 0013). Declared here, not in app/fonts.ts, so
- * only the project page that uses one downloads it.
+ * only the project page that uses one downloads it. Montserrat is shared by Laporta and The Global
+ * Review, so its variable is named after the face.
  */
 export const montserrat = Montserrat({
   subsets: ['latin'],
-  variable: '--font-laporta',
+  variable: '--font-montserrat',
   display: 'swap',
   weight: ['400', '500', '600', '700', '800'],
 });
@@ -46,4 +47,13 @@ export const ptSans = PT_Sans({
   variable: '--font-locascore',
   display: 'swap',
   weight: ['400', '700'],
+});
+
+/** The Global Review sets its reading text, decks, and dates in Cardo (the-global-review-website layout.tsx). */
+export const cardo = Cardo({
+  subsets: ['latin'],
+  variable: '--font-tgr-serif',
+  display: 'swap',
+  weight: ['400', '700'],
+  style: ['normal', 'italic'],
 });
