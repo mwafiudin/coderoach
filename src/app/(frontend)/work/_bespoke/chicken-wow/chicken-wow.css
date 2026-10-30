@@ -1,0 +1,157 @@
+/*
+  Chicken Wow's project page (ADR 0013). Tokens remapped to chickenwow.id (screenshots of
+  14 Oct 2026): cream page, navy ink and a navy hero with a fine grid, the yellow button colour,
+  the red pill, heavy Poppins and Nunito. The hero remaps the tokens again to light-on-navy, so the
+  breadcrumbs and link chips follow. Choreography: pin and scrub on wide screens (one window, its
+  labels replaced), then a short reveal for the sorted list. Everything rests finished.
+*/
+.bk-cw {
+  --color-ink: #152477;
+  --color-paper: #fffdf2;
+  --color-paper-50: #ffffff;
+  --color-paper-100: #fffdf2;
+  --color-paper-200: #e7e3cf;
+  --color-mist-400: #c9c6b4;
+  --color-mist-500: #8a8775;
+  --color-mist-600: #4b4f73;
+  --color-shadow-700: #0f1b5c;
+  --color-shadow-800: #152477;
+  --color-shadow-900: #0d1650;
+  --color-electric: #152477;
+  --cw-navy: #152477;
+  --cw-navy-deep: #0f1c63;
+  --cw-yellow: #ffd400;
+  --cw-red: #d6331f;
+  --cw-ink-soft: #3a4170;
+  background: var(--color-paper-100);
+  color: var(--color-ink);
+  font-family: var(--font-cw-body), system-ui, sans-serif;
+  font-feature-settings: normal;
+}
+.bk-cw .cw-display { font-family: var(--font-cw-display), system-ui, sans-serif; font-weight: 900; letter-spacing: -0.02em; }
+.bk-cw .cw-kicker { font-family: var(--font-cw-display), sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
+.bk-cw .cw-yellow { color: var(--cw-yellow); }
+/* red on cream is 4.75:1 */
+.bk-cw .cw-red { color: var(--cw-red); }
+.bk-cw .cw-muted { color: var(--cw-ink-soft); }
+.bk-cw .cw-faint { color: #4b4f73; }
+
+/* Hero: the site's navy with its fine grid; text turns light. */
+.bk-cw .cw-hero {
+  --color-ink: #ffffff;
+  --color-mist-400: rgb(255 255 255 / 0.5);
+  --color-mist-600: #c9cdea;
+  --color-paper-200: rgb(255 255 255 / 0.2);
+  --color-electric: var(--cw-yellow);
+  color: #ffffff;
+  background:
+    linear-gradient(rgb(255 255 255 / 0.06) 1px, transparent 1px) 0 0 / 40px 40px,
+    linear-gradient(90deg, rgb(255 255 255 / 0.06) 1px, transparent 1px) 0 0 / 40px 40px,
+    var(--cw-navy);
+}
+
+/* The window scene. */
+.bk-cw .cw-scene {
+  --q: 1;
+  padding-block: clamp(72px, 9vw, 120px);
+}
+/* 900px tall, as LocaScore: text zoom still leaves the window on screen while held. */
+@media (min-width: 1024px) and (min-height: 900px) {
+  /* --p runs about 0.27 to 0.82 while held in 220vh; --q spreads that over 0 to 1. */
+  .bk-cw[data-motion='on'] .cw-scene { height: 220vh; padding-block: 0; --q: clamp(0, calc((var(--p, 1) - 0.27) / 0.52), 1); }
+  .bk-cw[data-motion='on'] .cw-scene__stage { position: sticky; top: 0; min-height: 100vh; display: flex; align-items: center; padding-block: 32px; }
+}
+
+.bk-cw .cw-window { width: min(520px, 100%); margin-inline: auto; }
+.bk-cw .cw-window__glass {
+  position: relative;
+  padding: 28px 22px 44px;
+  border: 10px solid var(--cw-navy);
+  border-radius: 18px;
+  background:
+    linear-gradient(115deg, rgb(255 255 255 / 0) 30%, rgb(255 255 255 / 0.55) 38%, rgb(255 255 255 / 0) 46%),
+    linear-gradient(180deg, #eef3fb, #dfe8f6);
+}
+.bk-cw .cw-window__file {
+  position: absolute;
+  right: 14px;
+  bottom: 10px;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--cw-ink-soft);
+}
+.bk-cw .cw-labels { margin: 0; padding: 0; list-style: none; display: grid; gap: 18px; }
+.bk-cw .cw-label { display: grid; gap: 8px; justify-items: start; }
+/* The old label: pinned on, then struck and faded as the new one goes up. At rest both show. */
+.bk-cw .cw-label__old {
+  --done: clamp(0, calc((var(--q) - var(--t, 0)) * 8), 1);
+  padding: 4px 10px;
+  background: #fffef7;
+  border: 1px dashed #9aa0c4;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--cw-ink-soft);
+  text-decoration-line: line-through;
+  text-decoration-thickness: 2px;
+  text-decoration-color: rgb(21 36 119 / var(--done));
+  /* only a little fade: at rest it still reads at 6:1, the strike carries the meaning */
+  opacity: calc(1 - var(--done) * 0.15);
+  rotate: calc(var(--done) * -2deg);
+}
+.bk-cw .cw-label__tag { font-family: var(--font-cw-body), sans-serif; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+.bk-cw .cw-label__new {
+  font-family: var(--font-cw-display), sans-serif;
+  font-weight: 900;
+  opacity: clamp(0, calc((var(--q) - var(--t, 0) - 0.06) * 8), 1);
+  translate: 0 calc((1 - clamp(0, calc((var(--q) - var(--t, 0) - 0.06) * 8), 1)) * 10px);
+}
+.bk-cw .cw-label__new--pill {
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: var(--cw-red);
+  color: #ffffff;
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.bk-cw .cw-label__new--button {
+  padding: 10px 28px;
+  border-radius: 999px;
+  background: var(--cw-yellow);
+  color: var(--cw-navy);
+  font-size: clamp(26px, 4vw, 36px);
+  text-transform: uppercase;
+  box-shadow: 0 10px 24px -12px rgb(255 212 0 / 0.9);
+}
+.bk-cw .cw-label__new--tag {
+  padding: 6px 14px;
+  border-radius: 10px;
+  background: var(--cw-navy);
+  color: #ffffff;
+  font-size: 17px;
+}
+
+/* Nearby outlets: two orders of the same list. */
+.bk-cw .cw-nearby { background: var(--color-paper-50); border-block: 1px solid var(--color-paper-200); }
+.bk-cw .cw-list { padding: 18px 20px; border-radius: 16px; background: var(--color-paper-100); border: 1px solid var(--color-paper-200); }
+.bk-cw .cw-list--near { background: var(--cw-navy); color: #ffffff; border-color: var(--cw-navy); }
+.bk-cw .cw-list__head { margin: 0 0 10px; font-family: var(--font-cw-display), sans-serif; font-size: 13px; font-weight: 700; }
+.bk-cw .cw-list ol { margin: 0; padding-left: 1.4em; display: grid; gap: 8px; font-weight: 700; }
+.bk-cw .cw-list--near li::marker { color: var(--cw-yellow); }
+.bk-cw .cw-list--near li > span:first-child { margin-right: 10px; }
+.bk-cw .cw-km { font-family: var(--font-mono); font-size: 13px; font-weight: 400; color: var(--cw-yellow); }
+.bk-cw[data-motion='on'] .cw-list--near li {
+  opacity: clamp(0, calc(var(--p, 1) * 3 - var(--i) * 0.4), 1);
+  translate: 0 calc((1 - clamp(0, calc(var(--p, 1) * 3 - var(--i) * 0.4), 1)) * 12px);
+}
+
+.bk-cw .cw-cream { background: var(--color-paper-100); }
+.bk-cw .cw-shot { max-width: 1120px; }
+.bk-cw[data-motion='on'] [data-scene='enter'] .cw-shot { translate: 0 calc((1 - var(--p, 1)) * 32px); opacity: calc(0.25 + var(--p, 1) * 0.75); }
+
+.bk-cw .cw-band { background: var(--cw-yellow); }
+.bk-cw .cw-facts { display: grid; gap: 14px; font-size: 17px; line-height: 1.55; }
+.bk-cw .cw-facts li { padding-left: 18px; position: relative; }
+.bk-cw .cw-facts li::before { content: ''; position: absolute; left: 0; top: 0.62em; width: 8px; height: 8px; border-radius: 50%; background: var(--cw-navy); }

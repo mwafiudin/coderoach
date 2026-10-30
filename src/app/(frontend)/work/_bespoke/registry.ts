@@ -1,5 +1,6 @@
 import type { Project } from '@/payload-types';
 import type { BespokeSlug } from '@/lib/portfolio/bespoke';
+import { ChickenWowPage } from './chicken-wow/ChickenWowPage';
 import { JedaPage } from './jeda/JedaPage';
 import { LaportaPage } from './laporta/LaportaPage';
 import { LocaScorePage } from './locascore/LocaScorePage';
@@ -16,6 +17,7 @@ const PAGES: Record<BespokeSlug, BespokePage> = {
   ridedeck: RideDeckPage,
   locascore: LocaScorePage,
   'the-global-review': TheGlobalReviewPage,
+  'chicken-wow': ChickenWowPage,
 };
 
 /**
