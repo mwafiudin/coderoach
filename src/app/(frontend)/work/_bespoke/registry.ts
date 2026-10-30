@@ -5,6 +5,7 @@ import { CoderoachOsPage } from './coderoach-os/CoderoachOsPage';
 import { JedaPage } from './jeda/JedaPage';
 import { LaportaPage } from './laporta/LaportaPage';
 import { LocaScorePage } from './locascore/LocaScorePage';
+import { RencanaRoPage } from './rencana-ro/RencanaRoPage';
 import { RideDeckPage } from './ridedeck/RideDeckPage';
 import { TheGlobalReviewPage } from './the-global-review/TheGlobalReviewPage';
 import { ViralyticsPage } from './viralytics/ViralyticsPage';
@@ -22,6 +23,7 @@ const PAGES: Record<BespokeSlug, BespokePage> = {
   'chicken-wow': ChickenWowPage,
   'coderoach-os': CoderoachOsPage,
   viralytics: ViralyticsPage,
+  'rencana-ro': RencanaRoPage,
 };
 
 /**
