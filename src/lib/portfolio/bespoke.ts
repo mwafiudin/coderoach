@@ -4,7 +4,7 @@
  * Projects with a page of their own (ADR 0013). The components live in work/_bespoke/registry.ts;
  * the list is here so it can be tested without rendering them.
  */
-export const BESPOKE_SLUGS = ['laporta', 'jeda', 'yiheecam', 'ridedeck', 'locascore', 'the-global-review', 'chicken-wow', 'coderoach-os', 'viralytics', 'rencana-ro', 'akarkita', 'd-day'] as const;
+export const BESPOKE_SLUGS = ['laporta', 'jeda', 'yiheecam', 'ridedeck', 'locascore', 'the-global-review', 'chicken-wow', 'coderoach-os', 'viralytics', 'rencana-ro', 'akarkita', 'd-day', 'fifofun'] as const;
 
 export type BespokeSlug = (typeof BESPOKE_SLUGS)[number];
 

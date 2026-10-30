@@ -1,0 +1,68 @@
+/*
+  FiFoFun's project page (ADR 0013). Tokens remapped to the app (src/app/globals.css in its repo):
+  IBM Plex Sans, iOS-style grouped grey with white inset groups, Apple system colours, and system
+  teal #0071a4 for whatever has been checked against the bank. Choreography: progress along one
+  chart, the drift line held still while the two bank fixes land in order (docs/konsep/fifofun.md),
+  held briefly on wide screens. Everything rests finished.
+*/
+.bk-ff {
+  --color-ink: #1c1c1e;
+  --color-paper: #f2f2f7;
+  --color-paper-50: #ffffff;
+  --color-paper-100: #f2f2f7;
+  --color-paper-200: #d1d1d6;
+  --color-mist-400: #aeaeb2;
+  --color-mist-500: #8e8e93;
+  --color-mist-600: #545458;
+  --color-electric: #0071a4;
+  --ff-teal: #0071a4;
+  --ff-drift: #8a5300;
+  background: var(--color-paper-100);
+  color: var(--color-ink);
+  font-family: var(--font-fifofun), system-ui, sans-serif;
+  font-feature-settings: normal;
+}
+.bk-ff .ff-caption { font-size: 13px; font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase; color: var(--color-mist-600); }
+.bk-ff .ff-teal { color: var(--ff-teal); }
+.bk-ff .ff-muted { color: var(--color-mist-600); }
+
+/* Inset grouped rows, as the app draws its settings and summaries. */
+.bk-ff .ff-group { padding: 0; list-style: none; border-radius: 10px; background: var(--color-paper-50); overflow: hidden; }
+.bk-ff .ff-row { margin: 0; padding: 14px 18px; border-top: 1px solid var(--color-paper-200); }
+.bk-ff .ff-row:first-child { border-top: 0; }
+.bk-ff .ff-group__head { font-size: 15px; font-weight: 600; }
+.bk-ff .ff-group--fix { box-shadow: inset 0 0 0 2px var(--ff-teal); }
+.bk-ff .ff-group--fix .ff-group__head { color: var(--ff-teal); }
+.bk-ff .ff-group--est { box-shadow: inset 0 0 0 2px var(--color-paper-200); }
+.bk-ff .ff-group--est .ff-group__head { color: var(--ff-drift); }
+
+.bk-ff .ff-scene { --q: 1; padding-block: clamp(72px, 9vw, 120px); border-top: 1px solid var(--color-paper-200); }
+@media (min-width: 1024px) and (min-height: 900px) {
+  .bk-ff[data-motion='on'] .ff-scene { height: 200vh; padding-block: 0; --q: clamp(0, calc((var(--p, 1) - 0.3) / 0.45), 1); }
+  .bk-ff[data-motion='on'] .ff-scene__stage { position: sticky; top: 0; min-height: 100vh; display: flex; align-items: center; padding-block: 32px; }
+}
+
+.bk-ff .ff-chart { margin-top: 40px; padding: 20px 20px 16px; border-radius: 14px; background: var(--color-paper-50); }
+.bk-ff .ff-chart svg { display: block; width: 100%; height: auto; }
+/* Lines keep their weight however small the chart is drawn on a phone. */
+.bk-ff .ff-true { fill: none; stroke: var(--color-mist-500); stroke-width: 2; vector-effect: non-scaling-stroke; }
+/* drift: dashed and in the warning brown, so it differs from the fix by pattern as well as colour */
+.bk-ff .ff-drift { fill: none; stroke: var(--ff-drift); stroke-width: 2.5; stroke-dasharray: 6 6; vector-effect: non-scaling-stroke; }
+.bk-ff .ff-fix circle { fill: var(--ff-teal); }
+.bk-ff .ff-fix path { stroke: var(--ff-teal); stroke-width: 2; vector-effect: non-scaling-stroke; }
+.bk-ff .ff-fix { opacity: clamp(0, calc((var(--q) - var(--t)) * 8), 1); }
+.bk-ff .ff-legend { margin: 12px 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: 15px; }
+.bk-ff .ff-legend li { display: inline-flex; align-items: center; gap: 8px; }
+.bk-ff .ff-legend__drift { width: 28px; border-top: 3px dashed var(--ff-drift); }
+.bk-ff .ff-legend__true { width: 28px; border-top: 2px solid var(--color-mist-500); }
+.bk-ff .ff-legend__fix { width: 14px; height: 14px; border-radius: 50%; background: var(--ff-teal); }
+
+.bk-ff .ff-checks .ff-row { display: grid; grid-template-columns: 28px 1fr; gap: 12px; font-size: 17px; line-height: 1.5; }
+.bk-ff .ff-checks__no { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--ff-teal); color: #ffffff; font-size: 13px; font-weight: 600; }
+.bk-ff[data-motion='on'] .ff-checks .ff-row { translate: 0 calc((1 - var(--p, 1)) * 12px); }
+
+.bk-ff .ff-feature { display: grid; grid-template-columns: 1fr; gap: 24px; padding-block: clamp(36px, 5vw, 56px); border-top: 1px solid var(--color-paper-200); }
+@media (min-width: 1024px) {
+  .bk-ff .ff-feature { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); align-items: center; gap: 48px; }
+}
+.bk-ff[data-motion='on'] .ff-feature__shot { translate: 0 calc((1 - var(--p, 1)) * 28px); opacity: calc(0.25 + var(--p, 1) * 0.75); }
