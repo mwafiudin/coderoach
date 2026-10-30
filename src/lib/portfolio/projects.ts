@@ -745,7 +745,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
       {
         title: 'Rencana repeat order dengan alasan',
         body: 'Mesin aturan berlapis menyimulasikan pembelian di atas pohon jaringan distributor sendiri: siapa di kaki mana, berapa unit, berapa biayanya, dan kenapa. Rencana disimpan terstruktur per run, jadi tampilan baru berlaku mundur ke run lama.',
-        screen: { file: 'rencana-ro-rencana-ro.v2.webp', alt: 'Bilah poin kaki kiri dan kanan sebelum dan sesudah, dan daftar repeat order yang disarankan' },
+        // Tangkapannya ditarik 30 Okt 2026: masih memuat istilah skema prinsipal. Cara memulihkan:
+        // docs/portfolio-arsip/rencana-ro.md.
       },
       {
         title: 'Pengingat yang diatur sendiri',
