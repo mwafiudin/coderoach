@@ -7,6 +7,7 @@ import { LaportaPage } from './laporta/LaportaPage';
 import { LocaScorePage } from './locascore/LocaScorePage';
 import { RideDeckPage } from './ridedeck/RideDeckPage';
 import { TheGlobalReviewPage } from './the-global-review/TheGlobalReviewPage';
+import { ViralyticsPage } from './viralytics/ViralyticsPage';
 import { YiheeCamPage } from './yiheecam/YiheeCamPage';
 
 type BespokePage = (props: { project: Project }) => Promise<React.JSX.Element>;
@@ -20,6 +21,7 @@ const PAGES: Record<BespokeSlug, BespokePage> = {
   'the-global-review': TheGlobalReviewPage,
   'chicken-wow': ChickenWowPage,
   'coderoach-os': CoderoachOsPage,
+  viralytics: ViralyticsPage,
 };
 
 /**
