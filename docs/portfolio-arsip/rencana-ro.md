@@ -2,7 +2,7 @@
 
 Ditarik 30 Okt 2026 dari `/work/rencana-ro` atas keputusan Komando (izin penuh Farrez,
 30 Okt 2026). Berkasnya tidak dihapus, tetapi disimpan di luar repo karena repo ini publik:
-`D:\Projectsyam\_referensi\portfolio-arsipencana-roencana-ro-rencana-ro.v2.webp`
+`D:/Projects/ayam/_referensi/portfolio-arsip/rencana-ro/rencana-ro-rencana-ro.v2.webp`
 (folder bersama studio, bukan git). `src/lib/portfolio/arsip.test.ts` menagih catatan ini tetap
 ada dan tangkapannya tidak dirujuk lagi. Berkas itu masih ada di riwayat git repo ini (di
 `public/` dan `scripts/portfolio-assets/` dulu); membersihkan riwayat butuh force-push dan menunggu
