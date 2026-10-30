@@ -3,6 +3,7 @@ import type { BespokeSlug } from '@/lib/portfolio/bespoke';
 import { AkarKitaPage } from './akarkita/AkarKitaPage';
 import { ChickenWowPage } from './chicken-wow/ChickenWowPage';
 import { CoderoachOsPage } from './coderoach-os/CoderoachOsPage';
+import { DDayPage } from './d-day/DDayPage';
 import { JedaPage } from './jeda/JedaPage';
 import { LaportaPage } from './laporta/LaportaPage';
 import { LocaScorePage } from './locascore/LocaScorePage';
@@ -26,6 +27,7 @@ const PAGES: Record<BespokeSlug, BespokePage> = {
   viralytics: ViralyticsPage,
   'rencana-ro': RencanaRoPage,
   akarkita: AkarKitaPage,
+  'd-day': DDayPage,
 };
 
 /**
