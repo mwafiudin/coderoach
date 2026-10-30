@@ -26,10 +26,10 @@ export const barlowCondensed = Barlow_Condensed({
   weight: ['500', '600'],
 });
 
-/** Variable in weight and width: RideDeck's tape labels open the width axis to 118 (rideDeck DESIGN.md). */
+/** Variable in weight and width: RideDeck's tape labels and AkarKita's display type open the width axis (their DESIGN.md files). */
 export const archivo = Archivo({
   subsets: ['latin'],
-  variable: '--font-ridedeck',
+  variable: '--font-archivo',
   display: 'swap',
   axes: ['wdth'],
 });

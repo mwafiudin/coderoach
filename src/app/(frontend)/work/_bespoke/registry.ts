@@ -1,5 +1,6 @@
 import type { Project } from '@/payload-types';
 import type { BespokeSlug } from '@/lib/portfolio/bespoke';
+import { AkarKitaPage } from './akarkita/AkarKitaPage';
 import { ChickenWowPage } from './chicken-wow/ChickenWowPage';
 import { CoderoachOsPage } from './coderoach-os/CoderoachOsPage';
 import { JedaPage } from './jeda/JedaPage';
@@ -24,6 +25,7 @@ const PAGES: Record<BespokeSlug, BespokePage> = {
   'coderoach-os': CoderoachOsPage,
   viralytics: ViralyticsPage,
   'rencana-ro': RencanaRoPage,
+  akarkita: AkarKitaPage,
 };
 
 /**

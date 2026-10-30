@@ -1,0 +1,109 @@
+/*
+  AkarKita's project page (ADR 0013). Tokens remapped to the app's Tenun Nusantara world
+  (DESIGN.md in its repo): pale blue-grey ground, deep blue ink, indigo for links and labels, a
+  gold thread, Archivo opened wide for display and narrow for labels, small corners. Custom colours
+  appear only on the labelled column heads. Choreography: quiet reveal, a weft thread drawn under
+  each row as it enters (docs/konsep/akarkita.md). Everything rests finished.
+*/
+.bk-ak {
+  --color-ink: oklch(0.25 0.05 265);
+  --color-paper: oklch(0.955 0.012 250);
+  --color-paper-50: oklch(0.99 0.004 250);
+  --color-paper-100: oklch(0.955 0.012 250);
+  --color-paper-200: oklch(0.87 0.02 255);
+  --color-mist-400: oklch(0.76 0.03 258);
+  --color-mist-500: oklch(0.53 0.03 262);
+  --color-mist-600: oklch(0.44 0.04 265);
+  --color-electric: oklch(0.42 0.11 262);
+  --ak-gold: oklch(0.6 0.13 78);
+  --ak-sunda: oklch(0.5 0.09 155);
+  --ak-minang: oklch(0.5 0.16 28);
+  /* the warp threads in the cloth's background: the border tone, faint */
+  --ak-warp: oklch(0.87 0.02 255 / 0.45);
+  background: var(--color-paper-100);
+  color: var(--color-ink);
+  font-family: var(--font-archivo), system-ui, sans-serif;
+  font-variation-settings: 'wdth' 100;
+  font-feature-settings: normal;
+}
+.bk-ak .ak-display { font-weight: 700; font-variation-settings: 'wdth' 118; letter-spacing: -0.015em; }
+.bk-ak .ak-label { font-size: 12px; font-weight: 600; font-variation-settings: 'wdth' 82; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-mist-600); }
+.bk-ak .ak-nila { color: var(--color-electric); }
+.bk-ak .ak-muted { color: var(--color-mist-600); }
+.bk-ak .ak-surface { background: var(--color-paper-50); }
+
+.bk-ak .ak-scene { padding-block: clamp(72px, 9vw, 120px); border-top: 1px solid var(--color-paper-200); }
+
+/* The cloth: rows are weft (who asks), columns are warp (the custom). */
+.bk-ak .ak-cloth {
+  width: 100%;
+  margin-top: 40px;
+  border-collapse: separate;
+  border-spacing: 0;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 22px, var(--ak-warp) 22px 23px),
+    var(--color-paper-50);
+  border: 1px solid var(--color-paper-200);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.bk-ak .ak-cloth thead th {
+  padding: 14px 18px 12px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  font-variation-settings: 'wdth' 82;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-mist-600);
+  border-bottom: 1px solid var(--color-paper-200);
+  background: var(--color-paper-50);
+}
+.bk-ak .ak-col { border-top: 4px solid; }
+.bk-ak .ak-col--sunda { border-top-color: var(--ak-sunda); }
+.bk-ak .ak-col--minang { border-top-color: var(--ak-minang); }
+.bk-ak .ak-col span { display: block; margin-top: 2px; font-size: 12px; font-weight: 400; letter-spacing: 0.02em; text-transform: none; }
+.bk-ak .ak-weft th,
+.bk-ak .ak-weft td { position: relative; padding: 18px; vertical-align: top; text-align: left; border-bottom: 1px solid var(--color-paper-200); }
+.bk-ak .ak-weft:last-child th,
+.bk-ak .ak-weft:last-child td { border-bottom: 0; }
+.bk-ak .ak-weft th { width: 30%; font-size: 16px; font-weight: 600; background: var(--color-paper-50); }
+/* the gold weft thread under each row, drawn as it enters; at rest it runs the full width */
+.bk-ak .ak-weft td::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--ak-gold);
+  transform-origin: left;
+  scale: var(--p, 1) 1;
+}
+.bk-ak .ak-term { display: block; font-size: clamp(26px, 3.2vw, 36px); font-weight: 700; font-variation-settings: 'wdth' 118; line-height: 1.1; }
+.bk-ak .ak-why { display: block; margin-top: 4px; font-size: 14px; color: var(--color-mist-600); }
+.bk-ak[data-motion='on'] .ak-weft .ak-term { opacity: calc(0.7 + var(--p, 1) * 0.3); }
+@media (max-width: 639px) {
+  /* each asker becomes a band: the label on top, the two terms side by side under it */
+  .bk-ak .ak-cloth thead th:first-child { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .bk-ak .ak-cloth thead tr { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .bk-ak .ak-weft { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .bk-ak .ak-weft th { grid-column: 1 / -1; width: auto; padding: 14px 12px 4px; border-bottom: 0; }
+  .bk-ak .ak-weft td { padding: 6px 12px 14px; }
+  .bk-ak .ak-term { font-size: 22px; font-variation-settings: 'wdth' 100; overflow-wrap: anywhere; }
+}
+
+.bk-ak .ak-rules { margin-top: 32px; display: grid; gap: 14px; max-width: 70ch; font-size: 17px; line-height: 1.6; }
+
+.bk-ak .ak-shots { margin-top: 40px; display: grid; gap: 24px; align-items: end; }
+@media (min-width: 900px) {
+  .bk-ak .ak-shots { grid-template-columns: minmax(0, 1fr) 240px; }
+}
+.bk-ak .ak-shots__phone { max-width: 240px; }
+.bk-ak[data-motion='on'] [data-scene='enter'].ak-shots { translate: 0 calc((1 - var(--p, 1)) * 28px); opacity: calc(0.3 + var(--p, 1) * 0.7); }
+
+/* The shared tour is a dark band; its muted text and focus ring need the light values there. */
+.bk-ak #tur {
+  --color-mist-500: oklch(0.72 0.03 262);
+  --color-electric: oklch(0.78 0.09 262);
+}
