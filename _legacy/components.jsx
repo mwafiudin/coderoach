@@ -738,7 +738,7 @@ function Contact() {
 
               <div className="cf-actions">
                 <button type="submit" className="btn btn-primary btn-lg">Send the brief →</button>
-                <span className="contact-form-meta">// or write to <a href="mailto:hello@coderoach.studio">hello@coderoach.studio</a></span>
+                <span className="contact-form-meta">// or write to <a href="mailto:hello@coderoach.id">hello@coderoach.id</a></span>
               </div>
             </form>
           )}
@@ -788,10 +788,10 @@ function Footer() {
           <div>
             <h5>// CONTACT</h5>
             <ul>
-              <li><a href="mailto:hello@coderoach.studio">hello@coderoach.studio</a></li>
+              <li><a href="mailto:hello@coderoach.id">hello@coderoach.id</a></li>
               <li><a href="#">+62 21 555 0414</a></li>
               <li><a href="#">Kemang, Jakarta</a></li>
-              <li><a href="#">@coderoach.studio</a></li>
+              <li><a href="#">@coderoach.id</a></li>
             </ul>
           </div>
         </div>

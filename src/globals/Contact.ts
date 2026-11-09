@@ -1,4 +1,5 @@
 import type { GlobalConfig } from 'payload';
+import { CONTACT_EMAIL } from '../lib/contact-email';
 import { revalidateHome } from '../lib/revalidate';
 
 export const Contact: GlobalConfig = {
@@ -32,7 +33,7 @@ export const Contact: GlobalConfig = {
         { name: 'scope', type: 'text', defaultValue: '[ // SCOPE ]' },
         { name: 'brief', type: 'text', defaultValue: '[ // WHAT ARE YOU SHIPPING? ]' },
         { name: 'submit', type: 'text', defaultValue: 'Send the brief' },
-        { name: 'emailFallback', type: 'text', defaultValue: 'hello@coderoach.studio' },
+        { name: 'emailFallback', type: 'text', defaultValue: CONTACT_EMAIL },
       ],
     },
     { name: 'successHeading', type: 'text', defaultValue: 'Thanks, we got your brief.' },

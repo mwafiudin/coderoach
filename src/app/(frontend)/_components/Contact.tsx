@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { CONTACT_EMAIL } from '@/lib/contact-email';
 import { chipForScope } from '@/lib/landing/scope';
 import { TURNSTILE_SITE_KEY } from '@/lib/turnstile';
 import { TurnstileField, type TurnstileHandle } from './TurnstileField';
@@ -60,8 +61,9 @@ export function Contact({ data }: { data: ContactData | null }) {
     onPrimary?: () => void;
   } | null>(null);
   const toast = useToast();
+  const emailFallback = data?.formLabels?.emailFallback || CONTACT_EMAIL;
   const emailDirect = () => {
-    window.location.href = `mailto:${data?.formLabels?.emailFallback || 'hello@coderoach.studio'}`;
+    window.location.href = `mailto:${emailFallback}`;
     setAlert(null);
   };
 
@@ -420,10 +422,10 @@ export function Contact({ data }: { data: ContactData | null }) {
                 <span className="font-mono text-xs tracking-wide text-mist-600">
                   {'//'} atau email langsung ke{' '}
                   <a
-                    href={`mailto:${data?.formLabels?.emailFallback}`}
+                    href={`mailto:${emailFallback}`}
                     className="text-mist-400 border-b border-current pb-px hover:text-electric"
                   >
-                    {data?.formLabels?.emailFallback}
+                    {emailFallback}
                   </a>
                 </span>
               </div>
@@ -497,7 +499,7 @@ function BriefPreview({
 
         {/* Header — letterhead key/value */}
         <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-[14px] mb-6">
-          <LetterRow label="To" value="coderoach.studio" muted={false} />
+          <LetterRow label="To" value="coderoach.id" muted={false} />
           <LetterRow
             label="From"
             value={email || 'menunggu…'}

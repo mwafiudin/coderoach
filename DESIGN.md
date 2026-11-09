@@ -257,7 +257,7 @@ Instrument readouts, not boxes. On the dark contact surface, fields are bare: no
 A sticky 72px bar of paper-100 at 85% with a medium backdrop blur and a 1px paper-200 bottom rule. Logo plus a two-line lowercase wordmark at 14px; links 14px medium in ink, Signal Blue on hover; blue CTA at the right. Below 768px a 44px hamburger opens a drawer of 17px links separated by hairlines over a 30% ink scrim.
 
 ### Ops Console (signature)
-The instrument that proves the room is live. A shadow-900 panel, 16px corners, 1px shadow-700 border, mono 12px tabular throughout. Header: pulsing green dot, `coderoach.studio · uplink` in mist-400, live clock. Body: three event rows (category in its status colour, subject in paper, status in mist-500) fading 100/80/50% by age; a new row slides in every 3.2s. Hover pauses it; reduced motion stops the clock and the feed.
+The instrument that proves the room is live. A shadow-900 panel, 16px corners, 1px shadow-700 border, mono 12px tabular throughout. Header: pulsing green dot, `coderoach.id · uplink` in mist-400, live clock. Body: three event rows (category in its status colour, subject in paper, status in mist-500) fading 100/80/50% by age; a new row slides in every 3.2s. Hover pauses it; reduced motion stops the clock and the feed.
 
 ### Section Head
 A mono measurement line (`[ 02 / 07 ] · WORK` in mist-600 with a mist-400 dot) above the headline, an 18px gap, then an optional mist-600 lede. The marker is a position on the page, not a tagline.

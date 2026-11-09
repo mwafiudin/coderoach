@@ -7,6 +7,7 @@ import type { IndustryId } from './benchmark';
 import type { SectionId } from './flow';
 import type { AreaId } from './questions';
 import type { Band, Phase, ServiceClass } from './scoring';
+import { CONTACT_EMAIL } from '../contact-email';
 
 /**
  * The four phases as personas: an English name with an Indonesian nickname, what the stage does well,
@@ -335,7 +336,7 @@ export const GATE_COPY = {
     turnstile: 'Verifikasi keamanan gagal. Muat ulang halaman, lalu coba lagi.', // REVIEW
     turnstilePending: 'Sebentar, verifikasi keamanan masih berjalan.', // REVIEW
     turnstileMissing:
-      'Verifikasi keamanan tidak termuat di browser ini. Matikan pemblokir untuk halaman ini lalu muat ulang, atau email kami di hello@coderoach.studio.', // REVIEW
+      `Verifikasi keamanan tidak termuat di browser ini. Matikan pemblokir untuk halaman ini lalu muat ulang, atau email kami di ${CONTACT_EMAIL}.`, // REVIEW
     emailDisposable: 'Pakai email yang benar-benar Anda buka, bukan email sekali pakai.', // REVIEW
     required: 'Wajib diisi.', // REVIEW
     phone: 'Nomor WA diawali 08, 10–13 digit.', // REVIEW

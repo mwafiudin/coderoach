@@ -101,7 +101,7 @@ export function OpsConsole() {
       <div className="flex items-center justify-between px-5 py-3 border-b border-shadow-700">
         <div className="flex items-center gap-2.5">
           <span aria-hidden className="w-2 h-2 rounded-full bg-success animate-pulse-dot" />
-          <Meta parts="coderoach.studio · uplink" className="text-mist-400 tracking-[0.06em]" />
+          <Meta parts="coderoach.id · uplink" className="text-mist-400 tracking-[0.06em]" />
         </div>
         <span className="text-mist-600 tracking-[0.04em]">{now ? formatTime(now) : '--:--:--'}</span>
       </div>

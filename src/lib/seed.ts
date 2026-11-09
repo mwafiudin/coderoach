@@ -13,6 +13,7 @@ import { HIDDEN_PROJECT_SLUGS, PORTFOLIO } from './portfolio/projects';
 import { refsIn } from './portfolio/gate';
 import { assumedGrants } from './portfolio/grants';
 import { syncPortfolio } from './portfolio/sync';
+import { CONTACT_EMAIL } from './contact-email';
 
 async function seed() {
   // reset() below deletes every document in the collections it seeds, projects included.
@@ -150,7 +151,7 @@ async function seed() {
         scope: '[ JENIS PROYEK ]',
         brief: '[ APA YANG INGIN DIBANGUN? ]',
         submit: 'Kirim brief',
-        emailFallback: 'hello@coderoach.studio',
+        emailFallback: CONTACT_EMAIL,
       },
       successHeading: 'Terima kasih, brief Anda sudah masuk.',
     },
@@ -189,7 +190,7 @@ async function seed() {
           {
             heading: 'CONTACT',
             links: [
-              { label: 'hello@coderoach.studio', href: 'mailto:hello@coderoach.studio' },
+              { label: CONTACT_EMAIL, href: `mailto:${CONTACT_EMAIL}` },
               { label: '+62 813-3602-0915', href: 'https://wa.me/6281336020915' },
               { label: 'Based in Jakarta', href: '#' },
               { label: 'Remote-first', href: '#' },
