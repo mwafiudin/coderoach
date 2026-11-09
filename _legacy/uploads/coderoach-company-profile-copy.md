@@ -357,7 +357,7 @@ We take on a small number of new engagements each quarter.
 If you have a project that needs more than a vendor,
 let's talk.
 
-[ Email us: hello@coderoach.studio ]
+[ Email us: hello@coderoach.id ]
 [ Or schedule a call → ]
 
 ─────────────────────────────────────────────
@@ -443,7 +443,7 @@ someone who is.
 
 [ Send inquiry → ]
 
-Or skip the form: hello@coderoach.studio
+Or skip the form: hello@coderoach.id
 ```
 
 ---

@@ -100,7 +100,7 @@
 - Scope: `[ // JENIS PROYEK ]`
 - Brief: `[ // APA YANG INGIN DIBANGUN? ]`
 - Submit: Kirim brief →
-- Email fallback: hello@coderoach.studio
+- Email fallback: hello@coderoach.id
 
 **Project scopes:** Build · Automate · Intelligence · Augment · Belum yakin
 
@@ -120,7 +120,7 @@
 **Footer columns:**
 - **NAVIGATE** → Services · Work · Process · Field notes · FAQ
 - **STUDIO** → About · Field notes · Mulai proyek
-- **CONTACT** → hello@coderoach.studio · +62 813-3602-0915 · Based in Jakarta · Remote-first
+- **CONTACT** → hello@coderoach.id · +62 813-3602-0915 · Based in Jakarta · Remote-first
 
 ## A6. Blog Settings (notes archive hero)
 
