@@ -1,0 +1,963 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Papan storyboard scroll</title>
+<style>
+:root{--paper:#F7F8F9;--card:#fff;--ink:#0B0F14;--mist:#5B6573;--line:#E3E6EA;--blue:#2C70FE;--ok:#1F7A4D;--warn:#A15C00}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--paper:#0E1217;--card:#151A21;--ink:#EEF1F4;--mist:#9AA4B1;--line:#26303B;--ok:#5CC18C;--warn:#E3A24A}}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+.top{position:sticky;top:0;z-index:5;background:var(--paper);border-bottom:1px solid var(--line);padding:12px 16px;display:flex;gap:6px 14px;flex-wrap:wrap;align-items:baseline}
+.top h1{font-size:17px;margin:0 12px 0 0}.top a{color:var(--mist);text-decoration:none;font-size:13px}.top a:hover{color:var(--blue)}
+main{max-width:1240px;margin:0 auto;padding:0 16px 80px}
+.hal{padding:48px 0 8px;border-bottom:1px solid var(--line);scroll-margin-top:60px}
+.url{font:12px ui-monospace,Menlo,monospace;color:var(--mist);margin:0;text-transform:uppercase;letter-spacing:.08em}
+h2{font-size:30px;margin:4px 0 6px;letter-spacing:-.01em}.pesan{margin:0 0 10px;max-width:68ch}
+.ring{display:flex;gap:10px;align-items:center;flex-wrap:wrap;color:var(--mist);font-size:13px;margin:0}
+.sw{width:18px;height:18px;border-radius:4px;border:1px solid var(--line);display:inline-block}
+.rail{position:relative;height:26px;margin:20px 0 4px;background:var(--card);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.seg{position:absolute;top:3px;bottom:3px;border-radius:4px;background:color-mix(in srgb,var(--blue) 14%,transparent);font:10px ui-monospace,monospace;color:var(--ink);display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid transparent}
+.seg.k-pin-scrub{background:var(--blue);color:#fff}.seg.baru{border:1px dashed var(--blue)}
+.rail-k{font-size:12px;color:var(--mist);margin:0 0 18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:16px}
+.adegan{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:6px}
+.adegan.baru{border-color:color-mix(in srgb,var(--blue) 45%,var(--line))}
+.adegan header{display:flex;gap:8px;align-items:baseline}.adegan h3{font-size:15px;margin:0;flex:1}
+.id{font:12px ui-monospace,monospace;color:var(--mist)}.tag{font-size:11px;color:var(--blue);border:1px solid var(--blue);border-radius:4px;padding:0 6px}
+.meta{display:flex;justify-content:space-between;gap:8px;margin:0;font:12px ui-monospace,monospace;color:var(--mist)}.ko{color:var(--ink)}
+dl{margin:0;font-size:13px}dt{font-size:11px;color:var(--mist);text-transform:uppercase;letter-spacing:.06em;margin-top:6px}dd{margin:0}
+.aset{list-style:none;padding:0;margin:6px 0 0;font:11px ui-monospace,monospace;display:flex;flex-wrap:wrap;gap:4px}
+.aset li{padding:1px 6px;border-radius:4px;border:1px solid var(--line);overflow-wrap:anywhere}.aset .ada{color:var(--ok)}.aset .belum{color:var(--warn);border-style:dashed}
+.sk{aspect-ratio:16/10;border-radius:8px;background:var(--lat);color:var(--tin);border:1px solid var(--line);padding:8px;display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden;
+ background-image:linear-gradient(color-mix(in srgb,var(--tin) 6%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--tin) 6%,transparent) 1px,transparent 1px);background-size:14px 14px}
+.sk.k-pin-scrub::after{content:"PIN";position:absolute;right:6px;top:6px;font:9px ui-monospace,monospace;background:var(--aks);color:#fff;padding:1px 4px;border-radius:3px}
+.mid{flex:1;display:flex;gap:6px;min-height:0}.z{display:flex;gap:5px;flex-wrap:wrap;align-content:center;justify-content:center;min-width:0}
+.z-kiri,.z-kanan,.z-tengah{flex:1}.z-atas,.z-bawah{flex:0 0 auto}.z-penuh{position:absolute;inset:8px;pointer-events:none;opacity:.55}
+.t-split-kanan .mid{flex-direction:row-reverse}.t-tumpuk-kartu .z .el+.el{margin-left:-22px;margin-top:8px}
+.t-wipe .mid::after{content:"";position:absolute;left:50%;top:12%;bottom:12%;border-left:2px dashed var(--aks)}
+.el{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0;max-width:100%}
+.lbl{font-size:9px;line-height:1.2;text-align:center;max-width:110px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;opacity:.8}
+.laptop i{width:78px;height:48px;border:2px solid var(--tin);border-radius:4px 4px 0 0;background:color-mix(in srgb,var(--aks) 12%,transparent)}.laptop b{width:94px;height:4px;background:var(--tin);border-radius:0 0 3px 3px}
+.ponsel i{width:30px;height:56px;border:2px solid var(--tin);border-radius:7px;background:color-mix(in srgb,var(--aks) 12%,transparent)}
+.browser i{width:84px;height:52px;border:2px solid var(--tin);border-top-width:7px;border-radius:4px;background:color-mix(in srgb,var(--aks) 10%,transparent)}
+.judul i{height:7px;width:70px;background:var(--tin);border-radius:2px}.judul i+i{width:46px}
+.teks i{height:3px;width:64px;background:color-mix(in srgb,var(--tin) 55%,transparent);border-radius:2px}.teks i:last-of-type{width:40px}
+.angka i{font:700 20px/1 ui-monospace,monospace;font-style:normal;color:var(--aks)}
+.logo i{width:24px;height:24px;border-radius:50%;border:2px solid var(--aks)}
+.video i{width:60px;height:38px;border:2px solid var(--tin);border-radius:4px;position:relative}.video i::after{content:"";position:absolute;left:24px;top:11px;border:8px solid transparent;border-left:12px solid var(--aks)}
+.kotak i{width:52px;height:34px;border:1.5px solid var(--tin);border-radius:5px;background:color-mix(in srgb,var(--aks) 8%,transparent)}
+.kotak.diagram i{border-style:dashed}.kotak.foto i{background:color-mix(in srgb,var(--tin) 18%,transparent)}
+@media (max-width:640px){h2{font-size:24px}}
+</style></head><body>
+<nav class="top"><h1>Papan storyboard scroll</h1><a href="#beranda">Beranda Coderoach Studio</a><a href="#katalog-work">Katalog proyek</a><a href="#laporta">Laporta</a><a href="#rpn-os">RPN OS</a><a href="#locascore">LocaScore</a><a href="#the-global-review">The Global Review</a><a href="#uruzin">Uruzin OS</a><a href="#chicken-wow">Chicken Wow</a><a href="#coderoach-os">Coderoach OS</a><a href="#viralytics">Viralytics</a><a href="#rencana-ro">Rencana RO</a><a href="#akarkita">AkarKita</a><a href="#jeda">Jeda</a><a href="#d-day">d-day</a><a href="#yiheecam">YiheeCam</a><a href="#fifofun">FiFoFun</a><a href="#ridedeck">RideDeck</a></nav>
+<main><section id="beranda" class="hal">
+  <div class="hal-k"><p class="url">/</p><h2>Beranda Coderoach Studio</h2><p class="pesan">Punya sistem sendiri, tanpa tagihan yang membesar tiap tambah orang. Buktinya sistem yang sudah jalan untuk klien yang bisa Anda lihat.</p>
+  <p class="ring"><span class="sw" style="background:#F4F7F5" title="latar #F4F7F5"></span><span class="sw" style="background:#08090A" title="tinta #08090A"></span><span class="sw" style="background:#2C70FE" title="aksen #2C70FE"></span><span>13 adegan, 2 baru, 3 aset belum ada</span><span>Satoshi, JetBrains Mono untuk ukuran</span></p></div>
+  <div class="rail" aria-hidden="true"><span class="seg k-none" style="left:0%;width:6.164383561643835%" title="B1 Hero">B1</span><span class="seg k-none baru" style="left:6.164383561643835%;width:2.054794520547945%" title="B2 Pita logo klien">B2</span><span class="seg k-quiet-reveal" style="left:10.273972602739725%;width:7.328767123287672%" title="B3 Kapan bisnis butuh sistem sendiri?">B3</span><span class="seg k-quiet-reveal" style="left:17.602739726027398%;width:7.808219178082192%" title="B4 Langganan atau bangun sendiri?">B4</span><span class="seg k-quiet-reveal" style="left:25.410958904109588%;width:10.273972602739725%" title="B5 Yang kami bangun">B5</span><span class="seg k-quiet-reveal" style="left:35.68493150684932%;width:11.643835616438356%" title="B6 Sistem yang sudah berjalan">B6</span><span class="seg k-quiet-reveal" style="left:47.328767123287676%;width:14.589041095890412%" title="B7 Produk yang kami pakai sendiri">B7</span><span class="seg k-progress-rail" style="left:61.917808219178085%;width:5.89041095890411%" title="B8 Empat tahap">B8</span><span class="seg k-none baru" style="left:67.8082191780822%;width:5.342465753424658%" title="B9 Cocok untuk siapa?">B9</span><span class="seg k-none" style="left:73.15068493150685%;width:7.397260273972603%" title="B10 Studio">B10</span><span class="seg k-quiet-reveal" style="left:80.54794520547945%;width:5.47945205479452%" title="B11 Catatan dari studio">B11</span><span class="seg k-quiet-reveal" style="left:86.02739726027397%;width:7.054794520547945%" title="B12 Pertanyaan yang sering masuk">B12</span><span class="seg k-none" style="left:93.08219178082192%;width:6.917808219178082%" title="B13 Kontak">B13</span></div><p class="rail-k">Panjang halaman sekitar 1460 vh. Blok biru tebal: pin. Garis putus: adegan baru.</p>
+  <div class="grid"><article class="adegan">
+  <div class="sk t-hero k-none" style="--lat:#F4F7F5;--tin:#08090A;--aks:#2C70FE"><div class="mid"><div class="z z-kiri"><div class="el judul"><i></i><i></i><span class="lbl">Punya sistem sendiri, tanpa tagihan yang membesar tiap tambah orang.</span></div><div class="el teks"><i></i><i></i><i></i><span class="lbl">Lede dan dua tombol: Konsultasi gratis 30 menit, Cek kesiapan operasi</span></div></div><div class="z z-kanan"><div class="el kotak kartu"><i></i><span class="lbl">OpsConsole dengan umpan langsung</span></div></div></div></div>
+  <header><span class="id">B1</span><h3>Hero</h3></header>
+  <p class="meta"><span>0–90&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Masuk berurutan saat dimuat dan umpan konsol tetap; pergeseran latar grid mengikuti scroll dihapus.</dd><dt>Ponsel</dt><dd>Konsol di bawah teks.</dd><dt>Tanpa gerak</dt><dd>Tanpa masuk berurutan, jam dan umpan konsol diam.</dd></dl>
+  <ul class="aset"><li class="ada">/assets/bg-grid-clean.png</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-grid k-none" style="--lat:#F4F7F5;--tin:#08090A;--aks:#2C70FE"><div class="z z-atas"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Sistem dan situs yang kami bangun</span></div></div><div class="mid"><div class="z z-tengah"><div class="el logo"><i></i><span class="lbl">Geprek Wow</span></div><div class="el logo"><i></i><span class="lbl">RPN Agro</span></div><div class="el logo"><i></i><span class="lbl">Chicken Wow</span></div><div class="el logo"><i></i><span class="lbl">Uruzin</span></div><div class="el logo"><i></i><span class="lbl">The Global Review</span></div></div></div></div>
+  <header><span class="id">B2</span><h3>Pita logo klien</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>90–120&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Marquee yang sudah ada tetap berjalan dengan tombol jeda; nama teks diganti logo berwarna asli, tinggi tiap logo dihitung dari luasnya (lib/landing/logo-size.ts).</dd><dt>Ponsel</dt><dd>Marquee yang sama, logo lebih kecil mengikuti ukuran berdasarkan luas.</dd><dt>Tanpa gerak</dt><dd>Marquee berhenti; logo dibungkus jadi baris diam tanpa salinan kedua (globals.css).</dd></dl>
+  <ul class="aset"><li class="ada">klien-geprek-wow.v1.webp</li><li class="ada">klien-rpn-agro.v1.webp</li><li class="ada">klien-chicken-wow.v1.webp</li><li class="ada">klien-uruzin.v1.webp</li><li class="ada">klien-the-global-review.v1.webp</li></ul>
+</article><article class="adegan">
+  <div class="sk t-grid k-quiet-reveal" style="--lat:#F4F7F5;--tin:#08090A;--aks:#2C70FE"><div class="mid"><div class="z z-kiri"><div class="el kotak kartu"><i></i><span class="lbl">Gudang pakai spreadsheet</span></div></div><div class="z z-tengah"><div class="el kotak kartu"><i></i><span class="lbl">Keuangan pakai aplikasi lain</span></div><div class="el kotak diagram"><i></i><span class="lbl">Tiga garis putus-putus yang berhenti sebelum panel angka</span></div></div><div class="z z-kanan"><div class="el kotak kartu"><i></i><span class="lbl">Lapangan lapor lewat grup chat</span></div></div></div><div class="z z-bawah"><div class="el kotak kartu"><i></i><span class="lbl">Panel instrumen: satu angka yang tidak pernah ada</span></div></div></div>
+  <header><span class="id">B3</span><h3>Kapan bisnis butuh sistem sendiri?</h3></header>
+  <p class="meta"><span>150–257&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Tiga gejala muncul, lalu tiga garis putus-putus tergambar sekali dari tiap gejala ke panel dan berhenti sebelum sampai.</dd><dt>Ponsel</dt><dd>Gejala bertumpuk, garis disembunyikan.</dd><dt>Tanpa gerak</dt><dd>Garis sudah tergambar, berhenti sebelum panel.</dd></dl>
+  
+</article><article class="adegan">
+  <div class="sk t-split-kiri k-quiet-reveal" style="--lat:#F4F7F5;--tin:#08090A;--aks:#2C70FE"><div class="z z-atas"><div class="el kotak kartu"><i></i><span class="lbl">Menyewa dan Memiliki</span></div></div><div class="mid"></div><div class="z z-bawah"><div class="el kotak diagram"><i></i><span class="lbl">Grafik biaya: langganan naik, sistem sendiri melandai, titik balik</span></div></div></div>
+  <header><span class="id">B4</span><h3>Langganan atau bangun sendiri?</h3></header>
+  <p class="meta"><span>257–371&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Garis grafik tergambar sekali dari kiri saat grafik masuk; penanda titik balik muncul terakhir. Tidak terikat posisi scroll.</dd><dt>Ponsel</dt><dd>Grafik selebar layar di bawah dua kolom.</dd><dt>Tanpa gerak</dt><dd>Grafik utuh.</dd></dl>
+  
+</article><article class="adegan">
+  <div class="sk t-tumpuk-kartu k-quiet-reveal" style="--lat:#F4F7F5;--tin:#08090A;--aks:#2C70FE"><div class="mid"><div class="z z-tengah"><div class="el kotak kartu"><i></i><span class="lbl">ERP &amp; Sistem Operasional, dengan deret sampul proyeknya</span></div><div class="el kotak kartu"><i></i><span class="lbl">Otomasi &amp; AI, dengan deret sampul proyeknya</span></div><div class="el kotak kartu"><i></i><span class="lbl">Dashboard &amp; Business Intelligence, dengan deret sampul proyeknya</span></div></div></div><div class="z z-bawah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Tautan ke /work tersaring per layanan, jumlah proyek dihitung dari data</span></div></div></div>
+  <header><span class="id">B5</span><h3>Yang kami bangun</h3></header>
+  <p class="meta"><span>371–521&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Deret sampul kecil muncul berurutan saat kartu layanan masuk.</dd><dt>Ponsel</dt><dd>Deret sampul jadi dua sampul saja.</dd><dt>Tanpa gerak</dt><dd>Deret tampil diam.</dd></dl>
+  <ul class="aset"><li class="belum">&lt;slug&gt;-sampul.v1.webp untuk proyek per layanan</li></ul>
+</article><article class="adegan">
+  <div class="sk t-split-kiri k-quiet-reveal" style="--lat:#F4F7F5;--tin:#08090A;--aks:#2C70FE"><div class="z z-atas"><div class="el kotak kartu"><i></i><span class="lbl">Laporta unggulan, panel tinta</span></div></div><div class="mid"><div class="z z-kiri"><div class="el logo"><i></i><span class="lbl">Ikon produk di kolom 56px tiap baris</span></div></div><div class="z z-kanan"><div class="el kotak foto"><i></i><span class="lbl">Sampul kecil dan loop yang muncul saat baris disorot</span></div></div></div></div>
+  <header><span class="id">B6</span><h3>Sistem yang sudah berjalan</h3></header>
+  <p class="meta"><span>521–691&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Baris muncul berurutan; saat disorot, sampul dan loop muncul di sisi baris. Angka unggulan diam kecuali sama dengan angka Laporta yang bersumber.</dd><dt>Ponsel</dt><dd>Tanpa sorotan; ikon dan sampul diam di baris.</dd><dt>Tanpa gerak</dt><dd>Tanpa loop, sampul diam.</dd></dl>
+  <ul class="aset"><li class="belum">&lt;slug&gt;-ikon.v1.png</li><li class="belum">&lt;slug&gt;-sampul.v1.webp</li><li class="ada">laporta, jeda, fifofun loop kartu</li></ul>
+</article><article class="adegan">
+  <div class="sk t-grid k-quiet-reveal" style="--lat:#F4F7F5;--tin:#08090A;--aks:#2C70FE"><div class="mid"><div class="z z-kiri"><div class="el kotak kartu"><i></i><span class="lbl">Laporta dengan panel instrumen</span></div></div><div class="z z-kanan"><div class="el kotak kartu"><i></i><span class="lbl">Viralytics dengan panel instrumen</span></div></div></div></div>
+  <header><span class="id">B7</span><h3>Produk yang kami pakai sendiri</h3></header>
+  <p class="meta"><span>691–904&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Baris di panel instrumen masuk satu per satu seperti umpan konsol, sekali.</dd><dt>Ponsel</dt><dd>Bertumpuk.</dd><dt>Tanpa gerak</dt><dd>Panel utuh.</dd></dl>
+  
+</article><article class="adegan">
+  <div class="sk t-grid k-progress-rail" style="--lat:#F4F7F5;--tin:#08090A;--aks:#2C70FE"><div class="z z-atas"><div class="el kotak diagram"><i></i><span class="lbl">Rail 2px dengan empat titik tahap</span></div></div><div class="mid"></div><div class="z z-bawah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Petakan, Rancang, Bangun bertahap, Pakai dan kembangkan</span></div></div></div>
+  <header><span class="id">B8</span><h3>Empat tahap</h3></header>
+  <p class="meta"><span>904–990&nbsp;vh</span><span class="ko">Progress rail</span></p>
+  <dl><dt>Gerak</dt><dd>Rail terisi biru mengikuti scroll seperti sekarang; nilai istirahatnya penuh.</dd><dt>Ponsel</dt><dd>Rail tegak di kiri empat tahap.</dd><dt>Tanpa gerak</dt><dd>Rail penuh, semua titik menyala.</dd></dl>
+  
+</article><article class="adegan baru">
+  <div class="sk t-split-kiri k-none" style="--lat:#F4F7F5;--tin:#08090A;--aks:#2C70FE"><div class="mid"><div class="z z-kiri"><div class="el kotak kartu"><i></i><span class="lbl">Cocok kalau: empat butir yang bisa dicentang pembaca, penghitung centang</span></div></div><div class="z z-kanan"><div class="el kotak kartu"><i></i><span class="lbl">Belum cocok kalau: tiga butir dengan saran yang lebih murah</span></div></div></div></div>
+  <header><span class="id">B9</span><h3>Cocok untuk siapa?</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>990–1068&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Centang dan penghitung berubah saat diklik, bukan saat scroll.</dd><dt>Ponsel</dt><dd>Bertumpuk, target sentuh 44px.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  
+</article><article class="adegan">
+  <div class="sk t-split-kiri k-none" style="--lat:#F4F7F5;--tin:#08090A;--aks:#2C70FE"><div class="mid"><div class="z z-kiri"><div class="el judul"><i></i><i></i><span class="lbl">Tim kecil, senior, satu titik tanggung jawab.</span></div><div class="el angka"><i>123</i><span class="lbl">Statistik studio dengan nilai akhir sejak HTML</span></div></div><div class="z z-kanan"><div class="el kotak kartu"><i></i><span class="lbl">Tiga prinsip kerja</span></div></div></div></div>
+  <header><span class="id">B10</span><h3>Studio</h3></header>
+  <p class="meta"><span>1068–1176&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada hitung naik; angka tampil dengan nilai akhirnya.</dd><dt>Ponsel</dt><dd>Satu kolom, statistik dua kolom.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  
+</article><article class="adegan">
+  <div class="sk t-grid k-quiet-reveal" style="--lat:#F4F7F5;--tin:#08090A;--aks:#2C70FE"><div class="mid"><div class="z z-tengah"><div class="el kotak kartu"><i></i><span class="lbl">Tiga catatan terbaru</span></div></div></div></div>
+  <header><span class="id">B11</span><h3>Catatan dari studio</h3></header>
+  <p class="meta"><span>1176–1256&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Muncul saat masuk, seperti sekarang.</dd><dt>Ponsel</dt><dd>Bertumpuk.</dd><dt>Tanpa gerak</dt><dd>Langsung tampil.</dd></dl>
+  
+</article><article class="adegan">
+  <div class="sk t-grid k-quiet-reveal" style="--lat:#F4F7F5;--tin:#08090A;--aks:#2C70FE"><div class="mid"><div class="z z-tengah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Sebelas pertanyaan dalam dua kolom</span></div></div></div></div>
+  <header><span class="id">B12</span><h3>Pertanyaan yang sering masuk</h3></header>
+  <p class="meta"><span>1256–1359&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Muncul saat masuk, seperti sekarang.</dd><dt>Ponsel</dt><dd>Satu kolom.</dd><dt>Tanpa gerak</dt><dd>Langsung tampil.</dd></dl>
+  
+</article><article class="adegan">
+  <div class="sk t-penutup k-none" style="--lat:#F4F7F5;--tin:#08090A;--aks:#2C70FE"><div class="mid"><div class="z z-kiri"><div class="el judul"><i></i><i></i><span class="lbl">Ceritakan proses yang paling merepotkan. Kami bantu petakan.</span></div></div><div class="z z-kanan"><div class="el kotak kartu"><i></i><span class="lbl">Formulir di permukaan gelap, konsol deploy saat kirim</span></div></div></div></div>
+  <header><span class="id">B13</span><h3>Kontak</h3></header>
+  <p class="meta"><span>1359–1460&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Konsol deploy terbuka saat formulir dikirim, seperti sekarang.</dd><dt>Ponsel</dt><dd>Formulir di bawah judul.</dd><dt>Tanpa gerak</dt><dd>Konsol tampil tanpa animasi.</dd></dl>
+  
+</article></div>
+</section>
+<section id="katalog-work" class="hal">
+  <div class="hal-k"><p class="url">/work</p><h2>Katalog proyek</h2><p class="pesan">Lima belas sistem yang jalan, dan Anda bisa menyaring sampai ke yang mirip dengan usaha Anda.</p>
+  <p class="ring"><span class="sw" style="background:#F4F7F5" title="latar #F4F7F5"></span><span class="sw" style="background:#08090A" title="tinta #08090A"></span><span class="sw" style="background:#2C70FE" title="aksen #2C70FE"></span><span>6 adegan, 2 baru, 6 aset belum ada</span><span>Satoshi, JetBrains Mono untuk ukuran</span></p></div>
+  <div class="rail" aria-hidden="true"><span class="seg k-none" style="left:0%;width:9.75609756097561%" title="K1 Kepala">K1</span><span class="seg k-shared-element" style="left:9.75609756097561%;width:3.902439024390244%" title="K2 Saringan">K2</span><span class="seg k-quiet-reveal" style="left:13.658536585365855%;width:13.170731707317074%" title="K3 Kartu utama">K3</span><span class="seg k-quiet-reveal" style="left:26.82926829268293%;width:63.41463414634146%" title="K4 Kisi kartu">K4</span><span class="seg k-shared-element baru" style="left:26.82926829268293%;width:63.41463414634146%" title="K5 Dari kartu ke halaman proyek">K5</span><span class="seg k-quiet-reveal baru" style="left:90.2439024390244%;width:9.75609756097561%" title="K6 Penutup">K6</span></div><p class="rail-k">Panjang halaman sekitar 410 vh. Blok biru tebal: pin. Garis putus: adegan baru.</p>
+  <div class="grid"><article class="adegan">
+  <div class="sk t-hero k-none" style="--lat:#F4F7F5;--tin:#08090A;--aks:#2C70FE"><div class="mid"><div class="z z-kiri"><div class="el judul"><i></i><i></i><span class="lbl">15 proyek, 9 bidang usaha. (dihitung dari data)</span></div></div><div class="z z-kanan"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Lede: saring menurut layanan atau bidang usaha</span></div></div></div></div>
+  <header><span class="id">K1</span><h3>Kepala</h3></header>
+  <p class="meta"><span>0–40&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada; jumlah tetap teks biasa.</dd><dt>Ponsel</dt><dd>Lede di bawah judul.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  
+</article><article class="adegan">
+  <div class="sk t-grid k-shared-element" style="--lat:#F4F7F5;--tin:#08090A;--aks:#2C70FE"><div class="z z-atas"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Segmen Layanan</span></div></div><div class="mid"></div><div class="z z-bawah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Chip Bidang</span></div></div></div>
+  <header><span class="id">K2</span><h3>Saringan</h3></header>
+  <p class="meta"><span>40–56&nbsp;vh</span><span class="ko">Shared element</span></p>
+  <dl><dt>Gerak</dt><dd>Saat saringan diganti, kartu yang tetap ada bergeser ke tempat barunya, yang keluar memudar, yang masuk muncul.</dd><dt>Ponsel</dt><dd>Sama, lebih singkat.</dd><dt>Tanpa gerak</dt><dd>Kisi berganti seketika.</dd></dl>
+  
+</article><article class="adegan">
+  <div class="sk t-split-kiri k-quiet-reveal" style="--lat:#F4F7F5;--tin:#08090A;--aks:#2C70FE"><div class="mid"><div class="z z-kiri"><div class="el kotak foto"><i></i><span class="lbl">Sampul seragam 16:10 dari templat</span></div></div><div class="z z-kanan"><div class="el logo"><i></i><span class="lbl">Ikon produk di atas nama</span></div><div class="el teks"><i></i><i></i><i></i><span class="lbl">Nama, kalimat ringkas, bidang, Baca</span></div></div></div></div>
+  <header><span class="id">K3</span><h3>Kartu utama</h3></header>
+  <p class="meta"><span>56–110&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Muncul sekali saat dimuat; saat disorot loop diputar di atas sampul.</dd><dt>Ponsel</dt><dd>Satu kolom, poster dan tombol Pratinjau.</dd><dt>Tanpa gerak</dt><dd>Poster dan tombol Pratinjau.</dd></dl>
+  <ul class="aset"><li class="belum">laporta-sampul.v1.webp</li><li class="belum">laporta-ikon.v1.png</li></ul>
+</article><article class="adegan">
+  <div class="sk t-grid k-quiet-reveal" style="--lat:#F4F7F5;--tin:#08090A;--aks:#2C70FE"><div class="mid"></div><div class="z z-penuh"><div class="el kotak kartu"><i></i><span class="lbl">14 kartu dari templat sampul yang sama, ikon produk, chip bidang dan tahun</span></div></div></div>
+  <header><span class="id">K4</span><h3>Kisi kartu</h3></header>
+  <p class="meta"><span>110–370&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Tiap baris kartu muncul saat masuk, opasitas dan geser 12px; loop saat disorot untuk semua kartu yang punya loop.</dd><dt>Ponsel</dt><dd>Satu kolom; loop hanya lewat tombol Pratinjau.</dd><dt>Tanpa gerak</dt><dd>Kartu langsung tampil, tanpa loop otomatis.</dd></dl>
+  <ul class="aset"><li class="belum">&lt;slug&gt;-sampul.v1.webp × 13</li><li class="belum">&lt;slug&gt;-ikon.v1.png × 15</li><li class="belum">&lt;slug&gt;-kartu-loop.v1.mp4 × 12</li><li class="ada">loop Laporta, Jeda, FiFoFun</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-perangkat-penuh k-shared-element" style="--lat:#F4F7F5;--tin:#08090A;--aks:#2C70FE"><div class="mid"></div><div class="z z-penuh"><div class="el kotak foto"><i></i><span class="lbl">Sampul kartu yang membesar menjadi gambar hero halaman tujuan</span></div></div></div>
+  <header><span class="id">K5</span><h3>Dari kartu ke halaman proyek</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>110–370&nbsp;vh</span><span class="ko">Shared element</span></p>
+  <dl><dt>Gerak</dt><dd>Dipicu klik, bukan scroll: sampul kartu membesar menjadi hero halaman yang dituju.</dd><dt>Ponsel</dt><dd>Sama.</dd><dt>Tanpa gerak</dt><dd>Pindah halaman biasa tanpa transisi.</dd></dl>
+  <ul class="aset"><li class="belum">sampul yang sama dengan kartu</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-penutup k-quiet-reveal" style="--lat:#F4F7F5;--tin:#08090A;--aks:#2C70FE"><div class="mid"><div class="z z-kiri"><div class="el judul"><i></i><i></i><span class="lbl">Ceritakan proses yang paling merepotkan. Kami bantu petakan.</span></div></div><div class="z z-kanan"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Tombol Konsultasi gratis 30 menit ke /#contact</span></div></div></div></div>
+  <header><span class="id">K6</span><h3>Penutup</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>370–410&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Muncul saat masuk.</dd><dt>Ponsel</dt><dd>Tombol selebar layar.</dd><dt>Tanpa gerak</dt><dd>Langsung tampil.</dd></dl>
+  
+</article></div>
+</section>
+<section id="laporta" class="hal">
+  <div class="hal-k"><p class="url">/work/laporta</p><h2>Laporta</h2><p class="pesan">Satu shift ditutup dari ponsel crew dan langsung jadi jurnal yang seimbang.</p>
+  <p class="ring"><span class="sw" style="background:#fafafb" title="latar #fafafb"></span><span class="sw" style="background:#111114" title="tinta #111114"></span><span class="sw" style="background:#b45309" title="aksen #b45309"></span><span>8 adegan, 2 baru, 1 aset belum ada</span><span>Montserrat, JetBrains Mono</span></p></div>
+  <div class="rail" aria-hidden="true"><span class="seg k-none" style="left:0%;width:8.771929824561402%" title="A1 Hero">A1</span><span class="seg k-none" style="left:8.771929824561402%;width:6.140350877192982%" title="A2 Suasana">A2</span><span class="seg k-pin-scrub" style="left:14.912280701754385%;width:19.298245614035086%" title="A3 Struk tutup shift">A3</span><span class="seg k-shared-element baru" style="left:34.21052631578947%;width:7.894736842105263%" title="A4 Struk ke layar crew">A4</span><span class="seg k-number-reveal baru" style="left:42.10526315789473%;width:8.771929824561402%" title="A5 Angka terukur">A5</span><span class="seg k-progress-rail" style="left:50.877192982456144%;width:35.08771929824561%" title="A6 Fitur dengan rel">A6</span><span class="seg k-none" style="left:85.96491228070175%;width:8.771929824561402%" title="A7 Tur">A7</span><span class="seg k-none" style="left:94.73684210526315%;width:5.263157894736842%" title="A8 Sumber">A8</span></div><p class="rail-k">Panjang halaman sekitar 1140 vh. Blok biru tebal: pin. Garis putus: adegan baru.</p>
+  <div class="grid"><article class="adegan">
+  <div class="sk t-hero k-none" style="--lat:#fafafb;--tin:#111114;--aks:#b45309"><div class="mid"><div class="z z-kiri"><div class="el logo"><i></i><span class="lbl">Ikon Laporta di depan eyebrow</span></div><div class="el judul"><i></i><i></i><span class="lbl">Laporta</span></div><div class="el teks"><i></i><i></i><i></i><span class="lbl">Profit intelligence layer di atas POS, untuk operator F&amp;B Indonesia.</span></div></div><div class="z z-kanan"><div class="el kotak kartu"><i></i><span class="lbl">Sobekan struk BUKA SHIFT</span></div></div></div><div class="z z-bawah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Masalah, Solusi, Hasil</span></div></div></div>
+  <header><span class="id">A1</span><h3>Hero</h3></header>
+  <p class="meta"><span>0–100&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada gerak; jawaban dulu.</dd><dt>Ponsel</dt><dd>Sobekan struk disembunyikan, ikon tetap di depan eyebrow.</dd><dt>Tanpa gerak</dt><dd>Sama dengan tampilan biasa.</dd></dl>
+  <ul class="aset"><li class="belum">laporta-ikon.v1.svg</li></ul>
+</article><article class="adegan">
+  <div class="sk t-perangkat-penuh k-none" style="--lat:#fafafb;--tin:#111114;--aks:#b45309"><div class="mid"></div><div class="z z-bawah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Jam tutup di outlet: saat crew menyerahkan shift.</span></div></div><div class="z z-penuh"><div class="el kotak foto"><i></i><span class="lbl">Meja kasir saat tutup, printer struk</span></div></div></div>
+  <header><span class="id">A2</span><h3>Suasana</h3></header>
+  <p class="meta"><span>100–170&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada gerak.</dd><dt>Ponsel</dt><dd>Foto dipotong lebih tinggi, keterangan tetap di bawah.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  <ul class="aset"><li class="ada">laporta-kasir.v1.webp</li></ul>
+</article><article class="adegan">
+  <div class="sk t-artefak-pin k-pin-scrub" style="--lat:#fafafb;--tin:#111114;--aks:#b45309"><div class="mid"><div class="z z-kiri"><div class="el judul"><i></i><i></i><span class="lbl">Dari laci kas sampai buku besar, dalam satu struk.</span></div><div class="el teks"><i></i><i></i><i></i><span class="lbl">Tujuh nama langkah, yang aktif menebal</span></div></div><div class="z z-kanan"><div class="el kotak kartu"><i></i><span class="lbl">Struk: tujuh langkah OK, terkunci, jurnal D/K, cap SEIMBANG</span></div></div></div></div>
+  <header><span class="id">A3</span><h3>Struk tutup shift</h3></header>
+  <p class="meta"><span>170–390&nbsp;vh</span><span class="ko">Pin dan scrub</span></p>
+  <dl><dt>Gerak</dt><dd>Struk keluar dari slot baris demi baris; nama langkah yang sedang tercetak menebal di kolom kiri, cap jatuh di akhir.</dd><dt>Ponsel</dt><dd>Tidak dipin; struk tercetak saat lewat dan langkah di kolom kiri ikut menebal.</dd><dt>Tanpa gerak</dt><dd>Struk tercetak penuh dengan cap SEIMBANG, semua langkah setebal biasa.</dd></dl>
+  
+</article><article class="adegan baru">
+  <div class="sk t-split-kanan k-shared-element" style="--lat:#fafafb;--tin:#111114;--aks:#b45309"><div class="mid"><div class="z z-kiri"><div class="el judul"><i></i><i></i><span class="lbl">Tujuh langkah yang sama, di ponsel crew.</span></div><div class="el teks"><i></i><i></i><i></i><span class="lbl">Isi features[0].body</span></div></div><div class="z z-kanan"><div class="el ponsel"><i></i><span class="lbl">Layar Tutup Shift asli</span></div></div></div></div>
+  <header><span class="id">A4</span><h3>Struk ke layar crew</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>390–480&nbsp;vh</span><span class="ko">Shared element</span></p>
+  <dl><dt>Gerak</dt><dd>Daftar tujuh langkah dari struk bergeser dan mengecil ke posisi checklist, lalu layar asli memudar masuk di atasnya.</dd><dt>Ponsel</dt><dd>Daftar di atas, ponsel di bawah; layar memudar masuk saat lewat tanpa perpindahan.</dd><dt>Tanpa gerak</dt><dd>Crossfade diganti tampilan diam: daftar dan layar berdampingan.</dd></dl>
+  <ul class="aset"><li class="ada">laporta-tutup-shift.v2.webp</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-angka k-number-reveal" style="--lat:#fafafb;--tin:#111114;--aks:#b45309"><div class="z z-atas"><div class="el judul"><i></i><i></i><span class="lbl">Diukur di Laporta sendiri.</span></div></div><div class="mid"><div class="z z-kiri"><div class="el angka"><i>123</i><span class="lbl">1,7 layar, sebelumnya 2,7 layar [1]</span></div></div><div class="z z-tengah"><div class="el angka"><i>123</i><span class="lbl">76–101 ms, sebelumnya 0,7–1,2 dtk [2]</span></div></div><div class="z z-kanan"><div class="el angka"><i>123</i><span class="lbl">14/14 bukti transfer terbaca benar [3]</span></div></div></div></div>
+  <header><span class="id">A5</span><h3>Angka terukur</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>480–580&nbsp;vh</span><span class="ko">Number reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Angka sebelum tampil lalu dicoret, angka sesudah memudar masuk; nilai akhir sudah tertulis di HTML.</dd><dt>Ponsel</dt><dd>Tiga angka ditumpuk, satu per baris.</dd><dt>Tanpa gerak</dt><dd>Angka akhir dan angka sebelum yang tercoret tampil langsung.</dd></dl>
+  
+</article><article class="adegan">
+  <div class="sk t-grid k-progress-rail" style="--lat:#fafafb;--tin:#111114;--aks:#b45309"><div class="mid"><div class="z z-kiri"><div class="el kotak diagram"><i></i><span class="lbl">Rel: Shift, Kas, Stok, Jurnal</span></div></div><div class="z z-tengah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Empat fitur dari projects.ts</span></div></div><div class="z z-kanan"><div class="el browser"><i></i><span class="lbl">Setoran, stock opname, laba rugi</span></div></div></div></div>
+  <header><span class="id">A6</span><h3>Fitur dengan rel</h3></header>
+  <p class="meta"><span>580–980&nbsp;vh</span><span class="ko">Progress rail</span></p>
+  <dl><dt>Gerak</dt><dd>Penanda rel pindah ke fitur yang melewati garis baca; titik rel bisa diklik.</dd><dt>Ponsel</dt><dd>Rel jadi baris nomor di atas tiap fitur, tidak menempel.</dd><dt>Tanpa gerak</dt><dd>Rel statis, tautan tetap jalan.</dd></dl>
+  <ul class="aset"><li class="ada">laporta-setoran.v2.webp</li><li class="ada">laporta-stock-opname.v2.webp</li><li class="ada">laporta-laba-rugi.v2.webp</li></ul>
+</article><article class="adegan">
+  <div class="sk t-perangkat-penuh k-none" style="--lat:#fafafb;--tin:#111114;--aks:#b45309"><div class="z z-atas"><div class="el judul"><i></i><i></i><span class="lbl">Satu hari outlet, dari laci kas sampai buku besar.</span></div></div><div class="mid"></div><div class="z z-penuh"><div class="el video"><i></i><span class="lbl">Tur 50 detik</span></div></div></div>
+  <header><span class="id">A7</span><h3>Tur</h3></header>
+  <p class="meta"><span>980–1080&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Video diputar oleh pembaca.</dd><dt>Ponsel</dt><dd>Video selebar layar.</dd><dt>Tanpa gerak</dt><dd>Poster, video tetap bisa diputar manual.</dd></dl>
+  <ul class="aset"><li class="ada">laporta-tur.v2.mp4</li><li class="ada">laporta-tur.v2.poster.webp</li></ul>
+</article><article class="adegan">
+  <div class="sk t-penutup k-none" style="--lat:#fafafb;--tin:#111114;--aks:#b45309"><div class="mid"><div class="z z-tengah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Tiga sumber angka dan catatan data contoh</span></div></div></div></div>
+  <header><span class="id">A8</span><h3>Sumber</h3></header>
+  <p class="meta"><span>1080–1140&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada gerak.</dd><dt>Ponsel</dt><dd>Sama.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  
+</article></div>
+</section>
+<section id="rpn-os" class="hal">
+  <div class="hal-k"><p class="url">/work/rpn-os</p><h2>RPN OS</h2><p class="pesan">Setiap batch sambal tahu harga cabai yang benar-benar masuk ke dalamnya, dan setiap dokumen menulis jurnalnya sendiri.</p>
+  <p class="ring"><span class="sw" style="background:#fafbfa" title="latar #fafbfa"></span><span class="sw" style="background:#06150a" title="tinta #06150a"></span><span class="sw" style="background:#1a5c41" title="aksen #1a5c41"></span><span>9 adegan, 7 baru, 9 aset belum ada</span><span>DM Sans (judul), Open Sans (teks)</span></p></div>
+  <div class="rail" aria-hidden="true"><span class="seg k-none" style="left:0%;width:9.803921568627452%" title="A1 Hero">A1</span><span class="seg k-progress-rail baru" style="left:9.803921568627452%;width:3.9215686274509802%" title="A2 Rel empat tahap">A2</span><span class="seg k-pin-scrub baru" style="left:13.725490196078432%;width:21.568627450980394%" title="A3 Harga di setiap lapisan">A3</span><span class="seg k-quiet-reveal baru" style="left:35.294117647058826%;width:7.8431372549019605%" title="A4 Susut dan kerugian dipisah">A4</span><span class="seg k-shared-element baru" style="left:43.13725490196079%;width:13.725490196078432%" title="A5 Satu baris, sampai ke piutang">A5</span><span class="seg k-sticky-stack baru" style="left:56.86274509803921%;width:17.647058823529413%" title="A6 Jurnal di bawah setiap langkah">A6</span><span class="seg k-quiet-reveal baru" style="left:74.50980392156863%;width:6.862745098039216%" title="A7 Wewenang per modul">A7</span><span class="seg k-number-reveal baru" style="left:81.37254901960785%;width:12.745098039215685%" title="A8 Buku dibuka dari posisi benar">A8</span><span class="seg k-none" style="left:94.11764705882352%;width:5.88235294117647%" title="A9 Sumber">A9</span></div><p class="rail-k">Panjang halaman sekitar 1020 vh. Blok biru tebal: pin. Garis putus: adegan baru.</p>
+  <div class="grid"><article class="adegan">
+  <div class="sk t-hero k-none" style="--lat:#fafbfa;--tin:#06150a;--aks:#1a5c41"><div class="mid"><div class="z z-kiri"><div class="el judul"><i></i><i></i><span class="lbl">RPN OS</span></div><div class="el teks"><i></i><i></i><i></i><span class="lbl">ERP rumah produksi yang tahu berapa harga cabai di setiap batch sambal.</span></div></div><div class="z z-kanan"><div class="el kotak foto"><i></i><span class="lbl">Sampul papan presentasi</span></div></div></div><div class="z z-bawah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Masalah, Solusi, Hasil</span></div></div></div>
+  <header><span class="id">A1</span><h3>Hero</h3></header>
+  <p class="meta"><span>0–100&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada; jawaban tampil dulu.</dd><dt>Ponsel</dt><dd>Sampul pindah ke bawah ringkasan.</dd><dt>Tanpa gerak</dt><dd>Sama dengan biasa.</dd></dl>
+  <ul class="aset"><li class="ada">portfolio-rpn-os.webp</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-split-kiri k-progress-rail" style="--lat:#fafbfa;--tin:#06150a;--aks:#1a5c41"><div class="mid"><div class="z z-kiri"><div class="el kotak diagram"><i></i><span class="lbl">Pembelian, Produksi, Distribusi, Pembukuan</span></div></div><div class="z z-tengah"><div class="el judul"><i></i><i></i><span class="lbl">Satu rantai, dari pasar sampai buku besar.</span></div></div></div></div>
+  <header><span class="id">A2</span><h3>Rel empat tahap</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>100–140&nbsp;vh</span><span class="ko">Progress rail</span></p>
+  <dl><dt>Gerak</dt><dd>Rel tipis menempel di kiri dari A3 sampai A6; tahap yang sedang dibaca terisi hijau hutan, tiap tahap bisa diklik.</dd><dt>Ponsel</dt><dd>Rel disembunyikan; judul adegan sudah menyebut tahapnya.</dd><dt>Tanpa gerak</dt><dd>Rel diam, tetap bisa diklik.</dd></dl>
+  <ul class="aset"><li class="belum">HTML/CSS, tanpa berkas</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-artefak-pin k-pin-scrub" style="--lat:#fafbfa;--tin:#06150a;--aks:#1a5c41"><div class="mid"><div class="z z-kiri"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Setiap kedatangan bahan jadi lapisan dengan harganya sendiri.</span></div></div><div class="z z-kanan"><div class="el kotak diagram"><i></i><span class="lbl">Rak lapisan bahan, batang harga tanpa angka; jalur Belanja pasar, tanpa PO</span></div><div class="el browser"><i></i><span class="lbl">Halaman batch produksi</span></div></div></div><div class="z z-bawah"><div class="el kotak kartu"><i></i><span class="lbl">Batch sambal, lewat Cabe Selep, HPP tersusun</span></div></div></div>
+  <header><span class="id">A3</span><h3>Harga di setiap lapisan</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>140–360&nbsp;vh</span><span class="ko">Pin dan scrub</span></p>
+  <dl><dt>Gerak</dt><dd>Lapisan masuk satu per satu, batch mengambil dari lapisan paling lama dulu lalu lapisan berikutnya, bahan lewat Cabe Selep, dan HPP tersusun dari potongan batang yang terpakai.</dd><dt>Ponsel</dt><dd>Tanpa pin: empat langkah bertumpuk, rak digambar sekali per langkah.</dd><dt>Tanpa gerak</dt><dd>Rak penuh, batch selesai, HPP tersusun, keempat kalimat tampil.</dd></dl>
+  <ul class="aset"><li class="belum">HTML/CSS, tanpa berkas</li><li class="belum">rpn-batch.v1.webp</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-split-kiri k-quiet-reveal" style="--lat:#fafbfa;--tin:#06150a;--aks:#1a5c41"><div class="mid"><div class="z z-kiri"><div class="el kotak kartu"><i></i><span class="lbl">Susut proses masuk HPP</span></div></div><div class="z z-kanan"><div class="el kotak kartu"><i></i><span class="lbl">Kerugian nyata dicatat sebagai write-off</span></div></div></div></div>
+  <header><span class="id">A4</span><h3>Susut dan kerugian dipisah</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>360–440&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Dua kolom muncul pelan berurutan.</dd><dt>Ponsel</dt><dd>Bertumpuk.</dd><dt>Tanpa gerak</dt><dd>Dua kolom tampil diam.</dd></dl>
+  <ul class="aset"><li class="belum">HTML/CSS, tanpa berkas</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-split-kanan k-shared-element" style="--lat:#fafbfa;--tin:#06150a;--aks:#1a5c41"><div class="mid"><div class="z z-kiri"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Surat jalan mengeluarkan stok, outlet mengonfirmasi, invoice terbit, dan jatuh temponya ikut termin outlet itu.</span></div></div><div class="z z-kanan"><div class="el browser"><i></i><span class="lbl">Surat jalan</span></div><div class="el browser"><i></i><span class="lbl">Invoice dan piutang per outlet</span></div></div></div></div>
+  <header><span class="id">A5</span><h3>Satu baris, sampai ke piutang</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>440–580&nbsp;vh</span><span class="ko">Shared element</span></p>
+  <dl><dt>Gerak</dt><dd>Baris hasil batch yang sama berpindah dari surat jalan ke invoice ke piutang; status Dikirim, Diterima, Ditagih menyala bergantian.</dd><dt>Ponsel</dt><dd>Dokumen bertumpuk, baris disorot di tiap dokumen tanpa terbang.</dd><dt>Tanpa gerak</dt><dd>Dokumen berdampingan, berganti dengan crossfade.</dd></dl>
+  <ul class="aset"><li class="belum">rpn-surat-jalan.v1.webp</li><li class="belum">rpn-invoice.v1.webp</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-tumpuk-kartu k-sticky-stack" style="--lat:#fafbfa;--tin:#06150a;--aks:#1a5c41"><div class="mid"><div class="z z-tengah"><div class="el kotak kartu"><i></i><span class="lbl">PO</span></div><div class="el kotak kartu"><i></i><span class="lbl">Kedatangan barang</span></div><div class="el kotak kartu"><i></i><span class="lbl">Surat jalan</span></div><div class="el kotak kartu"><i></i><span class="lbl">Invoice</span></div><div class="el kotak kartu"><i></i><span class="lbl">Pembayaran, lalu PPN, PPh, penyusutan ke HPP, rekonsiliasi, tutup buku</span></div></div></div></div>
+  <header><span class="id">A6</span><h3>Jurnal di bawah setiap langkah</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>580–760&nbsp;vh</span><span class="ko">Sticky stack</span></p>
+  <dl><dt>Gerak</dt><dd>Kartu dokumen menumpuk satu per satu, masing-masing dengan jurnal debit dan kreditnya di bawah.</dd><dt>Ponsel</dt><dd>Setiap kartu lebih pendek dari layar, bergulir biasa.</dd><dt>Tanpa gerak</dt><dd>Kartu tersusun tanpa gerak.</dd></dl>
+  <ul class="aset"><li class="belum">rpn-jurnal.v1.webp</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-split-kiri k-quiet-reveal" style="--lat:#fafbfa;--tin:#06150a;--aks:#1a5c41"><div class="mid"><div class="z z-kiri"><div class="el judul"><i></i><i></i><span class="lbl">Wewenang tidak menempel pada jabatan.</span></div></div><div class="z z-kanan"><div class="el kotak kartu"><i></i><span class="lbl">Manajemen operasional: Produksi terbuka, Kas dan Nilai persediaan tertutup</span></div><div class="el logo"><i></i><span class="lbl">Gembok</span></div></div></div></div>
+  <header><span class="id">A7</span><h3>Wewenang per modul</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>760–830&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Modul yang tidak dilihat meredup pelan dan diberi gembok.</dd><dt>Ponsel</dt><dd>Bertumpuk.</dd><dt>Tanpa gerak</dt><dd>Sudah redup, gembok dan label teks terpasang.</dd></dl>
+  <ul class="aset"><li class="belum">HTML/CSS, tanpa berkas</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-angka k-number-reveal" style="--lat:#fafbfa;--tin:#06150a;--aks:#1a5c41"><div class="z z-atas"><div class="el judul"><i></i><i></i><span class="lbl">Sebelum buku dibuka, data lama dibersihkan dulu.</span></div></div><div class="mid"><div class="z z-kiri"><div class="el angka"><i>123</i><span class="lbl">Cutoff 23 Agustus 2026</span></div></div><div class="z z-tengah"><div class="el angka"><i>123</i><span class="lbl">397 invoice historis</span></div><div class="el angka"><i>123</i><span class="lbl">643 baris pengeluaran, Rp580 juta</span></div></div><div class="z z-kanan"><div class="el angka"><i>123</i><span class="lbl">Aset tetap Rp62 juta</span></div><div class="el angka"><i>123</i><span class="lbl">25 pembayaran ganda, Rp33,9 juta</span></div></div></div></div>
+  <header><span class="id">A8</span><h3>Buku dibuka dari posisi benar</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>830–960&nbsp;vh</span><span class="ko">Number reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Nilai akhir sudah di HTML; saat masuk layar tiap angka naik dari redup ke penuh dan garis bawah lime tergambar, tanpa hitung naik.</dd><dt>Ponsel</dt><dd>Satu angka per baris.</dd><dt>Tanpa gerak</dt><dd>Angka penuh, garis sudah ada.</dd></dl>
+  <ul class="aset"><li class="belum">entri metrics dengan sumber</li></ul>
+</article><article class="adegan">
+  <div class="sk t-penutup k-none" style="--lat:#fafbfa;--tin:#06150a;--aks:#1a5c41"><div class="mid"><div class="z z-tengah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Sumber dan proyek lain</span></div></div></div></div>
+  <header><span class="id">A9</span><h3>Sumber</h3></header>
+  <p class="meta"><span>960–1020&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada.</dd><dt>Ponsel</dt><dd>Sama.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  
+</article></div>
+</section>
+<section id="locascore" class="hal">
+  <div class="hal-k"><p class="url">/work/locascore</p><h2>LocaScore</h2><p class="pesan">Satu link Google Maps jadi putusan GO atau NO-GO yang alasannya bisa dibaca.</p>
+  <p class="ring"><span class="sw" style="background:#f4f7fb" title="latar #f4f7fb"></span><span class="sw" style="background:#052258" title="tinta #052258"></span><span class="sw" style="background:#0b5efe" title="aksen #0b5efe"></span><span>6 adegan, 3 baru, 6 aset belum ada</span><span>Nunito 800 dan PT Sans</span></p></div>
+  <div class="rail" aria-hidden="true"><span class="seg k-none" style="left:0%;width:10.416666666666668%" title="A1 Hero">A1</span><span class="seg k-pin-scrub" style="left:10.416666666666668%;width:22.916666666666664%" title="A2 Lembar Ukur Tapak">A2</span><span class="seg k-shared-element baru" style="left:33.33333333333333%;width:11.458333333333332%" title="A3 Lembar yang sama di aplikasinya">A3</span><span class="seg k-sticky-stack baru" style="left:44.79166666666667%;width:37.5%" title="A4 Sesudah skor">A4</span><span class="seg k-none baru" style="left:82.29166666666666%;width:12.5%" title="A5 Tur">A5</span><span class="seg k-none" style="left:94.79166666666666%;width:5.208333333333334%" title="A6 Sumber">A6</span></div><p class="rail-k">Panjang halaman sekitar 960 vh. Blok biru tebal: pin. Garis putus: adegan baru.</p>
+  <div class="grid"><article class="adegan">
+  <div class="sk t-hero k-none" style="--lat:#f4f7fb;--tin:#052258;--aks:#0b5efe"><div class="mid"><div class="z z-kiri"><div class="el logo"><i></i><span class="lbl">Ikon kubus berlapis LocaScore</span></div><div class="el judul"><i></i><i></i><span class="lbl">LocaScore</span></div><div class="el teks"><i></i><i></i><i></i><span class="lbl">Menilai calon lokasi outlet sebelum kontrak sewa ditandatangani.</span></div></div><div class="z z-kanan"><div class="el kotak kartu"><i></i><span class="lbl">Lembar Ukur Tapak, No. LS-CONTOH-001</span></div></div></div><div class="z z-bawah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Masalah, Solusi, Hasil</span></div></div></div>
+  <header><span class="id">A1</span><h3>Hero</h3></header>
+  <p class="meta"><span>0–100&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada gerak; jawaban tampil sebelum gambar apa pun.</dd><dt>Ponsel</dt><dd>Kepala lembar disembunyikan, ikon 40px di atas eyebrow.</dd><dt>Tanpa gerak</dt><dd>Sama seperti dengan gerak.</dd></dl>
+  <ul class="aset"><li class="belum">locascore-ikon.v1.svg</li></ul>
+</article><article class="adegan">
+  <div class="sk t-artefak-pin k-pin-scrub" style="--lat:#f4f7fb;--tin:#052258;--aks:#0b5efe"><div class="mid"><div class="z z-kiri"><div class="el judul"><i></i><i></i><span class="lbl">Yang ditaksir dalam satu sore, diukur.</span></div></div><div class="z z-kanan"><div class="el kotak kartu"><i></i><span class="lbl">Kesan survei: Ramai kok, Dekat sekolah, Kompetitornya cuma satu</span></div><div class="el kotak diagram"><i></i><span class="lbl">Sketsa radius: 18 kompetitor dan 7 titik lain</span></div><div class="el kotak kartu"><i></i><span class="lbl">Tabel ukur: 69, 100, 95, 93, 70, 15</span></div><div class="el angka"><i>123</i><span class="lbl">GO, 82/100, balik modal 15,8 bulan, keyakinan rendah</span></div></div></div></div>
+  <header><span class="id">A2</span><h3>Lembar Ukur Tapak</h3></header>
+  <p class="meta"><span>100–320&nbsp;vh</span><span class="ko">Pin dan scrub</span></p>
+  <dl><dt>Gerak</dt><dd>Tautan jadi koordinat, titik muncul, baris tabel terisi, baris yang menjawab sebuah kesan menyala saat kesan itu dicentang atau dicoret, lalu lencana GO turun.</dd><dt>Ponsel</dt><dd>Tidak dipin; lembar sudah terisi penuh dan tabel ditumpuk per faktor.</dd><dt>Tanpa gerak</dt><dd>Lembar terisi penuh, semua tanda sudah di tempatnya.</dd></dl>
+  
+</article><article class="adegan baru">
+  <div class="sk t-perangkat-penuh k-shared-element" style="--lat:#f4f7fb;--tin:#052258;--aks:#0b5efe"><div class="z z-atas"><div class="el judul"><i></i><i></i><span class="lbl">Putusan dulu, datanya menyusul.</span></div></div><div class="mid"><div class="z z-kiri"><div class="el angka"><i>123</i><span class="lbl">Lencana 82 dan enam nilai dari lembar</span></div></div><div class="z z-tengah"><div class="el browser"><i></i><span class="lbl">Tangkapan Kesimpulan Kelayakan</span></div></div></div></div>
+  <header><span class="id">A3</span><h3>Lembar yang sama di aplikasinya</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>320–430&nbsp;vh</span><span class="ko">Shared element</span></p>
+  <dl><dt>Gerak</dt><dd>Lencana 82 dan kolom nilai bergeser dan mengecil ke cincin skor dan bilah faktor di tangkapan, lalu memudar.</dd><dt>Ponsel</dt><dd>Tanpa perpindahan; lencana kecil di atas tangkapan, tanpa keterangan tambahan.</dd><dt>Tanpa gerak</dt><dd>Crossfade dari lencana ke tangkapan, keduanya terbaca.</dd></dl>
+  <ul class="aset"><li class="ada">locascore-kelayakan.v1.webp</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-tumpuk-kartu k-sticky-stack" style="--lat:#f4f7fb;--tin:#052258;--aks:#0b5efe"><div class="mid"><div class="z z-tengah"><div class="el kotak kartu"><i></i><span class="lbl">Belajar dari outlet yang sudah berjalan</span></div><div class="el kotak kartu"><i></i><span class="lbl">Laporan PDF untuk investor</span></div><div class="el kotak kartu"><i></i><span class="lbl">Tautan publik tanpa akun</span></div></div><div class="z z-kanan"><div class="el browser"><i></i><span class="lbl">Satu layar asli per kartu</span></div></div></div></div>
+  <header><span class="id">A4</span><h3>Sesudah skor</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>430–790&nbsp;vh</span><span class="ko">Sticky stack</span></p>
+  <dl><dt>Gerak</dt><dd>Tiap kartu menempel di atas, kartu berikutnya menumpuk di atasnya.</dd><dt>Ponsel</dt><dd>Kartu berurutan biasa, tiap kartu lebih pendek dari layar.</dd><dt>Tanpa gerak</dt><dd>Kartu berurutan tanpa menempel.</dd></dl>
+  <ul class="aset"><li class="belum">locascore-kalibrasi.v1.webp</li><li class="belum">locascore-laporan-pdf.v1.webp</li><li class="belum">locascore-tautan-publik.v1.webp</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-perangkat-penuh k-none" style="--lat:#f4f7fb;--tin:#052258;--aks:#0b5efe"><div class="mid"><div class="z z-tengah"><div class="el judul"><i></i><i></i><span class="lbl">Dari satu tautan sampai putusan</span></div><div class="el video"><i></i><span class="lbl">Tur MOCK_MODE, tanpa suara</span></div></div></div></div>
+  <header><span class="id">A5</span><h3>Tur</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>790–910&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Video tidak autoplay; poster tampil dulu.</dd><dt>Ponsel</dt><dd>Video 16:10 selebar layar.</dd><dt>Tanpa gerak</dt><dd>Poster dan transkrip.</dd></dl>
+  <ul class="aset"><li class="belum">locascore-tur.v1.mp4</li><li class="belum">locascore-tur.v1.poster.webp</li></ul>
+</article><article class="adegan">
+  <div class="sk t-penutup k-none" style="--lat:#f4f7fb;--tin:#052258;--aks:#0b5efe"><div class="mid"><div class="z z-tengah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Catatan data contoh dan sumber</span></div></div></div></div>
+  <header><span class="id">A6</span><h3>Sumber</h3></header>
+  <p class="meta"><span>910–960&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada.</dd><dt>Ponsel</dt><dd>Sama.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  
+</article></div>
+</section>
+<section id="the-global-review" class="hal">
+  <div class="hal-k"><p class="url">/work/the-global-review</p><h2>The Global Review</h2><p class="pesan">Redaksi tetap menulis di tempat yang sama; yang berganti hanya apa yang dilihat pembaca.</p>
+  <p class="ring"><span class="sw" style="background:#f8f8f6" title="latar #f8f8f6"></span><span class="sw" style="background:#111111" title="tinta #111111"></span><span class="sw" style="background:#0b3d91" title="aksen #0b3d91"></span><span>6 adegan, 2 baru, 7 aset belum ada</span><span>Montserrat 800 (judul), Cardo (bacaan)</span></p></div>
+  <div class="rail" aria-hidden="true"><span class="seg k-none" style="left:0%;width:12.048192771084338%" title="A1 Hero">A1</span><span class="seg k-sticky-stack" style="left:12.048192771084338%;width:33.734939759036145%" title="A2 Satu acuan, banyak cetakan">A2</span><span class="seg k-wipe baru" style="left:45.78313253012048%;width:21.686746987951807%" title="A3 Alamatnya sama, halamannya baru">A3</span><span class="seg k-quiet-reveal baru" style="left:67.46987951807229%;width:16.867469879518072%" title="A4 Yang tayang hari ini">A4</span><span class="seg k-quiet-reveal" style="left:84.33734939759037%;width:10.843373493975903%" title="A5 Yang didapat redaksi">A5</span><span class="seg k-none" style="left:95.18072289156626%;width:4.819277108433735%" title="A6 Sumber">A6</span></div><p class="rail-k">Panjang halaman sekitar 830 vh. Blok biru tebal: pin. Garis putus: adegan baru.</p>
+  <div class="grid"><article class="adegan">
+  <div class="sk t-hero k-none" style="--lat:#f8f8f6;--tin:#111111;--aks:#0b3d91"><div class="z z-atas"><div class="el logo"><i></i><span class="lbl">Logo The Global Review</span></div></div><div class="mid"><div class="z z-kiri"><div class="el judul"><i></i><i></i><span class="lbl">The Global Review, frasa Global Review tersorot navy</span></div><div class="el teks"><i></i><i></i><i></i><span class="lbl">Frontend baru untuk media geopolitik, dengan redaksi yang tetap menulis di WordPress.</span></div></div></div><div class="z z-bawah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Masalah, Solusi, Hasil</span></div></div></div>
+  <header><span class="id">A1</span><h3>Hero</h3></header>
+  <p class="meta"><span>0–100&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada; sorotan tidak dianimasikan.</dd><dt>Ponsel</dt><dd>Sama, ringkasan bertumpuk.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  <ul class="aset"><li class="belum">logo The Global Review</li></ul>
+</article><article class="adegan">
+  <div class="sk t-split-kiri k-sticky-stack" style="--lat:#f8f8f6;--tin:#111111;--aks:#0b3d91"><div class="z z-atas"><div class="el judul"><i></i><i></i><span class="lbl">Redaksi menyusunnya sekali, di tempat yang sama.</span></div></div><div class="mid"><div class="z z-kiri"><div class="el kotak kartu"><i></i><span class="lbl">Acuan, di wp-admin, dengan rel 01 sampai 04</span></div></div><div class="z z-kanan"><div class="el kotak kartu"><i></i><span class="lbl">01 Halaman tulisan</span></div><div class="el kotak kartu"><i></i><span class="lbl">02 /en</span></div><div class="el kotak kartu"><i></i><span class="lbl">03 Kartu pratinjau</span></div><div class="el kotak kartu"><i></i><span class="lbl">04 Arsip</span></div></div></div></div>
+  <header><span class="id">A2</span><h3>Satu acuan, banyak cetakan</h3></header>
+  <p class="meta"><span>100–380&nbsp;vh</span><span class="ko">Sticky stack</span></p>
+  <dl><dt>Gerak</dt><dd>Kartu acuan menempel di kolom kiri, cetakan masuk sekali; nomor rel cetakan yang sedang dibaca terisi navy dan bisa diklik.</dd><dt>Ponsel</dt><dd>Rel disembunyikan, kartu acuan di atas cetakan.</dd><dt>Tanpa gerak</dt><dd>Rel diam dan tetap bisa diklik, cetakan tampil diam.</dd></dl>
+  <ul class="aset"><li class="ada">HTML/CSS</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-wipe k-wipe" style="--lat:#f8f8f6;--tin:#111111;--aks:#0b3d91"><div class="z z-atas"><div class="el judul"><i></i><i></i><span class="lbl">Alamatnya sama, halamannya baru.</span></div></div><div class="mid"><div class="z z-tengah"><div class="el browser"><i></i><span class="lbl">Satu tulisan, bilah alamat tetap; halaman lama dan halaman baru</span></div></div></div><div class="z z-bawah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Tautan yang sudah beredar di grup tetap membuka tulisan yang sama. Yang berganti hanya halaman di baliknya.</span></div></div></div>
+  <header><span class="id">A3</span><h3>Alamatnya sama, halamannya baru</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>380–560&nbsp;vh</span><span class="ko">Wipe satu bingkai</span></p>
+  <dl><dt>Gerak</dt><dd>Tirai tegak menyapu dari kiri ke kanan, halaman lama berganti halaman baru, bilah alamat diam; ditahan 160vh di layar ≥1024×900.</dd><dt>Ponsel</dt><dd>Tanpa pin: dua tangkapan bertumpuk dengan bilah alamat yang sama.</dd><dt>Tanpa gerak</dt><dd>Dua tangkapan berdampingan tanpa gerak.</dd></dl>
+  <ul class="aset"><li class="belum">tgr-tulisan-lama.v1.webp</li><li class="belum">tgr-tulisan-baru.v1.webp</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-grid k-quiet-reveal" style="--lat:#f8f8f6;--tin:#111111;--aks:#0b3d91"><div class="z z-atas"><div class="el browser"><i></i><span class="lbl">Beranda</span></div></div><div class="mid"></div><div class="z z-bawah"><div class="el browser"><i></i><span class="lbl">Halaman tulisan</span></div><div class="el browser"><i></i><span class="lbl">/en</span></div><div class="el browser"><i></i><span class="lbl">Arsip rubrik tersaring</span></div></div></div>
+  <header><span class="id">A4</span><h3>Yang tayang hari ini</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>560–700&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Beranda masuk dulu, tiga layar menyusul pelan berurutan.</dd><dt>Ponsel</dt><dd>Satu kolom bertumpuk.</dd><dt>Tanpa gerak</dt><dd>Semua layar tampil diam.</dd></dl>
+  <ul class="aset"><li class="ada">the-global-review-beranda.v1.webp</li><li class="belum">tgr-tulisan-baru.v1.webp</li><li class="belum">tgr-en.v1.webp</li><li class="belum">tgr-arsip.v1.webp</li></ul>
+</article><article class="adegan">
+  <div class="sk t-split-kanan k-quiet-reveal" style="--lat:#f8f8f6;--tin:#111111;--aks:#0b3d91"><div class="mid"><div class="z z-kiri"><div class="el judul"><i></i><i></i><span class="lbl">Yang didapat redaksi, tanpa alat kedua.</span></div></div><div class="z z-kanan"><div class="el browser"><i></i><span class="lbl">Halaman Statistik di wp-admin, angka dikaburkan</span></div></div></div></div>
+  <header><span class="id">A5</span><h3>Yang didapat redaksi</h3></header>
+  <p class="meta"><span>700–790&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Tangkapan masuk pelan sekali.</dd><dt>Ponsel</dt><dd>Tangkapan di bawah teks.</dd><dt>Tanpa gerak</dt><dd>Diam.</dd></dl>
+  <ul class="aset"><li class="belum">tgr-statistik.v1.webp</li></ul>
+</article><article class="adegan">
+  <div class="sk t-penutup k-none" style="--lat:#f8f8f6;--tin:#111111;--aks:#0b3d91"><div class="mid"><div class="z z-tengah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Sumber</span></div></div></div></div>
+  <header><span class="id">A6</span><h3>Sumber</h3></header>
+  <p class="meta"><span>790–830&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada.</dd><dt>Ponsel</dt><dd>Sama.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  
+</article></div>
+</section>
+<section id="uruzin" class="hal">
+  <div class="hal-k"><p class="url">/work/uruzin</p><h2>Uruzin OS</h2><p class="pesan">Satu klien diikuti dari konsultasi pertama sampai izin terbit dan tagihan lunas, jadi yang tertahan terlihat sebelum klien bertanya.</p>
+  <p class="ring"><span class="sw" style="background:#f7faf6" title="latar #f7faf6"></span><span class="sw" style="background:#141614" title="tinta #141614"></span><span class="sw" style="background:#21663a" title="aksen #21663a"></span><span>7 adegan, 5 baru, 6 aset belum ada</span><span>Poppins (judul), Roboto (teks)</span></p></div>
+  <div class="rail" aria-hidden="true"><span class="seg k-none" style="left:0%;width:12.195121951219512%" title="A1 Hero">A1</span><span class="seg k-pin-scrub baru" style="left:12.195121951219512%;width:26.82926829268293%" title="A2 Satu berkas, banyak tangan">A2</span><span class="seg k-shared-element baru" style="left:39.02439024390244%;width:14.634146341463413%" title="A3 Hari dibuka dari yang perlu ditagih">A3</span><span class="seg k-quiet-reveal baru" style="left:53.65853658536586%;width:14.634146341463413%" title="A4 Yang tertahan terlihat lebih dulu">A4</span><span class="seg k-quiet-reveal baru" style="left:68.29268292682927%;width:14.634146341463413%" title="A5 Visibilitas, bukan pengawasan">A5</span><span class="seg k-quiet-reveal baru" style="left:82.92682926829268%;width:9.75609756097561%" title="A6 Dari situs ke sistem">A6</span><span class="seg k-none" style="left:92.6829268292683%;width:7.317073170731707%" title="A7 Sumber">A7</span></div><p class="rail-k">Panjang halaman sekitar 820 vh. Blok biru tebal: pin. Garis putus: adegan baru.</p>
+  <div class="grid"><article class="adegan">
+  <div class="sk t-hero k-none" style="--lat:#f7faf6;--tin:#141614;--aks:#21663a"><div class="mid"><div class="z z-kiri"><div class="el judul"><i></i><i></i><span class="lbl">Uruzin OS</span></div><div class="el teks"><i></i><i></i><i></i><span class="lbl">Dari konsultasi pertama sampai izin terbit dan tagihan lunas, di satu sistem.</span></div></div><div class="z z-kanan"><div class="el kotak foto"><i></i><span class="lbl">Sampul papan presentasi</span></div></div></div><div class="z z-bawah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Masalah, Solusi, Hasil</span></div></div></div>
+  <header><span class="id">A1</span><h3>Hero</h3></header>
+  <p class="meta"><span>0–100&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada; nama, tagline, dan ringkasan tampil dulu.</dd><dt>Ponsel</dt><dd>Sampul pindah ke bawah ringkasan, lebar penuh.</dd><dt>Tanpa gerak</dt><dd>Sama dengan biasa.</dd></dl>
+  <ul class="aset"><li class="ada">portfolio-uruzin-os.webp</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-artefak-pin k-pin-scrub" style="--lat:#f7faf6;--tin:#141614;--aks:#21663a"><div class="z z-atas"><div class="el kotak diagram"><i></i><span class="lbl">Enam pos: Peluang masuk, Penawaran dikirim, Dokumen diurus, Izin terbit, Invoice dibuat, Tagihan lunas</span></div></div><div class="mid"><div class="z z-kiri"><div class="el judul"><i></i><i></i><span class="lbl">Satu klien, satu berkas yang berpindah tangan.</span></div></div><div class="z z-tengah"><div class="el kotak kartu"><i></i><span class="lbl">Map berkas klien contoh</span></div></div></div></div>
+  <header><span class="id">A2</span><h3>Satu berkas, banyak tangan</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>100–320&nbsp;vh</span><span class="ko">Pin dan scrub</span></p>
+  <dl><dt>Gerak</dt><dd>Map bergeser dari pos ke pos mengikuti gulir; cap Izin terbit menempel di pos keempat, tanda invoice berganti jadi Lunas di pos terakhir.</dd><dt>Ponsel</dt><dd>Tanpa pin: enam pos jadi daftar tegak dengan map kecil di setiap pos.</dd><dt>Tanpa gerak</dt><dd>Daftar enam pos, map diam di pos Tagihan lunas dengan cap Izin terbit.</dd></dl>
+  <ul class="aset"><li class="belum">ilustrasi HTML/CSS, tanpa berkas</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-split-kanan k-shared-element" style="--lat:#f7faf6;--tin:#141614;--aks:#21663a"><div class="mid"><div class="z z-kiri"><div class="el judul"><i></i><i></i><span class="lbl">Pagi dibuka dari yang perlu ditagih.</span></div><div class="el teks"><i></i><i></i><i></i><span class="lbl">Pendapatan bulan berjalan, invoice perlu ditagih dan lewat jatuh tempo, siap ditagih, total piutang, arus kas enam bulan</span></div></div><div class="z z-kanan"><div class="el browser"><i></i><span class="lbl">Dashboard Uruzin OS</span></div></div></div></div>
+  <header><span class="id">A3</span><h3>Hari dibuka dari yang perlu ditagih</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>320–440&nbsp;vh</span><span class="ko">Shared element</span></p>
+  <dl><dt>Gerak</dt><dd>Kartu invoice dari A2 mengecil dan mendarat di baris perlu ditagih, lalu lima baris di kiri menyala berurutan.</dd><dt>Ponsel</dt><dd>Tangkapan dipotong ke kartu ringkasan; kartu invoice hanya muncul, tidak terbang.</dd><dt>Tanpa gerak</dt><dd>Kartu invoice dan dashboard berdampingan, berganti dengan crossfade.</dd></dl>
+  <ul class="aset"><li class="belum">uruzin-dashboard.v1.webp</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-perangkat-penuh k-quiet-reveal" style="--lat:#f7faf6;--tin:#141614;--aks:#21663a"><div class="z z-atas"><div class="el judul"><i></i><i></i><span class="lbl">Yang tertahan kelihatan sebelum klien bertanya.</span></div></div><div class="mid"></div><div class="z z-penuh"><div class="el browser"><i></i><span class="lbl">Papan tugas per tim, satu kartu lewat tenggat bercincin</span></div></div></div>
+  <header><span class="id">A4</span><h3>Yang tertahan terlihat lebih dulu</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>440–560&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Kolom papan muncul pelan satu per satu, cincin pada kartu tertahan muncul terakhir.</dd><dt>Ponsel</dt><dd>Satu kolom saja dari potongan gambar.</dd><dt>Tanpa gerak</dt><dd>Papan utuh dengan cincin sudah terpasang.</dd></dl>
+  <ul class="aset"><li class="belum">uruzin-tugas.v1.webp</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-grid k-quiet-reveal" style="--lat:#f7faf6;--tin:#141614;--aks:#21663a"><div class="z z-atas"><div class="el judul"><i></i><i></i><span class="lbl">Visibilitas, bukan pengawasan.</span></div></div><div class="mid"><div class="z z-kiri"><div class="el browser"><i></i><span class="lbl">Kinerja saya</span></div></div><div class="z z-kanan"><div class="el browser"><i></i><span class="lbl">Laporan produktivitas</span></div></div></div><div class="z z-bawah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Setiap orang melihat tugas dan kinerjanya sendiri. Manajemen membaca gambaran yang sama, tanpa rapat status tambahan.</span></div></div></div>
+  <header><span class="id">A5</span><h3>Visibilitas, bukan pengawasan</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>560–680&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Dua layar masuk pelan berurutan, hanya opasitas dan geser kecil.</dd><dt>Ponsel</dt><dd>Bertumpuk, kinerja dulu.</dd><dt>Tanpa gerak</dt><dd>Dua layar tampil diam.</dd></dl>
+  <ul class="aset"><li class="belum">uruzin-kinerja.v1.webp</li><li class="belum">uruzin-produktivitas.v1.webp</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-penutup k-quiet-reveal" style="--lat:#f7faf6;--tin:#141614;--aks:#21663a"><div class="mid"><div class="z z-kiri"><div class="el judul"><i></i><i></i><span class="lbl">Mulai dari situs, lanjut ke sistem.</span></div></div><div class="z z-kanan"><div class="el kotak diagram"><i></i><span class="lbl">Garis 2023 situs perusahaan, 2026 sistem harian</span></div></div></div></div>
+  <header><span class="id">A6</span><h3>Dari situs ke sistem</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>680–760&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Garis hijau digambar sekali dari 2023 ke 2026 saat masuk layar.</dd><dt>Ponsel</dt><dd>Garis tegak.</dd><dt>Tanpa gerak</dt><dd>Garis sudah penuh.</dd></dl>
+  <ul class="aset"><li class="belum">uruzin-situs.v1.webp</li></ul>
+</article><article class="adegan">
+  <div class="sk t-penutup k-none" style="--lat:#f7faf6;--tin:#141614;--aks:#21663a"><div class="mid"><div class="z z-tengah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Sumber dan proyek lain</span></div></div></div></div>
+  <header><span class="id">A7</span><h3>Sumber</h3></header>
+  <p class="meta"><span>760–820&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada.</dd><dt>Ponsel</dt><dd>Sama.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  
+</article></div>
+</section>
+<section id="chicken-wow" class="hal">
+  <div class="hal-k"><p class="url">/work/chicken-wow</p><h2>Chicken Wow</h2><p class="pesan">Menu dan gerai berubah dari panel, dan pengikut di media sosial mendarat di gerai terdekat lewat situs sendiri.</p>
+  <p class="ring"><span class="sw" style="background:#fffdf2" title="latar #fffdf2"></span><span class="sw" style="background:#152477" title="tinta #152477"></span><span class="sw" style="background:#ffd400" title="aksen #ffd400"></span><span>8 adegan, 3 baru, 6 aset belum ada</span><span>Poppins 900 (judul), Nunito (teks)</span></p></div>
+  <div class="rail" aria-hidden="true"><span class="seg k-none" style="left:0%;width:10%" title="A1 Hero">A1</span><span class="seg k-pin-scrub" style="left:10%;width:22%" title="A2 Label di kaca">A2</span><span class="seg k-shared-element baru" style="left:32%;width:12%" title="A3 Dari bio ke gerai">A3</span><span class="seg k-sticky-stack baru" style="left:44%;width:28.000000000000004%" title="A4 Halaman yang dulu 404">A4</span><span class="seg k-quiet-reveal" style="left:72%;width:10%" title="A5 Situs yang tayang">A5</span><span class="seg k-number-reveal baru" style="left:82%;width:8%" title="A6 Gambar dipangkas">A6</span><span class="seg k-none" style="left:90%;width:6%" title="A7 Dapurnya">A7</span><span class="seg k-none" style="left:96%;width:4%" title="A8 Sumber">A8</span></div><p class="rail-k">Panjang halaman sekitar 1000 vh. Blok biru tebal: pin. Garis putus: adegan baru.</p>
+  <div class="grid"><article class="adegan">
+  <div class="sk t-hero k-none" style="--lat:#fffdf2;--tin:#152477;--aks:#ffd400"><div class="z z-atas"><div class="el logo"><i></i><span class="lbl">Logo Chicken Wow</span></div></div><div class="mid"><div class="z z-kiri"><div class="el judul"><i></i><i></i><span class="lbl">Chicken Wow</span></div><div class="el teks"><i></i><i></i><i></i><span class="lbl">Situs jaringan gerai ayam geprek, dari menu sampai gerai terdekat.</span></div></div></div><div class="z z-bawah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Masalah, Solusi, Hasil</span></div></div></div>
+  <header><span class="id">A1</span><h3>Hero</h3></header>
+  <p class="meta"><span>0–100&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada.</dd><dt>Ponsel</dt><dd>Sama, ringkasan bertumpuk.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  <ul class="aset"><li class="belum">logo Chicken Wow</li></ul>
+</article><article class="adegan">
+  <div class="sk t-artefak-pin k-pin-scrub" style="--lat:#fffdf2;--tin:#152477;--aks:#ffd400"><div class="mid"><div class="z z-kiri"><div class="el judul"><i></i><i></i><span class="lbl">Ibarat label harga di kaca etalase, yang menulis pemiliknya sendiri.</span></div></div><div class="z z-kanan"><div class="el kotak kartu"><i></i><span class="lbl">Kaca etalase: Sambal Nendang, Mulai 10K, 13 gerai di Jawa Timur</span></div><div class="el teks"><i></i><i></i><i></i><span class="lbl">menu.json, outlets.json</span></div></div></div></div>
+  <header><span class="id">A2</span><h3>Label di kaca</h3></header>
+  <p class="meta"><span>100–320&nbsp;vh</span><span class="ko">Pin dan scrub</span></p>
+  <dl><dt>Gerak</dt><dd>Label lama dicoret dan label baru naik satu per satu; di ujung scrub label berkas di sudut kaca menyala kuning.</dd><dt>Ponsel</dt><dd>Tanpa pin, label berganti saat lewat.</dd><dt>Tanpa gerak</dt><dd>Label lama tercoret di atas label baru, label berkas sudah menyala.</dd></dl>
+  <ul class="aset"><li class="ada">HTML/CSS</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-split-kiri k-shared-element" style="--lat:#fffdf2;--tin:#152477;--aks:#ffd400"><div class="mid"><div class="z z-kiri"><div class="el judul"><i></i><i></i><span class="lbl">Pengikut mendarat di situs sendiri, di gerai terdekat.</span></div></div><div class="z z-kanan"><div class="el kotak kartu"><i></i><span class="lbl">Satu daftar empat gerai contoh dengan jarak</span></div></div></div></div>
+  <header><span class="id">A3</span><h3>Dari bio ke gerai</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>320–440&nbsp;vh</span><span class="ko">Shared element</span></p>
+  <dl><dt>Gerak</dt><dd>Baris yang sama bergeser dari urutan daftar ke urutan terdekat; jarak muncul saat barisnya tiba.</dd><dt>Ponsel</dt><dd>Daftar muat satu layar, baris bergeser saat lewat.</dd><dt>Tanpa gerak</dt><dd>Dua daftar berdampingan seperti halaman sekarang.</dd></dl>
+  <ul class="aset"><li class="ada">HTML/CSS</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-tumpuk-kartu k-sticky-stack" style="--lat:#fffdf2;--tin:#152477;--aks:#ffd400"><div class="z z-atas"><div class="el judul"><i></i><i></i><span class="lbl">Halaman yang dulu 404, sekarang ada isinya.</span></div></div><div class="mid"><div class="z z-tengah"><div class="el ponsel"><i></i><span class="lbl">Menu</span></div><div class="el ponsel"><i></i><span class="lbl">Kemitraan</span></div><div class="el ponsel"><i></i><span class="lbl">Lokasi</span></div><div class="el ponsel"><i></i><span class="lbl">Karier</span></div></div></div></div>
+  <header><span class="id">A4</span><h3>Halaman yang dulu 404</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>440–720&nbsp;vh</span><span class="ko">Sticky stack</span></p>
+  <dl><dt>Gerak</dt><dd>Kartu menumpuk satu per satu; tanda 404 di pojok kartu tercoret saat kartunya menempel.</dd><dt>Ponsel</dt><dd>Setiap kartu lebih pendek dari layar, bergulir biasa.</dd><dt>Tanpa gerak</dt><dd>Empat kartu tersusun, 404 sudah tercoret.</dd></dl>
+  <ul class="aset"><li class="belum">chicken-wow-menu.v1.webp</li><li class="belum">chicken-wow-kemitraan.v1.webp</li><li class="belum">chicken-wow-lokasi.v1.webp</li><li class="belum">chicken-wow-karier.v1.webp</li></ul>
+</article><article class="adegan">
+  <div class="sk t-split-kanan k-quiet-reveal" style="--lat:#fffdf2;--tin:#152477;--aks:#ffd400"><div class="mid"><div class="z z-kiri"><div class="el browser"><i></i><span class="lbl">Beranda chickenwow.id</span></div></div><div class="z z-kanan"><div class="el ponsel"><i></i><span class="lbl">/info</span></div></div></div></div>
+  <header><span class="id">A5</span><h3>Situs yang tayang</h3></header>
+  <p class="meta"><span>720–820&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Dua bingkai masuk pelan berurutan.</dd><dt>Ponsel</dt><dd>Bertumpuk, /info dulu.</dd><dt>Tanpa gerak</dt><dd>Dua bingkai tampil diam.</dd></dl>
+  <ul class="aset"><li class="ada">chicken-wow-beranda.v1.webp</li><li class="belum">chicken-wow-info.v1.webp</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-angka k-number-reveal" style="--lat:#fffdf2;--tin:#152477;--aks:#ffd400"><div class="z z-atas"><div class="el judul"><i></i><i></i><span class="lbl">Gambarnya menyusut lebih dari separuh.</span></div></div><div class="mid"><div class="z z-tengah"><div class="el angka"><i>123</i><span class="lbl">20,3 MB jadi 9,4 MB</span></div></div></div><div class="z z-bawah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">38 gambar diubah ke WebP.</span></div></div></div>
+  <header><span class="id">A6</span><h3>Gambar dipangkas</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>820–900&nbsp;vh</span><span class="ko">Number reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Nilai akhir sudah di HTML; batang aset memendek sekali dari panjang 20,3 ke 9,4 saat masuk layar, tanpa hitung mundur.</dd><dt>Ponsel</dt><dd>Batang selebar layar.</dd><dt>Tanpa gerak</dt><dd>Batang sudah pendek, kedua angka tampil.</dd></dl>
+  <ul class="aset"><li class="ada">HTML/CSS</li></ul>
+</article><article class="adegan">
+  <div class="sk t-split-kiri k-none" style="--lat:#fffdf2;--tin:#152477;--aks:#ffd400"><div class="mid"><div class="z z-kanan"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Halaman 404 kini ada, panel multi-tenant, deploy Git di cPanel dengan CI tiga kali</span></div></div></div></div>
+  <header><span class="id">A7</span><h3>Dapurnya</h3></header>
+  <p class="meta"><span>900–960&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada.</dd><dt>Ponsel</dt><dd>Sama.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  
+</article><article class="adegan">
+  <div class="sk t-penutup k-none" style="--lat:#fffdf2;--tin:#152477;--aks:#ffd400"><div class="mid"><div class="z z-tengah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Sumber</span></div></div></div></div>
+  <header><span class="id">A8</span><h3>Sumber</h3></header>
+  <p class="meta"><span>960–1000&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada.</dd><dt>Ponsel</dt><dd>Sama.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  
+</article></div>
+</section>
+<section id="coderoach-os" class="hal">
+  <div class="hal-k"><p class="url">/work/coderoach-os</p><h2>Coderoach OS</h2><p class="pesan">Satu sistem dari penawaran sampai buku besar, dan buku besarnya menolak angka yang tidak seimbang.</p>
+  <p class="ring"><span class="sw" style="background:#f4f7f5" title="latar #f4f7f5"></span><span class="sw" style="background:#08090a" title="tinta #08090a"></span><span class="sw" style="background:#2467f4" title="aksen #2467f4"></span><span>8 adegan, 3 baru, 2 aset belum ada</span><span>Satoshi dan JetBrains Mono</span></p></div>
+  <div class="rail" aria-hidden="true"><span class="seg k-none" style="left:0%;width:9.322033898305085%" title="C1 Hero">C1</span><span class="seg k-wipe" style="left:9.322033898305085%;width:16.94915254237288%" title="C2 Buku yang menolak selisih">C2</span><span class="seg k-shared-element baru" style="left:26.27118644067797%;width:9.322033898305085%" title="C3 Yang seimbang lolos">C3</span><span class="seg k-none" style="left:35.59322033898305%;width:6.779661016949152%" title="C4 Satu kode proyek">C4</span><span class="seg k-sticky-stack baru" style="left:42.3728813559322%;width:33.89830508474576%" title="C5 Empat fitur">C5</span><span class="seg k-progress-rail baru" style="left:76.27118644067797%;width:9.322033898305085%" title="C6 Linimasa">C6</span><span class="seg k-none" style="left:85.59322033898306%;width:10.16949152542373%" title="C7 Tur">C7</span><span class="seg k-none" style="left:95.76271186440678%;width:4.23728813559322%" title="C8 Sumber">C8</span></div><p class="rail-k">Panjang halaman sekitar 1180 vh. Blok biru tebal: pin. Garis putus: adegan baru.</p>
+  <div class="grid"><article class="adegan">
+  <div class="sk t-hero k-none" style="--lat:#f4f7f5;--tin:#08090a;--aks:#2467f4"><div class="mid"><div class="z z-kiri"><div class="el logo"><i></i><span class="lbl">Ikon Coderoach OS</span></div><div class="el judul"><i></i><i></i><span class="lbl">Coderoach OS</span></div><div class="el teks"><i></i><i></i><i></i><span class="lbl">Sistem operasi dan keuangan studio kami sendiri, dari penawaran sampai buku besar.</span></div></div><div class="z z-tengah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">[ 01 ] Masalah, [ 02 ] Solusi, [ 03 ] Hasil</span></div></div></div><div class="z z-bawah"><div class="el laptop"><i></i><b></b><span class="lbl">Beranda: saldo kas, piutang, laba bulan berjalan</span></div></div></div>
+  <header><span class="id">C1</span><h3>Hero</h3></header>
+  <p class="meta"><span>0–110&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada gerak; laptop di bawah ringkasan supaya jawaban tampil dulu.</dd><dt>Ponsel</dt><dd>Laptop di bawah ringkasan, selebar layar.</dd><dt>Tanpa gerak</dt><dd>Sama seperti dengan gerak.</dd></dl>
+  <ul class="aset"><li class="ada">coderoach-os-beranda.v2.webp</li><li class="belum">coderoach-os-ikon.v1.svg</li></ul>
+</article><article class="adegan">
+  <div class="sk t-wipe k-wipe" style="--lat:#f4f7f5;--tin:#08090a;--aks:#2467f4"><div class="z z-atas"><div class="el judul"><i></i><i></i><span class="lbl">Biaya yang sama, dicatat tidak seimbang, di dua tempat.</span></div></div><div class="mid"><div class="z z-kiri"><div class="el kotak kartu"><i></i><span class="lbl">Di spreadsheet: Rp4.500.000, Rp4.200.000, margin 31%, tersimpan</span></div></div><div class="z z-kanan"><div class="el kotak kartu"><i></i><span class="lbl">Di Coderoach OS: BEGIN, dua jurnal_line, COMMIT, ERROR tidak balance</span></div></div></div></div>
+  <header><span class="id">C2</span><h3>Buku yang menolak selisih</h3></header>
+  <p class="meta"><span>110–310&nbsp;vh</span><span class="ko">Wipe satu bingkai</span></p>
+  <dl><dt>Gerak</dt><dd>Wipe membuka sisi Coderoach OS, baris log muncul berurutan dengan galat di ujung, lalu dua baris jurnal dicoret.</dd><dt>Ponsel</dt><dd>Dua sisi bertumpuk, log utuh.</dd><dt>Tanpa gerak</dt><dd>Dua sisi berdampingan, log utuh, tanpa coretan.</dd></dl>
+  
+</article><article class="adegan baru">
+  <div class="sk t-split-kanan k-shared-element" style="--lat:#f4f7f5;--tin:#08090a;--aks:#2467f4"><div class="mid"><div class="z z-kiri"><div class="el kotak kartu"><i></i><span class="lbl">jurnal_line debit 4500000.00 biaya proyek, kredit 4500000.00 kas, COMMIT</span></div></div><div class="z z-kanan"><div class="el kotak kartu"><i></i><span class="lbl">Laporan ringkas: Biaya proyek Rp4.500.000, Kas berkurang Rp4.500.000</span></div></div></div></div>
+  <header><span class="id">C3</span><h3>Yang seimbang lolos</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>310–420&nbsp;vh</span><span class="ko">Shared element</span></p>
+  <dl><dt>Gerak</dt><dd>Dua baris jurnal bergeser ke kanan dan berganti format jadi dua baris laporan.</dd><dt>Ponsel</dt><dd>Log di atas, laporan di bawah, tanpa perpindahan.</dd><dt>Tanpa gerak</dt><dd>Crossfade dari log ke laporan; keduanya ada di DOM.</dd></dl>
+  
+</article><article class="adegan">
+  <div class="sk t-grid k-none" style="--lat:#f4f7f5;--tin:#08090a;--aks:#2467f4"><div class="z z-atas"><div class="el judul"><i></i><i></i><span class="lbl">Satu kode proyek, dari penawaran sampai buku besar.</span></div></div><div class="mid"><div class="z z-tengah"><div class="el kotak kartu"><i></i><span class="lbl">CRO-2026-014 di Penawaran, Story, Jam kerja, Invoice, Jurnal, Claude Code lewat MCP</span></div></div></div></div>
+  <header><span class="id">C4</span><h3>Satu kode proyek</h3></header>
+  <p class="meta"><span>420–500&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Baris masuk satu per satu saat lewat.</dd><dt>Ponsel</dt><dd>Sama.</dd><dt>Tanpa gerak</dt><dd>Daftar utuh.</dd></dl>
+  
+</article><article class="adegan baru">
+  <div class="sk t-tumpuk-kartu k-sticky-stack" style="--lat:#f4f7f5;--tin:#08090a;--aks:#2467f4"><div class="mid"><div class="z z-kanan"><div class="el browser"><i></i><span class="lbl">Margin proyek yang selalu terkini</span></div><div class="el browser"><i></i><span class="lbl">Story yang statusnya diisi mesin</span></div><div class="el browser"><i></i><span class="lbl">Pembukuan yang dijaga database</span></div><div class="el browser"><i></i><span class="lbl">Angka keuangan hanya untuk yang berhak</span></div></div></div></div>
+  <header><span class="id">C5</span><h3>Empat fitur</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>500–900&nbsp;vh</span><span class="ko">Sticky stack</span></p>
+  <dl><dt>Gerak</dt><dd>Tiap kartu menempel, kartu berikutnya menumpuk di atasnya.</dd><dt>Ponsel</dt><dd>Kartu berurutan, tiap kartu lebih pendek dari layar.</dd><dt>Tanpa gerak</dt><dd>Kartu berurutan tanpa menempel.</dd></dl>
+  <ul class="aset"><li class="ada">coderoach-os-proyek-detail.v2.webp</li><li class="ada">coderoach-os-tugas.v2.webp</li><li class="ada">coderoach-os-laporan.v2.webp</li><li class="belum">coderoach-os-tampilan-staf.v1.webp</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-grid k-progress-rail" style="--lat:#f4f7f5;--tin:#08090a;--aks:#2467f4"><div class="mid"><div class="z z-kiri"><div class="el kotak diagram"><i></i><span class="lbl">Rel 2px dengan enam titik bertanggal</span></div></div><div class="z z-kanan"><div class="el teks"><i></i><i></i><i></i><span class="lbl">21 Agu 2026 sampai 13 Okt 2026, tiap baris dengan hash commit</span></div></div></div></div>
+  <header><span class="id">C6</span><h3>Linimasa</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>900–1010&nbsp;vh</span><span class="ko">Progress rail</span></p>
+  <dl><dt>Gerak</dt><dd>Rel terisi sesuai posisi baca; titik bisa diklik dan melompat ke barisnya.</dd><dt>Ponsel</dt><dd>Rel vertikal di kiri, titik tetap bisa diklik.</dd><dt>Tanpa gerak</dt><dd>Rel penuh tanpa isi bergerak.</dd></dl>
+  
+</article><article class="adegan">
+  <div class="sk t-perangkat-penuh k-none" style="--lat:#f4f7f5;--tin:#08090a;--aks:#2467f4"><div class="mid"><div class="z z-tengah"><div class="el judul"><i></i><i></i><span class="lbl">Satu minggu studio, dari papan kerja sampai laba rugi.</span></div><div class="el video"><i></i><span class="lbl">Tur 80 detik, tanpa suara</span></div></div></div></div>
+  <header><span class="id">C7</span><h3>Tur</h3></header>
+  <p class="meta"><span>1010–1130&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Video tidak autoplay; poster tampil dulu.</dd><dt>Ponsel</dt><dd>Video 16:10 selebar layar.</dd><dt>Tanpa gerak</dt><dd>Poster dan transkrip.</dd></dl>
+  <ul class="aset"><li class="ada">coderoach-os-tur.v2.mp4</li><li class="ada">coderoach-os-tur.v2.poster.webp</li></ul>
+</article><article class="adegan">
+  <div class="sk t-penutup k-none" style="--lat:#f4f7f5;--tin:#08090a;--aks:#2467f4"><div class="mid"><div class="z z-tengah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Catatan data contoh</span></div></div></div></div>
+  <header><span class="id">C8</span><h3>Sumber</h3></header>
+  <p class="meta"><span>1130–1180&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada.</dd><dt>Ponsel</dt><dd>Sama.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  
+</article></div>
+</section>
+<section id="viralytics" class="hal">
+  <div class="hal-k"><p class="url">/work/viralytics</p><h2>Viralytics</h2><p class="pesan">Setiap langkah campaign punya pemilik dan gerbang, jadi semua orang melihat siapa yang sedang ditunggu.</p>
+  <p class="ring"><span class="sw" style="background:#000000" title="latar #000000"></span><span class="sw" style="background:#f8fafc" title="tinta #f8fafc"></span><span class="sw" style="background:#2563eb" title="aksen #2563eb"></span><span>7 adegan, 2 baru, 1 aset belum ada</span><span>Satoshi dan Inter</span></p></div>
+  <div class="rail" aria-hidden="true"><span class="seg k-none" style="left:0%;width:9.174311926605505%" title="V1 Hero">V1</span><span class="seg k-pin-scrub" style="left:9.174311926605505%;width:18.34862385321101%" title="V2 Estafet">V2</span><span class="seg k-none" style="left:27.522935779816514%;width:8.256880733944955%" title="V3 Lajur sejajar">V3</span><span class="seg k-shared-element baru" style="left:35.77981651376147%;width:11.926605504587156%" title="V4 Garis finis">V4</span><span class="seg k-sticky-stack baru" style="left:47.706422018348626%;width:36.69724770642202%" title="V5 Di dalam Viralytics">V5</span><span class="seg k-none" style="left:84.40366972477065%;width:11.009174311926607%" title="V6 Tur">V6</span><span class="seg k-none" style="left:95.41284403669725%;width:4.587155963302752%" title="V7 Sumber">V7</span></div><p class="rail-k">Panjang halaman sekitar 1090 vh. Blok biru tebal: pin. Garis putus: adegan baru.</p>
+  <div class="grid"><article class="adegan">
+  <div class="sk t-hero k-none" style="--lat:#000000;--tin:#f8fafc;--aks:#2563eb"><div class="mid"><div class="z z-kiri"><div class="el logo"><i></i><span class="lbl">Ikon Viralytics</span></div><div class="el judul"><i></i><i></i><span class="lbl">Viralytics</span></div><div class="el teks"><i></i><i></i><i></i><span class="lbl">Operasional campaign KOL dari pemilihan influencer sampai laporan hasil, dalam satu alur bergerbang.</span></div></div></div><div class="z z-bawah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Masalah, Solusi, Hasil</span></div><div class="el kotak diagram"><i></i><span class="lbl">Lintasan tipis, tongkat diam di garis start</span></div></div></div>
+  <header><span class="id">V1</span><h3>Hero</h3></header>
+  <p class="meta"><span>0–100&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada gerak.</dd><dt>Ponsel</dt><dd>Ringkasan satu kolom.</dd><dt>Tanpa gerak</dt><dd>Sama seperti dengan gerak.</dd></dl>
+  <ul class="aset"><li class="belum">viralytics-ikon.v1.svg</li></ul>
+</article><article class="adegan">
+  <div class="sk t-artefak-pin k-pin-scrub" style="--lat:#000000;--tin:#f8fafc;--aks:#2563eb"><div class="z z-atas"><div class="el judul"><i></i><i></i><span class="lbl">Semua orang melihat lintasan yang sama.</span></div></div><div class="mid"><div class="z z-tengah"><div class="el kotak diagram"><i></i><span class="lbl">Lintasan dengan tongkat bercahaya</span></div></div></div><div class="z z-bawah"><div class="el kotak kartu"><i></i><span class="lbl">Submission: memegang Brand, menunggu Agensi</span></div><div class="el kotak kartu"><i></i><span class="lbl">Drafting: memegang KOL, menunggu Brand</span></div><div class="el kotak kartu"><i></i><span class="lbl">Posting: memegang Tim agensi, menunggu KOL</span></div><div class="el kotak kartu"><i></i><span class="lbl">Laporan: memegang Brand, menunggu tidak ada</span></div></div></div>
+  <header><span class="id">V2</span><h3>Estafet</h3></header>
+  <p class="meta"><span>100–300&nbsp;vh</span><span class="ko">Pin dan scrub</span></p>
+  <dl><dt>Gerak</dt><dd>Tongkat maju per zona; nama yang memegang di zona aktif menebal saat tongkat masuk.</dd><dt>Ponsel</dt><dd>Tidak dipin; zona jadi kartu bertumpuk, tongkat diam di garis finis.</dd><dt>Tanpa gerak</dt><dd>Tongkat di garis finis, semua zona terbaca penuh.</dd></dl>
+  
+</article><article class="adegan">
+  <div class="sk t-grid k-none" style="--lat:#000000;--tin:#f8fafc;--aks:#2563eb"><div class="z z-atas"><div class="el judul"><i></i><i></i><span class="lbl">Bukan lomba: setiap KOL punya lajurnya sendiri.</span></div></div><div class="mid"><div class="z z-tengah"><div class="el kotak kartu"><i></i><span class="lbl">@dita.contoh sampai Laporan, disorot</span></div><div class="el kotak kartu"><i></i><span class="lbl">@bima.contoh draft dikembalikan sekali</span></div><div class="el kotak kartu"><i></i><span class="lbl">@rani.contoh ditolak brand</span></div></div></div></div>
+  <header><span class="id">V3</span><h3>Lajur sejajar</h3></header>
+  <p class="meta"><span>300–390&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada gerak; lajur Dita disorot karena dia yang diikuti di garis finis.</dd><dt>Ponsel</dt><dd>Lajur jadi kartu, kartu Dita paling atas.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  
+</article><article class="adegan baru">
+  <div class="sk t-split-kanan k-shared-element" style="--lat:#000000;--tin:#f8fafc;--aks:#2563eb"><div class="mid"><div class="z z-kiri"><div class="el judul"><i></i><i></i><span class="lbl">Satu link, diikuti sampai laporan.</span></div><div class="el kotak kartu"><i></i><span class="lbl">Link dikirim, diverifikasi, metrik ditarik, di laporan campaign</span></div><div class="el angka"><i>123</i><span class="lbl">48.200 views, ER 6,1% (data contoh)</span></div></div><div class="z z-kanan"><div class="el browser"><i></i><span class="lbl">Tangkapan laporan campaign</span></div></div></div></div>
+  <header><span class="id">V4</span><h3>Garis finis</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>390–520&nbsp;vh</span><span class="ko">Shared element</span></p>
+  <dl><dt>Gerak</dt><dd>Chip angka muncul di langkah Metrik ditarik, turun ke langkah Di laporan campaign dan jadi baris kontribusi KOL; tangkapan laporan masuk di sampingnya.</dd><dt>Ponsel</dt><dd>Tanpa perpindahan; angka ditulis sekali di baris laporan, tangkapan di bawah.</dd><dt>Tanpa gerak</dt><dd>Crossfade chip dari langkah 3 ke langkah 4; angka ada di DOM sekali.</dd></dl>
+  <ul class="aset"><li class="ada">viralytics-laporan.v1.webp</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-tumpuk-kartu k-sticky-stack" style="--lat:#000000;--tin:#f8fafc;--aks:#2563eb"><div class="mid"><div class="z z-kanan"><div class="el browser"><i></i><span class="lbl">Papan campaign</span></div><div class="el browser"><i></i><span class="lbl">Direktori dan shortlist KOL</span></div><div class="el browser"><i></i><span class="lbl">Fase dan gerbang persetujuan</span></div><div class="el browser"><i></i><span class="lbl">Laporan yang tidak disusun ulang</span></div></div></div></div>
+  <header><span class="id">V5</span><h3>Di dalam Viralytics</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>520–920&nbsp;vh</span><span class="ko">Sticky stack</span></p>
+  <dl><dt>Gerak</dt><dd>Tiap kartu menempel, kartu berikutnya menumpuk di atasnya.</dd><dt>Ponsel</dt><dd>Kartu berurutan, tiap kartu lebih pendek dari layar.</dd><dt>Tanpa gerak</dt><dd>Kartu berurutan tanpa menempel.</dd></dl>
+  <ul class="aset"><li class="ada">viralytics-campaign-board.v1.webp</li><li class="ada">viralytics-kol-discovery.v1.webp</li><li class="ada">viralytics-alur-konten.v1.webp</li><li class="ada">viralytics-laporan.v1.webp</li></ul>
+</article><article class="adegan">
+  <div class="sk t-perangkat-penuh k-none" style="--lat:#000000;--tin:#f8fafc;--aks:#2563eb"><div class="mid"><div class="z z-tengah"><div class="el judul"><i></i><i></i><span class="lbl">Satu campaign, dari shortlist sampai laporan.</span></div><div class="el video"><i></i><span class="lbl">Tur 40 detik, tanpa suara</span></div></div></div></div>
+  <header><span class="id">V6</span><h3>Tur</h3></header>
+  <p class="meta"><span>920–1040&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Video tidak autoplay; poster tampil dulu.</dd><dt>Ponsel</dt><dd>Video 16:10 selebar layar.</dd><dt>Tanpa gerak</dt><dd>Poster dan transkrip.</dd></dl>
+  <ul class="aset"><li class="ada">viralytics-tur.v1.mp4</li><li class="ada">viralytics-tur.v1.poster.webp</li></ul>
+</article><article class="adegan">
+  <div class="sk t-penutup k-none" style="--lat:#000000;--tin:#f8fafc;--aks:#2563eb"><div class="mid"><div class="z z-tengah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Catatan data fiktif</span></div></div></div></div>
+  <header><span class="id">V7</span><h3>Sumber</h3></header>
+  <p class="meta"><span>1040–1090&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada.</dd><dt>Ponsel</dt><dd>Sama.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  
+</article></div>
+</section>
+<section id="rencana-ro" class="hal">
+  <div class="hal-k"><p class="url">/work/rencana-ro</p><h2>Rencana RO</h2><p class="pesan">Data mentah back office jadi empat jawaban minggu ini, masing-masing dengan tanggal datanya.</p>
+  <p class="ring"><span class="sw" style="background:#f2f2f7" title="latar #f2f2f7"></span><span class="sw" style="background:#1c1c1e" title="tinta #1c1c1e"></span><span class="sw" style="background:#0067d6" title="aksen #0067d6"></span><span>7 adegan, 3 baru, 4 aset belum ada</span><span>Font sistem (SF Pro, Segoe UI)</span></p></div>
+  <div class="rail" aria-hidden="true"><span class="seg k-none" style="left:0%;width:10.309278350515463%" title="R1 Hero">R1</span><span class="seg k-pin-scrub" style="left:10.309278350515463%;width:21.649484536082475%" title="R2 Sebelum tutup mingguan">R2</span><span class="seg k-shared-element baru" style="left:31.958762886597935%;width:11.34020618556701%" title="R3 Empat jawaban">R3</span><span class="seg k-sticky-stack baru" style="left:43.29896907216495%;width:30.927835051546392%" title="R4 Fitur">R4</span><span class="seg k-number-reveal baru" style="left:74.22680412371135%;width:8.24742268041237%" title="R5 Satu angka terukur">R5</span><span class="seg k-none" style="left:82.4742268041237%;width:12.371134020618557%" title="R6 Tur">R6</span><span class="seg k-none" style="left:94.84536082474226%;width:5.154639175257731%" title="R7 Sumber">R7</span></div><p class="rail-k">Panjang halaman sekitar 970 vh. Blok biru tebal: pin. Garis putus: adegan baru.</p>
+  <div class="grid"><article class="adegan">
+  <div class="sk t-hero k-none" style="--lat:#f2f2f7;--tin:#1c1c1e;--aks:#0067d6"><div class="mid"><div class="z z-kiri"><div class="el logo"><i></i><span class="lbl">Ikon Rencana RO</span></div><div class="el judul"><i></i><i></i><span class="lbl">Rencana RO</span></div><div class="el teks"><i></i><i></i><i></i><span class="lbl">Asisten mingguan untuk distributor independen: bonus cair, beli berapa, taruh di mana, kapan repeat order.</span></div></div><div class="z z-kanan"><div class="el ponsel"><i></i><span class="lbl">Beranda ponsel versi bersih</span></div></div></div><div class="z z-bawah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Masalah, Solusi, Hasil</span></div></div></div>
+  <header><span class="id">R1</span><h3>Hero</h3></header>
+  <p class="meta"><span>0–100&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada gerak.</dd><dt>Ponsel</dt><dd>Ponsel di bawah ringkasan.</dd><dt>Tanpa gerak</dt><dd>Sama seperti dengan gerak.</dd></dl>
+  <ul class="aset"><li class="belum">rencana-ro-ikon.v1.svg</li><li class="belum">rencana-ro-beranda-ponsel.v3.webp</li></ul>
+</article><article class="adegan">
+  <div class="sk t-artefak-pin k-pin-scrub" style="--lat:#f2f2f7;--tin:#1c1c1e;--aks:#0067d6"><div class="z z-atas"><div class="el judul"><i></i><i></i><span class="lbl">Satu angka, dari data mentah sampai kalimat yang bisa dijalankan.</span></div></div><div class="mid"><div class="z z-kiri"><div class="el kotak kartu"><i></i><span class="lbl">Baris mentah: kaki kiri 120rb poin, kaki kanan 90rb poin, data per 16 Okt</span></div></div><div class="z z-tengah"><div class="el kotak kartu"><i></i><span class="lbl">Beli 49 unit: 15 untuk kaki kiri, 34 untuk kaki kanan.</span></div></div><div class="z z-kanan"><div class="el kotak diagram"><i></i><span class="lbl">Bilah poin sekarang dan sesudah, kiri dan kanan</span></div></div></div></div>
+  <header><span class="id">R2</span><h3>Sebelum tutup mingguan</h3></header>
+  <p class="meta"><span>100–310&nbsp;vh</span><span class="ko">Pin dan scrub</span></p>
+  <dl><dt>Gerak</dt><dd>Baris mentah tampil, saran menyala, lalu dua angka dari baris mentah pindah ke bilah Poin sekarang dan bilah Poin sesudah tumbuh.</dd><dt>Ponsel</dt><dd>Tidak dipin; tiga kartu bertumpuk, bilah sudah penuh.</dd><dt>Tanpa gerak</dt><dd>Tiga kartu utuh, kedua bilah dengan angka.</dd></dl>
+  
+</article><article class="adegan baru">
+  <div class="sk t-grid k-shared-element" style="--lat:#f2f2f7;--tin:#1c1c1e;--aks:#0067d6"><div class="z z-atas"><div class="el judul"><i></i><i></i><span class="lbl">Empat jawaban, setiap minggu, di ponsel.</span></div></div><div class="mid"><div class="z z-tengah"><div class="el kotak kartu"><i></i><span class="lbl">Bonus yang sudah cair: Rp2.550.000</span></div><div class="el kotak kartu"><i></i><span class="lbl">Beli berapa unit: 49 unit</span></div><div class="el kotak kartu"><i></i><span class="lbl">Taruh di mana: di bawah Hendra Anggrekasih, isi kaki kanan</span></div><div class="el kotak kartu"><i></i><span class="lbl">Kapan repeat order: 3 orang dalam 3 hari ke depan</span></div></div></div></div>
+  <header><span class="id">R3</span><h3>Empat jawaban</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>310–420&nbsp;vh</span><span class="ko">Shared element</span></p>
+  <dl><dt>Gerak</dt><dd>Kalimat Beli 49 unit tampil di atas, lalu bergeser dan mengecil ke kartu kedua; tiga kartu lain masuk di sekitarnya.</dd><dt>Ponsel</dt><dd>Tanpa perpindahan; empat kartu satu kolom.</dd><dt>Tanpa gerak</dt><dd>Crossfade dari kalimat ke kartu; angka ada di DOM sekali.</dd></dl>
+  
+</article><article class="adegan baru">
+  <div class="sk t-tumpuk-kartu k-sticky-stack" style="--lat:#f2f2f7;--tin:#1c1c1e;--aks:#0067d6"><div class="mid"><div class="z z-kanan"><div class="el browser"><i></i><span class="lbl">Rencana repeat order dengan alasan</span></div><div class="el browser"><i></i><span class="lbl">Pengingat yang diatur sendiri</span></div><div class="el browser"><i></i><span class="lbl">Tarikan per jam yang bisa diaudit</span></div><div class="el ponsel"><i></i><span class="lbl">Push pagi ke ponsel</span></div></div></div></div>
+  <header><span class="id">R4</span><h3>Fitur</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>420–720&nbsp;vh</span><span class="ko">Sticky stack</span></p>
+  <dl><dt>Gerak</dt><dd>Tiap kartu menempel, kartu berikutnya menumpuk di atasnya.</dd><dt>Ponsel</dt><dd>Kartu berurutan, tiap kartu lebih pendek dari layar.</dd><dt>Tanpa gerak</dt><dd>Kartu berurutan tanpa menempel.</dd></dl>
+  <ul class="aset"><li class="belum">rencana-ro-rencana.v3.webp</li><li class="ada">rencana-ro-kalender.v2.webp</li><li class="ada">rencana-ro-riwayat-run.v2.webp</li><li class="belum">rencana-ro-push-ponsel.v1.webp</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-angka k-number-reveal" style="--lat:#f2f2f7;--tin:#1c1c1e;--aks:#0067d6"><div class="mid"><div class="z z-tengah"><div class="el angka"><i>123</i><span class="lbl">27 ms, sebelumnya 137 ms [1]</span></div></div></div><div class="z z-bawah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Cek sesi per request, sesudah fungsi dan database dipindah ke Singapura</span></div></div></div>
+  <header><span class="id">R5</span><h3>Satu angka terukur</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>720–800&nbsp;vh</span><span class="ko">Number reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Angka akhir sudah di HTML; bilah pembanding menyusut dari panjang 137 ke 27 dan 137 dicoret.</dd><dt>Ponsel</dt><dd>Sama, bilah selebar layar.</dd><dt>Tanpa gerak</dt><dd>Bilah sudah di 27, 137 tertulis sebagai pembanding.</dd></dl>
+  
+</article><article class="adegan">
+  <div class="sk t-perangkat-penuh k-none" style="--lat:#f2f2f7;--tin:#1c1c1e;--aks:#0067d6"><div class="mid"><div class="z z-tengah"><div class="el judul"><i></i><i></i><span class="lbl">Dari data mentah back office ke rencana minggu ini.</span></div><div class="el video"><i></i><span class="lbl">Tur 50 detik, tanpa suara</span></div></div></div></div>
+  <header><span class="id">R6</span><h3>Tur</h3></header>
+  <p class="meta"><span>800–920&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Video tidak autoplay; poster tampil dulu.</dd><dt>Ponsel</dt><dd>Video 16:10 selebar layar.</dd><dt>Tanpa gerak</dt><dd>Poster dan transkrip.</dd></dl>
+  <ul class="aset"><li class="ada">rencana-ro-tur.v2.mp4</li><li class="ada">rencana-ro-tur.v2.poster.webp</li></ul>
+</article><article class="adegan">
+  <div class="sk t-penutup k-none" style="--lat:#f2f2f7;--tin:#1c1c1e;--aks:#0067d6"><div class="mid"><div class="z z-tengah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Metode, tanggal ukur, rencana-ro@cca37ff</span></div></div></div></div>
+  <header><span class="id">R7</span><h3>Sumber</h3></header>
+  <p class="meta"><span>920–970&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada.</dd><dt>Ponsel</dt><dd>Sama.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  
+</article></div>
+</section>
+<section id="akarkita" class="hal">
+  <div class="hal-k"><p class="url">/work/akarkita</p><h2>AkarKita</h2><p class="pesan">Istilah kekerabatan dihitung dari siapa yang Anda pilih, menurut adat yang Anda pakai.</p>
+  <p class="ring"><span class="sw" style="background:#eaf1f8" title="latar #eaf1f8"></span><span class="sw" style="background:#16213a" title="tinta #16213a"></span><span class="sw" style="background:#2a4a88" title="aksen #2a4a88"></span><span>8 adegan, 2 baru, 4 aset belum ada</span><span>Archivo (wdth 118 judul, 82 label)</span></p></div>
+  <div class="rail" aria-hidden="true"><span class="seg k-none" style="left:0%;width:14.705882352941178%" title="A1 Hero">A1</span><span class="seg k-quiet-reveal baru" style="left:14.705882352941178%;width:7.352941176470589%" title="A2 Keluarga Rahmat">A2</span><span class="seg k-quiet-reveal" style="left:22.058823529411764%;width:20.588235294117645%" title="A3 Kain silsilah">A3</span><span class="seg k-quiet-reveal" style="left:42.64705882352941%;width:8.823529411764707%" title="A4 Aturannya">A4</span><span class="seg k-quiet-reveal baru" style="left:51.470588235294116%;width:10.294117647058822%" title="A5 Aturan sebagai data">A5</span><span class="seg k-quiet-reveal" style="left:61.76470588235294%;width:17.647058823529413%" title="A6 Kain yang sama, dilihat utuh">A6</span><span class="seg k-none" style="left:79.41176470588235%;width:10.294117647058822%" title="A7 Warisan dengan pecahan eksak">A7</span><span class="seg k-none" style="left:89.70588235294117%;width:10.294117647058822%" title="A8 Sumber">A8</span></div><p class="rail-k">Panjang halaman sekitar 680 vh. Blok biru tebal: pin. Garis putus: adegan baru.</p>
+  <div class="grid"><article class="adegan">
+  <div class="sk t-hero k-none" style="--lat:#eaf1f8;--tin:#16213a;--aks:#2a4a88"><div class="mid"><div class="z z-kiri"><div class="el judul"><i></i><i></i><span class="lbl">AkarKita</span></div><div class="el teks"><i></i><i></i><i></i><span class="lbl">Pohon keluarga privat yang paham istilah kekerabatan Sunda dan Minangkabau.</span></div></div></div><div class="z z-bawah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Masalah, Solusi, Hasil dalam tiga kolom</span></div></div></div>
+  <header><span class="id">A1</span><h3>Hero</h3></header>
+  <p class="meta"><span>0–100&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada gerak; jawabannya sudah di layar sebelum gambar apa pun.</dd><dt>Ponsel</dt><dd>Masalah, Solusi, Hasil bertumpuk satu kolom.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  
+</article><article class="adegan baru">
+  <div class="sk t-split-kiri k-quiet-reveal" style="--lat:#eaf1f8;--tin:#16213a;--aks:#2a4a88"><div class="mid"><div class="z z-kiri"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Rahmat punya seorang kakak perempuan dan seorang adik laki-laki.</span></div></div><div class="z z-kanan"><div class="el kotak diagram"><i></i><span class="lbl">Rahmat di tengah, kakak perempuan di kiri, adik laki-laki di kanan, anak mereka di bawah</span></div></div></div></div>
+  <header><span class="id">A2</span><h3>Keluarga Rahmat</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>100–150&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Garis keturunan tergambar sekali dari Rahmat ke tiap kerabat saat bagan masuk.</dd><dt>Ponsel</dt><dd>Bagan tegak satu kolom di bawah kalimatnya.</dd><dt>Tanpa gerak</dt><dd>Bagan utuh dengan semua garis sudah tergambar.</dd></dl>
+  <ul class="aset"><li class="belum">bagan SVG di kode (tanpa berkas gambar)</li></ul>
+</article><article class="adegan">
+  <div class="sk t-grid k-quiet-reveal" style="--lat:#eaf1f8;--tin:#16213a;--aks:#2a4a88"><div class="z z-atas"><div class="el judul"><i></i><i></i><span class="lbl">Rahmat dipanggil apa? Tergantung siapa yang bertanya, dan adat mana yang dipakai.</span></div></div><div class="mid"><div class="z z-tengah"><div class="el kotak kartu"><i></i><span class="lbl">Tabel 4 penanya × Sunda dan Minangkabau</span></div></div></div><div class="z z-bawah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Keluarga contoh. Istilah dari data AkarKita sendiri.</span></div></div></div>
+  <header><span class="id">A3</span><h3>Kain silsilah</h3></header>
+  <p class="meta"><span>150–290&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Lungsin tiap kolom adat tergambar ke bawah sekali saat tabel masuk, lalu benang emas tiap baris melebar seperti sekarang.</dd><dt>Ponsel</dt><dd>Tiap penanya jadi pita dengan dua istilah berdampingan; lungsin tidak digambar.</dd><dt>Tanpa gerak</dt><dd>Kain utuh, lungsin dan pakan sudah ada.</dd></dl>
+  
+</article><article class="adegan">
+  <div class="sk t-split-kiri k-quiet-reveal" style="--lat:#eaf1f8;--tin:#16213a;--aks:#2a4a88"><div class="mid"><div class="z z-kiri"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Sunda menimbang umur.</span></div><div class="el teks"><i></i><i></i><i></i><span class="lbl">Untuk saudara laki-laki ibu, tua atau muda tetap Mamak.</span></div></div></div></div>
+  <header><span class="id">A4</span><h3>Aturannya</h3></header>
+  <p class="meta"><span>290–350&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Strip warna adat muncul pelan di samping kalimat aturannya.</dd><dt>Ponsel</dt><dd>Sama, satu kolom.</dd><dt>Tanpa gerak</dt><dd>Strip langsung tampil.</dd></dl>
+  
+</article><article class="adegan baru">
+  <div class="sk t-split-kanan k-quiet-reveal" style="--lat:#eaf1f8;--tin:#16213a;--aks:#2a4a88"><div class="mid"><div class="z z-kiri"><div class="el kotak kartu"><i></i><span class="lbl">Satu baris data istilah Uwa dari seed-data/terms.sunda.ts</span></div></div><div class="z z-kanan"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Sebutan Uwa yang dihasilkan baris itu</span></div></div></div></div>
+  <header><span class="id">A5</span><h3>Aturan sebagai data</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>350–420&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Baris data muncul dulu, lalu sebutan Uwa menyala di sampingnya.</dd><dt>Ponsel</dt><dd>Baris data di atas, sebutan di bawah.</dd><dt>Tanpa gerak</dt><dd>Keduanya tampil.</dd></dl>
+  <ul class="aset"><li class="belum">kutipan seed-data/terms.sunda.ts dari repo AkarKita</li></ul>
+</article><article class="adegan">
+  <div class="sk t-perangkat-penuh k-quiet-reveal" style="--lat:#eaf1f8;--tin:#16213a;--aks:#2a4a88"><div class="mid"><div class="z z-kiri"><div class="el browser"><i></i><span class="lbl">Pohon contoh di canvas</span></div></div><div class="z z-kanan"><div class="el ponsel"><i></i><span class="lbl">Loop zum dari orang ke kelompok keluarga, dengan tombol jeda</span></div></div></div></div>
+  <header><span class="id">A6</span><h3>Kain yang sama, dilihat utuh</h3></header>
+  <p class="meta"><span>420–540&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Bingkai naik pelan saat masuk; ponsel memutar loop zum.</dd><dt>Ponsel</dt><dd>Ponsel saja, poster dulu, tombol putar.</dd><dt>Tanpa gerak</dt><dd>Poster diam dan tombol putar.</dd></dl>
+  <ul class="aset"><li class="ada">akarkita-pohon.v1.webp</li><li class="ada">akarkita-pohon-ponsel.v1.webp</li><li class="belum">akarkita-zoom-ponsel.v1.mp4</li><li class="belum">akarkita-zoom-ponsel.v1.poster.webp</li></ul>
+</article><article class="adegan">
+  <div class="sk t-split-kiri k-none" style="--lat:#eaf1f8;--tin:#16213a;--aks:#2a4a88"><div class="mid"><div class="z z-kiri"><div class="el judul"><i></i><i></i><span class="lbl">Warisan dengan pecahan eksak.</span></div></div><div class="z z-kanan"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Edukatif, bukan fatwa. Bisa dibuka tanpa sinyal.</span></div></div></div></div>
+  <header><span class="id">A7</span><h3>Warisan dengan pecahan eksak</h3></header>
+  <p class="meta"><span>540–610&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada; topik agama dibiarkan tenang.</dd><dt>Ponsel</dt><dd>Satu kolom.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  
+</article><article class="adegan">
+  <div class="sk t-penutup k-none" style="--lat:#eaf1f8;--tin:#16213a;--aks:#2a4a88"><div class="mid"><div class="z z-tengah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Catatan demo dan sumber</span></div></div></div></div>
+  <header><span class="id">A8</span><h3>Sumber</h3></header>
+  <p class="meta"><span>610–680&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada.</dd><dt>Ponsel</dt><dd>Sama.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  
+</article></div>
+</section>
+<section id="jeda" class="hal">
+  <div class="hal-k"><p class="url">/work/jeda</p><h2>Jeda</h2><p class="pesan">Catatan ditulis saat perasaan berubah, di mana saja, lalu sampai dengan tenang di meja psikolog.</p>
+  <p class="ring"><span class="sw" style="background:#eeebe6" title="latar #eeebe6"></span><span class="sw" style="background:#2b2926" title="tinta #2b2926"></span><span class="sw" style="background:#4e6a84" title="aksen #4e6a84"></span><span>8 adegan, 2 baru, 1 aset belum ada</span><span>Nunito Sans</span></p></div>
+  <div class="rail" aria-hidden="true"><span class="seg k-none" style="left:0%;width:9.433962264150944%" title="A1 Hero">A1</span><span class="seg k-none" style="left:9.433962264150944%;width:6.60377358490566%" title="A2 Suasana">A2</span><span class="seg k-quiet-reveal" style="left:16.037735849056602%;width:15.09433962264151%" title="A3 Satu catatan, dua meja">A3</span><span class="seg k-quiet-reveal baru" style="left:31.132075471698112%;width:11.320754716981133%" title="A4 Mencatat, bukan menafsirkan">A4</span><span class="seg k-quiet-reveal baru" style="left:42.45283018867924%;width:8.49056603773585%" title="A5 Tautan untuk psikolog">A5</span><span class="seg k-quiet-reveal" style="left:50.943396226415096%;width:33.9622641509434%" title="A6 Fitur">A6</span><span class="seg k-none" style="left:84.90566037735849%;width:9.433962264150944%" title="A7 Tur">A7</span><span class="seg k-none" style="left:94.33962264150944%;width:5.660377358490567%" title="A8 Sumber">A8</span></div><p class="rail-k">Panjang halaman sekitar 1060 vh. Blok biru tebal: pin. Garis putus: adegan baru.</p>
+  <div class="grid"><article class="adegan">
+  <div class="sk t-hero k-none" style="--lat:#eeebe6;--tin:#2b2926;--aks:#4e6a84"><div class="mid"><div class="z z-kiri"><div class="el logo"><i></i><span class="lbl">Ikon Jeda di depan eyebrow</span></div><div class="el judul"><i></i><i></i><span class="lbl">Dari kereta tanpa sinyal ke meja psikolog.</span></div><div class="el teks"><i></i><i></i><i></i><span class="lbl">Catatan pikiran di antara sesi konseling, yang tetap jalan tanpa sinyal.</span></div></div><div class="z z-kanan"><div class="el ponsel"><i></i><span class="lbl">Daftar catatan dua minggu</span></div></div></div><div class="z z-bawah"><div class="el kotak kartu"><i></i><span class="lbl">Masalah, Solusi, Hasil di lembar bergaris</span></div></div></div>
+  <header><span class="id">A1</span><h3>Hero</h3></header>
+  <p class="meta"><span>0–100&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada gerak; ponsel berhenti melayang.</dd><dt>Ponsel</dt><dd>Ponsel di bawah teks.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  <ul class="aset"><li class="belum">jeda-ikon.v1.svg</li><li class="ada">jeda-daftar.v1.webp</li></ul>
+</article><article class="adegan">
+  <div class="sk t-perangkat-penuh k-none" style="--lat:#eeebe6;--tin:#2b2926;--aks:#4e6a84"><div class="mid"></div><div class="z z-bawah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Di kereta, tanpa sinyal: tempat catatan ditulis.</span></div></div><div class="z z-penuh"><div class="el kotak foto"><i></i><span class="lbl">Penumpang kereta menulis di dekat jendela</span></div></div></div>
+  <header><span class="id">A2</span><h3>Suasana</h3></header>
+  <p class="meta"><span>100–170&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada gerak.</dd><dt>Ponsel</dt><dd>Foto dipotong lebih tinggi.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  <ul class="aset"><li class="ada">jeda-kereta.v1.webp</li></ul>
+</article><article class="adegan">
+  <div class="sk t-split-kiri k-quiet-reveal" style="--lat:#eeebe6;--tin:#2b2926;--aks:#4e6a84"><div class="z z-atas"><div class="el judul"><i></i><i></i><span class="lbl">Satu catatan, dua meja.</span></div></div><div class="mid"><div class="z z-kiri"><div class="el ponsel"><i></i><span class="lbl">Catatan karangan: situasi dan pikiran</span></div></div><div class="z z-tengah"><div class="el kotak diagram"><i></i><span class="lbl">Jalur titik antar meja</span></div></div><div class="z z-kanan"><div class="el kotak kartu"><i></i><span class="lbl">Tabel psikolog, baris Baru sejak terakhir dibuka</span></div></div></div></div>
+  <header><span class="id">A3</span><h3>Satu catatan, dua meja</h3></header>
+  <p class="meta"><span>170–330&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Situasi lalu pikiran muncul pelan, Tersimpan di perangkat menyala, lalu catatan menyeberang dan baris baru di tabel menebal.</dd><dt>Ponsel</dt><dd>Jalur turun vertikal, urutan sama, tidak dipin.</dd><dt>Tanpa gerak</dt><dd>Catatan sudah di tabel dan bertanda baru.</dd></dl>
+  
+</article><article class="adegan baru">
+  <div class="sk t-split-kanan k-quiet-reveal" style="--lat:#eeebe6;--tin:#2b2926;--aks:#4e6a84"><div class="mid"><div class="z z-kiri"><div class="el judul"><i></i><i></i><span class="lbl">Mencatat, bukan menafsirkan.</span></div><div class="el teks"><i></i><i></i><i></i><span class="lbl">Di layar klien tidak ada grafik mood, streak, lencana, atau ringkasan otomatis.</span></div></div><div class="z z-kanan"><div class="el laptop"><i></i><b></b><span class="lbl">Tab Ringkasan di laptop psikolog</span></div></div></div></div>
+  <header><span class="id">A4</span><h3>Mencatat, bukan menafsirkan</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>330–450&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Teks kiri tampil dulu; layar Ringkasan memudar masuk dan naik sekitar 12px saat melewati garis baca.</dd><dt>Ponsel</dt><dd>Teks di atas, layar di bawah.</dd><dt>Tanpa gerak</dt><dd>Teks dan layar tampil langsung.</dd></dl>
+  <ul class="aset"><li class="ada">jeda-ringkasan.v1.webp</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-kutipan k-quiet-reveal" style="--lat:#eeebe6;--tin:#2b2926;--aks:#4e6a84"><div class="z z-atas"><div class="el judul"><i></i><i></i><span class="lbl">Catatan Anda dibaca psikolog Anda, lewat tautan yang bisa dicabut.</span></div></div><div class="mid"><div class="z z-kiri"><div class="el kotak kartu"><i></i><span class="lbl">PIN bila perlu</span></div></div><div class="z z-tengah"><div class="el kotak kartu"><i></i><span class="lbl">Bisa kedaluwarsa</span></div></div><div class="z z-kanan"><div class="el kotak kartu"><i></i><span class="lbl">Bisa dicabut</span></div></div></div><div class="z z-bawah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Aplikasinya tidak mengirim catatan ke layanan lain.</span></div></div></div>
+  <header><span class="id">A5</span><h3>Tautan untuk psikolog</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>450–540&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Tiga keterangan tautan muncul satu per satu dengan opasitas, pelan.</dd><dt>Ponsel</dt><dd>Tiga keterangan ditumpuk, urutan sama.</dd><dt>Tanpa gerak</dt><dd>Semua tampil.</dd></dl>
+  
+</article><article class="adegan">
+  <div class="sk t-grid k-quiet-reveal" style="--lat:#eeebe6;--tin:#2b2926;--aks:#4e6a84"><div class="mid"><div class="z z-kiri"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Empat fitur dari projects.ts</span></div></div><div class="z z-kanan"><div class="el ponsel"><i></i><span class="lbl">Catat cepat, daftar, catatan lengkap</span></div><div class="el browser"><i></i><span class="lbl">Tabel psikolog untuk fitur 04</span></div></div></div></div>
+  <header><span class="id">A6</span><h3>Fitur</h3></header>
+  <p class="meta"><span>540–900&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Layar memudar masuk dengan geser 12px saat lewat.</dd><dt>Ponsel</dt><dd>Teks dan layar ditumpuk.</dd><dt>Tanpa gerak</dt><dd>Layar tampil tanpa geser.</dd></dl>
+  <ul class="aset"><li class="ada">jeda-catat-cepat.v1.webp</li><li class="ada">jeda-daftar.v1.webp</li><li class="ada">jeda-catatan-lengkap.v1.webp</li><li class="ada">jeda-tabel-psikolog.v1.webp</li></ul>
+</article><article class="adegan">
+  <div class="sk t-perangkat-penuh k-none" style="--lat:#eeebe6;--tin:#2b2926;--aks:#4e6a84"><div class="mid"></div><div class="z z-penuh"><div class="el video"><i></i><span class="lbl">Tur 50 detik</span></div></div></div>
+  <header><span class="id">A7</span><h3>Tur</h3></header>
+  <p class="meta"><span>900–1000&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Video diputar oleh pembaca.</dd><dt>Ponsel</dt><dd>Video selebar layar.</dd><dt>Tanpa gerak</dt><dd>Poster.</dd></dl>
+  <ul class="aset"><li class="ada">jeda-tur.v1.mp4</li><li class="ada">jeda-tur.v1.poster.webp</li></ul>
+</article><article class="adegan">
+  <div class="sk t-penutup k-none" style="--lat:#eeebe6;--tin:#2b2926;--aks:#4e6a84"><div class="mid"><div class="z z-tengah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Catatan rekaman dari data karangan</span></div></div></div></div>
+  <header><span class="id">A8</span><h3>Sumber</h3></header>
+  <p class="meta"><span>1000–1060&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada gerak.</dd><dt>Ponsel</dt><dd>Sama.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  
+</article></div>
+</section>
+<section id="d-day" class="hal">
+  <div class="hal-k"><p class="url">/work/d-day</p><h2>d-day</h2><p class="pesan">Berhenti cukup satu ketukan; melanjutkan harus dibuktikan.</p>
+  <p class="ring"><span class="sw" style="background:#000000" title="latar #000000"></span><span class="sw" style="background:#f5f5f7" title="tinta #f5f5f7"></span><span class="sw" style="background:#ff9f0a" title="aksen #ff9f0a"></span><span>7 adegan, 2 baru, 2 aset belum ada</span><span>font sistem, angka tabular</span></p></div>
+  <div class="rail" aria-hidden="true"><span class="seg k-none" style="left:0%;width:10.869565217391305%" title="D1 Hero">D1</span><span class="seg k-shared-element baru" style="left:10.869565217391305%;width:9.782608695652174%" title="D2 Yang terburuk menang">D2</span><span class="seg k-pin-scrub" style="left:20.652173913043477%;width:23.91304347826087%" title="D3 Gembok dan tag">D3</span><span class="seg k-sticky-stack" style="left:44.565217391304344%;width:22.82608695652174%" title="D4 Di dalam d-day">D4</span><span class="seg k-progress-rail baru" style="left:67.3913043478261%;width:10.869565217391305%" title="D5 Jejak uji">D5</span><span class="seg k-progress-rail" style="left:78.26086956521739%;width:14.130434782608695%" title="D6 Tur dengan bab">D6</span><span class="seg k-none" style="left:92.3913043478261%;width:7.608695652173914%" title="D7 Sumber">D7</span></div><p class="rail-k">Panjang halaman sekitar 920 vh. Blok biru tebal: pin. Garis putus: adegan baru.</p>
+  <div class="grid"><article class="adegan">
+  <div class="sk t-hero k-none" style="--lat:#000000;--tin:#f5f5f7;--aks:#ff9f0a"><div class="mid"><div class="z z-kiri"><div class="el judul"><i></i><i></i><span class="lbl">d-day</span></div><div class="el teks"><i></i><i></i><i></i><span class="lbl">Sistem eksekusi otomatis untuk aturan yang ditulis orang lain.</span></div></div></div><div class="z z-bawah"><div class="el kotak kartu"><i></i><span class="lbl">Masalah, Solusi, Hasil</span></div></div></div>
+  <header><span class="id">D1</span><h3>Hero</h3></header>
+  <p class="meta"><span>0–100&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada.</dd><dt>Ponsel</dt><dd>Kartu ringkasan bertumpuk.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  
+</article><article class="adegan baru">
+  <div class="sk t-split-kiri k-shared-element" style="--lat:#000000;--tin:#f5f5f7;--aks:#ff9f0a"><div class="mid"><div class="z z-kiri"><div class="el kotak kartu"><i></i><span class="lbl">Empat sinyal: heartbeat, tick terakhir, halt, posisi tanpa proteksi</span></div></div><div class="z z-kanan"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Kalimat status engine dari app</span></div></div></div></div>
+  <header><span class="id">D2</span><h3>Yang terburuk menang</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>100–190&nbsp;vh</span><span class="ko">Shared element</span></p>
+  <dl><dt>Gerak</dt><dd>Label sinyal yang terburuk pindah ke kalimat status saat adegan melewati garis baca; tanpa pin.</dd><dt>Ponsel</dt><dd>Sinyal di atas, kalimat di bawah, tanpa perpindahan.</dd><dt>Tanpa gerak</dt><dd>Sinyal dan kalimat tampil bersama, sinyal terburuk disorot.</dd></dl>
+  <ul class="aset"><li class="belum">teks status dari dashboard/src/app/page.tsx repo d-day</li></ul>
+</article><article class="adegan">
+  <div class="sk t-artefak-pin k-pin-scrub" style="--lat:#000000;--tin:#f5f5f7;--aks:#ff9f0a"><div class="mid"><div class="z z-kiri"><div class="el kotak kartu"><i></i><span class="lbl">Tag: halt_total, dihentikan manual dari dashboard, waktu UTC, data simulasi</span></div><div class="el logo"><i></i><span class="lbl">Gembok oranye</span></div></div><div class="z z-kanan"><div class="el kotak kartu"><i></i><span class="lbl">Empat syarat Lanjutkan, syarat kedua basi</span></div></div></div></div>
+  <header><span class="id">D3</span><h3>Gembok dan tag</h3></header>
+  <p class="meta"><span>190–410&nbsp;vh</span><span class="ko">Pin dan scrub</span></p>
+  <dl><dt>Gerak</dt><dd>Latar bergeser ke #3d0b0b dan gembok turun, lalu tiap syarat dicentang di langkahnya sendiri, kira-kira satu tiap 35vh, sampai syarat kedua basi.</dd><dt>Ponsel</dt><dd>Tanpa pin; keadaan akhir langsung tampil.</dd><dt>Tanpa gerak</dt><dd>Keadaan akhir: tag terpasang, syarat kedua gagal, sisanya belum diperiksa.</dd></dl>
+  
+</article><article class="adegan">
+  <div class="sk t-tumpuk-kartu k-sticky-stack" style="--lat:#000000;--tin:#f5f5f7;--aks:#ff9f0a"><div class="mid"><div class="z z-tengah"><div class="el browser"><i></i><span class="lbl">Status engine dalam satu kalimat</span></div><div class="el browser"><i></i><span class="lbl">Berhenti satu ketukan, lanjut lewat bukti</span></div><div class="el browser"><i></i><span class="lbl">Rekonsiliasi baca-saja</span></div></div></div></div>
+  <header><span class="id">D4</span><h3>Di dalam d-day</h3></header>
+  <p class="meta"><span>410–620&nbsp;vh</span><span class="ko">Sticky stack</span></p>
+  <dl><dt>Gerak</dt><dd>Tiap kartu menempel di atas lalu kartu berikutnya menutupnya.</dd><dt>Ponsel</dt><dd>Daftar biasa, tiap kartu lebih pendek dari layar.</dd><dt>Tanpa gerak</dt><dd>Daftar biasa.</dd></dl>
+  <ul class="aset"><li class="ada">d-day-log.v1.webp</li><li class="ada">d-day-kill-switch.v1.webp</li><li class="ada">d-day-rekonsiliasi.v1.webp</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-split-kanan k-progress-rail" style="--lat:#000000;--tin:#f5f5f7;--aks:#ff9f0a"><div class="mid"><div class="z z-kiri"><div class="el kotak diagram"><i></i><span class="lbl">Rail oranye dengan empat titik</span></div></div><div class="z z-kanan"><div class="el teks"><i></i><i></i><i></i><span class="lbl">10 Sep, 11 Sep, 3 Okt, 7 Okt 2026 dengan repo@commit</span></div></div></div></div>
+  <header><span class="id">D5</span><h3>Jejak uji</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>620–720&nbsp;vh</span><span class="ko">Progress rail</span></p>
+  <dl><dt>Gerak</dt><dd>Rail terisi saat dibaca; tiap titik adalah tautan ke barisnya.</dd><dt>Ponsel</dt><dd>Rail tegak di kiri daftar.</dd><dt>Tanpa gerak</dt><dd>Rail penuh.</dd></dl>
+  <ul class="aset"><li class="ada">timeline di src/lib/portfolio/projects.ts</li></ul>
+</article><article class="adegan">
+  <div class="sk t-perangkat-penuh k-progress-rail" style="--lat:#000000;--tin:#f5f5f7;--aks:#ff9f0a"><div class="z z-atas"><div class="el judul"><i></i><i></i><span class="lbl">Berhenti dalam satu ketukan, lanjut hanya dengan bukti.</span></div></div><div class="mid"><div class="z z-tengah"><div class="el video"><i></i><span class="lbl">Tur 40 detik, tidak autoplay</span></div></div></div><div class="z z-bawah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Penanda bab: Keadaan, Exchange, Hentikan semua, Lanjutkan</span></div></div></div>
+  <header><span class="id">D6</span><h3>Tur dengan bab</h3></header>
+  <p class="meta"><span>720–850&nbsp;vh</span><span class="ko">Progress rail</span></p>
+  <dl><dt>Gerak</dt><dd>Penanda bab di bawah video bisa diklik untuk melompat; tidak menutupi video.</dd><dt>Ponsel</dt><dd>Penanda jadi daftar tautan di bawah video.</dd><dt>Tanpa gerak</dt><dd>Sama, tanpa transisi.</dd></dl>
+  <ul class="aset"><li class="ada">d-day-tur.v1.mp4</li><li class="ada">d-day-tur.v1.poster.webp</li><li class="belum">detik awal tiap bab tur</li></ul>
+</article><article class="adegan">
+  <div class="sk t-penutup k-none" style="--lat:#000000;--tin:#f5f5f7;--aks:#ff9f0a"><div class="mid"><div class="z z-tengah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Catatan data simulasi dan sumber</span></div></div></div></div>
+  <header><span class="id">D7</span><h3>Sumber</h3></header>
+  <p class="meta"><span>850–920&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada.</dd><dt>Ponsel</dt><dd>Sama.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  
+</article></div>
+</section>
+<section id="yiheecam" class="hal">
+  <div class="hal-k"><p class="url">/work/yiheecam</p><h2>YiheeCam</h2><p class="pesan">Protokol kamera dibangun ulang dari byte-nya, dan hasilnya terbaca dalam satu lirikan dari stang.</p>
+  <p class="ring"><span class="sw" style="background:#0e0e0d" title="latar #0e0e0d"></span><span class="sw" style="background:#e9e8e2" title="tinta #e9e8e2"></span><span class="sw" style="background:#ff3b36" title="aksen #ff3b36"></span><span>9 adegan, 4 baru, 2 aset belum ada</span><span>Barlow Condensed</span></p></div>
+  <div class="rail" aria-hidden="true"><span class="seg k-none" style="left:0%;width:10.377358490566039%" title="A1 Hero">A1</span><span class="seg k-none" style="left:10.377358490566039%;width:5.660377358490567%" title="A2 Ringkasan">A2</span><span class="seg k-pin-scrub" style="left:16.037735849056602%;width:20.754716981132077%" title="A3 Papan flap">A3</span><span class="seg k-shared-element baru" style="left:36.79245283018868%;width:9.433962264150944%" title="A4 Papan di app">A4</span><span class="seg k-progress-rail baru" style="left:46.22641509433962%;width:15.09433962264151%" title="A5 Membaca protokol">A5</span><span class="seg k-wipe baru" style="left:61.32075471698113%;width:9.433962264150944%" title="A6 Saat sambungan putus">A6</span><span class="seg k-none" style="left:70.75471698113208%;width:16.9811320754717%" title="A7 Fitur">A7</span><span class="seg k-quiet-reveal baru" style="left:87.73584905660378%;width:6.60377358490566%" title="A8 Hanya bicara dengan kamera">A8</span><span class="seg k-none" style="left:94.33962264150944%;width:5.660377358490567%" title="A9 Sumber">A9</span></div><p class="rail-k">Panjang halaman sekitar 1060 vh. Blok biru tebal: pin. Garis putus: adegan baru.</p>
+  <div class="grid"><article class="adegan">
+  <div class="sk t-hero k-none" style="--lat:#0e0e0d;--tin:#e9e8e2;--aks:#ff3b36"><div class="mid"><div class="z z-kiri"><div class="el logo"><i></i><span class="lbl">Ikon YiheeCam di depan eyebrow</span></div><div class="el judul"><i></i><i></i><span class="lbl">YIHEECAM sebagai tile flap</span></div><div class="el teks"><i></i><i></i><i></i><span class="lbl">Pengendali action cam lama yang ditinggalkan vendornya, dibangun ulang dari protokolnya.</span></div></div><div class="z z-kanan"><div class="el ponsel"><i></i><span class="lbl">Layar Live, tombol YAKIN?</span></div></div></div><div class="z z-penuh"><div class="el kotak foto"><i></i><span class="lbl">Jalan kebun teh dari dagu helm, buatan AI</span></div></div></div>
+  <header><span class="id">A1</span><h3>Hero</h3></header>
+  <p class="meta"><span>0–110&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Foto bergeser paling banyak 12px saat hero digulir pergi.</dd><dt>Ponsel</dt><dd>Foto digelapkan penuh, ponsel di bawah teks.</dd><dt>Tanpa gerak</dt><dd>Foto diam.</dd></dl>
+  <ul class="aset"><li class="belum">yiheecam-ikon.v1.svg</li><li class="ada">yiheecam-kebun-teh.v1.webp</li><li class="ada">yiheecam-yakin.v1.webp</li></ul>
+</article><article class="adegan">
+  <div class="sk t-grid k-none" style="--lat:#0e0e0d;--tin:#e9e8e2;--aks:#ff3b36"><div class="mid"><div class="z z-tengah"><div class="el kotak kartu"><i></i><span class="lbl">Masalah, Solusi, Hasil</span></div></div></div></div>
+  <header><span class="id">A2</span><h3>Ringkasan</h3></header>
+  <p class="meta"><span>110–170&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada gerak.</dd><dt>Ponsel</dt><dd>Tiga panel ditumpuk.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  
+</article><article class="adegan">
+  <div class="sk t-artefak-pin k-pin-scrub" style="--lat:#0e0e0d;--tin:#e9e8e2;--aks:#ff3b36"><div class="z z-atas"><div class="el judul"><i></i><i></i><span class="lbl">Dibangun ulang dari byte.</span></div><div class="el teks"><i></i><i></i><i></i><span class="lbl">Byte mentah, Dikelompokkan, Terurai, Terbaca</span></div></div><div class="mid"><div class="z z-tengah"><div class="el kotak kartu"><i></i><span class="lbl">Papan: hex membalik jadi REC, BATT, SD, lampu rekam</span></div></div></div><div class="z z-bawah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Ilustrasi: tiap byte adalah kode ASCII hurufnya sendiri.</span></div></div></div>
+  <header><span class="id">A3</span><h3>Papan flap</h3></header>
+  <p class="meta"><span>170–390&nbsp;vh</span><span class="ko">Pin dan scrub</span></p>
+  <dl><dt>Gerak</dt><dd>Tile hex membalik jadi huruf urut baca, tahap menyala satu per satu, lampu rekam menyala terakhir.</dd><dt>Ponsel</dt><dd>Tidak dipin di bawah 768px; tile membalik saat lewat.</dd><dt>Tanpa gerak</dt><dd>Papan sudah terbaca REC, BATT, SD dengan lampu menyala.</dd></dl>
+  
+</article><article class="adegan baru">
+  <div class="sk t-split-kanan k-shared-element" style="--lat:#0e0e0d;--tin:#e9e8e2;--aks:#ff3b36"><div class="mid"><div class="z z-kiri"><div class="el judul"><i></i><i></i><span class="lbl">Sekali lirik, sudah terbaca.</span></div><div class="el teks"><i></i><i></i><i></i><span class="lbl">Isi features[0].body</span></div></div><div class="z z-kanan"><div class="el ponsel"><i></i><span class="lbl">Layar Live asli, papan status</span></div></div></div></div>
+  <header><span class="id">A4</span><h3>Papan di app</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>390–490&nbsp;vh</span><span class="ko">Shared element</span></p>
+  <dl><dt>Gerak</dt><dd>Papan ilustrasi bergeser dan mengecil ke kotak status di ponsel, lalu tangkapan asli memudar masuk.</dd><dt>Ponsel</dt><dd>Ditumpuk; tangkapan memudar masuk saat lewat tanpa perpindahan.</dd><dt>Tanpa gerak</dt><dd>Papan dan tangkapan berdampingan, tanpa crossfade.</dd></dl>
+  <ul class="aset"><li class="ada">yiheecam-yakin.v1.webp</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-split-kiri k-progress-rail" style="--lat:#0e0e0d;--tin:#e9e8e2;--aks:#ff3b36"><div class="z z-atas"><div class="el judul"><i></i><i></i><span class="lbl">Membaca protokol yang tidak didokumentasikan.</span></div></div><div class="mid"><div class="z z-kiri"><div class="el kotak diagram"><i></i><span class="lbl">Rel empat tahap 7 sampai 8 Okt 2026</span></div></div><div class="z z-kanan"><div class="el kotak foto"><i></i><span class="lbl">Diagram urutan pesan klien uji dan kamera tiruan</span></div></div></div></div>
+  <header><span class="id">A5</span><h3>Membaca protokol</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>490–650&nbsp;vh</span><span class="ko">Progress rail</span></p>
+  <dl><dt>Gerak</dt><dd>Penanda rel pindah ke tahap yang melewati garis baca; tiap tahap bisa diklik, diagram diam.</dd><dt>Ponsel</dt><dd>Rel jadi daftar bernomor, diagram di bawahnya.</dd><dt>Tanpa gerak</dt><dd>Rel statis, tautan tetap jalan.</dd></dl>
+  <ul class="aset"><li class="ada">yiheecam-protokol.v1.webp</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-wipe k-wipe" style="--lat:#0e0e0d;--tin:#e9e8e2;--aks:#ff3b36"><div class="mid"><div class="z z-kiri"><div class="el judul"><i></i><i></i><span class="lbl">Kalau putus, layarnya bilang putus.</span></div><div class="el teks"><i></i><i></i><i></i><span class="lbl">Isi features[2].body</span></div></div><div class="z z-kanan"><div class="el ponsel"><i></i><span class="lbl">Satu bingkai: terhubung, disapu jadi TERPUTUS</span></div></div></div></div>
+  <header><span class="id">A6</span><h3>Saat sambungan putus</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>650–750&nbsp;vh</span><span class="ko">Wipe satu bingkai</span></p>
+  <dl><dt>Gerak</dt><dd>Garis sapu bergerak dari kiri ke kanan mengikuti gulir, tanpa pin.</dd><dt>Ponsel</dt><dd>Dua tangkapan berdampingan tanpa gerak.</dd><dt>Tanpa gerak</dt><dd>Dua tangkapan berdampingan.</dd></dl>
+  <ul class="aset"><li class="ada">yiheecam-terputus.v1.webp</li><li class="belum">yiheecam-terhubung.v1.webp</li></ul>
+</article><article class="adegan">
+  <div class="sk t-grid k-none" style="--lat:#0e0e0d;--tin:#e9e8e2;--aks:#ff3b36"><div class="mid"><div class="z z-kiri"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Fitur 01 Terbaca dalam satu lirikan, 02 Aman dengan sarung tangan</span></div></div><div class="z z-kanan"><div class="el ponsel"><i></i><span class="lbl">Setting Video, tombol YAKIN?</span></div></div></div></div>
+  <header><span class="id">A7</span><h3>Fitur</h3></header>
+  <p class="meta"><span>750–930&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Layar memudar masuk dengan geser 28px saat lewat.</dd><dt>Ponsel</dt><dd>Teks dan layar ditumpuk.</dd><dt>Tanpa gerak</dt><dd>Tanpa geser.</dd></dl>
+  <ul class="aset"><li class="ada">yiheecam-setting.v1.webp</li><li class="ada">yiheecam-yakin.v1.webp</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-kutipan k-quiet-reveal" style="--lat:#0e0e0d;--tin:#e9e8e2;--aks:#ff3b36"><div class="mid"><div class="z z-tengah"><div class="el judul"><i></i><i></i><span class="lbl">Hanya bicara dengan kamera.</span></div><div class="el teks"><i></i><i></i><i></i><span class="lbl">Aplikasi resminya ikut mengambil nomor IMEI HP. Penggantinya hanya tersambung ke kamera.</span></div></div></div></div>
+  <header><span class="id">A8</span><h3>Hanya bicara dengan kamera</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>930–1000&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Paragraf memudar masuk saat lewat.</dd><dt>Ponsel</dt><dd>Sama.</dd><dt>Tanpa gerak</dt><dd>Tampil langsung.</dd></dl>
+  
+</article><article class="adegan">
+  <div class="sk t-penutup k-none" style="--lat:#0e0e0d;--tin:#e9e8e2;--aks:#ff3b36"><div class="mid"><div class="z z-tengah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Catatan uji dengan kamera tiruan</span></div></div></div></div>
+  <header><span class="id">A9</span><h3>Sumber</h3></header>
+  <p class="meta"><span>1000–1060&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada gerak.</dd><dt>Ponsel</dt><dd>Sama.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  
+</article></div>
+</section>
+<section id="fifofun" class="hal">
+  <div class="hal-k"><p class="url">/work/fifofun</p><h2>FiFoFun</h2><p class="pesan">Setiap angka dicocokkan dengan saldo cetakan bank dulu, baru dipakai untuk merencanakan.</p>
+  <p class="ring"><span class="sw" style="background:#f2f2f7" title="latar #f2f2f7"></span><span class="sw" style="background:#1c1c1e" title="tinta #1c1c1e"></span><span class="sw" style="background:#0071a4" title="aksen #0071a4"></span><span>8 adegan, 1 baru, 3 aset belum ada</span><span>IBM Plex Sans</span></p></div>
+  <div class="rail" aria-hidden="true"><span class="seg k-none" style="left:0%;width:11.11111111111111%" title="F1 Hero">F1</span><span class="seg k-pin-scrub" style="left:11.11111111111111%;width:22.22222222222222%" title="F2 Posisi pasti">F2</span><span class="seg k-quiet-reveal" style="left:33.33333333333333%;width:11.11111111111111%" title="F3 Empat pemeriksaan">F3</span><span class="seg k-wipe baru" style="left:44.44444444444444%;width:8.88888888888889%" title="F4 Rantai saldo">F4</span><span class="seg k-quiet-reveal" style="left:53.333333333333336%;width:8.88888888888889%" title="F5 Dua jenis uang">F5</span><span class="seg k-quiet-reveal" style="left:62.22222222222222%;width:15.555555555555555%" title="F6 Fitur">F6</span><span class="seg k-none" style="left:77.77777777777779%;width:14.444444444444443%" title="F7 Tur">F7</span><span class="seg k-none" style="left:92.22222222222223%;width:7.777777777777778%" title="F8 Sumber">F8</span></div><p class="rail-k">Panjang halaman sekitar 900 vh. Blok biru tebal: pin. Garis putus: adegan baru.</p>
+  <div class="grid"><article class="adegan">
+  <div class="sk t-hero k-none" style="--lat:#f2f2f7;--tin:#1c1c1e;--aks:#0071a4"><div class="mid"><div class="z z-kiri"><div class="el judul"><i></i><i></i><span class="lbl">FiFoFun</span></div><div class="el teks"><i></i><i></i><i></i><span class="lbl">Perencana keuangan rumah tangga yang memeriksa dirinya sendiri terhadap bank.</span></div></div></div><div class="z z-bawah"><div class="el kotak kartu"><i></i><span class="lbl">Masalah, Solusi, Hasil dalam grup inset</span></div></div></div>
+  <header><span class="id">F1</span><h3>Hero</h3></header>
+  <p class="meta"><span>0–100&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada.</dd><dt>Ponsel</dt><dd>Satu kolom.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  
+</article><article class="adegan">
+  <div class="sk t-artefak-pin k-pin-scrub" style="--lat:#f2f2f7;--tin:#1c1c1e;--aks:#0071a4"><div class="z z-atas"><div class="el judul"><i></i><i></i><span class="lbl">Catatan sendiri melenceng pelan-pelan. Saldo cetakan bank memakunya.</span></div></div><div class="mid"><div class="z z-tengah"><div class="el kotak diagram"><i></i><span class="lbl">Peta laut: garis perkiraan putus-putus, posisi sebenarnya, dua titik pasti</span></div></div></div></div>
+  <header><span class="id">F2</span><h3>Posisi pasti</h3></header>
+  <p class="meta"><span>100–300&nbsp;vh</span><span class="ko">Pin dan scrub</span></p>
+  <dl><dt>Gerak</dt><dd>Garis perkiraan tergambar dari kiri mengikuti scroll; titik pasti mendarat tepat saat garis mencapainya, lalu garis mulai lagi dari posisi sebenarnya.</dd><dt>Ponsel</dt><dd>Tanpa pin, peta utuh.</dd><dt>Tanpa gerak</dt><dd>Peta utuh dengan dua titik pasti.</dd></dl>
+  <ul class="aset"><li class="ada">SVG di FiFoFunPage.tsx</li></ul>
+</article><article class="adegan">
+  <div class="sk t-split-kiri k-quiet-reveal" style="--lat:#f2f2f7;--tin:#1c1c1e;--aks:#0071a4"><div class="mid"><div class="z z-kiri"><div class="el judul"><i></i><i></i><span class="lbl">Sebelum dipakai, setiap impor harus lolos empat pemeriksaan.</span></div></div><div class="z z-kanan"><div class="el kotak kartu"><i></i><span class="lbl">Empat pemeriksaan reconcile, berurutan</span></div></div></div></div>
+  <header><span class="id">F3</span><h3>Empat pemeriksaan</h3></header>
+  <p class="meta"><span>300–400&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Nomor tiap pemeriksaan berganti jadi tanda centang berurutan saat barisnya masuk.</dd><dt>Ponsel</dt><dd>Satu kolom.</dd><dt>Tanpa gerak</dt><dd>Keempatnya bernomor, tanpa animasi.</dd></dl>
+  
+</article><article class="adegan baru">
+  <div class="sk t-wipe k-wipe" style="--lat:#f2f2f7;--tin:#1c1c1e;--aks:#0071a4"><div class="mid"><div class="z z-kiri"><div class="el kotak kartu"><i></i><span class="lbl">Enam baris mutasi contoh dengan saldo cetakan bank, rantai utuh</span></div></div><div class="z z-kanan"><div class="el kotak kartu"><i></i><span class="lbl">Bingkai yang sama, satu baris hilang, satu titik rantai putus</span></div></div></div><div class="z z-bawah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Satu baris hilang, satu titik putus.</span></div></div></div>
+  <header><span class="id">F4</span><h3>Rantai saldo</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>400–480&nbsp;vh</span><span class="ko">Wipe satu bingkai</span></p>
+  <dl><dt>Gerak</dt><dd>Garis sapu bergerak di satu bingkai saat dibaca, tanpa pin; di baliknya satu baris hilang dan satu titik ditandai putus.</dd><dt>Ponsel</dt><dd>Dua versi bertumpuk tanpa gerak.</dd><dt>Tanpa gerak</dt><dd>Dua versi berdampingan.</dd></dl>
+  <ul class="aset"><li class="belum">tabel contoh di kode, angka fiktif ditandai</li></ul>
+</article><article class="adegan">
+  <div class="sk t-split-kiri k-quiet-reveal" style="--lat:#f2f2f7;--tin:#1c1c1e;--aks:#0071a4"><div class="mid"><div class="z z-kiri"><div class="el kotak kartu"><i></i><span class="lbl">Dipastikan bank</span></div></div><div class="z z-kanan"><div class="el kotak kartu"><i></i><span class="lbl">Hanya perkiraan</span></div></div></div></div>
+  <header><span class="id">F5</span><h3>Dua jenis uang</h3></header>
+  <p class="meta"><span>480–560&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Bingkai teal pada grup Dipastikan bank tergambar sekali.</dd><dt>Ponsel</dt><dd>Bertumpuk.</dd><dt>Tanpa gerak</dt><dd>Bingkai sudah ada.</dd></dl>
+  
+</article><article class="adegan">
+  <div class="sk t-split-kanan k-quiet-reveal" style="--lat:#f2f2f7;--tin:#1c1c1e;--aks:#0071a4"><div class="mid"><div class="z z-kanan"><div class="el browser"><i></i><span class="lbl">Anggaran dengan bukti di sampingnya</span></div><div class="el ponsel"><i></i><span class="lbl">Ringkasan 3 bulan, loop dengan tombol jeda</span></div></div></div></div>
+  <header><span class="id">F6</span><h3>Fitur</h3></header>
+  <p class="meta"><span>560–700&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Tangkapan naik pelan; ponsel memutar loop ringkasan.</dd><dt>Ponsel</dt><dd>Poster dulu, tombol putar.</dd><dt>Tanpa gerak</dt><dd>Poster diam dan tombol putar.</dd></dl>
+  <ul class="aset"><li class="ada">fifofun-anggaran.v1.webp</li><li class="ada">fifofun-ringkasan-hp-loop.v1.mp4</li><li class="ada">fifofun-ringkasan-hp-loop.v1.poster.webp</li><li class="belum">fifofun-impor.v2.webp</li><li class="belum">fifofun-rekonsiliasi.v2.webp</li></ul>
+</article><article class="adegan">
+  <div class="sk t-perangkat-penuh k-none" style="--lat:#f2f2f7;--tin:#1c1c1e;--aks:#0071a4"><div class="z z-atas"><div class="el judul"><i></i><i></i><span class="lbl">Dari mutasi bank ke anggaran yang bisa dipercaya.</span></div></div><div class="mid"><div class="z z-tengah"><div class="el video"><i></i><span class="lbl">Tur 45 detik, tidak autoplay</span></div></div></div></div>
+  <header><span class="id">F7</span><h3>Tur</h3></header>
+  <p class="meta"><span>700–830&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Video tidak autoplay.</dd><dt>Ponsel</dt><dd>Sama.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  <ul class="aset"><li class="ada">fifofun-tur.v1.mp4</li><li class="ada">fifofun-tur.v1.poster.webp</li></ul>
+</article><article class="adegan">
+  <div class="sk t-penutup k-none" style="--lat:#f2f2f7;--tin:#1c1c1e;--aks:#0071a4"><div class="mid"><div class="z z-tengah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Catatan rumah tangga fiktif dan sumber</span></div></div></div></div>
+  <header><span class="id">F8</span><h3>Sumber</h3></header>
+  <p class="meta"><span>830–900&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada.</dd><dt>Ponsel</dt><dd>Sama.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  
+</article></div>
+</section>
+<section id="ridedeck" class="hal">
+  <div class="hal-k"><p class="url">/work/ridedeck</p><h2>RideDeck</h2><p class="pesan">Satu dasbor di stang yang selalu bisa dituju kembali, dan jujur soal batasnya.</p>
+  <p class="ring"><span class="sw" style="background:#0a0b0c" title="latar #0a0b0c"></span><span class="sw" style="background:#e9ebec" title="tinta #e9ebec"></span><span class="sw" style="background:#ffb000" title="aksen #ffb000"></span><span>10 adegan, 2 baru, 0 aset belum ada</span><span>Archivo</span></p></div>
+  <div class="rail" aria-hidden="true"><span class="seg k-none" style="left:0%;width:7.857142857142857%" title="A1 Hero">A1</span><span class="seg k-none" style="left:7.857142857142857%;width:4.285714285714286%" title="A2 Ringkasan">A2</span><span class="seg k-none" style="left:12.142857142857142%;width:11.428571428571429%" title="A3 Simulator">A3</span><span class="seg k-pin-scrub" style="left:23.57142857142857%;width:14.285714285714285%" title="A4 Motor ke layar">A4</span><span class="seg k-wipe" style="left:37.857142857142854%;width:7.857142857142857%" title="A5 Iterasi">A5</span><span class="seg k-progress-rail baru" style="left:45.714285714285715%;width:10.714285714285714%" title="A6 Uji di HP dulu">A6</span><span class="seg k-none" style="left:56.42857142857143%;width:5.714285714285714%" title="A7 Ikon">A7</span><span class="seg k-sticky-stack" style="left:62.142857142857146%;width:28.57142857142857%" title="A8 Fitur sebagai kartu dasbor">A8</span><span class="seg k-quiet-reveal baru" style="left:90.71428571428571%;width:5%" title="A9 Data tetap di HP">A9</span><span class="seg k-none" style="left:95.71428571428572%;width:4.285714285714286%" title="A10 Sumber">A10</span></div><p class="rail-k">Panjang halaman sekitar 1400 vh. Blok biru tebal: pin. Garis putus: adegan baru.</p>
+  <div class="grid"><article class="adegan">
+  <div class="sk t-hero k-none" style="--lat:#0a0b0c;--tin:#e9ebec;--aks:#ffb000"><div class="mid"><div class="z z-kiri"><div class="el logo"><i></i><span class="lbl">Ikon akhir RideDeck di depan eyebrow</span></div><div class="el judul"><i></i><i></i><span class="lbl">RideDeck</span></div><div class="el teks"><i></i><i></i><i></i><span class="lbl">Satu dasbor di HP yang terpasang di stang motor, untuk membuka navigasi, musik, dan telepon tanpa mencari-cari app.</span></div><div class="el angka"><i>123</i><span class="lbl">Jendela kecepatan -- km/jam</span></div></div><div class="z z-kanan"><div class="el ponsel"><i></i><span class="lbl">Dasbor RideDeck</span></div></div></div><div class="z z-bawah"><div class="el logo"><i></i><span class="lbl">Tombol jeda video</span></div></div><div class="z z-penuh"><div class="el video"><i></i><span class="lbl">Jalan gunung senja dari atas motor, buatan AI</span></div></div></div>
+  <header><span class="id">A1</span><h3>Hero</h3></header>
+  <p class="meta"><span>0–110&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Video diputar dan bisa dijeda lewat tombol; berhenti saat hero keluar layar.</dd><dt>Ponsel</dt><dd>Latar digelapkan penuh, ponsel di bawah teks.</dd><dt>Tanpa gerak</dt><dd>Poster diam, tombol jeda tidak tampil.</dd></dl>
+  <ul class="aset"><li class="ada">ikon.v1.svg</li><li class="ada">hero-jalan-loop.v1.mp4</li><li class="ada">hero-jalan-loop.v1.poster.webp</li><li class="ada">ridedeck-dasbor.v1.webp</li></ul>
+</article><article class="adegan">
+  <div class="sk t-grid k-none" style="--lat:#0a0b0c;--tin:#e9ebec;--aks:#ffb000"><div class="mid"><div class="z z-tengah"><div class="el kotak kartu"><i></i><span class="lbl">Masalah, Solusi, Hasil di jendela baja</span></div></div></div></div>
+  <header><span class="id">A2</span><h3>Ringkasan</h3></header>
+  <p class="meta"><span>110–170&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada gerak.</dd><dt>Ponsel</dt><dd>Tiga jendela ditumpuk.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  
+</article><article class="adegan">
+  <div class="sk t-split-kiri k-none" style="--lat:#0a0b0c;--tin:#e9ebec;--aks:#ffb000"><div class="z z-atas"><div class="el judul"><i></i><i></i><span class="lbl">Motor pemiliknya, dan dasbor yang membacanya.</span></div></div><div class="mid"><div class="z z-kiri"><div class="el kotak diagram"><i></i><span class="lbl">Ronin 3D bersendi</span></div></div><div class="z z-kanan"><div class="el kotak kartu"><i></i><span class="lbl">Kartu kecepatan, gigi, lean, arah, bensin</span></div></div></div></div>
+  <header><span class="id">A3</span><h3>Simulator</h3></header>
+  <p class="meta"><span>170–330&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Digerakkan pembaca lewat Gas, Rem, seret, hujan, dan sensor HP, bukan oleh gulir.</dd><dt>Ponsel</dt><dd>Rig di atas, kartu di bawah, kontrol tiga kolom.</dd><dt>Tanpa gerak</dt><dd>Poster dan kartu diam; hujan tanpa animasi.</dd></dl>
+  <ul class="aset"><li class="ada">ronin-poster.v2.webp</li></ul>
+</article><article class="adegan">
+  <div class="sk t-artefak-pin k-pin-scrub" style="--lat:#0a0b0c;--tin:#e9ebec;--aks:#ffb000"><div class="mid"><div class="z z-kiri"><div class="el judul"><i></i><i></i><span class="lbl">Dari motor ke layar.</span></div></div><div class="z z-kanan"><div class="el kotak diagram"><i></i><span class="lbl">Ronin terurai jadi titik yang menyusun ponsel</span></div><div class="el ponsel"><i></i><span class="lbl">Tangkapan dasbor asli</span></div></div></div></div>
+  <header><span class="id">A4</span><h3>Motor ke layar</h3></header>
+  <p class="meta"><span>330–530&nbsp;vh</span><span class="ko">Pin dan scrub</span></p>
+  <dl><dt>Gerak</dt><dd>Ronin terurai dari hub depan, titik menyusun ponsel, tangkapan asli memudar masuk.</dd><dt>Ponsel</dt><dd>Tidak dipin; poster dan ponsel berdampingan.</dd><dt>Tanpa gerak</dt><dd>Poster dan tangkapan berdampingan.</dd></dl>
+  <ul class="aset"><li class="ada">ronin-poster.v2.webp</li><li class="ada">ridedeck-dasbor.v1.webp</li></ul>
+</article><article class="adegan">
+  <div class="sk t-wipe k-wipe" style="--lat:#0a0b0c;--tin:#e9ebec;--aks:#ffb000"><div class="z z-atas"><div class="el judul"><i></i><i></i><span class="lbl">Dari versi pertama ke versi sekarang.</span></div></div><div class="mid"><div class="z z-tengah"><div class="el ponsel"><i></i><span class="lbl">Satu bingkai: 22 Okt 2026 disapu jadi 28 Okt 2026</span></div></div></div></div>
+  <header><span class="id">A5</span><h3>Iterasi</h3></header>
+  <p class="meta"><span>530–640&nbsp;vh</span><span class="ko">Wipe satu bingkai</span></p>
+  <dl><dt>Gerak</dt><dd>Garis sapu mengikuti gulir saat bingkai melewati garis baca, tanpa pin.</dd><dt>Ponsel</dt><dd>Dua ponsel berdampingan tanpa gerak.</dd><dt>Tanpa gerak</dt><dd>Dua ponsel berdampingan.</dd></dl>
+  <ul class="aset"><li class="ada">dasbor-22okt.v1.webp</li><li class="ada">ridedeck-dasbor.v1.webp</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-split-kiri k-progress-rail" style="--lat:#0a0b0c;--tin:#e9ebec;--aks:#ffb000"><div class="z z-atas"><div class="el judul"><i></i><i></i><span class="lbl">Uji di HP dulu, janji kemudian.</span></div></div><div class="mid"><div class="z z-kiri"><div class="el kotak diagram"><i></i><span class="lbl">Rel enam tahap 20 sampai 29 Okt 2026</span></div></div><div class="z z-kanan"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Body pertama: split screen ditolak HP, diganti jalur cadangan</span></div></div></div></div>
+  <header><span class="id">A6</span><h3>Uji di HP dulu</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>640–790&nbsp;vh</span><span class="ko">Progress rail</span></p>
+  <dl><dt>Gerak</dt><dd>Penanda rel pindah ke tahap yang melewati garis baca; tiap tahap bisa diklik.</dd><dt>Ponsel</dt><dd>Rel jadi daftar bernomor.</dd><dt>Tanpa gerak</dt><dd>Rel statis, tautan tetap jalan.</dd></dl>
+  
+</article><article class="adegan">
+  <div class="sk t-split-kanan k-none" style="--lat:#0a0b0c;--tin:#e9ebec;--aks:#ffb000"><div class="mid"><div class="z z-kiri"><div class="el kotak foto"><i></i><span class="lbl">Tiga konsep ikon dari Gemini</span></div></div><div class="z z-kanan"><div class="el logo"><i></i><span class="lbl">Ikon akhir</span></div><div class="el judul"><i></i><i></i><span class="lbl">Dari konsep ke ikon.</span></div></div></div></div>
+  <header><span class="id">A7</span><h3>Ikon</h3></header>
+  <p class="meta"><span>790–870&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada gerak.</dd><dt>Ponsel</dt><dd>Ditumpuk.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  <ul class="aset"><li class="ada">konsep-ikon.v1.webp</li><li class="ada">ikon.v1.svg</li></ul>
+</article><article class="adegan">
+  <div class="sk t-tumpuk-kartu k-sticky-stack" style="--lat:#0a0b0c;--tin:#e9ebec;--aks:#ffb000"><div class="mid"><div class="z z-tengah"><div class="el kotak kartu"><i></i><span class="lbl">01 Selalu bisa kembali ke dasbor</span></div><div class="el kotak kartu"><i></i><span class="lbl">02 Instrumen yang jujur soal batas</span></div><div class="el kotak kartu"><i></i><span class="lbl">03 Motor dan pengendara dalam simulasi</span></div><div class="el kotak kartu"><i></i><span class="lbl">04 Satu layar ala kokpit pesawat</span></div><div class="el kotak kartu"><i></i><span class="lbl">05 Tidak berebut tombol dengan app lain</span></div></div></div></div>
+  <header><span class="id">A8</span><h3>Fitur sebagai kartu dasbor</h3></header>
+  <p class="meta"><span>870–1270&nbsp;vh</span><span class="ko">Sticky stack</span></p>
+  <dl><dt>Gerak</dt><dd>Tiap kartu baja menempel lalu tertutup kartu berikutnya, satu kartu satu layar.</dd><dt>Ponsel</dt><dd>Kartu tidak menempel; ponsel 200px supaya tiap kartu lebih pendek dari layar.</dd><dt>Tanpa gerak</dt><dd>Kartu ditumpuk biasa tanpa menempel.</dd></dl>
+  <ul class="aset"><li class="ada">ridedeck-dasbor.v1.webp</li><li class="ada">ridedeck-tangki.v2.webp</li><li class="ada">ridedeck-simulasi.v2.webp</li><li class="ada">ridedeck-kokpit.v1.webp</li><li class="ada">ridedeck-musik.v1.webp</li></ul>
+</article><article class="adegan baru">
+  <div class="sk t-kutipan k-quiet-reveal" style="--lat:#0a0b0c;--tin:#e9ebec;--aks:#ffb000"><div class="mid"><div class="z z-tengah"><div class="el judul"><i></i><i></i><span class="lbl">Isi chat Anda tidak keluar dari HP.</span></div><div class="el teks"><i></i><i></i><i></i><span class="lbl">Isi notifikasi WhatsApp, telepon, dan Maps hanya dibaca saat itu, tidak disimpan dan tidak dikirim.</span></div></div></div></div>
+  <header><span class="id">A9</span><h3>Data tetap di HP</h3><span class="tag">Baru</span></header>
+  <p class="meta"><span>1270–1340&nbsp;vh</span><span class="ko">Quiet reveal</span></p>
+  <dl><dt>Gerak</dt><dd>Paragraf memudar masuk saat lewat.</dd><dt>Ponsel</dt><dd>Sama.</dd><dt>Tanpa gerak</dt><dd>Tampil langsung.</dd></dl>
+  
+</article><article class="adegan">
+  <div class="sk t-penutup k-none" style="--lat:#0a0b0c;--tin:#e9ebec;--aks:#ffb000"><div class="mid"><div class="z z-tengah"><div class="el teks"><i></i><i></i><i></i><span class="lbl">Catatan tangkapan dan atribusi model Ronin</span></div></div></div></div>
+  <header><span class="id">A10</span><h3>Sumber</h3></header>
+  <p class="meta"><span>1340–1400&nbsp;vh</span><span class="ko">Tanpa gerak scroll</span></p>
+  <dl><dt>Gerak</dt><dd>Tidak ada gerak.</dd><dt>Ponsel</dt><dd>Sama.</dd><dt>Tanpa gerak</dt><dd>Sama.</dd></dl>
+  
+</article></div>
+</section></main>
+</body></html>

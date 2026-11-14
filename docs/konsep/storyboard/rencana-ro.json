@@ -1,0 +1,139 @@
+{
+  "slug": "rencana-ro",
+  "judul": "Rencana RO",
+  "halaman": "/work/rencana-ro",
+  "satuPesan": "Data mentah back office jadi empat jawaban minggu ini, masing-masing dengan tanggal datanya.",
+  "identitas": { "latar": "#f2f2f7", "tinta": "#1c1c1e", "aksen": "#0067d6", "huruf": "Font sistem (SF Pro, Segoe UI)" },
+  "adegan": [
+    {
+      "id": "R1",
+      "nama": "Hero",
+      "scroll": [0, 100],
+      "koreografi": "none",
+      "tata": "hero",
+      "elemen": [
+        { "jenis": "ikon", "label": "Ikon Rencana RO", "posisi": "kiri" },
+        { "jenis": "judul", "label": "Rencana RO", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Asisten mingguan untuk distributor independen: bonus cair, beli berapa, taruh di mana, kapan repeat order.", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Masalah, Solusi, Hasil", "posisi": "bawah" },
+        { "jenis": "ponsel", "label": "Beranda ponsel versi bersih", "posisi": "kanan" }
+      ],
+      "gerak": "Tidak ada gerak.",
+      "ponsel": "Ponsel di bawah ringkasan.",
+      "reducedMotion": "Sama seperti dengan gerak.",
+      "aset": [
+        { "berkas": "rencana-ro-ikon.v1.svg", "status": "belum" },
+        { "berkas": "rencana-ro-beranda-ponsel.v3.webp", "status": "belum" }
+      ],
+      "baru": false
+    },
+    {
+      "id": "R2",
+      "nama": "Sebelum tutup mingguan",
+      "scroll": [100, 310],
+      "koreografi": "pin-scrub",
+      "tata": "artefak-pin",
+      "elemen": [
+        { "jenis": "judul", "label": "Satu angka, dari data mentah sampai kalimat yang bisa dijalankan.", "posisi": "atas" },
+        { "jenis": "kartu", "label": "Baris mentah: kaki kiri 120rb poin, kaki kanan 90rb poin, data per 16 Okt", "posisi": "kiri" },
+        { "jenis": "kartu", "label": "Beli 49 unit: 15 untuk kaki kiri, 34 untuk kaki kanan.", "posisi": "tengah" },
+        { "jenis": "diagram", "label": "Bilah poin sekarang dan sesudah, kiri dan kanan", "posisi": "kanan" }
+      ],
+      "gerak": "Baris mentah tampil, saran menyala, lalu dua angka dari baris mentah pindah ke bilah Poin sekarang dan bilah Poin sesudah tumbuh.",
+      "ponsel": "Tidak dipin; tiga kartu bertumpuk, bilah sudah penuh.",
+      "reducedMotion": "Tiga kartu utuh, kedua bilah dengan angka.",
+      "aset": [],
+      "baru": false
+    },
+    {
+      "id": "R3",
+      "nama": "Empat jawaban",
+      "scroll": [310, 420],
+      "koreografi": "shared-element",
+      "tata": "grid",
+      "elemen": [
+        { "jenis": "judul", "label": "Empat jawaban, setiap minggu, di ponsel.", "posisi": "atas" },
+        { "jenis": "kartu", "label": "Bonus yang sudah cair: Rp2.550.000", "posisi": "tengah" },
+        { "jenis": "kartu", "label": "Beli berapa unit: 49 unit", "posisi": "tengah" },
+        { "jenis": "kartu", "label": "Taruh di mana: di bawah Hendra Anggrekasih, isi kaki kanan", "posisi": "tengah" },
+        { "jenis": "kartu", "label": "Kapan repeat order: 3 orang dalam 3 hari ke depan", "posisi": "tengah" }
+      ],
+      "gerak": "Kalimat Beli 49 unit tampil di atas, lalu bergeser dan mengecil ke kartu kedua; tiga kartu lain masuk di sekitarnya.",
+      "ponsel": "Tanpa perpindahan; empat kartu satu kolom.",
+      "reducedMotion": "Crossfade dari kalimat ke kartu; angka ada di DOM sekali.",
+      "aset": [],
+      "baru": true
+    },
+    {
+      "id": "R4",
+      "nama": "Fitur",
+      "scroll": [420, 720],
+      "koreografi": "sticky-stack",
+      "tata": "tumpuk-kartu",
+      "elemen": [
+        { "jenis": "browser", "label": "Rencana repeat order dengan alasan", "posisi": "kanan" },
+        { "jenis": "browser", "label": "Pengingat yang diatur sendiri", "posisi": "kanan" },
+        { "jenis": "browser", "label": "Tarikan per jam yang bisa diaudit", "posisi": "kanan" },
+        { "jenis": "ponsel", "label": "Push pagi ke ponsel", "posisi": "kanan" }
+      ],
+      "gerak": "Tiap kartu menempel, kartu berikutnya menumpuk di atasnya.",
+      "ponsel": "Kartu berurutan, tiap kartu lebih pendek dari layar.",
+      "reducedMotion": "Kartu berurutan tanpa menempel.",
+      "aset": [
+        { "berkas": "rencana-ro-rencana.v3.webp", "status": "belum" },
+        { "berkas": "rencana-ro-kalender.v2.webp", "status": "ada" },
+        { "berkas": "rencana-ro-riwayat-run.v2.webp", "status": "ada" },
+        { "berkas": "rencana-ro-push-ponsel.v1.webp", "status": "belum" }
+      ],
+      "baru": true
+    },
+    {
+      "id": "R5",
+      "nama": "Satu angka terukur",
+      "scroll": [720, 800],
+      "koreografi": "number-reveal",
+      "tata": "angka",
+      "elemen": [
+        { "jenis": "angka", "label": "27 ms, sebelumnya 137 ms [1]", "posisi": "tengah" },
+        { "jenis": "teks", "label": "Cek sesi per request, sesudah fungsi dan database dipindah ke Singapura", "posisi": "bawah" }
+      ],
+      "gerak": "Angka akhir sudah di HTML; bilah pembanding menyusut dari panjang 137 ke 27 dan 137 dicoret.",
+      "ponsel": "Sama, bilah selebar layar.",
+      "reducedMotion": "Bilah sudah di 27, 137 tertulis sebagai pembanding.",
+      "aset": [],
+      "baru": true
+    },
+    {
+      "id": "R6",
+      "nama": "Tur",
+      "scroll": [800, 920],
+      "koreografi": "none",
+      "tata": "perangkat-penuh",
+      "elemen": [
+        { "jenis": "judul", "label": "Dari data mentah back office ke rencana minggu ini.", "posisi": "tengah" },
+        { "jenis": "video", "label": "Tur 50 detik, tanpa suara", "posisi": "tengah" }
+      ],
+      "gerak": "Video tidak autoplay; poster tampil dulu.",
+      "ponsel": "Video 16:10 selebar layar.",
+      "reducedMotion": "Poster dan transkrip.",
+      "aset": [
+        { "berkas": "rencana-ro-tur.v2.mp4", "status": "ada" },
+        { "berkas": "rencana-ro-tur.v2.poster.webp", "status": "ada" }
+      ],
+      "baru": false
+    },
+    {
+      "id": "R7",
+      "nama": "Sumber",
+      "scroll": [920, 970],
+      "koreografi": "none",
+      "tata": "penutup",
+      "elemen": [ { "jenis": "teks", "label": "Metode, tanggal ukur, rencana-ro@cca37ff", "posisi": "tengah" } ],
+      "gerak": "Tidak ada.",
+      "ponsel": "Sama.",
+      "reducedMotion": "Sama.",
+      "aset": [],
+      "baru": false
+    }
+  ]
+}

@@ -368,10 +368,11 @@ export const FAQS = [
  * Marquee under the hero. Names the owner confirmed may be published; all already named on /work.
  * The landing sync lists exactly these in Clients, which is what the public API returns.
  */
+// Logo files and where each came from: scripts/landing-assets/PROVENANCE.md.
 export const CLIENTS: readonly WantedClient[] = [
-  { name: 'Geprek Wow', industry: 'fb' },
-  { name: 'RPN Agro', industry: 'manufacturing' },
-  { name: 'Chicken Wow', industry: 'fb' },
-  { name: 'Uruzin', industry: 'legal' },
-  { name: 'The Global Review', industry: 'media' },
+  { name: 'Geprek Wow', industry: 'fb', logo: 'klien-geprek-wow.v1.webp' },
+  { name: 'RPN Agro', industry: 'manufacturing', logo: 'klien-rpn-agro.v1.webp' },
+  { name: 'Chicken Wow', industry: 'fb', logo: 'klien-chicken-wow.v1.webp' },
+  { name: 'Uruzin', industry: 'legal', logo: 'klien-uruzin.v1.webp' },
+  { name: 'The Global Review', industry: 'media', logo: 'klien-the-global-review.v1.webp' },
 ];

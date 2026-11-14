@@ -1,0 +1,112 @@
+{
+  "slug": "katalog-work",
+  "judul": "Katalog proyek",
+  "halaman": "/work",
+  "satuPesan": "Lima belas sistem yang jalan, dan Anda bisa menyaring sampai ke yang mirip dengan usaha Anda.",
+  "identitas": { "latar": "#F4F7F5", "tinta": "#08090A", "aksen": "#2C70FE", "huruf": "Satoshi, JetBrains Mono untuk ukuran" },
+  "adegan": [
+    {
+      "id": "K1",
+      "nama": "Kepala",
+      "scroll": [0, 40],
+      "koreografi": "none",
+      "tata": "hero",
+      "elemen": [
+        { "jenis": "judul", "label": "15 proyek, 9 bidang usaha. (dihitung dari data)", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Lede: saring menurut layanan atau bidang usaha", "posisi": "kanan" }
+      ],
+      "gerak": "Tidak ada; jumlah tetap teks biasa.",
+      "ponsel": "Lede di bawah judul.",
+      "reducedMotion": "Sama.",
+      "aset": [],
+      "baru": false
+    },
+    {
+      "id": "K2",
+      "nama": "Saringan",
+      "scroll": [40, 56],
+      "koreografi": "shared-element",
+      "tata": "grid",
+      "elemen": [
+        { "jenis": "teks", "label": "Segmen Layanan", "posisi": "atas" },
+        { "jenis": "teks", "label": "Chip Bidang", "posisi": "bawah" }
+      ],
+      "gerak": "Saat saringan diganti, kartu yang tetap ada bergeser ke tempat barunya, yang keluar memudar, yang masuk muncul.",
+      "ponsel": "Sama, lebih singkat.",
+      "reducedMotion": "Kisi berganti seketika.",
+      "aset": [],
+      "baru": false
+    },
+    {
+      "id": "K3",
+      "nama": "Kartu utama",
+      "scroll": [56, 110],
+      "koreografi": "quiet-reveal",
+      "tata": "split-kiri",
+      "elemen": [
+        { "jenis": "foto", "label": "Sampul seragam 16:10 dari templat", "posisi": "kiri" },
+        { "jenis": "ikon", "label": "Ikon produk di atas nama", "posisi": "kanan" },
+        { "jenis": "teks", "label": "Nama, kalimat ringkas, bidang, Baca", "posisi": "kanan" }
+      ],
+      "gerak": "Muncul sekali saat dimuat; saat disorot loop diputar di atas sampul.",
+      "ponsel": "Satu kolom, poster dan tombol Pratinjau.",
+      "reducedMotion": "Poster dan tombol Pratinjau.",
+      "aset": [
+        { "berkas": "laporta-sampul.v1.webp", "status": "belum" },
+        { "berkas": "laporta-ikon.v1.png", "status": "belum" }
+      ],
+      "baru": false
+    },
+    {
+      "id": "K4",
+      "nama": "Kisi kartu",
+      "scroll": [110, 370],
+      "koreografi": "quiet-reveal",
+      "tata": "grid",
+      "elemen": [
+        { "jenis": "kartu", "label": "14 kartu dari templat sampul yang sama, ikon produk, chip bidang dan tahun", "posisi": "penuh" }
+      ],
+      "gerak": "Tiap baris kartu muncul saat masuk, opasitas dan geser 12px; loop saat disorot untuk semua kartu yang punya loop.",
+      "ponsel": "Satu kolom; loop hanya lewat tombol Pratinjau.",
+      "reducedMotion": "Kartu langsung tampil, tanpa loop otomatis.",
+      "aset": [
+        { "berkas": "<slug>-sampul.v1.webp × 13", "status": "belum" },
+        { "berkas": "<slug>-ikon.v1.png × 15", "status": "belum" },
+        { "berkas": "<slug>-kartu-loop.v1.mp4 × 12", "status": "belum" },
+        { "berkas": "loop Laporta, Jeda, FiFoFun", "status": "ada" }
+      ],
+      "baru": false
+    },
+    {
+      "id": "K5",
+      "nama": "Dari kartu ke halaman proyek",
+      "scroll": [110, 370],
+      "koreografi": "shared-element",
+      "tata": "perangkat-penuh",
+      "elemen": [
+        { "jenis": "foto", "label": "Sampul kartu yang membesar menjadi gambar hero halaman tujuan", "posisi": "penuh" }
+      ],
+      "gerak": "Dipicu klik, bukan scroll: sampul kartu membesar menjadi hero halaman yang dituju.",
+      "ponsel": "Sama.",
+      "reducedMotion": "Pindah halaman biasa tanpa transisi.",
+      "aset": [ { "berkas": "sampul yang sama dengan kartu", "status": "belum" } ],
+      "baru": true
+    },
+    {
+      "id": "K6",
+      "nama": "Penutup",
+      "scroll": [370, 410],
+      "koreografi": "quiet-reveal",
+      "tata": "penutup",
+      "elemen": [
+        { "jenis": "judul", "label": "Ceritakan proses yang paling merepotkan. Kami bantu petakan.", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Tombol Konsultasi gratis 30 menit ke /#contact", "posisi": "kanan" }
+      ],
+      "gerak": "Muncul saat masuk.",
+      "ponsel": "Tombol selebar layar.",
+      "reducedMotion": "Langsung tampil.",
+      "aset": [],
+      "baru": true
+    }
+  ]
+}

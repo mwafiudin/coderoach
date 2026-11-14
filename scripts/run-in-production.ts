@@ -3,7 +3,7 @@
  *
  * The Railway image only carries what `next start` needs, so scripts/ (and the files in
  * scripts/portfolio-assets) is not in it, and `railway ssh -- "npx tsx scripts/…"` finds nothing.
- * This packs the script (plus the assets for portfolio-sync) from this checkout, sends it over
+ * This packs the script (plus the assets for portfolio-sync and landing-sync) from this checkout, sends it over
  * `railway ssh` stdin, checks the sha256 on the other side, unpacks it into /app, and runs it there,
  * where the media volume, the private database, and CODEROACH_OS_TOKEN already are. No production
  * secret leaves Railway. The copy is gone at the next deploy; the archive is deleted once unpacked.
@@ -21,7 +21,7 @@ import { spawn, spawnSync } from 'node:child_process';
 /** What each script needs besides itself. Anything not listed here cannot be run this way. */
 const SCRIPTS: Record<string, string[]> = {
   'portfolio-sync': ['scripts/portfolio-assets'],
-  'landing-sync': [],
+  'landing-sync': ['scripts/landing-assets'],
   // Writes text-cleanup-backup-<time>.json in /app on --apply: copy it out before the next deploy.
   'text-cleanup': [],
 };

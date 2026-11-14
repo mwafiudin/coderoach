@@ -1,0 +1,152 @@
+{
+  "slug": "jeda",
+  "judul": "Jeda",
+  "halaman": "/work/jeda",
+  "satuPesan": "Catatan ditulis saat perasaan berubah, di mana saja, lalu sampai dengan tenang di meja psikolog.",
+  "identitas": { "latar": "#eeebe6", "tinta": "#2b2926", "aksen": "#4e6a84", "huruf": "Nunito Sans" },
+  "adegan": [
+    {
+      "id": "A1",
+      "nama": "Hero",
+      "scroll": [0, 100],
+      "koreografi": "none",
+      "tata": "hero",
+      "elemen": [
+        { "jenis": "ikon", "label": "Ikon Jeda di depan eyebrow", "posisi": "kiri" },
+        { "jenis": "judul", "label": "Dari kereta tanpa sinyal ke meja psikolog.", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Catatan pikiran di antara sesi konseling, yang tetap jalan tanpa sinyal.", "posisi": "kiri" },
+        { "jenis": "ponsel", "label": "Daftar catatan dua minggu", "posisi": "kanan" },
+        { "jenis": "kartu", "label": "Masalah, Solusi, Hasil di lembar bergaris", "posisi": "bawah" }
+      ],
+      "gerak": "Tidak ada gerak; ponsel berhenti melayang.",
+      "ponsel": "Ponsel di bawah teks.",
+      "reducedMotion": "Sama.",
+      "aset": [
+        { "berkas": "jeda-ikon.v1.svg", "status": "belum" },
+        { "berkas": "jeda-daftar.v1.webp", "status": "ada" }
+      ],
+      "baru": false
+    },
+    {
+      "id": "A2",
+      "nama": "Suasana",
+      "scroll": [100, 170],
+      "koreografi": "none",
+      "tata": "perangkat-penuh",
+      "elemen": [
+        { "jenis": "foto", "label": "Penumpang kereta menulis di dekat jendela", "posisi": "penuh" },
+        { "jenis": "teks", "label": "Di kereta, tanpa sinyal: tempat catatan ditulis.", "posisi": "bawah" }
+      ],
+      "gerak": "Tidak ada gerak.",
+      "ponsel": "Foto dipotong lebih tinggi.",
+      "reducedMotion": "Sama.",
+      "aset": [{ "berkas": "jeda-kereta.v1.webp", "status": "ada" }],
+      "baru": false
+    },
+    {
+      "id": "A3",
+      "nama": "Satu catatan, dua meja",
+      "scroll": [170, 330],
+      "koreografi": "quiet-reveal",
+      "tata": "split-kiri",
+      "elemen": [
+        { "jenis": "judul", "label": "Satu catatan, dua meja.", "posisi": "atas" },
+        { "jenis": "ponsel", "label": "Catatan karangan: situasi dan pikiran", "posisi": "kiri" },
+        { "jenis": "diagram", "label": "Jalur titik antar meja", "posisi": "tengah" },
+        { "jenis": "kartu", "label": "Tabel psikolog, baris Baru sejak terakhir dibuka", "posisi": "kanan" }
+      ],
+      "gerak": "Situasi lalu pikiran muncul pelan, Tersimpan di perangkat menyala, lalu catatan menyeberang dan baris baru di tabel menebal.",
+      "ponsel": "Jalur turun vertikal, urutan sama, tidak dipin.",
+      "reducedMotion": "Catatan sudah di tabel dan bertanda baru.",
+      "aset": [],
+      "baru": false
+    },
+    {
+      "id": "A4",
+      "nama": "Mencatat, bukan menafsirkan",
+      "scroll": [330, 450],
+      "koreografi": "quiet-reveal",
+      "tata": "split-kanan",
+      "elemen": [
+        { "jenis": "judul", "label": "Mencatat, bukan menafsirkan.", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Di layar klien tidak ada grafik mood, streak, lencana, atau ringkasan otomatis.", "posisi": "kiri" },
+        { "jenis": "laptop", "label": "Tab Ringkasan di laptop psikolog", "posisi": "kanan" }
+      ],
+      "gerak": "Teks kiri tampil dulu; layar Ringkasan memudar masuk dan naik sekitar 12px saat melewati garis baca.",
+      "ponsel": "Teks di atas, layar di bawah.",
+      "reducedMotion": "Teks dan layar tampil langsung.",
+      "aset": [{ "berkas": "jeda-ringkasan.v1.webp", "status": "ada" }],
+      "baru": true
+    },
+    {
+      "id": "A5",
+      "nama": "Tautan untuk psikolog",
+      "scroll": [450, 540],
+      "koreografi": "quiet-reveal",
+      "tata": "kutipan",
+      "elemen": [
+        { "jenis": "judul", "label": "Catatan Anda dibaca psikolog Anda, lewat tautan yang bisa dicabut.", "posisi": "atas" },
+        { "jenis": "kartu", "label": "PIN bila perlu", "posisi": "kiri" },
+        { "jenis": "kartu", "label": "Bisa kedaluwarsa", "posisi": "tengah" },
+        { "jenis": "kartu", "label": "Bisa dicabut", "posisi": "kanan" },
+        { "jenis": "teks", "label": "Aplikasinya tidak mengirim catatan ke layanan lain.", "posisi": "bawah" }
+      ],
+      "gerak": "Tiga keterangan tautan muncul satu per satu dengan opasitas, pelan.",
+      "ponsel": "Tiga keterangan ditumpuk, urutan sama.",
+      "reducedMotion": "Semua tampil.",
+      "aset": [],
+      "baru": true
+    },
+    {
+      "id": "A6",
+      "nama": "Fitur",
+      "scroll": [540, 900],
+      "koreografi": "quiet-reveal",
+      "tata": "grid",
+      "elemen": [
+        { "jenis": "teks", "label": "Empat fitur dari projects.ts", "posisi": "kiri" },
+        { "jenis": "ponsel", "label": "Catat cepat, daftar, catatan lengkap", "posisi": "kanan" },
+        { "jenis": "browser", "label": "Tabel psikolog untuk fitur 04", "posisi": "kanan" }
+      ],
+      "gerak": "Layar memudar masuk dengan geser 12px saat lewat.",
+      "ponsel": "Teks dan layar ditumpuk.",
+      "reducedMotion": "Layar tampil tanpa geser.",
+      "aset": [
+        { "berkas": "jeda-catat-cepat.v1.webp", "status": "ada" },
+        { "berkas": "jeda-daftar.v1.webp", "status": "ada" },
+        { "berkas": "jeda-catatan-lengkap.v1.webp", "status": "ada" },
+        { "berkas": "jeda-tabel-psikolog.v1.webp", "status": "ada" }
+      ],
+      "baru": false
+    },
+    {
+      "id": "A7",
+      "nama": "Tur",
+      "scroll": [900, 1000],
+      "koreografi": "none",
+      "tata": "perangkat-penuh",
+      "elemen": [{ "jenis": "video", "label": "Tur 50 detik", "posisi": "penuh" }],
+      "gerak": "Video diputar oleh pembaca.",
+      "ponsel": "Video selebar layar.",
+      "reducedMotion": "Poster.",
+      "aset": [
+        { "berkas": "jeda-tur.v1.mp4", "status": "ada" },
+        { "berkas": "jeda-tur.v1.poster.webp", "status": "ada" }
+      ],
+      "baru": false
+    },
+    {
+      "id": "A8",
+      "nama": "Sumber",
+      "scroll": [1000, 1060],
+      "koreografi": "none",
+      "tata": "penutup",
+      "elemen": [{ "jenis": "teks", "label": "Catatan rekaman dari data karangan", "posisi": "tengah" }],
+      "gerak": "Tidak ada gerak.",
+      "ponsel": "Sama.",
+      "reducedMotion": "Sama.",
+      "aset": [],
+      "baru": false
+    }
+  ]
+}

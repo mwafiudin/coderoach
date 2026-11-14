@@ -1,0 +1,118 @@
+{
+  "slug": "locascore",
+  "judul": "LocaScore",
+  "halaman": "/work/locascore",
+  "satuPesan": "Satu link Google Maps jadi putusan GO atau NO-GO yang alasannya bisa dibaca.",
+  "identitas": { "latar": "#f4f7fb", "tinta": "#052258", "aksen": "#0b5efe", "huruf": "Nunito 800 dan PT Sans" },
+  "adegan": [
+    {
+      "id": "A1",
+      "nama": "Hero",
+      "scroll": [0, 100],
+      "koreografi": "none",
+      "tata": "hero",
+      "elemen": [
+        { "jenis": "ikon", "label": "Ikon kubus berlapis LocaScore", "posisi": "kiri" },
+        { "jenis": "judul", "label": "LocaScore", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Menilai calon lokasi outlet sebelum kontrak sewa ditandatangani.", "posisi": "kiri" },
+        { "jenis": "kartu", "label": "Lembar Ukur Tapak, No. LS-CONTOH-001", "posisi": "kanan" },
+        { "jenis": "teks", "label": "Masalah, Solusi, Hasil", "posisi": "bawah" }
+      ],
+      "gerak": "Tidak ada gerak; jawaban tampil sebelum gambar apa pun.",
+      "ponsel": "Kepala lembar disembunyikan, ikon 40px di atas eyebrow.",
+      "reducedMotion": "Sama seperti dengan gerak.",
+      "aset": [ { "berkas": "locascore-ikon.v1.svg", "status": "belum" } ],
+      "baru": false
+    },
+    {
+      "id": "A2",
+      "nama": "Lembar Ukur Tapak",
+      "scroll": [100, 320],
+      "koreografi": "pin-scrub",
+      "tata": "artefak-pin",
+      "elemen": [
+        { "jenis": "judul", "label": "Yang ditaksir dalam satu sore, diukur.", "posisi": "kiri" },
+        { "jenis": "kartu", "label": "Kesan survei: Ramai kok, Dekat sekolah, Kompetitornya cuma satu", "posisi": "kanan" },
+        { "jenis": "diagram", "label": "Sketsa radius: 18 kompetitor dan 7 titik lain", "posisi": "kanan" },
+        { "jenis": "kartu", "label": "Tabel ukur: 69, 100, 95, 93, 70, 15", "posisi": "kanan" },
+        { "jenis": "angka", "label": "GO, 82/100, balik modal 15,8 bulan, keyakinan rendah", "posisi": "kanan" }
+      ],
+      "gerak": "Tautan jadi koordinat, titik muncul, baris tabel terisi, baris yang menjawab sebuah kesan menyala saat kesan itu dicentang atau dicoret, lalu lencana GO turun.",
+      "ponsel": "Tidak dipin; lembar sudah terisi penuh dan tabel ditumpuk per faktor.",
+      "reducedMotion": "Lembar terisi penuh, semua tanda sudah di tempatnya.",
+      "aset": [],
+      "baru": false
+    },
+    {
+      "id": "A3",
+      "nama": "Lembar yang sama di aplikasinya",
+      "scroll": [320, 430],
+      "koreografi": "shared-element",
+      "tata": "perangkat-penuh",
+      "elemen": [
+        { "jenis": "judul", "label": "Putusan dulu, datanya menyusul.", "posisi": "atas" },
+        { "jenis": "angka", "label": "Lencana 82 dan enam nilai dari lembar", "posisi": "kiri" },
+        { "jenis": "browser", "label": "Tangkapan Kesimpulan Kelayakan", "posisi": "tengah" }
+      ],
+      "gerak": "Lencana 82 dan kolom nilai bergeser dan mengecil ke cincin skor dan bilah faktor di tangkapan, lalu memudar.",
+      "ponsel": "Tanpa perpindahan; lencana kecil di atas tangkapan, tanpa keterangan tambahan.",
+      "reducedMotion": "Crossfade dari lencana ke tangkapan, keduanya terbaca.",
+      "aset": [ { "berkas": "locascore-kelayakan.v1.webp", "status": "ada" } ],
+      "baru": true
+    },
+    {
+      "id": "A4",
+      "nama": "Sesudah skor",
+      "scroll": [430, 790],
+      "koreografi": "sticky-stack",
+      "tata": "tumpuk-kartu",
+      "elemen": [
+        { "jenis": "kartu", "label": "Belajar dari outlet yang sudah berjalan", "posisi": "tengah" },
+        { "jenis": "kartu", "label": "Laporan PDF untuk investor", "posisi": "tengah" },
+        { "jenis": "kartu", "label": "Tautan publik tanpa akun", "posisi": "tengah" },
+        { "jenis": "browser", "label": "Satu layar asli per kartu", "posisi": "kanan" }
+      ],
+      "gerak": "Tiap kartu menempel di atas, kartu berikutnya menumpuk di atasnya.",
+      "ponsel": "Kartu berurutan biasa, tiap kartu lebih pendek dari layar.",
+      "reducedMotion": "Kartu berurutan tanpa menempel.",
+      "aset": [
+        { "berkas": "locascore-kalibrasi.v1.webp", "status": "belum" },
+        { "berkas": "locascore-laporan-pdf.v1.webp", "status": "belum" },
+        { "berkas": "locascore-tautan-publik.v1.webp", "status": "belum" }
+      ],
+      "baru": true
+    },
+    {
+      "id": "A5",
+      "nama": "Tur",
+      "scroll": [790, 910],
+      "koreografi": "none",
+      "tata": "perangkat-penuh",
+      "elemen": [
+        { "jenis": "judul", "label": "Dari satu tautan sampai putusan", "posisi": "tengah" },
+        { "jenis": "video", "label": "Tur MOCK_MODE, tanpa suara", "posisi": "tengah" }
+      ],
+      "gerak": "Video tidak autoplay; poster tampil dulu.",
+      "ponsel": "Video 16:10 selebar layar.",
+      "reducedMotion": "Poster dan transkrip.",
+      "aset": [
+        { "berkas": "locascore-tur.v1.mp4", "status": "belum" },
+        { "berkas": "locascore-tur.v1.poster.webp", "status": "belum" }
+      ],
+      "baru": true
+    },
+    {
+      "id": "A6",
+      "nama": "Sumber",
+      "scroll": [910, 960],
+      "koreografi": "none",
+      "tata": "penutup",
+      "elemen": [ { "jenis": "teks", "label": "Catatan data contoh dan sumber", "posisi": "tengah" } ],
+      "gerak": "Tidak ada.",
+      "ponsel": "Sama.",
+      "reducedMotion": "Sama.",
+      "aset": [],
+      "baru": false
+    }
+  ]
+}

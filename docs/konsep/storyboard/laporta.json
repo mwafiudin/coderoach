@@ -1,0 +1,149 @@
+{
+  "slug": "laporta",
+  "judul": "Laporta",
+  "halaman": "/work/laporta",
+  "satuPesan": "Satu shift ditutup dari ponsel crew dan langsung jadi jurnal yang seimbang.",
+  "identitas": { "latar": "#fafafb", "tinta": "#111114", "aksen": "#b45309", "huruf": "Montserrat, JetBrains Mono" },
+  "adegan": [
+    {
+      "id": "A1",
+      "nama": "Hero",
+      "scroll": [0, 100],
+      "koreografi": "none",
+      "tata": "hero",
+      "elemen": [
+        { "jenis": "ikon", "label": "Ikon Laporta di depan eyebrow", "posisi": "kiri" },
+        { "jenis": "judul", "label": "Laporta", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Profit intelligence layer di atas POS, untuk operator F&B Indonesia.", "posisi": "kiri" },
+        { "jenis": "kartu", "label": "Sobekan struk BUKA SHIFT", "posisi": "kanan" },
+        { "jenis": "teks", "label": "Masalah, Solusi, Hasil", "posisi": "bawah" }
+      ],
+      "gerak": "Tidak ada gerak; jawaban dulu.",
+      "ponsel": "Sobekan struk disembunyikan, ikon tetap di depan eyebrow.",
+      "reducedMotion": "Sama dengan tampilan biasa.",
+      "aset": [{ "berkas": "laporta-ikon.v1.svg", "status": "belum" }],
+      "baru": false
+    },
+    {
+      "id": "A2",
+      "nama": "Suasana",
+      "scroll": [100, 170],
+      "koreografi": "none",
+      "tata": "perangkat-penuh",
+      "elemen": [
+        { "jenis": "foto", "label": "Meja kasir saat tutup, printer struk", "posisi": "penuh" },
+        { "jenis": "teks", "label": "Jam tutup di outlet: saat crew menyerahkan shift.", "posisi": "bawah" }
+      ],
+      "gerak": "Tidak ada gerak.",
+      "ponsel": "Foto dipotong lebih tinggi, keterangan tetap di bawah.",
+      "reducedMotion": "Sama.",
+      "aset": [{ "berkas": "laporta-kasir.v1.webp", "status": "ada" }],
+      "baru": false
+    },
+    {
+      "id": "A3",
+      "nama": "Struk tutup shift",
+      "scroll": [170, 390],
+      "koreografi": "pin-scrub",
+      "tata": "artefak-pin",
+      "elemen": [
+        { "jenis": "judul", "label": "Dari laci kas sampai buku besar, dalam satu struk.", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Tujuh nama langkah, yang aktif menebal", "posisi": "kiri" },
+        { "jenis": "kartu", "label": "Struk: tujuh langkah OK, terkunci, jurnal D/K, cap SEIMBANG", "posisi": "kanan" }
+      ],
+      "gerak": "Struk keluar dari slot baris demi baris; nama langkah yang sedang tercetak menebal di kolom kiri, cap jatuh di akhir.",
+      "ponsel": "Tidak dipin; struk tercetak saat lewat dan langkah di kolom kiri ikut menebal.",
+      "reducedMotion": "Struk tercetak penuh dengan cap SEIMBANG, semua langkah setebal biasa.",
+      "aset": [],
+      "baru": false
+    },
+    {
+      "id": "A4",
+      "nama": "Struk ke layar crew",
+      "scroll": [390, 480],
+      "koreografi": "shared-element",
+      "tata": "split-kanan",
+      "elemen": [
+        { "jenis": "judul", "label": "Tujuh langkah yang sama, di ponsel crew.", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Isi features[0].body", "posisi": "kiri" },
+        { "jenis": "ponsel", "label": "Layar Tutup Shift asli", "posisi": "kanan" }
+      ],
+      "gerak": "Daftar tujuh langkah dari struk bergeser dan mengecil ke posisi checklist, lalu layar asli memudar masuk di atasnya.",
+      "ponsel": "Daftar di atas, ponsel di bawah; layar memudar masuk saat lewat tanpa perpindahan.",
+      "reducedMotion": "Crossfade diganti tampilan diam: daftar dan layar berdampingan.",
+      "aset": [{ "berkas": "laporta-tutup-shift.v2.webp", "status": "ada" }],
+      "baru": true
+    },
+    {
+      "id": "A5",
+      "nama": "Angka terukur",
+      "scroll": [480, 580],
+      "koreografi": "number-reveal",
+      "tata": "angka",
+      "elemen": [
+        { "jenis": "judul", "label": "Diukur di Laporta sendiri.", "posisi": "atas" },
+        { "jenis": "angka", "label": "1,7 layar, sebelumnya 2,7 layar [1]", "posisi": "kiri" },
+        { "jenis": "angka", "label": "76–101 ms, sebelumnya 0,7–1,2 dtk [2]", "posisi": "tengah" },
+        { "jenis": "angka", "label": "14/14 bukti transfer terbaca benar [3]", "posisi": "kanan" }
+      ],
+      "gerak": "Angka sebelum tampil lalu dicoret, angka sesudah memudar masuk; nilai akhir sudah tertulis di HTML.",
+      "ponsel": "Tiga angka ditumpuk, satu per baris.",
+      "reducedMotion": "Angka akhir dan angka sebelum yang tercoret tampil langsung.",
+      "aset": [],
+      "baru": true
+    },
+    {
+      "id": "A6",
+      "nama": "Fitur dengan rel",
+      "scroll": [580, 980],
+      "koreografi": "progress-rail",
+      "tata": "grid",
+      "elemen": [
+        { "jenis": "diagram", "label": "Rel: Shift, Kas, Stok, Jurnal", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Empat fitur dari projects.ts", "posisi": "tengah" },
+        { "jenis": "browser", "label": "Setoran, stock opname, laba rugi", "posisi": "kanan" }
+      ],
+      "gerak": "Penanda rel pindah ke fitur yang melewati garis baca; titik rel bisa diklik.",
+      "ponsel": "Rel jadi baris nomor di atas tiap fitur, tidak menempel.",
+      "reducedMotion": "Rel statis, tautan tetap jalan.",
+      "aset": [
+        { "berkas": "laporta-setoran.v2.webp", "status": "ada" },
+        { "berkas": "laporta-stock-opname.v2.webp", "status": "ada" },
+        { "berkas": "laporta-laba-rugi.v2.webp", "status": "ada" }
+      ],
+      "baru": false
+    },
+    {
+      "id": "A7",
+      "nama": "Tur",
+      "scroll": [980, 1080],
+      "koreografi": "none",
+      "tata": "perangkat-penuh",
+      "elemen": [
+        { "jenis": "judul", "label": "Satu hari outlet, dari laci kas sampai buku besar.", "posisi": "atas" },
+        { "jenis": "video", "label": "Tur 50 detik", "posisi": "penuh" }
+      ],
+      "gerak": "Video diputar oleh pembaca.",
+      "ponsel": "Video selebar layar.",
+      "reducedMotion": "Poster, video tetap bisa diputar manual.",
+      "aset": [
+        { "berkas": "laporta-tur.v2.mp4", "status": "ada" },
+        { "berkas": "laporta-tur.v2.poster.webp", "status": "ada" }
+      ],
+      "baru": false
+    },
+    {
+      "id": "A8",
+      "nama": "Sumber",
+      "scroll": [1080, 1140],
+      "koreografi": "none",
+      "tata": "penutup",
+      "elemen": [{ "jenis": "teks", "label": "Tiga sumber angka dan catatan data contoh", "posisi": "tengah" }],
+      "gerak": "Tidak ada gerak.",
+      "ponsel": "Sama.",
+      "reducedMotion": "Sama.",
+      "aset": [],
+      "baru": false
+    }
+  ]
+}

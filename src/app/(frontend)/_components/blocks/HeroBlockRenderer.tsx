@@ -13,7 +13,8 @@ export async function HeroBlockRenderer({ block }: { block: any }) {
       .catch(() => ({ docs: [] }));
     clients = (res.docs as any[]).map((c) => ({
       name: c.name,
-      logo: c.logo || null,
+      // Width and height feed the area-based sizing in Hero (lib/landing/logo-size.ts).
+      logo: c.logo ? { url: c.logo.url, alt: c.logo.alt, width: c.logo.width, height: c.logo.height } : null,
       website: c.website || null,
     }));
   }

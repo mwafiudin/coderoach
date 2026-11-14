@@ -1,0 +1,165 @@
+{
+  "slug": "yiheecam",
+  "judul": "YiheeCam",
+  "halaman": "/work/yiheecam",
+  "satuPesan": "Protokol kamera dibangun ulang dari byte-nya, dan hasilnya terbaca dalam satu lirikan dari stang.",
+  "identitas": { "latar": "#0e0e0d", "tinta": "#e9e8e2", "aksen": "#ff3b36", "huruf": "Barlow Condensed" },
+  "adegan": [
+    {
+      "id": "A1",
+      "nama": "Hero",
+      "scroll": [0, 110],
+      "koreografi": "none",
+      "tata": "hero",
+      "elemen": [
+        { "jenis": "foto", "label": "Jalan kebun teh dari dagu helm, buatan AI", "posisi": "penuh" },
+        { "jenis": "ikon", "label": "Ikon YiheeCam di depan eyebrow", "posisi": "kiri" },
+        { "jenis": "judul", "label": "YIHEECAM sebagai tile flap", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Pengendali action cam lama yang ditinggalkan vendornya, dibangun ulang dari protokolnya.", "posisi": "kiri" },
+        { "jenis": "ponsel", "label": "Layar Live, tombol YAKIN?", "posisi": "kanan" }
+      ],
+      "gerak": "Foto bergeser paling banyak 12px saat hero digulir pergi.",
+      "ponsel": "Foto digelapkan penuh, ponsel di bawah teks.",
+      "reducedMotion": "Foto diam.",
+      "aset": [
+        { "berkas": "yiheecam-ikon.v1.svg", "status": "belum" },
+        { "berkas": "yiheecam-kebun-teh.v1.webp", "status": "ada" },
+        { "berkas": "yiheecam-yakin.v1.webp", "status": "ada" }
+      ],
+      "baru": false
+    },
+    {
+      "id": "A2",
+      "nama": "Ringkasan",
+      "scroll": [110, 170],
+      "koreografi": "none",
+      "tata": "grid",
+      "elemen": [{ "jenis": "kartu", "label": "Masalah, Solusi, Hasil", "posisi": "tengah" }],
+      "gerak": "Tidak ada gerak.",
+      "ponsel": "Tiga panel ditumpuk.",
+      "reducedMotion": "Sama.",
+      "aset": [],
+      "baru": false
+    },
+    {
+      "id": "A3",
+      "nama": "Papan flap",
+      "scroll": [170, 390],
+      "koreografi": "pin-scrub",
+      "tata": "artefak-pin",
+      "elemen": [
+        { "jenis": "judul", "label": "Dibangun ulang dari byte.", "posisi": "atas" },
+        { "jenis": "teks", "label": "Byte mentah, Dikelompokkan, Terurai, Terbaca", "posisi": "atas" },
+        { "jenis": "kartu", "label": "Papan: hex membalik jadi REC, BATT, SD, lampu rekam", "posisi": "tengah" },
+        { "jenis": "teks", "label": "Ilustrasi: tiap byte adalah kode ASCII hurufnya sendiri.", "posisi": "bawah" }
+      ],
+      "gerak": "Tile hex membalik jadi huruf urut baca, tahap menyala satu per satu, lampu rekam menyala terakhir.",
+      "ponsel": "Tidak dipin di bawah 768px; tile membalik saat lewat.",
+      "reducedMotion": "Papan sudah terbaca REC, BATT, SD dengan lampu menyala.",
+      "aset": [],
+      "baru": false
+    },
+    {
+      "id": "A4",
+      "nama": "Papan di app",
+      "scroll": [390, 490],
+      "koreografi": "shared-element",
+      "tata": "split-kanan",
+      "elemen": [
+        { "jenis": "judul", "label": "Sekali lirik, sudah terbaca.", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Isi features[0].body", "posisi": "kiri" },
+        { "jenis": "ponsel", "label": "Layar Live asli, papan status", "posisi": "kanan" }
+      ],
+      "gerak": "Papan ilustrasi bergeser dan mengecil ke kotak status di ponsel, lalu tangkapan asli memudar masuk.",
+      "ponsel": "Ditumpuk; tangkapan memudar masuk saat lewat tanpa perpindahan.",
+      "reducedMotion": "Papan dan tangkapan berdampingan, tanpa crossfade.",
+      "aset": [{ "berkas": "yiheecam-yakin.v1.webp", "status": "ada" }],
+      "baru": true
+    },
+    {
+      "id": "A5",
+      "nama": "Membaca protokol",
+      "scroll": [490, 650],
+      "koreografi": "progress-rail",
+      "tata": "split-kiri",
+      "elemen": [
+        { "jenis": "judul", "label": "Membaca protokol yang tidak didokumentasikan.", "posisi": "atas" },
+        { "jenis": "diagram", "label": "Rel empat tahap 7 sampai 8 Okt 2026", "posisi": "kiri" },
+        { "jenis": "foto", "label": "Diagram urutan pesan klien uji dan kamera tiruan", "posisi": "kanan" }
+      ],
+      "gerak": "Penanda rel pindah ke tahap yang melewati garis baca; tiap tahap bisa diklik, diagram diam.",
+      "ponsel": "Rel jadi daftar bernomor, diagram di bawahnya.",
+      "reducedMotion": "Rel statis, tautan tetap jalan.",
+      "aset": [{ "berkas": "yiheecam-protokol.v1.webp", "status": "ada" }],
+      "baru": true
+    },
+    {
+      "id": "A6",
+      "nama": "Saat sambungan putus",
+      "scroll": [650, 750],
+      "koreografi": "wipe",
+      "tata": "wipe",
+      "elemen": [
+        { "jenis": "judul", "label": "Kalau putus, layarnya bilang putus.", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Isi features[2].body", "posisi": "kiri" },
+        { "jenis": "ponsel", "label": "Satu bingkai: terhubung, disapu jadi TERPUTUS", "posisi": "kanan" }
+      ],
+      "gerak": "Garis sapu bergerak dari kiri ke kanan mengikuti gulir, tanpa pin.",
+      "ponsel": "Dua tangkapan berdampingan tanpa gerak.",
+      "reducedMotion": "Dua tangkapan berdampingan.",
+      "aset": [
+        { "berkas": "yiheecam-terputus.v1.webp", "status": "ada" },
+        { "berkas": "yiheecam-terhubung.v1.webp", "status": "belum" }
+      ],
+      "baru": true
+    },
+    {
+      "id": "A7",
+      "nama": "Fitur",
+      "scroll": [750, 930],
+      "koreografi": "none",
+      "tata": "grid",
+      "elemen": [
+        { "jenis": "teks", "label": "Fitur 01 Terbaca dalam satu lirikan, 02 Aman dengan sarung tangan", "posisi": "kiri" },
+        { "jenis": "ponsel", "label": "Setting Video, tombol YAKIN?", "posisi": "kanan" }
+      ],
+      "gerak": "Layar memudar masuk dengan geser 28px saat lewat.",
+      "ponsel": "Teks dan layar ditumpuk.",
+      "reducedMotion": "Tanpa geser.",
+      "aset": [
+        { "berkas": "yiheecam-setting.v1.webp", "status": "ada" },
+        { "berkas": "yiheecam-yakin.v1.webp", "status": "ada" }
+      ],
+      "baru": false
+    },
+    {
+      "id": "A8",
+      "nama": "Hanya bicara dengan kamera",
+      "scroll": [930, 1000],
+      "koreografi": "quiet-reveal",
+      "tata": "kutipan",
+      "elemen": [
+        { "jenis": "judul", "label": "Hanya bicara dengan kamera.", "posisi": "tengah" },
+        { "jenis": "teks", "label": "Aplikasi resminya ikut mengambil nomor IMEI HP. Penggantinya hanya tersambung ke kamera.", "posisi": "tengah" }
+      ],
+      "gerak": "Paragraf memudar masuk saat lewat.",
+      "ponsel": "Sama.",
+      "reducedMotion": "Tampil langsung.",
+      "aset": [],
+      "baru": true
+    },
+    {
+      "id": "A9",
+      "nama": "Sumber",
+      "scroll": [1000, 1060],
+      "koreografi": "none",
+      "tata": "penutup",
+      "elemen": [{ "jenis": "teks", "label": "Catatan uji dengan kamera tiruan", "posisi": "tengah" }],
+      "gerak": "Tidak ada gerak.",
+      "ponsel": "Sama.",
+      "reducedMotion": "Sama.",
+      "aset": [],
+      "baru": false
+    }
+  ]
+}

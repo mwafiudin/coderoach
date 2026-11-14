@@ -1,0 +1,151 @@
+{
+  "slug": "coderoach-os",
+  "judul": "Coderoach OS",
+  "halaman": "/work/coderoach-os",
+  "satuPesan": "Satu sistem dari penawaran sampai buku besar, dan buku besarnya menolak angka yang tidak seimbang.",
+  "identitas": { "latar": "#f4f7f5", "tinta": "#08090a", "aksen": "#2467f4", "huruf": "Satoshi dan JetBrains Mono" },
+  "adegan": [
+    {
+      "id": "C1",
+      "nama": "Hero",
+      "scroll": [0, 110],
+      "koreografi": "none",
+      "tata": "hero",
+      "elemen": [
+        { "jenis": "ikon", "label": "Ikon Coderoach OS", "posisi": "kiri" },
+        { "jenis": "judul", "label": "Coderoach OS", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Sistem operasi dan keuangan studio kami sendiri, dari penawaran sampai buku besar.", "posisi": "kiri" },
+        { "jenis": "teks", "label": "[ 01 ] Masalah, [ 02 ] Solusi, [ 03 ] Hasil", "posisi": "tengah" },
+        { "jenis": "laptop", "label": "Beranda: saldo kas, piutang, laba bulan berjalan", "posisi": "bawah" }
+      ],
+      "gerak": "Tidak ada gerak; laptop di bawah ringkasan supaya jawaban tampil dulu.",
+      "ponsel": "Laptop di bawah ringkasan, selebar layar.",
+      "reducedMotion": "Sama seperti dengan gerak.",
+      "aset": [
+        { "berkas": "coderoach-os-beranda.v2.webp", "status": "ada" },
+        { "berkas": "coderoach-os-ikon.v1.svg", "status": "belum" }
+      ],
+      "baru": false
+    },
+    {
+      "id": "C2",
+      "nama": "Buku yang menolak selisih",
+      "scroll": [110, 310],
+      "koreografi": "wipe",
+      "tata": "wipe",
+      "elemen": [
+        { "jenis": "judul", "label": "Biaya yang sama, dicatat tidak seimbang, di dua tempat.", "posisi": "atas" },
+        { "jenis": "kartu", "label": "Di spreadsheet: Rp4.500.000, Rp4.200.000, margin 31%, tersimpan", "posisi": "kiri" },
+        { "jenis": "kartu", "label": "Di Coderoach OS: BEGIN, dua jurnal_line, COMMIT, ERROR tidak balance", "posisi": "kanan" }
+      ],
+      "gerak": "Wipe membuka sisi Coderoach OS, baris log muncul berurutan dengan galat di ujung, lalu dua baris jurnal dicoret.",
+      "ponsel": "Dua sisi bertumpuk, log utuh.",
+      "reducedMotion": "Dua sisi berdampingan, log utuh, tanpa coretan.",
+      "aset": [],
+      "baru": false
+    },
+    {
+      "id": "C3",
+      "nama": "Yang seimbang lolos",
+      "scroll": [310, 420],
+      "koreografi": "shared-element",
+      "tata": "split-kanan",
+      "elemen": [
+        { "jenis": "kartu", "label": "jurnal_line debit 4500000.00 biaya proyek, kredit 4500000.00 kas, COMMIT", "posisi": "kiri" },
+        { "jenis": "kartu", "label": "Laporan ringkas: Biaya proyek Rp4.500.000, Kas berkurang Rp4.500.000", "posisi": "kanan" }
+      ],
+      "gerak": "Dua baris jurnal bergeser ke kanan dan berganti format jadi dua baris laporan.",
+      "ponsel": "Log di atas, laporan di bawah, tanpa perpindahan.",
+      "reducedMotion": "Crossfade dari log ke laporan; keduanya ada di DOM.",
+      "aset": [],
+      "baru": true
+    },
+    {
+      "id": "C4",
+      "nama": "Satu kode proyek",
+      "scroll": [420, 500],
+      "koreografi": "none",
+      "tata": "grid",
+      "elemen": [
+        { "jenis": "judul", "label": "Satu kode proyek, dari penawaran sampai buku besar.", "posisi": "atas" },
+        { "jenis": "kartu", "label": "CRO-2026-014 di Penawaran, Story, Jam kerja, Invoice, Jurnal, Claude Code lewat MCP", "posisi": "tengah" }
+      ],
+      "gerak": "Baris masuk satu per satu saat lewat.",
+      "ponsel": "Sama.",
+      "reducedMotion": "Daftar utuh.",
+      "aset": [],
+      "baru": false
+    },
+    {
+      "id": "C5",
+      "nama": "Empat fitur",
+      "scroll": [500, 900],
+      "koreografi": "sticky-stack",
+      "tata": "tumpuk-kartu",
+      "elemen": [
+        { "jenis": "browser", "label": "Margin proyek yang selalu terkini", "posisi": "kanan" },
+        { "jenis": "browser", "label": "Story yang statusnya diisi mesin", "posisi": "kanan" },
+        { "jenis": "browser", "label": "Pembukuan yang dijaga database", "posisi": "kanan" },
+        { "jenis": "browser", "label": "Angka keuangan hanya untuk yang berhak", "posisi": "kanan" }
+      ],
+      "gerak": "Tiap kartu menempel, kartu berikutnya menumpuk di atasnya.",
+      "ponsel": "Kartu berurutan, tiap kartu lebih pendek dari layar.",
+      "reducedMotion": "Kartu berurutan tanpa menempel.",
+      "aset": [
+        { "berkas": "coderoach-os-proyek-detail.v2.webp", "status": "ada" },
+        { "berkas": "coderoach-os-tugas.v2.webp", "status": "ada" },
+        { "berkas": "coderoach-os-laporan.v2.webp", "status": "ada" },
+        { "berkas": "coderoach-os-tampilan-staf.v1.webp", "status": "belum" }
+      ],
+      "baru": true
+    },
+    {
+      "id": "C6",
+      "nama": "Linimasa",
+      "scroll": [900, 1010],
+      "koreografi": "progress-rail",
+      "tata": "grid",
+      "elemen": [
+        { "jenis": "diagram", "label": "Rel 2px dengan enam titik bertanggal", "posisi": "kiri" },
+        { "jenis": "teks", "label": "21 Agu 2026 sampai 13 Okt 2026, tiap baris dengan hash commit", "posisi": "kanan" }
+      ],
+      "gerak": "Rel terisi sesuai posisi baca; titik bisa diklik dan melompat ke barisnya.",
+      "ponsel": "Rel vertikal di kiri, titik tetap bisa diklik.",
+      "reducedMotion": "Rel penuh tanpa isi bergerak.",
+      "aset": [],
+      "baru": true
+    },
+    {
+      "id": "C7",
+      "nama": "Tur",
+      "scroll": [1010, 1130],
+      "koreografi": "none",
+      "tata": "perangkat-penuh",
+      "elemen": [
+        { "jenis": "judul", "label": "Satu minggu studio, dari papan kerja sampai laba rugi.", "posisi": "tengah" },
+        { "jenis": "video", "label": "Tur 80 detik, tanpa suara", "posisi": "tengah" }
+      ],
+      "gerak": "Video tidak autoplay; poster tampil dulu.",
+      "ponsel": "Video 16:10 selebar layar.",
+      "reducedMotion": "Poster dan transkrip.",
+      "aset": [
+        { "berkas": "coderoach-os-tur.v2.mp4", "status": "ada" },
+        { "berkas": "coderoach-os-tur.v2.poster.webp", "status": "ada" }
+      ],
+      "baru": false
+    },
+    {
+      "id": "C8",
+      "nama": "Sumber",
+      "scroll": [1130, 1180],
+      "koreografi": "none",
+      "tata": "penutup",
+      "elemen": [ { "jenis": "teks", "label": "Catatan data contoh", "posisi": "tengah" } ],
+      "gerak": "Tidak ada.",
+      "ponsel": "Sama.",
+      "reducedMotion": "Sama.",
+      "aset": [],
+      "baru": false
+    }
+  ]
+}

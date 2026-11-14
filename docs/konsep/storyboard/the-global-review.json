@@ -1,0 +1,116 @@
+{
+  "slug": "the-global-review",
+  "judul": "The Global Review",
+  "halaman": "/work/the-global-review",
+  "satuPesan": "Redaksi tetap menulis di tempat yang sama; yang berganti hanya apa yang dilihat pembaca.",
+  "identitas": { "latar": "#f8f8f6", "tinta": "#111111", "aksen": "#0b3d91", "huruf": "Montserrat 800 (judul), Cardo (bacaan)" },
+  "adegan": [
+    {
+      "id": "A1",
+      "nama": "Hero",
+      "scroll": [0, 100],
+      "koreografi": "none",
+      "tata": "hero",
+      "elemen": [
+        { "jenis": "logo", "label": "Logo The Global Review", "posisi": "atas" },
+        { "jenis": "judul", "label": "The Global Review, frasa Global Review tersorot navy", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Frontend baru untuk media geopolitik, dengan redaksi yang tetap menulis di WordPress.", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Masalah, Solusi, Hasil", "posisi": "bawah" }
+      ],
+      "gerak": "Tidak ada; sorotan tidak dianimasikan.",
+      "ponsel": "Sama, ringkasan bertumpuk.",
+      "reducedMotion": "Sama.",
+      "aset": [ { "berkas": "logo The Global Review", "status": "belum" } ],
+      "baru": false
+    },
+    {
+      "id": "A2",
+      "nama": "Satu acuan, banyak cetakan",
+      "scroll": [100, 380],
+      "koreografi": "sticky-stack",
+      "tata": "split-kiri",
+      "elemen": [
+        { "jenis": "judul", "label": "Redaksi menyusunnya sekali, di tempat yang sama.", "posisi": "atas" },
+        { "jenis": "kartu", "label": "Acuan, di wp-admin, dengan rel 01 sampai 04", "posisi": "kiri" },
+        { "jenis": "kartu", "label": "01 Halaman tulisan", "posisi": "kanan" },
+        { "jenis": "kartu", "label": "02 /en", "posisi": "kanan" },
+        { "jenis": "kartu", "label": "03 Kartu pratinjau", "posisi": "kanan" },
+        { "jenis": "kartu", "label": "04 Arsip", "posisi": "kanan" }
+      ],
+      "gerak": "Kartu acuan menempel di kolom kiri, cetakan masuk sekali; nomor rel cetakan yang sedang dibaca terisi navy dan bisa diklik.",
+      "ponsel": "Rel disembunyikan, kartu acuan di atas cetakan.",
+      "reducedMotion": "Rel diam dan tetap bisa diklik, cetakan tampil diam.",
+      "aset": [ { "berkas": "HTML/CSS", "status": "ada" } ],
+      "baru": false
+    },
+    {
+      "id": "A3",
+      "nama": "Alamatnya sama, halamannya baru",
+      "scroll": [380, 560],
+      "koreografi": "wipe",
+      "tata": "wipe",
+      "elemen": [
+        { "jenis": "judul", "label": "Alamatnya sama, halamannya baru.", "posisi": "atas" },
+        { "jenis": "browser", "label": "Satu tulisan, bilah alamat tetap; halaman lama dan halaman baru", "posisi": "tengah" },
+        { "jenis": "teks", "label": "Tautan yang sudah beredar di grup tetap membuka tulisan yang sama. Yang berganti hanya halaman di baliknya.", "posisi": "bawah" }
+      ],
+      "gerak": "Tirai tegak menyapu dari kiri ke kanan, halaman lama berganti halaman baru, bilah alamat diam; ditahan 160vh di layar ≥1024×900.",
+      "ponsel": "Tanpa pin: dua tangkapan bertumpuk dengan bilah alamat yang sama.",
+      "reducedMotion": "Dua tangkapan berdampingan tanpa gerak.",
+      "aset": [ { "berkas": "tgr-tulisan-lama.v1.webp", "status": "belum" }, { "berkas": "tgr-tulisan-baru.v1.webp", "status": "belum" } ],
+      "baru": true
+    },
+    {
+      "id": "A4",
+      "nama": "Yang tayang hari ini",
+      "scroll": [560, 700],
+      "koreografi": "quiet-reveal",
+      "tata": "grid",
+      "elemen": [
+        { "jenis": "browser", "label": "Beranda", "posisi": "atas" },
+        { "jenis": "browser", "label": "Halaman tulisan", "posisi": "bawah" },
+        { "jenis": "browser", "label": "/en", "posisi": "bawah" },
+        { "jenis": "browser", "label": "Arsip rubrik tersaring", "posisi": "bawah" }
+      ],
+      "gerak": "Beranda masuk dulu, tiga layar menyusul pelan berurutan.",
+      "ponsel": "Satu kolom bertumpuk.",
+      "reducedMotion": "Semua layar tampil diam.",
+      "aset": [
+        { "berkas": "the-global-review-beranda.v1.webp", "status": "ada" },
+        { "berkas": "tgr-tulisan-baru.v1.webp", "status": "belum" },
+        { "berkas": "tgr-en.v1.webp", "status": "belum" },
+        { "berkas": "tgr-arsip.v1.webp", "status": "belum" }
+      ],
+      "baru": true
+    },
+    {
+      "id": "A5",
+      "nama": "Yang didapat redaksi",
+      "scroll": [700, 790],
+      "koreografi": "quiet-reveal",
+      "tata": "split-kanan",
+      "elemen": [
+        { "jenis": "judul", "label": "Yang didapat redaksi, tanpa alat kedua.", "posisi": "kiri" },
+        { "jenis": "browser", "label": "Halaman Statistik di wp-admin, angka dikaburkan", "posisi": "kanan" }
+      ],
+      "gerak": "Tangkapan masuk pelan sekali.",
+      "ponsel": "Tangkapan di bawah teks.",
+      "reducedMotion": "Diam.",
+      "aset": [ { "berkas": "tgr-statistik.v1.webp", "status": "belum" } ],
+      "baru": false
+    },
+    {
+      "id": "A6",
+      "nama": "Sumber",
+      "scroll": [790, 830],
+      "koreografi": "none",
+      "tata": "penutup",
+      "elemen": [ { "jenis": "teks", "label": "Sumber", "posisi": "tengah" } ],
+      "gerak": "Tidak ada.",
+      "ponsel": "Sama.",
+      "reducedMotion": "Sama.",
+      "aset": [],
+      "baru": false
+    }
+  ]
+}

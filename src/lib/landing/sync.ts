@@ -1,3 +1,4 @@
+import path from 'node:path';
 import type { Payload } from 'payload';
 import { toLexical } from '../lexical';
 import { planClientsSync } from './clients';
@@ -128,6 +129,7 @@ async function syncClients(payload: Payload, { apply, log }: Required<SyncOption
       listed: d.listed === true,
       industry: d.industry ?? null,
       hasAdminData: Boolean(d.logo || d.logoDark || d.website),
+      hasLogo: Boolean(d.logo),
     })),
     CLIENTS,
   );
@@ -146,7 +148,38 @@ async function syncClients(payload: Payload, { apply, log }: Required<SyncOption
   for (const row of plan.extra) {
     log(`keep       client  ${row.name} (not in copy.ts, so unlisted; it has a logo or website, remove it in the admin if it should go)`);
   }
+  for (const row of plan.logos) {
+    log(`logo       client  ${row.name} (${row.file})`);
+    if (!apply) continue;
+    const { docs: [client] } = await payload.find({
+      collection: 'clients',
+      where: { name: { equals: row.name } },
+      limit: 1,
+      depth: 0,
+      overrideAccess: true,
+    });
+    if (!client) continue;
+    // Reused by filename, so a second run, or a client whose logo was cleared, uploads nothing new.
+    const { docs: [existing] } = await payload.find({
+      collection: 'media',
+      where: { filename: { equals: row.file } },
+      limit: 1,
+      depth: 0,
+      overrideAccess: true,
+    });
+    const media =
+      existing ??
+      (await payload.create({
+        collection: 'media',
+        data: { alt: row.name },
+        filePath: path.join(LANDING_ASSETS, row.file),
+        overrideAccess: true,
+      }));
+    await payload.update({ collection: 'clients', id: client.id, data: { logo: media.id }, overrideAccess: true });
+  }
 }
+
+const LANDING_ASSETS = path.resolve(process.cwd(), 'scripts/landing-assets');
 
 const isPlainObject = (v: unknown): v is Record<string, unknown> =>
   typeof v === 'object' && v !== null && !Array.isArray(v);

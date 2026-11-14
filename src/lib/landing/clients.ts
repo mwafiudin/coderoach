@@ -16,9 +16,12 @@ export type ExistingClient = {
   listed: boolean;
   industry: string | null;
   hasAdminData: boolean;
+  /** A logo is set, by the admin or an earlier sync. */
+  hasLogo: boolean;
 };
 
-export type WantedClient = { name: string; industry: Industry };
+/** `logo` is a file in scripts/landing-assets, uploaded only while the client has no logo yet. */
+export type WantedClient = { name: string; industry: Industry; logo?: string };
 
 type Patch = Partial<{ order: number; listed: boolean; industry: Industry }>;
 
@@ -30,6 +33,8 @@ export type ClientsPlan = {
   remove: Array<{ id: number; name: string }>;
   /** No longer in copy.ts but carrying a logo or website from the admin: kept, unlisted, reported. */
   extra: Array<{ id: number; name: string }>;
+  /** Logos from copy.ts for clients that have none. A logo set in the admin is never replaced. */
+  logos: Array<{ name: string; file: string }>;
 };
 
 const key = (name: string) => name.trim().toLowerCase();
@@ -37,11 +42,12 @@ const key = (name: string) => name.trim().toLowerCase();
 export function planClientsSync(existing: ExistingClient[], wanted: readonly WantedClient[]): ClientsPlan {
   const byName = new Map(existing.map((c) => [key(c.name), c]));
   const names = new Set(wanted.map((c) => key(c.name)));
-  const plan: ClientsPlan = { create: [], update: [], keep: [], remove: [], extra: [] };
+  const plan: ClientsPlan = { create: [], update: [], keep: [], remove: [], extra: [], logos: [] };
 
-  wanted.forEach(({ name, industry }, i) => {
+  wanted.forEach(({ name, industry, logo }, i) => {
     const order = i + 1;
     const found = byName.get(key(name));
+    if (logo && !found?.hasLogo) plan.logos.push({ name, file: logo });
     if (!found) {
       plan.create.push({ name, order, listed: true, industry });
       return;

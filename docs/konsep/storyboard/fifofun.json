@@ -1,0 +1,145 @@
+{
+  "slug": "fifofun",
+  "judul": "FiFoFun",
+  "halaman": "/work/fifofun",
+  "satuPesan": "Setiap angka dicocokkan dengan saldo cetakan bank dulu, baru dipakai untuk merencanakan.",
+  "identitas": { "latar": "#f2f2f7", "tinta": "#1c1c1e", "aksen": "#0071a4", "huruf": "IBM Plex Sans" },
+  "adegan": [
+    {
+      "id": "F1",
+      "nama": "Hero",
+      "scroll": [0, 100],
+      "koreografi": "none",
+      "tata": "hero",
+      "elemen": [
+        { "jenis": "judul", "label": "FiFoFun", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Perencana keuangan rumah tangga yang memeriksa dirinya sendiri terhadap bank.", "posisi": "kiri" },
+        { "jenis": "kartu", "label": "Masalah, Solusi, Hasil dalam grup inset", "posisi": "bawah" }
+      ],
+      "gerak": "Tidak ada.",
+      "ponsel": "Satu kolom.",
+      "reducedMotion": "Sama.",
+      "aset": [],
+      "baru": false
+    },
+    {
+      "id": "F2",
+      "nama": "Posisi pasti",
+      "scroll": [100, 300],
+      "koreografi": "pin-scrub",
+      "tata": "artefak-pin",
+      "elemen": [
+        { "jenis": "judul", "label": "Catatan sendiri melenceng pelan-pelan. Saldo cetakan bank memakunya.", "posisi": "atas" },
+        { "jenis": "diagram", "label": "Peta laut: garis perkiraan putus-putus, posisi sebenarnya, dua titik pasti", "posisi": "tengah" }
+      ],
+      "gerak": "Garis perkiraan tergambar dari kiri mengikuti scroll; titik pasti mendarat tepat saat garis mencapainya, lalu garis mulai lagi dari posisi sebenarnya.",
+      "ponsel": "Tanpa pin, peta utuh.",
+      "reducedMotion": "Peta utuh dengan dua titik pasti.",
+      "aset": [ { "berkas": "SVG di FiFoFunPage.tsx", "status": "ada" } ],
+      "baru": false
+    },
+    {
+      "id": "F3",
+      "nama": "Empat pemeriksaan",
+      "scroll": [300, 400],
+      "koreografi": "quiet-reveal",
+      "tata": "split-kiri",
+      "elemen": [
+        { "jenis": "judul", "label": "Sebelum dipakai, setiap impor harus lolos empat pemeriksaan.", "posisi": "kiri" },
+        { "jenis": "kartu", "label": "Empat pemeriksaan reconcile, berurutan", "posisi": "kanan" }
+      ],
+      "gerak": "Nomor tiap pemeriksaan berganti jadi tanda centang berurutan saat barisnya masuk.",
+      "ponsel": "Satu kolom.",
+      "reducedMotion": "Keempatnya bernomor, tanpa animasi.",
+      "aset": [],
+      "baru": false
+    },
+    {
+      "id": "F4",
+      "nama": "Rantai saldo",
+      "scroll": [400, 480],
+      "koreografi": "wipe",
+      "tata": "wipe",
+      "elemen": [
+        { "jenis": "kartu", "label": "Enam baris mutasi contoh dengan saldo cetakan bank, rantai utuh", "posisi": "kiri" },
+        { "jenis": "kartu", "label": "Bingkai yang sama, satu baris hilang, satu titik rantai putus", "posisi": "kanan" },
+        { "jenis": "teks", "label": "Satu baris hilang, satu titik putus.", "posisi": "bawah" }
+      ],
+      "gerak": "Garis sapu bergerak di satu bingkai saat dibaca, tanpa pin; di baliknya satu baris hilang dan satu titik ditandai putus.",
+      "ponsel": "Dua versi bertumpuk tanpa gerak.",
+      "reducedMotion": "Dua versi berdampingan.",
+      "aset": [ { "berkas": "tabel contoh di kode, angka fiktif ditandai", "status": "belum" } ],
+      "baru": true
+    },
+    {
+      "id": "F5",
+      "nama": "Dua jenis uang",
+      "scroll": [480, 560],
+      "koreografi": "quiet-reveal",
+      "tata": "split-kiri",
+      "elemen": [
+        { "jenis": "kartu", "label": "Dipastikan bank", "posisi": "kiri" },
+        { "jenis": "kartu", "label": "Hanya perkiraan", "posisi": "kanan" }
+      ],
+      "gerak": "Bingkai teal pada grup Dipastikan bank tergambar sekali.",
+      "ponsel": "Bertumpuk.",
+      "reducedMotion": "Bingkai sudah ada.",
+      "aset": [],
+      "baru": false
+    },
+    {
+      "id": "F6",
+      "nama": "Fitur",
+      "scroll": [560, 700],
+      "koreografi": "quiet-reveal",
+      "tata": "split-kanan",
+      "elemen": [
+        { "jenis": "browser", "label": "Anggaran dengan bukti di sampingnya", "posisi": "kanan" },
+        { "jenis": "ponsel", "label": "Ringkasan 3 bulan, loop dengan tombol jeda", "posisi": "kanan" }
+      ],
+      "gerak": "Tangkapan naik pelan; ponsel memutar loop ringkasan.",
+      "ponsel": "Poster dulu, tombol putar.",
+      "reducedMotion": "Poster diam dan tombol putar.",
+      "aset": [
+        { "berkas": "fifofun-anggaran.v1.webp", "status": "ada" },
+        { "berkas": "fifofun-ringkasan-hp-loop.v1.mp4", "status": "ada" },
+        { "berkas": "fifofun-ringkasan-hp-loop.v1.poster.webp", "status": "ada" },
+        { "berkas": "fifofun-impor.v2.webp", "status": "belum" },
+        { "berkas": "fifofun-rekonsiliasi.v2.webp", "status": "belum" }
+      ],
+      "baru": false
+    },
+    {
+      "id": "F7",
+      "nama": "Tur",
+      "scroll": [700, 830],
+      "koreografi": "none",
+      "tata": "perangkat-penuh",
+      "elemen": [
+        { "jenis": "judul", "label": "Dari mutasi bank ke anggaran yang bisa dipercaya.", "posisi": "atas" },
+        { "jenis": "video", "label": "Tur 45 detik, tidak autoplay", "posisi": "tengah" }
+      ],
+      "gerak": "Video tidak autoplay.",
+      "ponsel": "Sama.",
+      "reducedMotion": "Sama.",
+      "aset": [
+        { "berkas": "fifofun-tur.v1.mp4", "status": "ada" },
+        { "berkas": "fifofun-tur.v1.poster.webp", "status": "ada" }
+      ],
+      "baru": false
+    },
+    {
+      "id": "F8",
+      "nama": "Sumber",
+      "scroll": [830, 900],
+      "koreografi": "none",
+      "tata": "penutup",
+      "elemen": [ { "jenis": "teks", "label": "Catatan rumah tangga fiktif dan sumber", "posisi": "tengah" } ],
+      "gerak": "Tidak ada.",
+      "ponsel": "Sama.",
+      "reducedMotion": "Sama.",
+      "aset": [],
+      "baru": false
+    }
+  ]
+}

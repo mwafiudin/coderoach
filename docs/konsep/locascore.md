@@ -197,3 +197,82 @@ GD5 (desain) memakai pratinjau berjalan, bukan kanvas statis, karena halaman ini
   `role="group"` berlabel; kode titik sketsa diperbesar; ambang pin naik ke tinggi 900 px supaya
   zoom teks tidak memotong putusan; garis jalan digelapkan sampai 3:1; garis atas stub tanpa radius.
   Dibiarkan: label Signal Blue (pola Laporta), grid 48px (milik app).
+
+## Storyboard scroll (14 Nov 2026)
+
+Dasar: `docs/konsep/storyboard/FORMAT.md`, DESIGN.md "Motion vocabulary (bespoke pages)",
+`docs/riset/2026-10-koreografi-scroll.md`, dan `docs/riset/2026-11-standar-portofolio.md`. Data
+sketsa: `docs/konsep/storyboard/locascore.json`. Belum ada kode yang diubah; ini rencana.
+
+### Halaman sekarang
+
+Dibaca dari `src/app/(frontend)/work/_bespoke/locascore/LocaScorePage.tsx` dan `locascore.css`.
+
+| Adegan | Isi | Koreografi | Rujukan |
+|---|---|---|---|
+| Hero | Nama Nunito 800, tagline, kepala lembar "Lembar Ukur Tapak" (≥768 px), Masalah/Solusi/Hasil | none | `LocaScorePage.tsx` section pertama |
+| Lembar Ukur Tapak | Masukan, 18 kotak kompetitor dan 7 titik lain di sketsa, tabel enam nilai, kesan survei dicentang atau dicoret, lencana GO 82 | pin dan scrub 220vh, hanya ≥1024×900 dengan gerak (`--q` dari `--p` 0,27 sampai 0,82) | `.lc-scene`, `locascore.css:55-80` |
+| Di aplikasinya | Satu tangkapan kelayakan di bingkai browser, naik 32px dan menebal saat masuk | enter | `[data-scene='enter'] .lc-shot`, `locascore.css:212` |
+| Kalibrasi | Dua paragraf, tanpa gambar | none | section `kalibrasi-judul` |
+| Tur dan Sumber | Tidak tampil isi: LocaScore belum punya tur dan belum punya metrik | none | `TourChapter`, `Sources` |
+
+Celah yang terlihat: sesudah lembar selesai, halaman langsung datar. Tangkapan di bawahnya memuat
+nilai yang sama persis (82, GO, keyakinan rendah, 69/100/95/93/70/15) tapi pembaca harus mencocokkan
+sendiri. Bagian kalibrasi, laporan PDF, dan tautan publik hanya teks.
+
+### Storyboard scroll
+
+| # | scroll vh | layar | koreografi | gerak | ponsel | reduced-motion | aset ada/belum |
+|---|---|---|---|---|---|---|---|
+| A1 | 0–100 | Hero: ikon produk di atas nama, tagline, kepala lembar di kanan, tiga kolom ringkasan | none | Tidak ada | Kepala lembar disembunyikan seperti sekarang, ikon 40px di atas eyebrow | Sama | `locascore-ikon.v1.svg` belum |
+| A2 | 100–320 | Lembar Ukur Tapak dipin: masukan, titik sketsa, tabel, kesan survei, putusan | pin-scrub | Lima ketukan berurutan: tautan jadi koordinat, titik muncul, baris tabel terisi, baris yang menjawab sebuah kesan menyala tepat saat kesan itu dicentang atau dicoret, lalu lencana GO turun dengan satu-satunya bayangan | Tidak dipin, lembar sudah terisi penuh, tabel ditumpuk per faktor | Lembar terisi penuh | Digambar HTML/SVG, ada |
+| A3 | 320–430 | Lembar yang sama di aplikasinya: lencana 82 dan enam nilai dari lembar, lalu tangkapan kelayakan di bingkai browser | shared-element | Saat bagian masuk, lencana 82 dan kolom nilai lembar bergeser dan mengecil ke posisi cincin skor dan bilah faktor di tangkapan, lalu memudar sehingga yang tersisa angka di layar aslinya | Tanpa perpindahan: lencana kecil di atas tangkapan, tanpa keterangan tambahan (judul bagian sudah membawanya) | Crossfade dari lencana ke tangkapan, keduanya terbaca | `locascore-kelayakan.v1.webp` ada |
+| A4 | 430–790 | Sesudah skor: tiga kartu sama besar, Kalibrasi dari outlet berjalan, Laporan PDF untuk investor, Tautan publik tanpa akun | sticky-stack | Tiap kartu menempel di atas lalu kartu berikutnya menumpuk; teks kiri, tangkapan kanan | Kartu biasa berurutan, tiap kartu lebih pendek dari layar | Kartu berurutan tanpa menempel | `locascore-kalibrasi.v1.webp`, `locascore-laporan-pdf.v1.webp`, `locascore-tautan-publik.v1.webp` belum; sementara pakai placeholder blueprint |
+| A5 | 790–910 | Tur gelap: tempel tautan sampai putusan dan laporan | none | Video tidak autoplay, poster dulu | Sama, video 16:10 selebar layar | Poster dan transkrip | `locascore-tur.v1.mp4` dan poster belum |
+| A6 | 910–960 | Sumber dan catatan data contoh | none | Tidak ada | Sama | Sama | Tidak perlu aset |
+
+Koreografi yang sengaja tidak dipakai: number reveal (skor 82 data tiruan, bukan hasil terukur;
+DESIGN.md membatasi number reveal untuk angka terukur), image sequence (tidak ada perangkat keras),
+progress rail (cerita sudah dipegang satu lembar).
+
+### Yang membuat lebih menarik
+
+| Perubahan | Sekarang | Sesudah | Kenapa |
+|---|---|---|---|
+| Baris tabel menyala bersama kesannya | Kesan dicentang di `--t` 0,62 sampai 0,76, terpisah dari baris tabel yang menjawabnya | Baris Traffic menyala saat "Ramai kok" dicentang, Ekosistem saat "Dekat sekolah", sketsa kompetitor saat "Kompetitornya cuma satu" dicoret | Sebab dan akibat terlihat di satu kedipan, bukan dua kejadian yang harus dihubungkan sendiri (NN/g 2020: animasi membantu bila menjelaskan perubahan keadaan) |
+| Shared element lembar ke tangkapan (A3) | Tangkapan masuk sebagai gambar baru | Angka di lembar pindah ke tempatnya di layar asli | Pola "transformasi data" di riset koreografi; membuktikan lembar ilustrasi itu bukan karangan karena nilainya mendarat di aplikasi yang sama |
+| Sticky stack untuk hasil (A4) | Dua paragraf polos | Tiga modul sama derajat, satu layar per modul | Jenis cerita "beberapa modul setara"; menambah jumlah layar ke 4 sesuai kit |
+| Tur (A5) | Tidak ada | Rekaman MOCK_MODE pendek | Bukti bahwa aplikasinya berjalan, bukan hanya satu tangkapan |
+| Ikon di hero (A1) | Tidak ada | Ikon kubus berlapis dari aplikasinya | Kit portofolio: ikon di atas judul (Halo Lab) |
+
+Pelajaran lama yang dipakai: pin tetap 220vh dan hanya ≥1024×900 (zoom teks memotong putusan di
+tinggi lebih kecil, audit 30 Okt); tanpa bobot atau sumbangan poin di lembar (bobot build tangkapan
+beda dengan `lib/scoring.ts`); hanya "kompetitornya cuma satu" yang dicoret. Adegan baru tidak
+menambah pin, jadi risiko CLS dari tinggi pin setelah hidrasi tidak bertambah.
+
+### Kit portofolio
+
+| Butir kit | Keadaan | Celah |
+|---|---|---|
+| Ikon produk | Tidak ada di data; ikon kubus berlapis terlihat di sidebar tangkapan | Ambil SVG asli dari repo locascore, master 1024 px |
+| Sampul rakitan | Tangkapan mentah 16:10 | Sampul dari templat: latar `#f4f7fb` dengan grid 48px, ikon dan nama, 2 sampai 3 layar asli |
+| ≥4 layar | 1 layar | Kurang 3: kalibrasi, laporan PDF, tautan publik (dan bila bisa, peta lokasi dan kompetitor) |
+| Loop kartu | Tidak ada | Loop ≤30 detik: tempel tautan Maps sampai putusan GO |
+
+### Aset yang perlu dibuat
+
+| Berkas | Isi | Sumber | Catatan |
+|---|---|---|---|
+| `locascore-ikon.v1.svg` | Ikon kubus berlapis | Repo locascore | Belum dicek apakah ada sebagai SVG |
+| `locascore-sampul.v1.webp` | Sampul rakitan 16:10 | Dirakit kode dari tangkapan asli | Menunggu keputusan cara membuat sampul (riset standar §7 butir 1) |
+| `locascore-kalibrasi.v1.webp` | Layar kalibrasi outlet berjalan | Build MOCK_MODE | Nama outlet rekaan |
+| `locascore-laporan-pdf.v1.webp` | Halaman laporan PDF | Build MOCK_MODE | |
+| `locascore-tautan-publik.v1.webp` | Halaman tautan publik | Build MOCK_MODE | |
+| `locascore-tempel-link-loop.v1.mp4` dan poster | Loop kartu ≤30 detik | Rekaman build MOCK_MODE | Tanpa suara |
+| `locascore-tur.v1.mp4`, poster, transkrip | Tur pendek | Rekaman build MOCK_MODE | `demoNote` wajib diisi |
+
+Repo locascore tidak berjalan lokal per 30 Okt; semua layar baru menunggu build MOCK_MODE bisa jalan.
+
+Copy: semua teks layar diambil dari `projects.ts` dan halaman sekarang. Satu-satunya baris baru,
+judul tur "Dari satu tautan sampai putusan", masih usulan dan lewat prosedur `kerajinan-kalimat`
+skill `bahasa-lisan` (2 sampai 3 pilihan, Farrez memilih) sebelum dipakai.

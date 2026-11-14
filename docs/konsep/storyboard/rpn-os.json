@@ -1,0 +1,163 @@
+{
+  "slug": "rpn-os",
+  "judul": "RPN OS",
+  "halaman": "/work/rpn-os",
+  "satuPesan": "Setiap batch sambal tahu harga cabai yang benar-benar masuk ke dalamnya, dan setiap dokumen menulis jurnalnya sendiri.",
+  "identitas": { "latar": "#fafbfa", "tinta": "#06150a", "aksen": "#1a5c41", "huruf": "DM Sans (judul), Open Sans (teks)" },
+  "adegan": [
+    {
+      "id": "A1",
+      "nama": "Hero",
+      "scroll": [0, 100],
+      "koreografi": "none",
+      "tata": "hero",
+      "elemen": [
+        { "jenis": "judul", "label": "RPN OS", "posisi": "kiri" },
+        { "jenis": "teks", "label": "ERP rumah produksi yang tahu berapa harga cabai di setiap batch sambal.", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Masalah, Solusi, Hasil", "posisi": "bawah" },
+        { "jenis": "foto", "label": "Sampul papan presentasi", "posisi": "kanan" }
+      ],
+      "gerak": "Tidak ada; jawaban tampil dulu.",
+      "ponsel": "Sampul pindah ke bawah ringkasan.",
+      "reducedMotion": "Sama dengan biasa.",
+      "aset": [ { "berkas": "portfolio-rpn-os.webp", "status": "ada" } ],
+      "baru": false
+    },
+    {
+      "id": "A2",
+      "nama": "Rel empat tahap",
+      "scroll": [100, 140],
+      "koreografi": "progress-rail",
+      "tata": "split-kiri",
+      "elemen": [
+        { "jenis": "diagram", "label": "Pembelian, Produksi, Distribusi, Pembukuan", "posisi": "kiri" },
+        { "jenis": "judul", "label": "Satu rantai, dari pasar sampai buku besar.", "posisi": "tengah" }
+      ],
+      "gerak": "Rel tipis menempel di kiri dari A3 sampai A6; tahap yang sedang dibaca terisi hijau hutan, tiap tahap bisa diklik.",
+      "ponsel": "Rel disembunyikan; judul adegan sudah menyebut tahapnya.",
+      "reducedMotion": "Rel diam, tetap bisa diklik.",
+      "aset": [ { "berkas": "HTML/CSS, tanpa berkas", "status": "belum" } ],
+      "baru": true
+    },
+    {
+      "id": "A3",
+      "nama": "Harga di setiap lapisan",
+      "scroll": [140, 360],
+      "koreografi": "pin-scrub",
+      "tata": "artefak-pin",
+      "elemen": [
+        { "jenis": "teks", "label": "Setiap kedatangan bahan jadi lapisan dengan harganya sendiri.", "posisi": "kiri" },
+        { "jenis": "diagram", "label": "Rak lapisan bahan, batang harga tanpa angka; jalur Belanja pasar, tanpa PO", "posisi": "kanan" },
+        { "jenis": "kartu", "label": "Batch sambal, lewat Cabe Selep, HPP tersusun", "posisi": "bawah" },
+        { "jenis": "browser", "label": "Halaman batch produksi", "posisi": "kanan" }
+      ],
+      "gerak": "Lapisan masuk satu per satu, batch mengambil dari lapisan paling lama dulu lalu lapisan berikutnya, bahan lewat Cabe Selep, dan HPP tersusun dari potongan batang yang terpakai.",
+      "ponsel": "Tanpa pin: empat langkah bertumpuk, rak digambar sekali per langkah.",
+      "reducedMotion": "Rak penuh, batch selesai, HPP tersusun, keempat kalimat tampil.",
+      "aset": [ { "berkas": "HTML/CSS, tanpa berkas", "status": "belum" }, { "berkas": "rpn-batch.v1.webp", "status": "belum" } ],
+      "baru": true
+    },
+    {
+      "id": "A4",
+      "nama": "Susut dan kerugian dipisah",
+      "scroll": [360, 440],
+      "koreografi": "quiet-reveal",
+      "tata": "split-kiri",
+      "elemen": [
+        { "jenis": "kartu", "label": "Susut proses masuk HPP", "posisi": "kiri" },
+        { "jenis": "kartu", "label": "Kerugian nyata dicatat sebagai write-off", "posisi": "kanan" }
+      ],
+      "gerak": "Dua kolom muncul pelan berurutan.",
+      "ponsel": "Bertumpuk.",
+      "reducedMotion": "Dua kolom tampil diam.",
+      "aset": [ { "berkas": "HTML/CSS, tanpa berkas", "status": "belum" } ],
+      "baru": true
+    },
+    {
+      "id": "A5",
+      "nama": "Satu baris, sampai ke piutang",
+      "scroll": [440, 580],
+      "koreografi": "shared-element",
+      "tata": "split-kanan",
+      "elemen": [
+        { "jenis": "teks", "label": "Surat jalan mengeluarkan stok, outlet mengonfirmasi, invoice terbit, dan jatuh temponya ikut termin outlet itu.", "posisi": "kiri" },
+        { "jenis": "browser", "label": "Surat jalan", "posisi": "kanan" },
+        { "jenis": "browser", "label": "Invoice dan piutang per outlet", "posisi": "kanan" }
+      ],
+      "gerak": "Baris hasil batch yang sama berpindah dari surat jalan ke invoice ke piutang; status Dikirim, Diterima, Ditagih menyala bergantian.",
+      "ponsel": "Dokumen bertumpuk, baris disorot di tiap dokumen tanpa terbang.",
+      "reducedMotion": "Dokumen berdampingan, berganti dengan crossfade.",
+      "aset": [ { "berkas": "rpn-surat-jalan.v1.webp", "status": "belum" }, { "berkas": "rpn-invoice.v1.webp", "status": "belum" } ],
+      "baru": true
+    },
+    {
+      "id": "A6",
+      "nama": "Jurnal di bawah setiap langkah",
+      "scroll": [580, 760],
+      "koreografi": "sticky-stack",
+      "tata": "tumpuk-kartu",
+      "elemen": [
+        { "jenis": "kartu", "label": "PO", "posisi": "tengah" },
+        { "jenis": "kartu", "label": "Kedatangan barang", "posisi": "tengah" },
+        { "jenis": "kartu", "label": "Surat jalan", "posisi": "tengah" },
+        { "jenis": "kartu", "label": "Invoice", "posisi": "tengah" },
+        { "jenis": "kartu", "label": "Pembayaran, lalu PPN, PPh, penyusutan ke HPP, rekonsiliasi, tutup buku", "posisi": "tengah" }
+      ],
+      "gerak": "Kartu dokumen menumpuk satu per satu, masing-masing dengan jurnal debit dan kreditnya di bawah.",
+      "ponsel": "Setiap kartu lebih pendek dari layar, bergulir biasa.",
+      "reducedMotion": "Kartu tersusun tanpa gerak.",
+      "aset": [ { "berkas": "rpn-jurnal.v1.webp", "status": "belum" } ],
+      "baru": true
+    },
+    {
+      "id": "A7",
+      "nama": "Wewenang per modul",
+      "scroll": [760, 830],
+      "koreografi": "quiet-reveal",
+      "tata": "split-kiri",
+      "elemen": [
+        { "jenis": "judul", "label": "Wewenang tidak menempel pada jabatan.", "posisi": "kiri" },
+        { "jenis": "kartu", "label": "Manajemen operasional: Produksi terbuka, Kas dan Nilai persediaan tertutup", "posisi": "kanan" },
+        { "jenis": "ikon", "label": "Gembok", "posisi": "kanan" }
+      ],
+      "gerak": "Modul yang tidak dilihat meredup pelan dan diberi gembok.",
+      "ponsel": "Bertumpuk.",
+      "reducedMotion": "Sudah redup, gembok dan label teks terpasang.",
+      "aset": [ { "berkas": "HTML/CSS, tanpa berkas", "status": "belum" } ],
+      "baru": true
+    },
+    {
+      "id": "A8",
+      "nama": "Buku dibuka dari posisi benar",
+      "scroll": [830, 960],
+      "koreografi": "number-reveal",
+      "tata": "angka",
+      "elemen": [
+        { "jenis": "judul", "label": "Sebelum buku dibuka, data lama dibersihkan dulu.", "posisi": "atas" },
+        { "jenis": "angka", "label": "Cutoff 23 Agustus 2026", "posisi": "kiri" },
+        { "jenis": "angka", "label": "397 invoice historis", "posisi": "tengah" },
+        { "jenis": "angka", "label": "643 baris pengeluaran, Rp580 juta", "posisi": "tengah" },
+        { "jenis": "angka", "label": "Aset tetap Rp62 juta", "posisi": "kanan" },
+        { "jenis": "angka", "label": "25 pembayaran ganda, Rp33,9 juta", "posisi": "kanan" }
+      ],
+      "gerak": "Nilai akhir sudah di HTML; saat masuk layar tiap angka naik dari redup ke penuh dan garis bawah lime tergambar, tanpa hitung naik.",
+      "ponsel": "Satu angka per baris.",
+      "reducedMotion": "Angka penuh, garis sudah ada.",
+      "aset": [ { "berkas": "entri metrics dengan sumber", "status": "belum" } ],
+      "baru": true
+    },
+    {
+      "id": "A9",
+      "nama": "Sumber",
+      "scroll": [960, 1020],
+      "koreografi": "none",
+      "tata": "penutup",
+      "elemen": [ { "jenis": "teks", "label": "Sumber dan proyek lain", "posisi": "tengah" } ],
+      "gerak": "Tidak ada.",
+      "ponsel": "Sama.",
+      "reducedMotion": "Sama.",
+      "aset": [],
+      "baru": false
+    }
+  ]
+}

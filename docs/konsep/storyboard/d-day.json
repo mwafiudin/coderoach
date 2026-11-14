@@ -1,0 +1,130 @@
+{
+  "slug": "d-day",
+  "judul": "d-day",
+  "halaman": "/work/d-day",
+  "satuPesan": "Berhenti cukup satu ketukan; melanjutkan harus dibuktikan.",
+  "identitas": { "latar": "#000000", "tinta": "#f5f5f7", "aksen": "#ff9f0a", "huruf": "font sistem, angka tabular" },
+  "adegan": [
+    {
+      "id": "D1",
+      "nama": "Hero",
+      "scroll": [0, 100],
+      "koreografi": "none",
+      "tata": "hero",
+      "elemen": [
+        { "jenis": "judul", "label": "d-day", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Sistem eksekusi otomatis untuk aturan yang ditulis orang lain.", "posisi": "kiri" },
+        { "jenis": "kartu", "label": "Masalah, Solusi, Hasil", "posisi": "bawah" }
+      ],
+      "gerak": "Tidak ada.",
+      "ponsel": "Kartu ringkasan bertumpuk.",
+      "reducedMotion": "Sama.",
+      "aset": [],
+      "baru": false
+    },
+    {
+      "id": "D2",
+      "nama": "Yang terburuk menang",
+      "scroll": [100, 190],
+      "koreografi": "shared-element",
+      "tata": "split-kiri",
+      "elemen": [
+        { "jenis": "kartu", "label": "Empat sinyal: heartbeat, tick terakhir, halt, posisi tanpa proteksi", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Kalimat status engine dari app", "posisi": "kanan" }
+      ],
+      "gerak": "Label sinyal yang terburuk pindah ke kalimat status saat adegan melewati garis baca; tanpa pin.",
+      "ponsel": "Sinyal di atas, kalimat di bawah, tanpa perpindahan.",
+      "reducedMotion": "Sinyal dan kalimat tampil bersama, sinyal terburuk disorot.",
+      "aset": [ { "berkas": "teks status dari dashboard/src/app/page.tsx repo d-day", "status": "belum" } ],
+      "baru": true
+    },
+    {
+      "id": "D3",
+      "nama": "Gembok dan tag",
+      "scroll": [190, 410],
+      "koreografi": "pin-scrub",
+      "tata": "artefak-pin",
+      "elemen": [
+        { "jenis": "kartu", "label": "Tag: halt_total, dihentikan manual dari dashboard, waktu UTC, data simulasi", "posisi": "kiri" },
+        { "jenis": "ikon", "label": "Gembok oranye", "posisi": "kiri" },
+        { "jenis": "kartu", "label": "Empat syarat Lanjutkan, syarat kedua basi", "posisi": "kanan" }
+      ],
+      "gerak": "Latar bergeser ke #3d0b0b dan gembok turun, lalu tiap syarat dicentang di langkahnya sendiri, kira-kira satu tiap 35vh, sampai syarat kedua basi.",
+      "ponsel": "Tanpa pin; keadaan akhir langsung tampil.",
+      "reducedMotion": "Keadaan akhir: tag terpasang, syarat kedua gagal, sisanya belum diperiksa.",
+      "aset": [],
+      "baru": false
+    },
+    {
+      "id": "D4",
+      "nama": "Di dalam d-day",
+      "scroll": [410, 620],
+      "koreografi": "sticky-stack",
+      "tata": "tumpuk-kartu",
+      "elemen": [
+        { "jenis": "browser", "label": "Status engine dalam satu kalimat", "posisi": "tengah" },
+        { "jenis": "browser", "label": "Berhenti satu ketukan, lanjut lewat bukti", "posisi": "tengah" },
+        { "jenis": "browser", "label": "Rekonsiliasi baca-saja", "posisi": "tengah" }
+      ],
+      "gerak": "Tiap kartu menempel di atas lalu kartu berikutnya menutupnya.",
+      "ponsel": "Daftar biasa, tiap kartu lebih pendek dari layar.",
+      "reducedMotion": "Daftar biasa.",
+      "aset": [
+        { "berkas": "d-day-log.v1.webp", "status": "ada" },
+        { "berkas": "d-day-kill-switch.v1.webp", "status": "ada" },
+        { "berkas": "d-day-rekonsiliasi.v1.webp", "status": "ada" }
+      ],
+      "baru": false
+    },
+    {
+      "id": "D5",
+      "nama": "Jejak uji",
+      "scroll": [620, 720],
+      "koreografi": "progress-rail",
+      "tata": "split-kanan",
+      "elemen": [
+        { "jenis": "diagram", "label": "Rail oranye dengan empat titik", "posisi": "kiri" },
+        { "jenis": "teks", "label": "10 Sep, 11 Sep, 3 Okt, 7 Okt 2026 dengan repo@commit", "posisi": "kanan" }
+      ],
+      "gerak": "Rail terisi saat dibaca; tiap titik adalah tautan ke barisnya.",
+      "ponsel": "Rail tegak di kiri daftar.",
+      "reducedMotion": "Rail penuh.",
+      "aset": [ { "berkas": "timeline di src/lib/portfolio/projects.ts", "status": "ada" } ],
+      "baru": true
+    },
+    {
+      "id": "D6",
+      "nama": "Tur dengan bab",
+      "scroll": [720, 850],
+      "koreografi": "progress-rail",
+      "tata": "perangkat-penuh",
+      "elemen": [
+        { "jenis": "judul", "label": "Berhenti dalam satu ketukan, lanjut hanya dengan bukti.", "posisi": "atas" },
+        { "jenis": "video", "label": "Tur 40 detik, tidak autoplay", "posisi": "tengah" },
+        { "jenis": "teks", "label": "Penanda bab: Keadaan, Exchange, Hentikan semua, Lanjutkan", "posisi": "bawah" }
+      ],
+      "gerak": "Penanda bab di bawah video bisa diklik untuk melompat; tidak menutupi video.",
+      "ponsel": "Penanda jadi daftar tautan di bawah video.",
+      "reducedMotion": "Sama, tanpa transisi.",
+      "aset": [
+        { "berkas": "d-day-tur.v1.mp4", "status": "ada" },
+        { "berkas": "d-day-tur.v1.poster.webp", "status": "ada" },
+        { "berkas": "detik awal tiap bab tur", "status": "belum" }
+      ],
+      "baru": false
+    },
+    {
+      "id": "D7",
+      "nama": "Sumber",
+      "scroll": [850, 920],
+      "koreografi": "none",
+      "tata": "penutup",
+      "elemen": [ { "jenis": "teks", "label": "Catatan data simulasi dan sumber", "posisi": "tengah" } ],
+      "gerak": "Tidak ada.",
+      "ponsel": "Sama.",
+      "reducedMotion": "Sama.",
+      "aset": [],
+      "baru": false
+    }
+  ]
+}
