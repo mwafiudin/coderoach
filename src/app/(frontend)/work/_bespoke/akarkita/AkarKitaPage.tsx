@@ -11,6 +11,7 @@ import { StoryEnhancer } from '../../_story/StoryEnhancer';
 import { TourChapter } from '../../_story/TourChapter';
 import { archivo } from '../fonts';
 import './akarkita.css';
+import { FeatureCatalog } from '../../_story/FeatureCatalog';
 
 /**
  * What four relatives call Rahmat (made up), who has an older sister and a younger brother. Every
@@ -179,24 +180,7 @@ export async function AkarKitaPage({ project }: { project: Project }) {
         </section>
       )}
 
-      <section aria-labelledby="waris-judul" className="py-[clamp(72px,9vw,120px)] border-t border-paper-200 ak-surface">
-        <div className="max-w-[1120px] mx-auto px-5 sm:px-8 grid grid-cols-1 md:grid-cols-[1fr_1.3fr] gap-8 md:gap-16">
-          <h2 id="waris-judul" className="m-0 ak-display text-[clamp(26px,3.4vw,40px)] leading-[1.12] text-balance">
-            Warisan dengan pecahan eksak.
-          </h2>
-          <div className="space-y-5 text-[17px] leading-[1.6] text-pretty">
-            <p className="m-0">
-              Simulator faraid menghitung bagian ahli waris dengan pecahan, bukan desimal yang dibulatkan, dan membedakan harta
-              pusaka tinggi Minang dari harta pencaharian. Sifatnya edukatif, bukan fatwa.
-            </p>
-            <p className="m-0 ak-muted">
-              Aplikasinya bisa dibuka tanpa sinyal, foto dikompres di perangkat sebelum diunggah, dan dipakai sungguhan oleh satu
-              keluarga besar.
-            </p>
-          </div>
-        </div>
-      </section>
-
+      <FeatureCatalog slug={project.slug ?? ''} client={project.client} />
       <TourChapter project={project} />
       <Sources metrics={metrics} demoNote={project.showcase?.demoNote} />
       <StoryEnhancer rootId={rootId} />

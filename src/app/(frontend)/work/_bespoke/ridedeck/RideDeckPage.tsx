@@ -14,6 +14,7 @@ import { RoninMorph } from './RoninMorph';
 import { RoninSim } from './RoninSim';
 import { Segments } from './Segments';
 import './ridedeck.css';
+import { FeatureCatalog } from '../../_story/FeatureCatalog';
 
 const at = (file: string) => `${RIDEDECK_DIR}/${file}`;
 
@@ -64,7 +65,6 @@ function Phone({ media, priority = false }: { media: Media; priority?: boolean }
 export async function RideDeckPage({ project }: { project: Project }) {
   const rootId = `story-${project.slug}`;
   const links = await linkViews(project.links ?? []);
-  const features = project.features ?? [];
   const screen = asMedia(project.showcase?.screen);
   const eyebrow = [KIND_LABELS[project.kind], industryLabel(project.industry), project.publishedYear].filter(Boolean);
   const summary = [
@@ -212,35 +212,7 @@ export async function RideDeckPage({ project }: { project: Project }) {
         </div>
       </section>
 
-      {features.length > 0 && (
-        <section aria-labelledby="fitur-judul" className="py-[clamp(72px,9vw,120px)]">
-          <div className="max-w-[1180px] mx-auto px-5 sm:px-8">
-            <h2 id="fitur-judul" className="m-0 rd-display text-[clamp(32px,4.6vw,56px)] leading-[1.02]">
-              Di dalam {project.client}.
-            </h2>
-            <div className="mt-12">
-              {features.map((f, i) => {
-                const shot = asMedia(f.screen);
-                return (
-                  <article key={f.id ?? i} className={`rd-feature ${i % 2 ? 'rd-feature--flip' : ''}`} data-scene="enter">
-                    <div>
-                      <Tape tone={TAPES[i % TAPES.length]}>{String(i + 1).padStart(2, '0')}</Tape>
-                      <h3 className="m-0 mt-3 rd-display text-[clamp(24px,2.6vw,34px)] leading-[1.08] text-balance">{f.title}</h3>
-                      {f.body && <p className="m-0 mt-3 max-w-[48ch] text-[17px] leading-[1.6] rd-dim text-pretty">{f.body}</p>}
-                    </div>
-                    {shot && (
-                      <figure className="m-0 rd-feature__shot">
-                        <Phone media={shot} />
-                      </figure>
-                    )}
-                  </article>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-      )}
-
+      <FeatureCatalog slug={project.slug ?? ''} client={project.client} />
       <Sources metrics={project.metrics ?? []} demoNote={project.showcase?.demoNote} />
       <StoryEnhancer rootId={rootId} />
     </main>

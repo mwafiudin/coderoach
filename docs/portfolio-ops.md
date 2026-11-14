@@ -77,6 +77,15 @@ Coderoach OS.
    dan tujuh berkas `nds-etl-*` (aset Rencana RO dengan nama lama; namanya menyebut singkatan
    portal prinsipal), dan tujuh berkas `rencana-ro-*.v1.*` (rekaman lama yang masih memuat
    istilah skema bonus prinsipal; diganti `.v2`).
+   Juga `fifofun-impor.v1.webp` dan `fifofun-rekonsiliasi.v1.webp` (memuat nama bank sungguhan;
+   diganti `.v2` pada 14 Nov 2026).
+6. Katalog fitur di akhir halaman bespoke tidak lewat sync: datanya di
+   `src/lib/portfolio/katalog.ts`, layarnya di `public/assets/katalog/`, dan keduanya ikut deploy
+   biasa. Layar dipotong dari rekaman demo dengan `_referensi/portofolio/_alat/katalog/potong.py`
+   (spec per proyek di `_alat/katalog/spec/<slug>.json`), yang mencetak lebar dan tinggi untuk
+   disalin ke data. `npm test` (`katalog.test.ts`) menolak berkas hilang, tanpa versi, lebih dari
+   300 KB, ukuran yang tidak cocok, berkas menganggur, tanda penyambung terlarang, kata yang
+   menerangkan halaman, superlatif, dan nama yang tidak boleh tampil.
 
 Template halaman proyek berganti ke halaman cerita begitu `summary.problem` terisi. Rekaman demo
 dibuat dari database demo berdata fiktif dan wajib membawa `demoNote` yang mengatakannya.

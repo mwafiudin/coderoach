@@ -2,15 +2,14 @@ import type { Project } from '@/payload-types';
 import { industryLabel, KIND_LABELS } from '@/lib/portfolio/taxonomy';
 import { Breadcrumbs } from '../../../_components/detail/Breadcrumbs';
 import { Meta } from '../../../_components/ui/Meta';
-import { DeviceFrame } from '../../_story/DeviceFrame';
 import { LinkChips } from '../../_story/LinkChips';
-import { asMedia, MediaImg } from '../../_story/MediaImg';
 import { linkViews } from '../../_story/ProjectStory';
 import { Sources } from '../../_story/Sources';
 import { StoryEnhancer } from '../../_story/StoryEnhancer';
 import { TourChapter } from '../../_story/TourChapter';
 import { inter } from '../fonts';
 import './viralytics.css';
+import { FeatureCatalog } from '../../_story/FeatureCatalog';
 
 /**
  * The hand-overs, in the app's phase order (campaign_phases, commit 21df1da; link review, de99a87):
@@ -50,7 +49,6 @@ export async function ViralyticsPage({ project }: { project: Project }) {
   const rootId = `story-${project.slug}`;
   const links = await linkViews(project.links ?? []);
   const metrics = project.metrics ?? [];
-  const features = project.features ?? [];
   const eyebrow = [KIND_LABELS[project.kind], industryLabel(project.industry), project.publishedYear].filter(Boolean);
   const summary = [
     ['Masalah', project.summary?.problem],
@@ -210,36 +208,7 @@ export async function ViralyticsPage({ project }: { project: Project }) {
         <p className="max-w-[1180px] mx-auto px-5 sm:px-8 m-0 mt-4 text-[13px] vr-faint">Data contoh.</p>
       </section>
 
-      {features.length > 0 && (
-        <section aria-labelledby="fitur-judul" className="py-[clamp(72px,9vw,120px)] border-t border-paper-200">
-          <div className="max-w-[1180px] mx-auto px-5 sm:px-8">
-            <h2 id="fitur-judul" className="m-0 vr-display text-[clamp(28px,4vw,46px)] leading-[1.08] tracking-[-0.03em]">
-              Di dalam {project.client}.
-            </h2>
-            <ol className="m-0 mt-12 p-0 list-none">
-              {features.map((f, i) => {
-                const shot = asMedia(f.screen);
-                return (
-                  <li key={f.id ?? i} className="vr-feature" data-scene="enter">
-                    <div>
-                      <h3 className="m-0 vr-display text-[clamp(22px,2.4vw,30px)] font-bold tracking-[-0.02em] leading-[1.2] text-balance">{f.title}</h3>
-                      {f.body && <p className="m-0 mt-3 max-w-[52ch] text-[17px] leading-[1.6] vr-soft text-pretty">{f.body}</p>}
-                    </div>
-                    {shot && (
-                      <figure className="m-0 vr-feature__shot">
-                        <DeviceFrame kind="browser">
-                          <MediaImg media={shot} sizes="(min-width: 1024px) 680px, 92vw" />
-                        </DeviceFrame>
-                      </figure>
-                    )}
-                  </li>
-                );
-              })}
-            </ol>
-          </div>
-        </section>
-      )}
-
+      <FeatureCatalog slug={project.slug ?? ''} client={project.client} />
       <TourChapter project={project} />
       <Sources metrics={metrics} demoNote={project.showcase?.demoNote} />
       <StoryEnhancer rootId={rootId} />

@@ -2,9 +2,8 @@ import type { Project } from '@/payload-types';
 import { industryLabel, KIND_LABELS } from '@/lib/portfolio/taxonomy';
 import { Breadcrumbs } from '../../../_components/detail/Breadcrumbs';
 import { Meta } from '../../../_components/ui/Meta';
-import { DeviceFrame } from '../../_story/DeviceFrame';
 import { LinkChips } from '../../_story/LinkChips';
-import { asMedia, MediaImg } from '../../_story/MediaImg';
+import { asMedia } from '../../_story/MediaImg';
 import { linkViews } from '../../_story/ProjectStory';
 import { Sources } from '../../_story/Sources';
 import { StoryEnhancer } from '../../_story/StoryEnhancer';
@@ -12,6 +11,7 @@ import { TourChapter } from '../../_story/TourChapter';
 import { montserrat } from '../fonts';
 import { Suasana } from '../Suasana';
 import './laporta.css';
+import { FeatureCatalog } from '../../_story/FeatureCatalog';
 
 /** The seven steps of closing a shift, in the order the crew's phone asks for them. */
 const SHIFT = ['Absen', 'Penjualan', 'Stock opname', 'Kas kecil', 'Waste', 'Kebersihan', 'Serah terima kas'];
@@ -36,8 +36,6 @@ export async function LaportaPage({ project }: { project: Project }) {
   const rootId = `story-${project.slug}`;
   const links = await linkViews(project.links ?? []);
   const metrics = project.metrics ?? [];
-  const features = project.features ?? [];
-  const phone = asMedia(project.showcase?.screenPhone);
   const eyebrow = [KIND_LABELS[project.kind], industryLabel(project.industry), project.publishedYear].filter(Boolean);
   const summary = [
     ['Masalah', project.summary?.problem],
@@ -181,46 +179,7 @@ export async function LaportaPage({ project }: { project: Project }) {
         </div>
       </section>
 
-      {features.length > 0 && (
-        <section aria-labelledby="fitur-judul" className="py-[clamp(72px,9vw,120px)] border-t border-paper-200">
-          <div className="max-w-[1180px] mx-auto px-5 sm:px-8">
-            <p className="m-0 font-mono text-[11px] uppercase tracking-wider text-electric">Fitur</p>
-            <h2 id="fitur-judul" className="m-0 mt-3 text-[clamp(34px,5vw,60px)] font-extrabold tracking-[-0.04em] leading-[1.02]">
-              Di dalam {project.client}.
-            </h2>
-            <ol className="m-0 mt-14 p-0 list-none">
-              {features.map((f, i) => {
-                const shot = asMedia(f.screen);
-                const tall = Boolean(shot?.width && shot.height && shot.height > shot.width);
-                return (
-                  <li key={f.id ?? i} className="lp-feature" data-scene="enter">
-                    <p aria-hidden className="lp-feature__no">{pad(i + 1)}</p>
-                    <div>
-                      <h3 className="m-0 text-[clamp(24px,2.6vw,32px)] font-bold tracking-[-0.025em] leading-[1.15] text-balance">{f.title}</h3>
-                      {f.body && <p className="m-0 mt-3 max-w-[52ch] text-[17px] leading-[1.6] text-ink/70 text-pretty">{f.body}</p>}
-                    </div>
-                    {shot && (
-                      <figure className={`m-0 lp-feature__shot ${tall ? 'lp-feature__shot--tall' : ''}`}>
-                        <DeviceFrame kind={tall ? 'phone' : 'browser'}>
-                          <MediaImg media={shot} sizes={tall ? '280px' : '(min-width: 1024px) 720px, 92vw'} />
-                        </DeviceFrame>
-                      </figure>
-                    )}
-                  </li>
-                );
-              })}
-            </ol>
-            {phone && !features.some((f) => asMedia(f.screen)?.id === phone.id) && (
-              <div className="mt-16 max-w-[280px] mx-auto">
-                <DeviceFrame kind="phone">
-                  <MediaImg media={phone} sizes="280px" />
-                </DeviceFrame>
-              </div>
-            )}
-          </div>
-        </section>
-      )}
-
+      <FeatureCatalog slug={project.slug ?? ''} client={project.client} />
       <TourChapter project={project} />
       <Sources metrics={metrics} demoNote={project.showcase?.demoNote} />
       <StoryEnhancer rootId={rootId} />

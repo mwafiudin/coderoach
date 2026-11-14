@@ -12,6 +12,7 @@ import { RelatedGrid } from '../../_components/detail/RelatedGrid';
 import { PrevNext } from '../../_components/detail/PrevNext';
 import { hasStory, ProjectStory } from '../_story/ProjectStory';
 import { BESPOKE } from '../_bespoke/registry';
+import { KATALOG, SETELAH_TAYANG } from '@/lib/portfolio/katalog';
 
 export const dynamic = 'force-dynamic';
 
@@ -102,6 +103,8 @@ export default async function ProjectDetailPage({
     }),
   ]);
   const Bespoke = BESPOKE[project.slug];
+  // Only bespoke pages render the catalogue, so only they get its call to action and promises.
+  const cta = Bespoke && hasStory(project) ? KATALOG[project.slug]?.cta : undefined;
   const prevCase = (prevRes.docs[0] as any) || null;
   const nextCase = (nextRes.docs[0] as any) || null;
 
@@ -138,16 +141,29 @@ export default async function ProjectDetailPage({
         }
       />
       <RelatedGrid heading={project.kind === 'client' ? 'Kasus serupa' : 'Karya serupa'} type="projects" items={relatedRaw as any[]} />
-      {/* Contact CTA strip */}
+      {cta && (
+        <section aria-label="Setelah sistemnya berjalan" className="py-14 border-t border-paper-200">
+          <ul className="max-w-[1180px] mx-auto px-8 m-0 list-none grid gap-8 md:grid-cols-2">
+            {SETELAH_TAYANG.map((j) => (
+              <li key={j.name}>
+                <p className="m-0 text-[19px] font-bold tracking-[-0.01em]">{j.name}</p>
+                <p className="m-0 mt-2 max-w-[52ch] text-[16px] leading-[1.6] text-ink/70 text-pretty">{j.body}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+      {/* Contact CTA strip: the project's own question when its catalogue has one. */}
       <section className="py-20 bg-paper-50 border-t border-paper-200">
         <div className="max-w-[1180px] mx-auto px-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div>
             <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-mist-600">
-              {project.kind === 'client' ? 'Butuh sistem seperti ini?' : 'Menjalankan usaha serupa?'}
+              {cta?.eyebrow ?? (project.kind === 'client' ? 'Butuh sistem seperti ini?' : 'Menjalankan usaha serupa?')}
             </span>
-            <p className="text-[24px] font-bold tracking-[-0.015em] mt-2">
-              Mulai dari konsultasi gratis 30 menit.
+            <p className="text-[24px] font-bold tracking-[-0.015em] mt-2 text-balance">
+              {cta?.heading ?? 'Mulai dari konsultasi gratis 30 menit.'}
             </p>
+            {cta && <p className="m-0 mt-1 text-[15px] text-mist-600">Konsultasi pertama gratis, 30 menit.</p>}
           </div>
           <Link
             href="/#contact"
