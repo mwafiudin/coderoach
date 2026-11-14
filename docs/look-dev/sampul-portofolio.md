@@ -5,7 +5,8 @@ Tanggal: 2026-11-14, direvisi hari yang sama (struktur B, versi sampul v4/v5).
 ## Struktur B (yang tayang sejak v4/v5)
 
 Keputusan Farrez 14 Nov 2026: papan mengikuti susunan Uruzin OS ("System Operations and Finance").
-Yang dibaca pertama adalah **apa produknya**, bukan nama mereknya.
+Yang dibaca pertama adalah **apa produknya**, bukan nama mereknya. Pilihan A (tanpa ornamen) dan B
+(satu ornamen) ada di `docs/konsep/sampul/struktur-uruzin-laporta.html`; Farrez memilih B.
 
 | Butir | Aturan |
 |---|---|
