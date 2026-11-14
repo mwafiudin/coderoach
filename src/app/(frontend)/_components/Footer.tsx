@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { FooterCopyLink } from './FooterCopyLink';
 import { Meta } from './ui/Meta';
 
@@ -71,12 +72,18 @@ export function Footer({ data }: { data: FooterData | null }) {
             </div>
           ))}
         </div>
-        {data?.footer?.metaLine && (data.footer.metaLine.left || data.footer.metaLine.right) && (
-          <div className="mt-14 pt-6 border-t border-shadow-700 flex justify-between flex-wrap gap-4 font-mono text-[11px] text-mist-500 tracking-wide tabular">
-            <Meta parts={data.footer.metaLine.left} />
-            <Meta parts={data.footer.metaLine.right} />
-          </div>
-        )}
+        {/* Always rendered: the privacy link must be on every page, whatever the CMS meta line holds. */}
+        <div className="mt-14 pt-6 border-t border-shadow-700 flex justify-between flex-wrap gap-4 font-mono text-[11px] text-mist-500 tracking-wide tabular">
+          <Meta
+            parts={[
+              data?.footer?.metaLine?.left,
+              <Link key="privacy" href="/privacy" className="uppercase py-3 -my-3 hover:text-electric transition-colors">
+                Kebijakan Privasi
+              </Link>,
+            ]}
+          />
+          <Meta parts={data?.footer?.metaLine?.right} />
+        </div>
       </div>
     </footer>
   );

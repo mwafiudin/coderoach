@@ -20,6 +20,7 @@ const RESERVED_SLUGS = new Set([
   'notes',
   'studio',
   'services',
+  'privacy',
   'sitemap.xml',
   'robots.txt',
 ]);
