@@ -74,12 +74,24 @@ Prompt klip: motor diam [0-1s]; mulai dari hub roda depan terurai jadi partikel 
 mengalir melengkung [1-4s]; aliran terkumpul ke HP dan layarnya menyala amber [4-5.5s]; diam [5.5-6s];
 satu motor, satu HP, tanpa teks, logo, atau orang.
 
-## Sampul kartu /work, papan dengan ornamen (14 Nov 2026)
+## Sampul kartu /work, papan berlapis dengan ornamen (14 Nov 2026)
 
-Tiga belas berkas `scripts/portfolio-assets/<slug>-sampul.v2.webp`: papan presentasi seperti sampul
+Tiga belas berkas `scripts/portfolio-assets/<slug>-sampul.v3.webp`: papan presentasi seperti sampul
 Uruzin dan RPN OS. Ikon, nama, `tagline`, dan chip dirender dari HTML; layar laptop dan ponsel
 **tangkapan asli** dari folder ini; ornamen 3D clay buatan AI. Templat dan alat di
-`_referensi/portofolio/_alat/sampul/` (`papan.html`, `rakit-papan.mts`, `kunci.mts`).
+`_referensi/portofolio/_alat/sampul/` (`papan3.html`, `rakit-papan3.mts`, `kunci.mts`).
+
+Tiap papan memuat 3 sampai 4 layar: satu layar utama di laptop (angka, grafik, atau fitur khas), dua
+jendela browser di belakangnya, dan ponsel bila produknya punya versi mobile. Asal layar tambahan:
+
+- Tangkapan data demo dari `_referensi/portofolio/_kerja/rekaman/` (Laporta v4, Coderoach OS v2),
+  `_kerja/nds-rekam/stills` (Rencana RO: kalender, taruh di mana), dan `_kerja/jeda/rekaman/stills`
+  (ringkasan dan tabel untuk psikolog, catatan baru). Semua berdata fiktif; tidak ada layar
+  Rencana RO yang memuat istilah skema prinsipal (`rencana-ro.png` sengaja tidak dipakai).
+- Rekaman situs live 14 Nov 2026 dengan Chrome headless, desktop 1440×900 dan ponsel 390×844 @2x:
+  theglobal-review.com (beranda, Geopolitik, artikel), chickenwow.id (beranda, menu, lokasi,
+  kemitraan), akarkita.vercel.app (beranda, warisan). Izin klien: IZN-2026-001, IZN-2026-002.
+- LocaScore tetap satu layar: layar lain hanya bisa direkam setelah login.
 
 - Ornamen: Google Flow, Nano Banana 2.1, 16:9, 0 kredit, akun Google AI Pro farrez. Tiga benda
   per gambar di latar hijau (#00FF00) atau magenta (#FF00FF, untuk AkarKita dan Jeda), dipotong
@@ -91,6 +103,7 @@ Uruzin dan RPN OS. Ikon, nama, `tagline`, dan chip dirender dari HTML; layar lap
   dipakai karena memuat singkatan portal prinsipal.
 - Uruzin dan RPN OS tetap memakai sampul lama (izin legacy).
 
-Versi sebelumnya (`<slug>-sampul.v1.webp`, foto dari balik bahu) dikeluarkan dari repo dan disimpan
+Versi v2 (papan satu layar per perangkat) disimpan di `_referensi/portofolio/sampul-papan-v2/`.
+Versi v1 (`<slug>-sampul.v1.webp`, foto dari balik bahu) dikeluarkan dari repo dan disimpan
 di `_referensi/portofolio/sampul-balik-bahu/` untuk halaman detail. Media-nya di produksi masih ada
 karena sync tidak menghapus Media.
