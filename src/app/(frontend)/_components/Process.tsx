@@ -2,6 +2,11 @@ import { Icon, type IconName } from '@/lib/icons';
 import { SectionHead, type SectionHeadCopy } from './SectionHead';
 import { Meta } from './ui/Meta';
 
+/* Resting state: every phase lit and the rail full. The scroll handler in InteractionsClient
+   rewinds and replays it, so without JS or with reduced motion the section still reads finished. */
+const DOT_LIT = { background: 'var(--color-electric)', borderColor: 'var(--color-electric)', boxShadow: '0 0 0 4px rgba(44,112,254,0.18)' };
+const ICON_LIT = { color: 'var(--color-electric)', borderColor: 'rgba(44,112,254,0.4)', background: 'rgba(44,112,254,0.08)' };
+
 type Phase = {
   id: string | number;
   tag: string;
@@ -23,7 +28,7 @@ export function Process({ phases, head }: { phases: Phase[]; head?: SectionHeadC
           lede={head?.lede ?? "Setiap proyek mengikuti pola yang sama. Scope berbeda, stack berbeda, disiplin shipping tetap konsisten."}
         />
         <div
-          className="grid grid-cols-1 md:grid-cols-4 relative pt-14 mt-14 [--progress:0]"
+          className="grid grid-cols-1 md:grid-cols-4 relative pt-14 mt-14 [--progress:1]"
           data-process
         >
           {/* Rail */}
@@ -43,14 +48,14 @@ export function Process({ phases, head }: { phases: Phase[]; head?: SectionHeadC
               {/* Dot — desktop only, sits on the rail */}
               <div
                 aria-hidden
-                className="absolute w-3.5 h-3.5 rounded-full bg-paper-100 border-2 border-ink box-border max-md:hidden"
-                style={{ top: '-39px', left: 0 }}
+                className="absolute w-3.5 h-3.5 rounded-full border-2 box-border max-md:hidden"
+                style={{ top: '-39px', left: 0, ...DOT_LIT }}
                 data-phase-dot={i + 1}
               />
               <div className="font-mono text-[11px] tracking-wider tabular">
                 <span className="text-mist-600">[ {p.tag} ]</span>
               </div>
-              <div className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-paper-50 border border-paper-200 text-shadow-700 flex-shrink-0 mt-[18px]" data-phase-icon={i + 1}>
+              <div className="inline-flex items-center justify-center w-9 h-9 rounded-lg border flex-shrink-0 mt-[18px]" style={ICON_LIT} data-phase-icon={i + 1}>
                 <Icon name={p.icon} size={20} />
               </div>
               <h4 className="text-[28px] font-bold tracking-[-0.015em] my-3.5 mt-3.5 mb-3">{p.name}</h4>

@@ -1,10 +1,12 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 /**
- * Animates count-up from 0 → target when element enters viewport.
- * Falls back to static value if not numeric or if reduced-motion preferred.
+ * Number reveal: counts 0 → target when the element enters the viewport. Only for measured
+ * results (DESIGN.md, Motion vocabulary). The final value is what the server renders, so the HTML,
+ * no-JS readers and reduced motion all get the real number; the count only rewinds to 0 in the
+ * browser, before the first client paint, and only when motion is allowed.
  */
 export function AnimatedCount({
   value,
@@ -19,42 +21,42 @@ export function AnimatedCount({
   const numeric = parseInt(value, 10);
   const isNumeric = !Number.isNaN(numeric);
 
-  const [display, setDisplay] = useState(isNumeric ? '0' : value);
+  const [display, setDisplay] = useState(value);
   const ref = useRef<HTMLSpanElement | null>(null);
-  const startedRef = useRef(false);
+  const animate = useRef(false);
+
+  useLayoutEffect(() => {
+    if (!isNumeric || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    animate.current = true;
+    setDisplay('0');
+  }, [isNumeric]);
 
   useEffect(() => {
-    if (!isNumeric || !ref.current) return;
-    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce) {
-      setDisplay(String(numeric));
-      return;
-    }
-
     const el = ref.current;
+    if (!animate.current || !el) return;
+
+    let frame = 0;
     const io = new IntersectionObserver(
       (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting && !startedRef.current) {
-            startedRef.current = true;
-            const start = performance.now();
-            const tick = (now: number) => {
-              const t = Math.min(1, (now - start) / duration);
-              const eased = 1 - Math.pow(1 - t, 3); // ease-out cubic
-              const current = Math.round(eased * numeric);
-              setDisplay(String(current));
-              if (t < 1) requestAnimationFrame(tick);
-            };
-            requestAnimationFrame(tick);
-            io.unobserve(el);
-          }
-        });
+        if (!entries.some((e) => e.isIntersecting)) return;
+        io.disconnect();
+        const start = performance.now();
+        const tick = (now: number) => {
+          const t = Math.min(1, (now - start) / duration);
+          const eased = 1 - Math.pow(1 - t, 3); // ease-out cubic
+          setDisplay(String(Math.round(eased * numeric)));
+          if (t < 1) frame = requestAnimationFrame(tick);
+        };
+        frame = requestAnimationFrame(tick);
       },
       { threshold: 0, rootMargin: '0px 0px -10% 0px' },
     );
     io.observe(el);
-    return () => io.disconnect();
-  }, [isNumeric, numeric, duration]);
+    return () => {
+      io.disconnect();
+      cancelAnimationFrame(frame);
+    };
+  }, [numeric, duration]);
 
   return (
     <span ref={ref} className={`inline-block ${className}`}>

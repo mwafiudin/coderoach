@@ -77,7 +77,7 @@ export async function JedaPage({ project }: { project: Project }) {
               </div>
             </div>
             {phone && (
-              <div className="jd-float max-w-[280px] w-full mx-auto">
+              <div className="max-w-[280px] w-full mx-auto">
                 <DeviceFrame kind="phone">
                   <MediaImg media={phone} priority sizes="280px" />
                 </DeviceFrame>

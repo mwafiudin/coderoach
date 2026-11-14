@@ -24,9 +24,6 @@
   font-feature-settings: normal;
 }
 
-@keyframes jdFloat { to { transform: translateY(-6px); } }
-.bk-jeda[data-motion='on'] .jd-float { animation: jdFloat 6s ease-in-out infinite alternate; }
-
 /* A sheet of the notebook: faint rules behind the text. */
 .bk-jeda .jd-sheet {
   padding: 20px 22px 24px;

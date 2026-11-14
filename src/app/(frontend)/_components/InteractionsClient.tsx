@@ -5,7 +5,8 @@ import { useEffect } from 'react';
 /**
  * Consolidated client interactions: IntersectionObserver reveal,
  * spotlight cursor, work-row directional hover, magnetic CTA,
- * hero parallax, Process scroll progress.
+ * Process scroll progress. No parallax on the hero: DESIGN.md rules out decorative parallax.
+ * Process rests full in its markup, so without JS or with reduced motion the rail reads finished.
  *
  * All gated by prefers-reduced-motion + (pointer: fine).
  */
@@ -88,39 +89,33 @@ export function InteractionsClient() {
       }
     }
 
-    /* Hero parallax + Process scroll progress (single rAF-throttled scroll handler) */
-    const heroBg = document.querySelector<HTMLElement>('[data-hero-bg]');
+    /* Process scroll progress (rAF-throttled scroll handler) */
     const proc = document.querySelector<HTMLElement>('[data-process]');
+    if (!proc) return () => cleanups.forEach((c) => c());
     let raf: number | null = null;
     const onScroll = () => {
       if (raf !== null) return;
       raf = requestAnimationFrame(() => {
-        const y = scrollY;
-        if (heroBg && y < innerHeight * 1.5) {
-          heroBg.style.transform = `translateY(${(y * 0.18).toFixed(2)}px)`;
-        }
-        if (proc) {
-          const r = proc.getBoundingClientRect();
-          const total = r.height + innerHeight;
-          const passed = innerHeight - r.top;
-          const p = Math.max(0, Math.min(1, passed / total));
-          proc.style.setProperty('--progress', p.toFixed(3));
-          const phase = Math.max(0, Math.min(4, Math.ceil(p * 4)));
-          // Apply electric fill to dots/icons up to current phase
-          for (let i = 1; i <= 4; i++) {
-            const dot = proc.querySelector<HTMLElement>(`[data-phase-dot="${i}"]`);
-            const icon = proc.querySelector<HTMLElement>(`[data-phase-icon="${i}"]`);
-            const active = i <= phase;
-            if (dot) {
-              dot.style.background = active ? 'var(--color-electric)' : 'var(--color-paper-100)';
-              dot.style.borderColor = active ? 'var(--color-electric)' : 'var(--color-ink)';
-              dot.style.boxShadow = active ? '0 0 0 4px rgba(44,112,254,0.18)' : 'none';
-            }
-            if (icon) {
-              icon.style.color = active ? 'var(--color-electric)' : 'var(--color-shadow-700)';
-              icon.style.borderColor = active ? 'rgba(44,112,254,0.4)' : 'var(--color-paper-200)';
-              icon.style.background = active ? 'rgba(44,112,254,0.08)' : 'var(--color-paper-50)';
-            }
+        const r = proc.getBoundingClientRect();
+        const total = r.height + innerHeight;
+        const passed = innerHeight - r.top;
+        const p = Math.max(0, Math.min(1, passed / total));
+        proc.style.setProperty('--progress', p.toFixed(3));
+        const phase = Math.max(0, Math.min(4, Math.ceil(p * 4)));
+        // Apply electric fill to dots/icons up to current phase
+        for (let i = 1; i <= 4; i++) {
+          const dot = proc.querySelector<HTMLElement>(`[data-phase-dot="${i}"]`);
+          const icon = proc.querySelector<HTMLElement>(`[data-phase-icon="${i}"]`);
+          const active = i <= phase;
+          if (dot) {
+            dot.style.background = active ? 'var(--color-electric)' : 'var(--color-paper-100)';
+            dot.style.borderColor = active ? 'var(--color-electric)' : 'var(--color-ink)';
+            dot.style.boxShadow = active ? '0 0 0 4px rgba(44,112,254,0.18)' : 'none';
+          }
+          if (icon) {
+            icon.style.color = active ? 'var(--color-electric)' : 'var(--color-shadow-700)';
+            icon.style.borderColor = active ? 'rgba(44,112,254,0.4)' : 'var(--color-paper-200)';
+            icon.style.background = active ? 'rgba(44,112,254,0.08)' : 'var(--color-paper-50)';
           }
         }
         raf = null;

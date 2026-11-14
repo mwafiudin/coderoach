@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { Icon, type IconName } from '@/lib/icons';
-import { AnimatedCount } from './ui/AnimatedCount';
 import { Meta } from './ui/Meta';
 import { StudioPulse } from './ui/StudioPulse';
 import { StudioWaveBg } from './ui/StudioWaveBg';
@@ -56,7 +55,7 @@ export function Studio({ data, tenets }: { data: StudioData | null; tenets: Tene
                 {data.stats.map((s, i) => (
                   <div key={i} className="flex flex-col gap-2.5">
                     <div className="text-[56px] font-bold leading-none tracking-[-0.025em] text-paper tabular">
-                      <AnimatedCount value={s.num} />
+                      {s.num}
                       {s.accent && <span className="text-electric font-bold">{s.accent}</span>}
                     </div>
                     <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-mist-500 leading-[1.5] whitespace-pre-line">

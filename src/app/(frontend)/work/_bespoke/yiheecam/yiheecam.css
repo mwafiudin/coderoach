@@ -65,7 +65,7 @@
   object-fit: cover;
   object-position: 50% 70%;
   scale: 1.06;
-  translate: 0 calc(var(--p, 0) * 60px);
+  translate: 0 calc(var(--p, 0) * 12px);
 }
 .bk-yiheecam .yc-hero::after {
   content: '';
