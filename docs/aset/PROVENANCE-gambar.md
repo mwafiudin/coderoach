@@ -85,12 +85,15 @@ Tiap papan memuat 3 sampai 4 layar: satu layar utama di laptop (angka, grafik, a
 jendela browser di belakangnya, dan ponsel bila produknya punya versi mobile. Asal layar tambahan:
 
 - Tangkapan data demo dari `_referensi/portofolio/_kerja/rekaman/` (Laporta v4, Coderoach OS v2),
-  `_kerja/nds-rekam/stills` (Rencana RO: kalender, taruh di mana), dan `_kerja/jeda/rekaman/stills`
+  `_kerja/nds-rekam/v2/stills` (Rencana RO: kalender, taruh di mana; `rencana-ro-sampul.v4`. Sampul v3
+  sempat memakai `nds-rekam/stills` v1 yang sudah ditarik, diganti 14 Nov 2026), dan `_kerja/jeda/rekaman/stills`
   (ringkasan dan tabel untuk psikolog, catatan baru). Semua berdata fiktif; tidak ada layar
   Rencana RO yang memuat istilah skema prinsipal (`rencana-ro.png` sengaja tidak dipakai).
 - Rekaman situs live 14 Nov 2026 dengan Chrome headless, desktop 1440×900 dan ponsel 390×844 @2x:
   theglobal-review.com (beranda, Geopolitik, artikel), chickenwow.id (beranda, menu, lokasi,
   kemitraan), akarkita.vercel.app (beranda, warisan). Izin klien: IZN-2026-001, IZN-2026-002.
+- FiFoFun (`fifofun-sampul.v4.webp`): jendela rekonsiliasi diganti ringkasan bulanan karena
+  `fifofun-rekonsiliasi.v1` memuat nama bank sungguhan (v3 sempat tayang dengan layar itu).
 - LocaScore (`locascore-sampul.v4.webp`): direkam 14 Nov 2026 dari LocaScore yang dijalankan lokal
   dengan `MOCK_MODE=true` (data tiruan bawaan aplikasi) dan akun uji lokal: sembilan calon lokasi
   bernama "Kandidat A–I" di area publik Bandung dan Yogyakarta, dua survei contoh. Halaman detail

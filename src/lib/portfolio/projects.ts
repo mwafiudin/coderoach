@@ -698,7 +698,7 @@ export const PORTFOLIO: PortfolioEntry[] = [
     excerpt:
       'SaaS milik studio yang setiap jam menarik data jaringan distributor dari back office, lalu menjawab empat pertanyaan mingguan mereka lewat dashboard, email, kalender, dan push di ponsel.',
     cover: {
-      file: 'rencana-ro-sampul.v3.webp',
+      file: 'rencana-ro-sampul.v4.webp',
       alt: 'Papan Rencana RO: empat jawaban mingguan di laptop, kalender dan daftar taruh di mana di jendela belakang, beranda di ponsel, dengan kardus, troli, dan papan jalan',
       focalX: 1,
     },
@@ -1070,8 +1070,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
     excerpt:
       'Membaca e-Statement bank, mencocokkan setiap baris dengan saldo cetakan bank sampai ke sen, lalu menjadikannya patokan untuk anggaran, dana, dan ringkasan tiga bulan.',
     cover: {
-      file: 'fifofun-sampul.v3.webp',
-      alt: 'Papan FiFoFun: ringkasan tiga bulan di laptop, anggaran dan rekonsiliasi di jendela belakang, ringkasan di ponsel, dengan celengan, rumah kecil, dan kalkulator',
+      file: 'fifofun-sampul.v4.webp',
+      alt: 'Papan FiFoFun: ringkasan tiga bulan di laptop, anggaran dan ringkasan bulanan di jendela belakang, ringkasan di ponsel, dengan celengan, rumah kecil, dan kalkulator',
       focalX: 1,
     },
     summary: {
