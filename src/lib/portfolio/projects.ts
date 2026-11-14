@@ -168,8 +168,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
       'Menjembatani SPV dan Accounting di operasi F&B multi-cabang: tutup shift dari ponsel crew, serah terima kas sampai setoran bank, dan jurnal double-entry sampai tutup buku.',
     // From the demo database. The earlier cover showed a live outlet's sales and the production URL.
     cover: {
-      file: 'laporta-sampul.v1.webp',
-      alt: 'Ilustrasi: crew outlet memegang ponsel berisi daftar tutup shift Laporta di depan laci kas yang terbuka, kafe sudah tutup',
+      file: 'laporta-sampul.v2.webp',
+      alt: 'Papan Laporta: setoran tunai di laptop dan daftar tutup shift di ponsel, dengan gulungan struk, terminal pembayaran, dan cangkir kopi',
     },
     metrics: LAPORTA_METRICS,
     summary: {
@@ -334,8 +334,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
       'Tempel satu link Google Maps, dapatkan skor kelayakan lokasi beserta alasannya. Kompetitor, demografi, dan kepadatan jalan dikumpulkan otomatis, lalu dikalibrasi dengan performa outlet yang sudah berjalan.',
     // Database demo dengan data Places tiruan (MOCK_MODE); nama outlet fiktif.
     cover: {
-      file: 'locascore-sampul.v1.webp',
-      alt: 'Ilustrasi: surveyor membuka kesimpulan kelayakan LocaScore di laptop, di seberang deretan ruko yang tutup',
+      file: 'locascore-sampul.v2.webp',
+      alt: 'Papan LocaScore: kesimpulan kelayakan calon lokasi di laptop, dengan penanda peta, ruko, dan kaca pembesar',
     },
     // The bespoke page reads the real screen from here; the cover is the card photo.
     showcase: {
@@ -390,8 +390,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
       'Situs baru untuk kanal analisis geopolitik milik Global Future Institute. Redaksi tetap bekerja di wp-admin; pembaca mendapat situs dua bahasa, dan redaksi mendapat halaman statistiknya sendiri.',
     // Situs produksi, 14 Okt 2026. Nama penulis di byline adalah byline terbit, bukan data pribadi.
     cover: {
-      file: 'the-global-review-sampul.v1.webp',
-      alt: 'Ilustrasi: pembaca membuka artikel The Global Review di laptop, di meja baca dekat jendela dan rak buku',
+      file: 'the-global-review-sampul.v2.webp',
+      alt: 'Papan The Global Review: beranda situs di laptop, dengan koran, globe, dan kacamata baca',
     },
     // The bespoke page reads the real screen from here; the cover is the card photo.
     showcase: {
@@ -476,8 +476,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
       'Situs untuk jaringan gerai Chicken Wow (Masaya Food), dengan menu dan daftar gerai yang dibaca dari berkas data dan halaman link-in-bio milik sendiri. Aset dipangkas dari 20,3 MB menjadi 9,4 MB.',
     // Situs produksi, 14 Okt 2026.
     cover: {
-      file: 'chicken-wow-sampul.v1.webp',
-      alt: 'Ilustrasi: manajer gerai membuka beranda situs Chicken Wow di laptop, di meja stainless dapur gerai',
+      file: 'chicken-wow-sampul.v2.webp',
+      alt: 'Papan Chicken Wow: beranda situs gerai di laptop, dengan paha ayam goreng, cabai, dan kotak makanan',
     },
     // The bespoke page reads the real screen from here; the cover is the card photo.
     showcase: {
@@ -520,8 +520,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
     excerpt:
       'Alat internal yang menjalankan studio dua orang: klien, penawaran, proyek dan story, jam kerja, invoice, kas, dan pembukuan double-entry yang dijaga database, ditambah server MCP supaya Claude Code membaca status story dari sumbernya.',
     cover: {
-      file: 'coderoach-os-sampul.v1.webp',
-      alt: 'Ilustrasi: beranda Coderoach OS di laptop, di meja kerja studio kecil sore hari',
+      file: 'coderoach-os-sampul.v2.webp',
+      alt: 'Papan Coderoach OS: beranda sistem studio di laptop, dengan buku besar, kalkulator, dan cangkir',
     },
     summary: {
       problem:
@@ -601,8 +601,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
     excerpt:
       'Platform agensi untuk menjalankan campaign influencer: shortlist KOL, persetujuan brand per fase, draft dan verifikasi unggahan, pembayaran termin, sampai laporan hasil yang tidak perlu disusun ulang.',
     cover: {
-      file: 'viralytics-sampul.v1.webp',
-      alt: 'Ilustrasi: papan campaign Viralytics di laptop, di meja agensi dengan ring light dan catatan tempel',
+      file: 'viralytics-sampul.v2.webp',
+      alt: 'Papan Viralytics: papan campaign di laptop, dengan ring light, ponsel di tripod, dan gelembung suka',
     },
     studio: {
       vizType: 'none',
@@ -692,8 +692,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
     excerpt:
       'SaaS milik studio yang setiap jam menarik data jaringan distributor dari back office, lalu menjawab empat pertanyaan mingguan mereka lewat dashboard, email, kalender, dan push di ponsel.',
     cover: {
-      file: 'rencana-ro-sampul.v1.webp',
-      alt: 'Ilustrasi: distributor memegang ponsel berisi beranda Rencana RO di lorong gudang penuh kardus',
+      file: 'rencana-ro-sampul.v2.webp',
+      alt: 'Papan Rencana RO: beranda mingguan di laptop dan ponsel, dengan tumpukan kardus, troli, dan papan jalan',
     },
     studio: {
       vizType: 'none',
@@ -796,8 +796,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
     publishedYear: '2026',
     pills: ['NEXT.JS', 'CANVAS', 'PWA', 'POSTGRES'],
     cover: {
-      file: 'akarkita-sampul.v1.webp',
-      alt: 'Ilustrasi: pohon keluarga AkarKita di ponsel, di meja makan bersama album foto keluarga lama',
+      file: 'akarkita-sampul.v2.webp',
+      alt: 'Papan AkarKita: pohon keluarga di laptop dan ponsel, dengan pohon berakar, bingkai foto, dan gulungan kain',
     },
     excerpt:
       'Silsilah keluarga besar di canvas sendiri, kalkulator kekerabatan menurut adat Sunda dan Minang, dan simulator faraid dengan pecahan eksak. Proyek lab yang dipakai sungguhan oleh satu keluarga.',
@@ -846,8 +846,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
     excerpt:
       'Aplikasi thought record CBT yang dibangun bersama seorang psikolog: klien mencatat saat perasaan berubah, bahkan tanpa internet, lalu membagikan tautan baca-saja kepada psikolognya.',
     cover: {
-      file: 'jeda-sampul.v1.webp',
-      alt: 'Ilustrasi: catatan cepat Jeda di ponsel, dipegang di kursi dekat jendela pada pagi hari',
+      file: 'jeda-sampul.v2.webp',
+      alt: 'Papan Jeda: tabel catatan untuk psikolog di laptop dan catat cepat di ponsel, dengan buku catatan, teh, dan tanaman',
     },
     summary: {
       problem:
@@ -925,8 +925,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
     excerpt:
       'Mesin yang menjalankan aturan trading milik mitra dengan disiplin: tiap keputusan tercatat, setiap posisi punya penjaga, dan semuanya bisa dihentikan dengan satu ketukan.',
     cover: {
-      file: 'd-day-sampul.v1.webp',
-      alt: 'Ilustrasi: layar Keadaan d-day di laptop, di meja rumah yang rapi pada siang hari',
+      file: 'd-day-sampul.v2.webp',
+      alt: 'Papan d-day: layar Keadaan di laptop, dengan papan daftar periksa, gembok, dan stopwatch',
     },
     summary: {
       problem:
@@ -997,8 +997,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
     excerpt:
       'Aplikasi Android untuk mengendalikan action cam keluaran 2016 saat touring motor, setelah aplikasi resminya ditarik dan tidak bisa lagi dipasang di Android 15.',
     cover: {
-      file: 'yiheecam-sampul.v1.webp',
-      alt: 'Ilustrasi: pengendara motor memegang ponsel berisi tampilan langsung YiheeCam di tepi jalan pegunungan',
+      file: 'yiheecam-sampul.v2.webp',
+      alt: 'Papan YiheeCam: layar merekam dengan pratinjau kamera ilustrasi dan layar setting di dua ponsel, dengan action cam, kartu microSD, dan dudukan stang',
     },
     summary: {
       problem:
@@ -1059,8 +1059,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
     excerpt:
       'Membaca e-Statement bank, mencocokkan setiap baris dengan saldo cetakan bank sampai ke sen, lalu menjadikannya patokan untuk anggaran, dana, dan ringkasan tiga bulan.',
     cover: {
-      file: 'fifofun-sampul.v1.webp',
-      alt: 'Ilustrasi: ringkasan FiFoFun di ponsel, di meja makan bersama kalkulator dan map tagihan',
+      file: 'fifofun-sampul.v2.webp',
+      alt: 'Papan FiFoFun: ringkasan keuangan di laptop dan ponsel, dengan celengan, kalkulator, dan rumah kecil',
     },
     summary: {
       problem:
@@ -1140,8 +1140,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
     excerpt:
       'Launcher Android untuk HP di dudukan stang: navigasi, musik, telepon, dan app touring dalam satu dasbor instrumen, dengan tombol pulang yang selalu ada.',
     cover: {
-      file: 'ridedeck-sampul.v1.webp',
-      alt: 'Ilustrasi: dasbor RideDeck di ponsel yang terpasang di stang motor, di tepi jalan pegunungan',
+      file: 'ridedeck-sampul.v2.webp',
+      alt: 'Papan RideDeck: kokpit dan dasbor di dua ponsel, dengan helm, kompas, dan jeriken',
     },
     summary: {
       problem:

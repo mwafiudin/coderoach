@@ -41,16 +41,16 @@ describe('portfolio sync dry run', () => {
   );
 
   test('reports the project whose new cover is still to be uploaded, and writes nothing', async () => {
-    const { payload, writes } = databaseMissing('locascore-sampul.v1.webp');
+    const { payload, writes } = databaseMissing('locascore-sampul.v2.webp');
     const lines: string[] = [];
     await syncPortfolio(payload, { apply: false, assetsDir: 'scripts/portfolio-assets', grants, log: (l) => lines.push(l) });
-    assert.ok(lines.includes('upload     media   locascore-sampul.v1.webp'), lines.join('\n'));
+    assert.ok(lines.includes('upload     media   locascore-sampul.v2.webp'), lines.join('\n'));
     assert.ok(lines.includes('update     project locascore (coverImage)'), lines.join('\n'));
     assert.deepEqual(writes, []);
   });
 
   test('leaves every other project as it is', async () => {
-    const { payload } = databaseMissing('locascore-sampul.v1.webp');
+    const { payload } = databaseMissing('locascore-sampul.v2.webp');
     const lines: string[] = [];
     await syncPortfolio(payload, { apply: false, assetsDir: 'scripts/portfolio-assets', grants, log: (l) => lines.push(l) });
     const changed = lines.filter((l) => /^(update|create) +project/.test(l));
