@@ -12,7 +12,7 @@ Yang dibaca pertama adalah **apa produknya**, bukan nama mereknya.
 | Ukuran | 1600×1000, webp q84 ≤300 KB; versi EN dirender dari templat yang sama untuk /en nanti |
 | Judul | kategori produk, Archivo 800 64 px huruf besar, maksimal 470 px (mengecil otomatis bila satu kata lebih lebar) |
 | Merek | ikon 42 px dan nama 34 px warna aksen, di atas judul |
-| Baris dukung | satu baris JetBrains Mono 19 px huruf besar, satu pembeda yang ada buktinya |
+| Baris dukung | JetBrains Mono 19 px huruf besar, satu pembeda yang ada buktinya; satu baris, atau dua baris (`<br>`) bila isinya daftar fitur plus "dan masih banyak lagi" seperti RideDeck (permintaan Farrez 15 Nov 2026) |
 | Label pembaca | kanan atas, mono 17 px, garis kiri, pembagian baris seimbang |
 | Grid | garis tipis y 250/760 dan x 440/1480 dengan tanda silang |
 | Layar | jendela UI datar dimiringkan (rotateY -13°), tanpa bingkai laptop; ponsel berbingkai tipis. App yang hanya ada di HP memakai susunan khusus (YiheeCam: gambar kamera dan dua ponsel; RideDeck: ponsel landscape dan portrait, kokpit, cuaca rute, dan musik diperbesar) |
