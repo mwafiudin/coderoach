@@ -3,6 +3,7 @@ import { OpsConsole } from './OpsConsole';
 import { OctagonMark } from './ui/OctagonMark';
 import { stripArrow } from './ui/CtaLabel';
 import { Meta } from './ui/Meta';
+import { logoHeight } from '@/lib/landing/logo-size';
 
 type HeroData = {
   pillText?: string | null;
@@ -16,7 +17,7 @@ type HeroData = {
 
 type Client = {
   name: string;
-  logo?: { url?: string | null; alt?: string | null } | null;
+  logo?: { url?: string | null; alt?: string | null; width?: number | null; height?: number | null } | null;
   website?: string | null;
 };
 
@@ -120,12 +121,16 @@ export function Hero({ data, clients }: { data: HeroData | null; clients: Client
                   inert={track === 1}
                 >
                   {clients.map((c, i) => {
+                    const h = logoHeight(c.logo?.width, c.logo?.height);
                     const inner = c.logo?.url ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={c.logo.url}
                         alt={c.logo.alt || c.name}
-                        className="h-9 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity"
+                        width={c.logo.width ? Math.round((c.logo.width / (c.logo.height || 1)) * h) : undefined}
+                        height={h}
+                        style={{ height: h }}
+                        className="w-auto object-contain opacity-80 hover:opacity-100 transition-opacity"
                       />
                     ) : (
                       <span className="font-sans font-bold text-[32px] tracking-[-0.02em] text-mist-600 hover:text-ink transition-colors whitespace-nowrap">

@@ -6,6 +6,7 @@ const client = (over: Partial<ExistingClient> & Pick<ExistingClient, 'id' | 'nam
   listed: true,
   industry: 'fb',
   hasAdminData: false,
+  hasLogo: false,
   ...over,
 });
 
@@ -54,6 +55,25 @@ describe('planClientsSync', () => {
       [client({ id: 7, name: 'Uruzin', order: 1, industry: 'legal', hasAdminData: true })],
       [{ name: 'Uruzin', industry: 'legal' }],
     );
-    assert.deepEqual(plan, { create: [], update: [], keep: [{ id: 7, name: 'Uruzin' }], remove: [], extra: [] });
+    assert.deepEqual(plan, { create: [], update: [], keep: [{ id: 7, name: 'Uruzin' }], remove: [], extra: [], logos: [] });
+  });
+
+  test('uploads a logo for a new client and for one that has none, never over a logo already set', () => {
+    const plan = planClientsSync(
+      [
+        client({ id: 8, name: 'RPN Agro', order: 1, industry: 'manufacturing' }),
+        client({ id: 9, name: 'Uruzin', order: 2, industry: 'legal', hasAdminData: true, hasLogo: true }),
+      ],
+      [
+        { name: 'RPN Agro', industry: 'manufacturing', logo: 'klien-rpn-agro.v1.webp' },
+        { name: 'Uruzin', industry: 'legal', logo: 'klien-uruzin.v1.webp' },
+        { name: 'Chicken Wow', industry: 'fb', logo: 'klien-chicken-wow.v1.webp' },
+        { name: 'Tanpa Logo', industry: 'fb' },
+      ],
+    );
+    assert.deepEqual(plan.logos, [
+      { name: 'RPN Agro', file: 'klien-rpn-agro.v1.webp' },
+      { name: 'Chicken Wow', file: 'klien-chicken-wow.v1.webp' },
+    ]);
   });
 });
