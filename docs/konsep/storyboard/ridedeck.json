@@ -1,0 +1,195 @@
+{
+  "slug": "ridedeck",
+  "judul": "RideDeck",
+  "halaman": "/work/ridedeck",
+  "satuPesan": "Satu dasbor di stang yang selalu bisa dituju kembali, dan jujur soal batasnya.",
+  "identitas": { "latar": "#0a0b0c", "tinta": "#e9ebec", "aksen": "#ffb000", "huruf": "Archivo" },
+  "adegan": [
+    {
+      "id": "A1",
+      "nama": "Hero",
+      "scroll": [0, 110],
+      "koreografi": "none",
+      "tata": "hero",
+      "elemen": [
+        { "jenis": "video", "label": "Jalan gunung senja dari atas motor, buatan AI", "posisi": "penuh" },
+        { "jenis": "ikon", "label": "Ikon akhir RideDeck di depan eyebrow", "posisi": "kiri" },
+        { "jenis": "judul", "label": "RideDeck", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Satu dasbor di HP yang terpasang di stang motor, untuk membuka navigasi, musik, dan telepon tanpa mencari-cari app.", "posisi": "kiri" },
+        { "jenis": "angka", "label": "Jendela kecepatan -- km/jam", "posisi": "kiri" },
+        { "jenis": "ponsel", "label": "Dasbor RideDeck", "posisi": "kanan" },
+        { "jenis": "ikon", "label": "Tombol jeda video", "posisi": "bawah" }
+      ],
+      "gerak": "Video diputar dan bisa dijeda lewat tombol; berhenti saat hero keluar layar.",
+      "ponsel": "Latar digelapkan penuh, ponsel di bawah teks.",
+      "reducedMotion": "Poster diam, tombol jeda tidak tampil.",
+      "aset": [
+        { "berkas": "ikon.v1.svg", "status": "ada" },
+        { "berkas": "hero-jalan-loop.v1.mp4", "status": "ada" },
+        { "berkas": "hero-jalan-loop.v1.poster.webp", "status": "ada" },
+        { "berkas": "ridedeck-dasbor.v1.webp", "status": "ada" }
+      ],
+      "baru": false
+    },
+    {
+      "id": "A2",
+      "nama": "Ringkasan",
+      "scroll": [110, 170],
+      "koreografi": "none",
+      "tata": "grid",
+      "elemen": [{ "jenis": "kartu", "label": "Masalah, Solusi, Hasil di jendela baja", "posisi": "tengah" }],
+      "gerak": "Tidak ada gerak.",
+      "ponsel": "Tiga jendela ditumpuk.",
+      "reducedMotion": "Sama.",
+      "aset": [],
+      "baru": false
+    },
+    {
+      "id": "A3",
+      "nama": "Simulator",
+      "scroll": [170, 330],
+      "koreografi": "none",
+      "tata": "split-kiri",
+      "elemen": [
+        { "jenis": "judul", "label": "Motor pemiliknya, dan dasbor yang membacanya.", "posisi": "atas" },
+        { "jenis": "diagram", "label": "Ronin 3D bersendi", "posisi": "kiri" },
+        { "jenis": "kartu", "label": "Kartu kecepatan, gigi, lean, arah, bensin", "posisi": "kanan" }
+      ],
+      "gerak": "Digerakkan pembaca lewat Gas, Rem, seret, hujan, dan sensor HP, bukan oleh gulir.",
+      "ponsel": "Rig di atas, kartu di bawah, kontrol tiga kolom.",
+      "reducedMotion": "Poster dan kartu diam; hujan tanpa animasi.",
+      "aset": [{ "berkas": "ronin-poster.v2.webp", "status": "ada" }],
+      "baru": false
+    },
+    {
+      "id": "A4",
+      "nama": "Motor ke layar",
+      "scroll": [330, 530],
+      "koreografi": "pin-scrub",
+      "tata": "artefak-pin",
+      "elemen": [
+        { "jenis": "judul", "label": "Dari motor ke layar.", "posisi": "kiri" },
+        { "jenis": "diagram", "label": "Ronin terurai jadi titik yang menyusun ponsel", "posisi": "kanan" },
+        { "jenis": "ponsel", "label": "Tangkapan dasbor asli", "posisi": "kanan" }
+      ],
+      "gerak": "Ronin terurai dari hub depan, titik menyusun ponsel, tangkapan asli memudar masuk.",
+      "ponsel": "Tidak dipin; poster dan ponsel berdampingan.",
+      "reducedMotion": "Poster dan tangkapan berdampingan.",
+      "aset": [
+        { "berkas": "ronin-poster.v2.webp", "status": "ada" },
+        { "berkas": "ridedeck-dasbor.v1.webp", "status": "ada" }
+      ],
+      "baru": false
+    },
+    {
+      "id": "A5",
+      "nama": "Iterasi",
+      "scroll": [530, 640],
+      "koreografi": "wipe",
+      "tata": "wipe",
+      "elemen": [
+        { "jenis": "judul", "label": "Dari versi pertama ke versi sekarang.", "posisi": "atas" },
+        { "jenis": "ponsel", "label": "Satu bingkai: 22 Okt 2026 disapu jadi 28 Okt 2026", "posisi": "tengah" }
+      ],
+      "gerak": "Garis sapu mengikuti gulir saat bingkai melewati garis baca, tanpa pin.",
+      "ponsel": "Dua ponsel berdampingan tanpa gerak.",
+      "reducedMotion": "Dua ponsel berdampingan.",
+      "aset": [
+        { "berkas": "dasbor-22okt.v1.webp", "status": "ada" },
+        { "berkas": "ridedeck-dasbor.v1.webp", "status": "ada" }
+      ],
+      "baru": false
+    },
+    {
+      "id": "A6",
+      "nama": "Uji di HP dulu",
+      "scroll": [640, 790],
+      "koreografi": "progress-rail",
+      "tata": "split-kiri",
+      "elemen": [
+        { "jenis": "judul", "label": "Uji di HP dulu, janji kemudian.", "posisi": "atas" },
+        { "jenis": "diagram", "label": "Rel enam tahap 20 sampai 29 Okt 2026", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Body pertama: split screen ditolak HP, diganti jalur cadangan", "posisi": "kanan" }
+      ],
+      "gerak": "Penanda rel pindah ke tahap yang melewati garis baca; tiap tahap bisa diklik.",
+      "ponsel": "Rel jadi daftar bernomor.",
+      "reducedMotion": "Rel statis, tautan tetap jalan.",
+      "aset": [],
+      "baru": true
+    },
+    {
+      "id": "A7",
+      "nama": "Ikon",
+      "scroll": [790, 870],
+      "koreografi": "none",
+      "tata": "split-kanan",
+      "elemen": [
+        { "jenis": "foto", "label": "Tiga konsep ikon dari Gemini", "posisi": "kiri" },
+        { "jenis": "ikon", "label": "Ikon akhir", "posisi": "kanan" },
+        { "jenis": "judul", "label": "Dari konsep ke ikon.", "posisi": "kanan" }
+      ],
+      "gerak": "Tidak ada gerak.",
+      "ponsel": "Ditumpuk.",
+      "reducedMotion": "Sama.",
+      "aset": [
+        { "berkas": "konsep-ikon.v1.webp", "status": "ada" },
+        { "berkas": "ikon.v1.svg", "status": "ada" }
+      ],
+      "baru": false
+    },
+    {
+      "id": "A8",
+      "nama": "Fitur sebagai kartu dasbor",
+      "scroll": [870, 1270],
+      "koreografi": "sticky-stack",
+      "tata": "tumpuk-kartu",
+      "elemen": [
+        { "jenis": "kartu", "label": "01 Selalu bisa kembali ke dasbor", "posisi": "tengah" },
+        { "jenis": "kartu", "label": "02 Instrumen yang jujur soal batas", "posisi": "tengah" },
+        { "jenis": "kartu", "label": "03 Motor dan pengendara dalam simulasi", "posisi": "tengah" },
+        { "jenis": "kartu", "label": "04 Satu layar ala kokpit pesawat", "posisi": "tengah" },
+        { "jenis": "kartu", "label": "05 Tidak berebut tombol dengan app lain", "posisi": "tengah" }
+      ],
+      "gerak": "Tiap kartu baja menempel lalu tertutup kartu berikutnya, satu kartu satu layar.",
+      "ponsel": "Kartu tidak menempel; ponsel 200px supaya tiap kartu lebih pendek dari layar.",
+      "reducedMotion": "Kartu ditumpuk biasa tanpa menempel.",
+      "aset": [
+        { "berkas": "ridedeck-dasbor.v1.webp", "status": "ada" },
+        { "berkas": "ridedeck-tangki.v2.webp", "status": "ada" },
+        { "berkas": "ridedeck-simulasi.v2.webp", "status": "ada" },
+        { "berkas": "ridedeck-kokpit.v1.webp", "status": "ada" },
+        { "berkas": "ridedeck-musik.v1.webp", "status": "ada" }
+      ],
+      "baru": false
+    },
+    {
+      "id": "A9",
+      "nama": "Data tetap di HP",
+      "scroll": [1270, 1340],
+      "koreografi": "quiet-reveal",
+      "tata": "kutipan",
+      "elemen": [
+        { "jenis": "judul", "label": "Isi chat Anda tidak keluar dari HP.", "posisi": "tengah" },
+        { "jenis": "teks", "label": "Isi notifikasi WhatsApp, telepon, dan Maps hanya dibaca saat itu, tidak disimpan dan tidak dikirim.", "posisi": "tengah" }
+      ],
+      "gerak": "Paragraf memudar masuk saat lewat.",
+      "ponsel": "Sama.",
+      "reducedMotion": "Tampil langsung.",
+      "aset": [],
+      "baru": true
+    },
+    {
+      "id": "A10",
+      "nama": "Sumber",
+      "scroll": [1340, 1400],
+      "koreografi": "none",
+      "tata": "penutup",
+      "elemen": [{ "jenis": "teks", "label": "Catatan tangkapan dan atribusi model Ronin", "posisi": "tengah" }],
+      "gerak": "Tidak ada gerak.",
+      "ponsel": "Sama.",
+      "reducedMotion": "Sama.",
+      "aset": [],
+      "baru": false
+    }
+  ]
+}

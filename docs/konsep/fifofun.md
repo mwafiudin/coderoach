@@ -151,3 +151,67 @@ Koreksi wajib dan pemenuhannya:
   bintangnya hanya untuk rekening bank. Dibiarkan: risiko CLS dari tinggi adegan setelah hidrasi
   (pola bersama); tur dan teks CMS tidak disaring nama bank (tur sudah tayang, dilaporkan bersama
   temuan tangkapan).
+
+## Storyboard scroll (14 Nov 2026)
+
+Data sketsa: `docs/konsep/storyboard/fifofun.json`. Satu pin saja tetap (Posisi pasti, 200vh, hanya
+layar ≥1024×900). Adegan baru tanpa pin. Posisi vh diperkirakan dari kode di layar 1440×900,
+belum diukur di produksi.
+
+### Halaman sekarang
+
+| # | Adegan | Berkas | Gerak sekarang |
+|---|---|---|---|
+| 1 | Hero: nama, tagline, Tonton turnya, ringkasan dalam grup inset | `FiFoFunPage.tsx:46-77` | Tidak ada |
+| 2 | Posisi pasti: peta laut ilustrasi, garis perkiraan dan dua titik pasti | `FiFoFunPage.tsx:79-117`, `fifofun.css:35-53` | Pin 200vh: garis perkiraan diam, dua titik pasti muncul berurutan |
+| 3 | Empat pemeriksaan impor | `FiFoFunPage.tsx:119-140`, `fifofun.css:59` | Tiap baris naik 12px saat masuk |
+| 4 | Dua jenis uang, lalu fitur anggaran dan ringkasan 3 bulan | `FiFoFunPage.tsx:142-190`, `fifofun.css:65` | Tangkapan naik 28px dan muncul |
+| 5 | Tur, babak gelap | `TourChapter.tsx` | Video tidak autoplay |
+| 6 | Sumber | `Sources.tsx` | Tidak ada |
+
+Catatan: loop ponsel `fifofun-ringkasan-hp-loop.v1.mp4` sudah ada dan dipakai kartu katalog, tapi
+tidak tampil di halaman bespoke.
+
+### Storyboard scroll
+
+| # | scroll vh | layar | koreografi | gerak | ponsel | reduced-motion | aset ada/belum |
+|---|---|---|---|---|---|---|---|
+| F1 | 0–100 | Hero | none | Tidak ada | Satu kolom | Sama | ada (teks) |
+| F2 | 100–300 | Posisi pasti | pin-scrub | Garis perkiraan tergambar dari kiri ke kanan mengikuti scroll; titik pasti mendarat tepat saat garis mencapainya, lalu garis mulai lagi dari posisi sebenarnya. Label kecil di ujung garis berganti dari "Perkiraan" ke "Pasti" | Tanpa pin, peta utuh | Peta utuh dengan dua titik pasti | ada (SVG di kode) |
+| F3 | 300–400 | Empat pemeriksaan impor | quiet-reveal | Nomor tiap pemeriksaan berganti jadi tanda centang berurutan saat barisnya masuk | Sama, satu kolom | Keempatnya bernomor, tanpa animasi | ada |
+| F4 **baru** | 400–480 | Rantai saldo: enam baris mutasi contoh dengan saldo cetakan bank, utuh lalu satu baris hilang | wipe | Di satu bingkai, garis sapu bergerak saat dibaca; di balik garis, satu baris hilang dan tepat satu titik rantai ditandai putus | Dua versi bertumpuk tanpa gerak | Dua versi berdampingan | belum: tabel contoh di kode, angka fiktif ditandai |
+| F5 | 480–560 | Dua jenis uang: dipastikan bank dan hanya perkiraan | quiet-reveal | Bingkai teal pada grup "Dipastikan bank" tergambar sekali | Bertumpuk | Bingkai sudah ada | ada |
+| F6 | 560–700 | Fitur: anggaran di browser, ringkasan 3 bulan di ponsel | quiet-reveal | Tangkapan naik pelan; ponsel memutar loop ringkasan dengan tombol jeda | Ponsel poster dulu | Poster diam, tombol putar | ada: anggaran, loop ponsel; belum: impor dan rekonsiliasi tanpa nama bank |
+| F7 | 700–830 | Tur | none | Video tidak autoplay | Sama | Sama | ada |
+| F8 | 830–900 | Sumber | none | Tidak ada | Sama | Sama | ada |
+
+### Yang membuat lebih menarik
+
+| Perubahan | Sekarang | Kenapa |
+|---|---|---|
+| Garis perkiraan tergambar (F2) | Garisnya sudah utuh sejak awal, hanya titik pasti yang muncul | Inti analoginya adalah melenceng pelan-pelan. Kalau garisnya tumbuh lalu dipaku, sebab-akibatnya terlihat, bukan dijelaskan. Pin tidak diperpanjang |
+| Nomor jadi centang (F3) | Baris hanya bergeser 12px | Pemeriksaan berjalan berurutan di `reconcile`. Centang berurutan menunjukkan urutan itu |
+| Rantai saldo (F4) | Kalimat panjang di pemeriksaan keempat menjelaskan rantai | Wipe di satu bingkai cocok untuk sebelum dan sesudah. Pembaca melihat sendiri bahwa satu baris hilang memutus satu titik, bukan seluruh rantai (koreksi GK pada konsep B) |
+| Loop ringkasan di ponsel (F6) | Ringkasan 3 bulan tampil di bingkai browser, padahal dirancang untuk ponsel | Asetnya sudah ada. Fitur itu memang untuk dibaca dari ponsel |
+
+### Kit portofolio
+
+| Butir | Status | Celah |
+|---|---|---|
+| Ikon produk | Belum ada | Ikon 1024 px |
+| Sampul rakitan | Tangkapan Ringkasan mentah | Sampul 16:10 di abu-abu grup app, aksen teal |
+| Layar ≥4 | 5, tapi hanya 2 yang aman dipakai | Impor dan rekonsiliasi menampilkan nama bank |
+| Loop kartu | Ada | Cukup |
+| Tur | Ada, 45 detik | Tur juga memuat nama bank (temuan GK yang belum diputuskan) |
+| Angka bersumber | 0 | Tidak ditambah |
+
+### Aset yang perlu dibuat
+
+| Berkas | Isi | Catatan |
+|---|---|---|
+| `fifofun-impor.v2.webp` | Hasil impor e-Statement tanpa nama bank | Rumah tangga dan e-Statement fiktif yang sama |
+| `fifofun-rekonsiliasi.v2.webp` | Saldo hitungan app di samping saldo cetakan bank, tanpa nama bank | Membuka fitur "Satu angka yang dicek ke luar" di halaman ini |
+| Tabel rantai F4 | Enam baris mutasi contoh dengan saldo per baris | Angka fiktif, dihitung supaya rantainya benar sebelum satu baris dihapus |
+| `fifofun-ikon.v1.png` | Ikon produk 1024 px | Dari repo FiFoFun bila ada |
+| `fifofun-sampul.v1.webp` | Sampul rakitan 16:10 | Mengikuti templat sampul yang belum diputuskan |
+| Keputusan tur | Rekam ulang tur tanpa nama bank, atau biarkan | Keputusan Farrez, sudah tercatat sejak GK |

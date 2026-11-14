@@ -147,3 +147,79 @@ Koreksi wajib dan pemenuhannya:
   dengan teks pengantar terang; warna teks lembut jadi token. Dibiarkan: nama fase terbaca dua kali
   oleh pembaca layar di desktop (dibutuhkan di ponsel, saat kepala kolom disembunyikan); risiko CLS
   dari 200vh setelah hidrasi (pola bersama).
+
+## Storyboard scroll (14 Nov 2026)
+
+Dasar: `docs/konsep/storyboard/FORMAT.md`, DESIGN.md "Motion vocabulary (bespoke pages)",
+`docs/riset/2026-10-koreografi-scroll.md`, dan `docs/riset/2026-11-standar-portofolio.md`. Data
+sketsa: `docs/konsep/storyboard/viralytics.json`. Belum ada kode yang diubah; ini rencana.
+
+### Halaman sekarang
+
+Dibaca dari `src/app/(frontend)/work/_bespoke/viralytics/ViralyticsPage.tsx` dan `viralytics.css`.
+
+| Adegan | Isi | Koreografi | Rujukan |
+|---|---|---|---|
+| Hero | Nama Satoshi, tagline, "Tonton turnya", Masalah/Solusi/Hasil di atas hitam | none | section pertama |
+| Estafet | Lintasan dengan tongkat bercahaya, empat zona (Submission, Drafting, Posting, Laporan) dengan pelat Memegang dan Menunggu | pin 200vh hanya ≥1024×900; tongkat bergerak dengan `translate` dari `--q`, zona yang belum dicapai redup sampai 0,78 | `.vr-scene`, `viralytics.css:41-75` |
+| Lajur sejajar | Tabel tiga KOL contoh: @dita.contoh sampai Laporan, @bima.contoh draft dikembalikan sekali, @rani.contoh ditolak brand | none | section `lajur-judul` |
+| Garis finis | Empat langkah satu link; "48.200 views, ER 6,1%" ditulis dua kali (metrik ditarik dan di laporan) | enter | `vr-finish` |
+| Fitur | Empat fitur, masing-masing dengan tangkapan | enter per baris | `vr-feature` |
+| Tur dan Sumber | Bab gelap 40 detik; belum ada metrik | none | `TourChapter`, `Sources` |
+
+Celah yang terlihat: angka yang sama di garis finis hanya ditulis dua kali, jadi pembaca tidak
+melihat bahwa itu satu data yang pindah; lajur Dita di tabel tidak tersambung ke link yang diikuti di
+garis finis; tangkapan laporan asli muncul jauh di bawah, terpisah dari cerita link itu.
+
+### Storyboard scroll
+
+| # | scroll vh | layar | koreografi | gerak | ponsel | reduced-motion | aset ada/belum |
+|---|---|---|---|---|---|---|---|
+| V1 | 0–100 | Hero di atas hitam: ikon, nama, tagline, ringkasan; lintasan tipis dengan tongkat diam di garis start | none | Tidak ada | Sama, ringkasan satu kolom | Sama | `viralytics-ikon.v1.svg` belum |
+| V2 | 100–300 | Estafet dipin: lintasan dan empat zona | pin-scrub | Tongkat maju per zona; pelat zona aktif menebal saat tongkat masuk, nama "Memegang" ditebalkan, zona yang dilewati tetap terbaca | Tidak dipin; zona jadi kartu bertumpuk, tongkat diam di garis finis | Tongkat di garis finis, semua zona terbaca penuh | Digambar HTML, ada |
+| V3 | 300–390 | Lajur sejajar: tabel tiga KOL contoh, lajur @dita.contoh disorot biru-400 | none | Tidak ada gerak; sorotan statis menandai lajur yang diikuti di adegan berikutnya | Lajur jadi kartu seperti sekarang, kartu Dita paling atas | Sama | Tidak perlu aset |
+| V4 | 390–520 | Garis finis: link @dita.contoh dari dikirim sampai laporan, lalu tangkapan laporan asli | shared-element | Satu chip "48.200 views, ER 6,1%" muncul di langkah Metrik ditarik, lalu turun ke langkah Di laporan campaign dan berganti format jadi baris kontribusi KOL; tangkapan laporan masuk di sampingnya | Tanpa perpindahan; chip ditulis sekali di baris laporan, tangkapan di bawah | Crossfade chip dari langkah 3 ke langkah 4; angka ada di DOM sekali | `viralytics-laporan.v1.webp` ada |
+| V5 | 520–920 | Empat fitur, satu kartu per layar, dalam urutan campaign: papan, direktori KOL, fase, laporan | sticky-stack | Kartu menempel dan berikutnya menumpuk | Kartu berurutan, tiap kartu lebih pendek dari layar | Kartu berurutan tanpa menempel | `viralytics-campaign-board.v1.webp`, `viralytics-kol-discovery.v1.webp`, `viralytics-alur-konten.v1.webp`, `viralytics-laporan.v1.webp` ada |
+| V6 | 920–1040 | Tur gelap 40 detik | none | Video tidak autoplay | Sama | Poster dan transkrip | `viralytics-tur.v1.mp4` dan poster ada |
+| V7 | 1040–1090 | Sumber | none | Tidak ada | Sama | Sama | Tidak perlu aset |
+
+Koreografi yang sengaja tidak dipakai: number reveal untuk 48.200 views (konsep 30 Okt menyebutnya,
+tapi angka itu data contoh, bukan hasil terukur, dan DESIGN.md membatasi number reveal untuk angka
+terukur; shared element dipakai sebagai gantinya), image sequence (tidak ada perangkat keras), pin
+kedua (estafet sudah satu-satunya pin).
+
+### Yang membuat lebih menarik
+
+| Perubahan | Sekarang | Sesudah | Kenapa |
+|---|---|---|---|
+| Pelat zona aktif menebal (V2) | Zona hanya berubah opasitas | Nama yang memegang ditebalkan saat tongkat masuk | Pesan halaman "siapa menunggu siapa" terbaca di momen oper, bukan sesudahnya |
+| Lajur Dita disorot (V3) | Tiga lajur setara, tidak tersambung ke garis finis | Lajur yang diikuti ditandai | Memberi pembaca tokoh untuk diikuti; menyambung V3 ke V4 tanpa kalimat penjelas |
+| Shared element di garis finis (V4) | Angka sama ditulis dua kali | Satu chip pindah dari metrik ditarik ke laporan | Pola "transformasi data": membuktikan laporan membaca data yang sama, persis klaim "tidak disalin tangan" |
+| Tangkapan laporan di garis finis (V4) | Laporan asli hanya di bagian fitur | Laporan asli tampil di ujung cerita link | Ilustrasi langsung didukung layar asli |
+| Sticky stack fitur (V5) | Baris fitur biasa | Empat modul setara satu layar masing-masing | Jenis cerita "beberapa modul setara" |
+
+Pelajaran lama yang dipakai: satu halo biru saja (tongkat); zona redup tidak di bawah 0,78 supaya
+teks tetap AA; lajur jadi kartu sampai 767 px; handle berakhiran .contoh; tanpa juara atau peringkat
+(koreksi GK 2). Tidak ada pin baru, jadi risiko CLS dari tinggi pin setelah hidrasi tidak bertambah.
+Angka di V4 hanya angka contoh yang sudah tayang. Chip mendarat di baris laporan yang digambar HTML,
+bukan di tangkapan: tangkapan laporan memakai data fiktifnya sendiri, jadi keduanya tidak boleh
+terlihat seperti angka yang sama.
+
+### Kit portofolio
+
+| Butir kit | Keadaan | Celah |
+|---|---|---|
+| Ikon produk | Tidak ada di data | Ikon Viralytics dari repo atau `Design System/` produk, master 1024 px |
+| Sampul rakitan | Tangkapan papan campaign mentah; tabel padat tidak terbaca di ukuran kartu | Sampul dari templat: latar hitam, ikon dan nama, laporan dan direktori KOL dalam bingkai generik |
+| ≥4 layar | 4 layar | Terpenuhi |
+| Loop kartu | Tidak ada (tur ada, loop tidak) | Loop ≤30 detik dipotong dari tur: review link sampai laporan |
+
+### Aset yang perlu dibuat
+
+| Berkas | Isi | Sumber | Catatan |
+|---|---|---|---|
+| `viralytics-ikon.v1.svg` | Ikon produk | Repo viralytics | Belum dicek apakah ada |
+| `viralytics-sampul.v1.webp` | Sampul rakitan 16:10 | Dirakit kode dari tangkapan v1 | Menunggu keputusan cara membuat sampul (riset standar §7 butir 1) |
+| `viralytics-link-laporan-loop.v1.mp4` dan poster | Loop kartu ≤30 detik | Potongan tur v1 | Tanpa suara, data fiktif |
+
+Copy: semua teks layar diambil dari `projects.ts` dan halaman sekarang; tidak ada judul baru.

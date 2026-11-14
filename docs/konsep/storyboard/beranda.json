@@ -1,0 +1,459 @@
+{
+  "slug": "beranda",
+  "judul": "Beranda Coderoach Studio",
+  "halaman": "/",
+  "satuPesan": "Punya sistem sendiri, tanpa tagihan yang membesar tiap tambah orang. Buktinya sistem yang sudah jalan untuk klien yang bisa Anda lihat.",
+  "identitas": {
+    "latar": "#F4F7F5",
+    "tinta": "#08090A",
+    "aksen": "#2C70FE",
+    "huruf": "Satoshi, JetBrains Mono untuk ukuran"
+  },
+  "adegan": [
+    {
+      "id": "B1",
+      "nama": "Hero",
+      "scroll": [
+        0,
+        90
+      ],
+      "koreografi": "none",
+      "tata": "hero",
+      "elemen": [
+        {
+          "jenis": "judul",
+          "label": "Punya sistem sendiri, tanpa tagihan yang membesar tiap tambah orang.",
+          "posisi": "kiri"
+        },
+        {
+          "jenis": "teks",
+          "label": "Lede dan dua tombol: Konsultasi gratis 30 menit, Cek kesiapan operasi",
+          "posisi": "kiri"
+        },
+        {
+          "jenis": "kartu",
+          "label": "OpsConsole dengan umpan langsung",
+          "posisi": "kanan"
+        }
+      ],
+      "gerak": "Masuk berurutan saat dimuat dan umpan konsol tetap; pergeseran latar grid mengikuti scroll dihapus.",
+      "ponsel": "Konsol di bawah teks.",
+      "reducedMotion": "Tanpa masuk berurutan, jam dan umpan konsol diam.",
+      "aset": [
+        {
+          "berkas": "/assets/bg-grid-clean.png",
+          "status": "ada"
+        }
+      ],
+      "baru": false
+    },
+    {
+      "id": "B2",
+      "nama": "Pita logo klien",
+      "scroll": [
+        90,
+        120
+      ],
+      "koreografi": "none",
+      "tata": "grid",
+      "elemen": [
+        {
+          "jenis": "teks",
+          "label": "Sistem dan situs yang kami bangun",
+          "posisi": "atas"
+        },
+        {
+          "jenis": "logo",
+          "label": "Geprek Wow",
+          "posisi": "tengah"
+        },
+        {
+          "jenis": "logo",
+          "label": "RPN Agro",
+          "posisi": "tengah"
+        },
+        {
+          "jenis": "logo",
+          "label": "Chicken Wow",
+          "posisi": "tengah"
+        },
+        {
+          "jenis": "logo",
+          "label": "Uruzin",
+          "posisi": "tengah"
+        },
+        {
+          "jenis": "logo",
+          "label": "The Global Review",
+          "posisi": "tengah"
+        }
+      ],
+      "gerak": "Marquee yang sudah ada tetap berjalan dengan tombol jeda; nama teks diganti logo berwarna asli, tinggi tiap logo dihitung dari luasnya (lib/landing/logo-size.ts).",
+      "ponsel": "Marquee yang sama, logo lebih kecil mengikuti ukuran berdasarkan luas.",
+      "reducedMotion": "Marquee berhenti; logo dibungkus jadi baris diam tanpa salinan kedua (globals.css).",
+      "aset": [
+        {
+          "berkas": "klien-geprek-wow.v1.webp",
+          "status": "ada"
+        },
+        {
+          "berkas": "klien-rpn-agro.v1.webp",
+          "status": "ada"
+        },
+        {
+          "berkas": "klien-chicken-wow.v1.webp",
+          "status": "ada"
+        },
+        {
+          "berkas": "klien-uruzin.v1.webp",
+          "status": "ada"
+        },
+        {
+          "berkas": "klien-the-global-review.v1.webp",
+          "status": "ada"
+        }
+      ],
+      "baru": true
+    },
+    {
+      "id": "B3",
+      "nama": "Kapan bisnis butuh sistem sendiri?",
+      "scroll": [
+        150,
+        257
+      ],
+      "koreografi": "quiet-reveal",
+      "tata": "grid",
+      "elemen": [
+        {
+          "jenis": "kartu",
+          "label": "Gudang pakai spreadsheet",
+          "posisi": "kiri"
+        },
+        {
+          "jenis": "kartu",
+          "label": "Keuangan pakai aplikasi lain",
+          "posisi": "tengah"
+        },
+        {
+          "jenis": "kartu",
+          "label": "Lapangan lapor lewat grup chat",
+          "posisi": "kanan"
+        },
+        {
+          "jenis": "diagram",
+          "label": "Tiga garis putus-putus yang berhenti sebelum panel angka",
+          "posisi": "tengah"
+        },
+        {
+          "jenis": "kartu",
+          "label": "Panel instrumen: satu angka yang tidak pernah ada",
+          "posisi": "bawah"
+        }
+      ],
+      "gerak": "Tiga gejala muncul, lalu tiga garis putus-putus tergambar sekali dari tiap gejala ke panel dan berhenti sebelum sampai.",
+      "ponsel": "Gejala bertumpuk, garis disembunyikan.",
+      "reducedMotion": "Garis sudah tergambar, berhenti sebelum panel.",
+      "aset": [],
+      "baru": false
+    },
+    {
+      "id": "B4",
+      "nama": "Langganan atau bangun sendiri?",
+      "scroll": [
+        257,
+        371
+      ],
+      "koreografi": "quiet-reveal",
+      "tata": "split-kiri",
+      "elemen": [
+        {
+          "jenis": "kartu",
+          "label": "Menyewa dan Memiliki",
+          "posisi": "atas"
+        },
+        {
+          "jenis": "diagram",
+          "label": "Grafik biaya: langganan naik, sistem sendiri melandai, titik balik",
+          "posisi": "bawah"
+        }
+      ],
+      "gerak": "Garis grafik tergambar sekali dari kiri saat grafik masuk; penanda titik balik muncul terakhir. Tidak terikat posisi scroll.",
+      "ponsel": "Grafik selebar layar di bawah dua kolom.",
+      "reducedMotion": "Grafik utuh.",
+      "aset": [],
+      "baru": false
+    },
+    {
+      "id": "B5",
+      "nama": "Yang kami bangun",
+      "scroll": [
+        371,
+        521
+      ],
+      "koreografi": "quiet-reveal",
+      "tata": "tumpuk-kartu",
+      "elemen": [
+        {
+          "jenis": "kartu",
+          "label": "ERP & Sistem Operasional, dengan deret sampul proyeknya",
+          "posisi": "tengah"
+        },
+        {
+          "jenis": "kartu",
+          "label": "Otomasi & AI, dengan deret sampul proyeknya",
+          "posisi": "tengah"
+        },
+        {
+          "jenis": "kartu",
+          "label": "Dashboard & Business Intelligence, dengan deret sampul proyeknya",
+          "posisi": "tengah"
+        },
+        {
+          "jenis": "teks",
+          "label": "Tautan ke /work tersaring per layanan, jumlah proyek dihitung dari data",
+          "posisi": "bawah"
+        }
+      ],
+      "gerak": "Deret sampul kecil muncul berurutan saat kartu layanan masuk.",
+      "ponsel": "Deret sampul jadi dua sampul saja.",
+      "reducedMotion": "Deret tampil diam.",
+      "aset": [
+        {
+          "berkas": "<slug>-sampul.v1.webp untuk proyek per layanan",
+          "status": "belum"
+        }
+      ],
+      "baru": false
+    },
+    {
+      "id": "B6",
+      "nama": "Sistem yang sudah berjalan",
+      "scroll": [
+        521,
+        691
+      ],
+      "koreografi": "quiet-reveal",
+      "tata": "split-kiri",
+      "elemen": [
+        {
+          "jenis": "kartu",
+          "label": "Laporta unggulan, panel tinta",
+          "posisi": "atas"
+        },
+        {
+          "jenis": "ikon",
+          "label": "Ikon produk di kolom 56px tiap baris",
+          "posisi": "kiri"
+        },
+        {
+          "jenis": "foto",
+          "label": "Sampul kecil dan loop yang muncul saat baris disorot",
+          "posisi": "kanan"
+        }
+      ],
+      "gerak": "Baris muncul berurutan; saat disorot, sampul dan loop muncul di sisi baris. Angka unggulan diam kecuali sama dengan angka Laporta yang bersumber.",
+      "ponsel": "Tanpa sorotan; ikon dan sampul diam di baris.",
+      "reducedMotion": "Tanpa loop, sampul diam.",
+      "aset": [
+        {
+          "berkas": "<slug>-ikon.v1.png",
+          "status": "belum"
+        },
+        {
+          "berkas": "<slug>-sampul.v1.webp",
+          "status": "belum"
+        },
+        {
+          "berkas": "laporta, jeda, fifofun loop kartu",
+          "status": "ada"
+        }
+      ],
+      "baru": false
+    },
+    {
+      "id": "B7",
+      "nama": "Produk yang kami pakai sendiri",
+      "scroll": [
+        691,
+        904
+      ],
+      "koreografi": "quiet-reveal",
+      "tata": "grid",
+      "elemen": [
+        {
+          "jenis": "kartu",
+          "label": "Laporta dengan panel instrumen",
+          "posisi": "kiri"
+        },
+        {
+          "jenis": "kartu",
+          "label": "Viralytics dengan panel instrumen",
+          "posisi": "kanan"
+        }
+      ],
+      "gerak": "Baris di panel instrumen masuk satu per satu seperti umpan konsol, sekali.",
+      "ponsel": "Bertumpuk.",
+      "reducedMotion": "Panel utuh.",
+      "aset": [],
+      "baru": false
+    },
+    {
+      "id": "B8",
+      "nama": "Empat tahap",
+      "scroll": [
+        904,
+        990
+      ],
+      "koreografi": "progress-rail",
+      "tata": "grid",
+      "elemen": [
+        {
+          "jenis": "diagram",
+          "label": "Rail 2px dengan empat titik tahap",
+          "posisi": "atas"
+        },
+        {
+          "jenis": "teks",
+          "label": "Petakan, Rancang, Bangun bertahap, Pakai dan kembangkan",
+          "posisi": "bawah"
+        }
+      ],
+      "gerak": "Rail terisi biru mengikuti scroll seperti sekarang; nilai istirahatnya penuh.",
+      "ponsel": "Rail tegak di kiri empat tahap.",
+      "reducedMotion": "Rail penuh, semua titik menyala.",
+      "aset": [],
+      "baru": false
+    },
+    {
+      "id": "B9",
+      "nama": "Cocok untuk siapa?",
+      "scroll": [
+        990,
+        1068
+      ],
+      "koreografi": "none",
+      "tata": "split-kiri",
+      "elemen": [
+        {
+          "jenis": "kartu",
+          "label": "Cocok kalau: empat butir yang bisa dicentang pembaca, penghitung centang",
+          "posisi": "kiri"
+        },
+        {
+          "jenis": "kartu",
+          "label": "Belum cocok kalau: tiga butir dengan saran yang lebih murah",
+          "posisi": "kanan"
+        }
+      ],
+      "gerak": "Centang dan penghitung berubah saat diklik, bukan saat scroll.",
+      "ponsel": "Bertumpuk, target sentuh 44px.",
+      "reducedMotion": "Sama.",
+      "aset": [],
+      "baru": true
+    },
+    {
+      "id": "B10",
+      "nama": "Studio",
+      "scroll": [
+        1068,
+        1176
+      ],
+      "koreografi": "none",
+      "tata": "split-kiri",
+      "elemen": [
+        {
+          "jenis": "judul",
+          "label": "Tim kecil, senior, satu titik tanggung jawab.",
+          "posisi": "kiri"
+        },
+        {
+          "jenis": "angka",
+          "label": "Statistik studio dengan nilai akhir sejak HTML",
+          "posisi": "kiri"
+        },
+        {
+          "jenis": "kartu",
+          "label": "Tiga prinsip kerja",
+          "posisi": "kanan"
+        }
+      ],
+      "gerak": "Tidak ada hitung naik; angka tampil dengan nilai akhirnya.",
+      "ponsel": "Satu kolom, statistik dua kolom.",
+      "reducedMotion": "Sama.",
+      "aset": [],
+      "baru": false
+    },
+    {
+      "id": "B11",
+      "nama": "Catatan dari studio",
+      "scroll": [
+        1176,
+        1256
+      ],
+      "koreografi": "quiet-reveal",
+      "tata": "grid",
+      "elemen": [
+        {
+          "jenis": "kartu",
+          "label": "Tiga catatan terbaru",
+          "posisi": "tengah"
+        }
+      ],
+      "gerak": "Muncul saat masuk, seperti sekarang.",
+      "ponsel": "Bertumpuk.",
+      "reducedMotion": "Langsung tampil.",
+      "aset": [],
+      "baru": false
+    },
+    {
+      "id": "B12",
+      "nama": "Pertanyaan yang sering masuk",
+      "scroll": [
+        1256,
+        1359
+      ],
+      "koreografi": "quiet-reveal",
+      "tata": "grid",
+      "elemen": [
+        {
+          "jenis": "teks",
+          "label": "Sebelas pertanyaan dalam dua kolom",
+          "posisi": "tengah"
+        }
+      ],
+      "gerak": "Muncul saat masuk, seperti sekarang.",
+      "ponsel": "Satu kolom.",
+      "reducedMotion": "Langsung tampil.",
+      "aset": [],
+      "baru": false
+    },
+    {
+      "id": "B13",
+      "nama": "Kontak",
+      "scroll": [
+        1359,
+        1460
+      ],
+      "koreografi": "none",
+      "tata": "penutup",
+      "elemen": [
+        {
+          "jenis": "judul",
+          "label": "Ceritakan proses yang paling merepotkan. Kami bantu petakan.",
+          "posisi": "kiri"
+        },
+        {
+          "jenis": "kartu",
+          "label": "Formulir di permukaan gelap, konsol deploy saat kirim",
+          "posisi": "kanan"
+        }
+      ],
+      "gerak": "Konsol deploy terbuka saat formulir dikirim, seperti sekarang.",
+      "ponsel": "Formulir di bawah judul.",
+      "reducedMotion": "Konsol tampil tanpa animasi.",
+      "aset": [],
+      "baru": false
+    }
+  ]
+}

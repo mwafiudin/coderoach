@@ -146,3 +146,62 @@ Koreksi wajib dan pemenuhannya:
   `dashboard/src/app/page.tsx`); latar bahaya punya pengganti tanpa `color-mix`; syarat terpenuhi
   dan gagal kini bertanda ikon centang dan silang (Phosphor), bukan hanya warna; titik henti
   pemeriksaan dihitung sekali. Dibiarkan: risiko CLS dari tinggi adegan setelah hidrasi (pola bersama).
+
+## Storyboard scroll (14 Nov 2026)
+
+Data sketsa: `docs/konsep/storyboard/d-day.json`. Satu pin saja tetap (Gembok dan tag, 220vh, hanya
+layar ≥1024×900). Adegan baru memakai shared element, sticky stack, dan progress rail dari
+DESIGN.md. Posisi vh diperkirakan dari kode di layar 1440×900, belum diukur di produksi.
+
+### Halaman sekarang
+
+| # | Adegan | Berkas | Gerak sekarang |
+|---|---|---|---|
+| 1 | Hero: nama, tagline, Tonton turnya, tiga kartu ringkasan | `DDayPage.tsx:51-82` | Tidak ada |
+| 2 | Gembok dan tag: tag penghentian dan empat syarat Lanjutkan | `DDayPage.tsx:84-155`, `d-day.css:38-50, 92-113` | Pin 220vh: latar bergeser ke `#3d0b0b`, gembok turun, syarat tercentang berurutan, syarat kedua basi |
+| 3 | Di dalam d-day: tiga fitur dengan tangkapan | `DDayPage.tsx:157-185`, `d-day.css:121` | Tangkapan naik 28px dan muncul saat masuk |
+| 4 | Tur, babak gelap | `TourChapter.tsx` | Video tidak autoplay |
+| 5 | Sumber | `Sources.tsx` | Tidak ada |
+
+### Storyboard scroll
+
+| # | scroll vh | layar | koreografi | gerak | ponsel | reduced-motion | aset ada/belum |
+|---|---|---|---|---|---|---|---|
+| D1 | 0–100 | Hero dengan tiga kartu ringkasan | none | Tidak ada | Kartu bertumpuk | Sama | ada (teks) |
+| D2 **baru** | 100–190 | Yang terburuk menang: empat sinyal (heartbeat, tick terakhir, halt, posisi tanpa proteksi) di kiri, kalimat status di kanan | shared-element | Label sinyal yang terburuk pindah ke kalimat status saat adegan melewati garis baca; tanpa pin | Sinyal di atas, kalimat di bawah, tanpa perpindahan | Keduanya tampil, sinyal terburuk disorot | belum: teks status dari `dashboard/src/app/page.tsx` |
+| D3 | 190–410 | Gembok dan tag | pin-scrub | Sama seperti sekarang, tapi tiap syarat diberi langkah sendiri yang jelas, kira-kira satu syarat tiap 35vh, supaya tidak tercentang bersamaan | Tanpa pin, keadaan akhir | Keadaan akhir: tag terpasang, syarat kedua gagal | ada |
+| D4 | 410–620 | Tiga fitur sebagai kartu yang bertumpuk | sticky-stack | Tiap kartu menempel di atas lalu kartu berikutnya menutupnya; teks dan tangkapan dalam satu kartu | Daftar biasa, tiap kartu lebih pendek dari layar | Daftar biasa | ada: tiga tangkapan |
+| D5 **baru** | 620–720 | Jejak uji: empat tanggal dari timeline, sampai uji testnet ditutup 7 Okt 2026 | progress-rail | Rail oranye terisi saat dibaca; tiap titik adalah tautan ke barisnya dan menyebut `repo@commit` | Rail tegak di kiri daftar | Rail penuh | ada (teks `projects.ts` timeline) |
+| D6 | 720–850 | Tur dengan empat penanda bab: Keadaan, Exchange, Hentikan semua, Lanjutkan | progress-rail | Penanda bab di bawah video bisa diklik untuk melompat; tidak menutupi video | Penanda jadi daftar tautan di bawah video | Sama, tanpa transisi | ada: tur; belum: detik tiap bab |
+| D7 | 850–920 | Sumber | none | Tidak ada | Sama | Sama | ada |
+
+### Yang membuat lebih menarik
+
+| Perubahan | Sekarang | Kenapa |
+|---|---|---|
+| Yang terburuk menang (D2) | Fitur "status satu kalimat" hanya disebut di daftar fitur | Ini cara kerja yang paling khas d-day dan paling cocok dengan shared element: data mentah yang sama dibaca jadi satu laporan (riset koreografi). Tanpa pin, jadi tidak menambah waktu tahan |
+| Syarat diberi langkah sendiri (D3) | Empat syarat muncul berdekatan di sepertiga akhir pin | Pin dan scrub layak kalau tiap langkah sebab-akibatnya terbaca. Pin tetap 220vh |
+| Fitur jadi sticky stack (D4) | Tiga baris fitur muncul dengan gerak yang sama | Tiga modul setara, satu layar masing-masing, cocok dengan sticky stack. Ritme halaman jadi berbeda setelah pin, bukan pin kedua |
+| Jejak uji (D5) | Timeline ada di `projects.ts` tapi tidak dipakai halaman bespoke | Bukti yang sudah ada dan bisa ditelusuri ke commit. Tanpa angka baru |
+| Bab tur (D6) | Video 40 detik tanpa penanda | Pembaca yang curiga pada "bot" biasanya ingin langsung melihat bagian berhenti. Penanda bab memberi itu tanpa autoplay |
+
+### Kit portofolio
+
+| Butir | Status | Celah |
+|---|---|---|
+| Ikon produk | Belum ada | Ikon 1024 px |
+| Sampul rakitan | Tangkapan Keadaan mentah, tabel padat tidak terbaca di ukuran kartu | Sampul 16:10 di latar hitam app, gembok oranye sebagai satu-satunya aksen |
+| Layar ≥4 | 4 | Cukup |
+| Loop kartu | Belum ada | Potongan ≤30 detik dari tur: tekan Hentikan semua sampai strip merah |
+| Tur | Ada, 40 detik | Penanda bab belum |
+| Angka bersumber | 0 | Tidak ditambah. Halaman ini sengaja tanpa angka trading |
+
+### Aset yang perlu dibuat
+
+| Berkas | Isi | Catatan |
+|---|---|---|
+| `d-day-kartu-loop.v1.mp4` dan `.poster.webp` | Potongan tur: Hentikan semua ditekan, latar berubah, strip merah | Dipotong dari `d-day-tur.v1.mp4`, data simulasi yang sama |
+| Detik bab tur | Awal tiap bab: Keadaan, Exchange, Hentikan semua, Lanjutkan | Diukur dari `d-day-tur.v1.mp4` |
+| Teks status D2 | Kalimat status app untuk tiap sinyal | Dibaca dari `dashboard/src/app/page.tsx` repo d-day; belum dibuka di sesi ini |
+| `d-day-ikon.v1.png` | Ikon produk 1024 px | Dari repo d-day bila ada |
+| `d-day-sampul.v1.webp` | Sampul rakitan 16:10 | Mengikuti templat sampul yang belum diputuskan |

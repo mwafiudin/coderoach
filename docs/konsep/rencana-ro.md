@@ -151,3 +151,86 @@ Koreksi wajib dan pemenuhannya:
   yang direkam (Rp2.550.000, 49 unit, di bawah Hendra Anggrekasih, closing Jumat 23 Okt). "Buku
   bonus" dan "masa aktif" adalah istilah yang sudah tayang di copy `projects.ts`, bukan istilah skema.
   Dibiarkan: risiko CLS dari tinggi scene setelah hidrasi (pola bersama).
+
+## Storyboard scroll (14 Nov 2026)
+
+Dasar: `docs/konsep/storyboard/FORMAT.md`, DESIGN.md "Motion vocabulary (bespoke pages)",
+`docs/riset/2026-10-koreografi-scroll.md`, dan `docs/riset/2026-11-standar-portofolio.md`. Data
+sketsa: `docs/konsep/storyboard/rencana-ro.json`. Belum ada kode yang diubah; ini rencana. Batas
+lama tetap: nama prinsipal dan istilah skema bonusnya tidak muncul di mana pun.
+
+### Halaman sekarang
+
+Dibaca dari `src/app/(frontend)/work/_bespoke/rencana-ro/RencanaRoPage.tsx` dan `rencana-ro.css`.
+
+| Adegan | Isi | Koreografi | Rujukan |
+|---|---|---|---|
+| Hero | Nama, tagline, ringkasan, font sistem, satu biru `#0067d6` | none | section pertama |
+| Sebelum tutup mingguan | Tiga kartu: data mentah dari portal, "Beli 49 unit: 15 untuk kaki kiri, 34 untuk kaki kanan.", bilah poin sekarang dan sesudah (120rb ke 270rb, 90rb ke 430rb, contoh) | pin 210vh hanya ≥1024×900; kartu menebal dan naik 14px per `--t`, bilah sesudah tumbuh dengan `scale` | `.ro-scene`, `rencana-ro.css:33-50` |
+| Empat jawaban | Rp2.550.000, 49 unit, di bawah Hendra Anggrekasih, 3 orang dalam 3 hari | enter | `ro-answers` |
+| Fitur | Hanya dua yang bersih: kalender dan riwayat run | enter | `CLEAN_SCREENS` |
+| Tur dan Sumber | Bab gelap 50 detik; satu metrik terukur (cek sesi 137 ke 27 ms) hanya di daftar Sumber | none | `TourChapter`, `Sources` |
+
+Celah yang terlihat: kartu data mentah hanya menyebut jenis data, bukan satu baris yang bisa
+diikuti, jadi angka 120rb dan 90rb di bilah muncul tanpa asal; "49 unit" di saran dan di empat
+jawaban tampil sebagai dua angka terpisah; satu-satunya angka terukur di halaman tersembunyi di
+Sumber; layar yang tampil cuma dua.
+
+### Storyboard scroll
+
+| # | scroll vh | layar | koreografi | gerak | ponsel | reduced-motion | aset ada/belum |
+|---|---|---|---|---|---|---|---|
+| R1 | 0–100 | Hero: ikon, nama, tagline, ringkasan; ponsel CSS berisi beranda ponsel versi bersih di kanan | none | Tidak ada | Ponsel di bawah ringkasan | Sama | `rencana-ro-ikon.v1.svg` belum; `rencana-ro-beranda-ponsel.v3.webp` (rekaman ulang tanpa istilah skema) belum |
+| R2 | 100–310 | Sebelum tutup mingguan dipin: baris mentah, saran, bilah poin | pin-scrub | Ketukan 1: satu baris tabel kaki bertanggal ("Kaki kiri 120rb poin, kaki kanan 90rb poin, data per 16 Okt"). Ketukan 2: saran 49 unit menyala. Ketukan 3: dua angka dari baris mentah pindah ke ujung bilah "Poin sekarang", lalu bilah "Poin sesudah" tumbuh | Tidak dipin; tiga kartu bertumpuk, bilah sudah penuh | Tiga kartu utuh, kedua bilah dengan angka | Digambar HTML, ada |
+| R3 | 310–420 | Empat jawaban di ponsel: kalimat saran dari R2 menyusut jadi kartu "Beli berapa unit: 49 unit" | shared-element | Kalimat "Beli 49 unit" tampil di atas, lalu bergeser dan mengecil ke kartu kedua; tiga kartu lain masuk di sekitarnya, tiap kartu dengan tanggal datanya | Tanpa perpindahan; empat kartu satu kolom | Crossfade dari kalimat ke kartu; angka ada di DOM sekali | Digambar HTML, ada |
+| R4 | 420–720 | Fitur: rencana dengan alasan, pengingat dan kalender, tarikan per jam, push pagi di ponsel | sticky-stack | Kartu menempel dan berikutnya menumpuk | Kartu berurutan, tiap kartu lebih pendek dari layar | Kartu berurutan tanpa menempel | `rencana-ro-kalender.v2.webp`, `rencana-ro-riwayat-run.v2.webp` ada; `rencana-ro-rencana.v3.webp` dan `rencana-ro-push-ponsel.v1.webp` belum |
+| R5 | 720–800 | Satu angka terukur: cek sesi per request, 137 ms ke 27 ms sesudah pindah ke Singapura, catatan kaki ke Sumber | number-reveal | Angka 27 ms sudah di HTML; saat masuk, bilah pembanding menyusut dari panjang 137 ke 27 dan 137 dicoret | Sama, bilah selebar layar | Bilah sudah di 27, 137 tertulis sebagai pembanding | Tidak perlu aset |
+| R6 | 800–920 | Tur gelap 50 detik | none | Video tidak autoplay | Sama | Poster dan transkrip | `rencana-ro-tur.v2.mp4` dan poster ada |
+| R7 | 920–970 | Sumber, dengan metode dan `rencana-ro@cca37ff` | none | Tidak ada | Sama | Sama | Tidak perlu aset |
+
+Koreografi yang sengaja tidak dipakai: image sequence (tidak ada perangkat keras), progress rail
+(cerita sudah pendek dan berurutan di satu pin), pin kedua.
+
+### Yang membuat lebih menarik
+
+| Perubahan | Sekarang | Sesudah | Kenapa |
+|---|---|---|---|
+| Satu baris mentah yang bisa diikuti (R2) | Kartu menyebut jenis data saja | Satu baris bertanggal yang angkanya pindah ke bilah | Pesan halaman ini "satu angka diikuti dari baris mentah"; sekarang angka itu muncul tanpa asal |
+| Shared element saran ke kartu jawaban (R3) | "49 unit" muncul dua kali di dua bagian | Kalimat yang sama menyusut jadi kartu beranda | Pola "transformasi data": saran mingguan dan beranda ponsel terbukti satu data |
+| Number reveal untuk metrik terukur (R5) | 27 ms hanya di Sumber | Angka besar dengan catatan kaki | Satu-satunya angka terukur pantas dilihat; DESIGN.md membolehkan number reveal hanya untuk angka terukur, dan nilai akhirnya sudah di HTML |
+| Sticky stack fitur dengan empat layar (R4) | Dua layar | Empat modul, semua dengan layar bersih | Kit portofolio ≥4 layar tanpa memakai tangkapan yang memuat istilah skema |
+| Ponsel di hero (R1) | Tanpa gambar | Beranda ponsel versi bersih | Pengguna produknya membaca di ponsel; hero langsung memperlihatkan tempat itu |
+
+Pelajaran lama yang dipakai: tanpa jam tutup karangan dan tanpa hitung mundur (koreksi GK 1); tanpa
+bentuk timbangan; teks isi 17 px dan angka jawaban besar untuk pembaca lanjut usia; bilah tumbuh
+dengan `scale`, bukan `width`; tangkapan yang memuat istilah skema tidak dipakai sampai direkam
+ulang. Angka di R2 dan R3 hanya angka contoh yang sudah tayang; R5 memakai metrik bersumber di
+`projects.ts`. Tidak ada pin baru, jadi risiko CLS dari tinggi pin setelah hidrasi tidak bertambah.
+
+### Kit portofolio
+
+| Butir kit | Keadaan | Celah |
+|---|---|---|
+| Ikon produk | Tidak ada di data | Ikon dari repo NDS-ETL (belum dicek apakah ada ikon manifest), master 1024 px |
+| Sampul rakitan | Tangkapan dashboard desktop mentah | Sampul dari templat: latar `#f2f2f7`, ikon dan nama, beranda ponsel bersih dan kalender |
+| ≥4 layar | 4 layar di data, tapi hanya 2 yang boleh tampil di halaman ini | Kurang 2 layar bersih: rencana repeat order dan beranda ponsel direkam ulang tanpa istilah skema, plus push ponsel |
+| Loop kartu | Tidak ada (tur ada, loop tidak) | Loop ≤30 detik di ponsel: push pagi sampai empat jawaban |
+
+### Aset yang perlu dibuat
+
+| Berkas | Isi | Sumber | Catatan |
+|---|---|---|---|
+| `rencana-ro-ikon.v1.svg` | Ikon produk | Repo NDS-ETL | Belum dicek |
+| `rencana-ro-sampul.v1.webp` | Sampul rakitan 16:10 | Dirakit kode dari layar bersih | Menunggu keputusan cara membuat sampul (riset standar §7 butir 1) |
+| `rencana-ro-beranda-ponsel.v3.webp` | Beranda ponsel tanpa istilah skema | Build lokal, jaringan fiktif | Ganti v2 |
+| `rencana-ro-rencana.v3.webp` | Rencana repeat order tanpa istilah skema | Build lokal, jaringan fiktif | Ganti tangkapan yang ditarik 30 Okt |
+| `rencana-ro-push-ponsel.v1.webp` | Notifikasi push pagi | Build lokal | Tanpa nama orang sungguhan |
+| `rencana-ro-push-loop.v1.mp4` dan poster | Loop kartu ≤30 detik | Rekaman build lokal | Tanpa suara |
+
+Belum dicek: transkrip tur v2 menyebut layar "rencana repeat order", layar yang tangkapannya ditarik
+karena istilah skema. Apakah tur dan sampul dashboard desktop v2 memuat istilah itu belum dilihat;
+perlu ditonton sebelum dipakai di storyboard baru.
+
+Copy: semua teks layar diambil dari `projects.ts` dan halaman sekarang. Baris mentah di R2 ("Kaki
+kiri 120rb poin, kaki kanan 90rb poin, data per 16 Okt") memakai angka contoh yang sudah tayang;
+kalimat finalnya lewat cek `bahasa-lisan` sebelum dipakai.

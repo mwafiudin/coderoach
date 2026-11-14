@@ -142,3 +142,69 @@ Koreksi wajib dan pemenuhannya:
   pita tur gelap; warna lungsin jadi token. Subjudul kolom Sunda ditulis "garis ayah dan ibu"
   supaya sejajar dengan "Suku dari garis ibu". Dibiarkan: risiko CLS kecil dari Archivo lebar saat
   font-swap (next/font memakai fallback metrics).
+
+## Storyboard scroll (14 Nov 2026)
+
+Data sketsa: `docs/konsep/storyboard/akarkita.json`. Koreografi tetap **quiet reveal** saja
+(DESIGN.md, Motion vocabulary): tidak ada yang ditahan, tanpa parallax, gerak hanya opasitas,
+geser kecil, dan benang yang tergambar sekali. Posisi vh diperkirakan dari kode di layar 1440×900,
+belum diukur di layar produksi.
+
+### Halaman sekarang
+
+| # | Adegan | Berkas | Gerak sekarang |
+|---|---|---|---|
+| 1 | Hero: nama, tagline, tautan live, Masalah, Solusi, Hasil | `AkarKitaPage.tsx:46-77` | Tidak ada |
+| 2 | Kain silsilah: tabel 4 penanya × 2 adat | `AkarKitaPage.tsx:79-131`, `akarkita.css:81-85` | Benang emas tiap baris melebar sesuai `--p` (`data-scene="enter"`), istilah dari 70% ke 100% |
+| 3 | Aturan: Sunda menimbang umur, Minang menimbang sisi | `AkarKitaPage.tsx:133-152` | Tidak ada |
+| 4 | Pohon utuh: tangkapan browser dan ponsel | `AkarKitaPage.tsx:156-183`, `akarkita.css:103` | Naik 28px dan muncul saat masuk |
+| 5 | Waris dan offline, teks saja | `AkarKitaPage.tsx:185-200` | Tidak ada |
+| 6 | Tur | `TourChapter.tsx:15` | Tidak tampil: AkarKita belum punya tur |
+| 7 | Sumber | `Sources.tsx` | Tidak ada |
+
+### Storyboard scroll
+
+| # | scroll vh | layar | koreografi | gerak | ponsel | reduced-motion | aset ada/belum |
+|---|---|---|---|---|---|---|---|
+| A1 | 0–100 | Hero, nama Archivo lebar, ringkasan tiga kolom | none | Tidak ada | Ringkasan bertumpuk | Sama | ada (teks) |
+| A2 **baru** | 100–150 | Keluarga Rahmat: Rahmat di tengah, kakak perempuan di kiri, adik laki-laki di kanan, anak mereka di bawah | quiet-reveal | Garis keturunan tergambar sekali dari Rahmat ke tiap kerabat saat kartu masuk | Bagan tegak, satu kolom | Bagan utuh, garis sudah ada | belum: bagan SVG di kode, tanpa berkas gambar |
+| A3 | 150–290 | Kain silsilah | quiet-reveal | Lungsin tiap kolom adat tergambar ke bawah sekali saat tabel masuk (**baru**), lalu benang emas tiap baris seperti sekarang | Tiap penanya jadi pita, dua istilah berdampingan | Kain utuh | ada |
+| A4 | 290–350 | Dua kalimat aturan, masing-masing dengan strip warna adat di kiri | quiet-reveal | Strip warna muncul pelan di samping kalimatnya | Sama, satu kolom | Strip langsung tampil | ada |
+| A5 **baru** | 350–420 | Aturan sebagai data: satu baris data istilah Uwa dari repo, di samping sebutan yang dihasilkannya | quiet-reveal | Baris data muncul dulu, lalu sebutan Uwa menyala di sampingnya | Baris data di atas, sebutan di bawah | Keduanya tampil | belum: kutipan `seed-data/terms.sunda.ts` diambil dari repo AkarKita |
+| A6 | 420–540 | Pohon utuh: browser dan ponsel | quiet-reveal | Bingkai naik pelan seperti sekarang; ponsel memutar loop zum dari orang ke kelompok keluarga, dengan tombol jeda | Ponsel saja, poster dulu | Poster diam, tombol putar | ada: dua tangkapan; belum: loop zum |
+| A7 | 540–610 | Waris dengan pecahan eksak, offline | none | Tidak ada | Satu kolom | Sama | ada (teks) |
+| A8 | 610–680 | Sumber | none | Tidak ada | Sama | Sama | ada |
+
+### Yang membuat lebih menarik
+
+| Perubahan | Sekarang | Kenapa |
+|---|---|---|
+| Adegan Rahmat sebelum kain (A2) | Pembaca langsung bertemu tabel 4×2 dan harus membayangkan sendiri keluarganya dari satu kalimat | Konsep A adegan 2 sudah merencanakan kartu ini tapi belum dibangun. Tabel jadi masuk akal begitu pembaca sudah melihat siapa yang bertanya |
+| Lungsin tergambar dulu (A3) | Hanya pakan (benang emas) yang bergerak | Metaforanya dua sumbu. Kalau lungsin ikut tergambar, pembaca melihat persilangan, bukan sekadar garis bawah |
+| Aturan sebagai data (A5) | Klaim "disimpan sebagai data" hanya kalimat | Bukti lebih kuat dari kata sifat (PRODUCT.md). Satu baris data asli membuktikannya tanpa angka baru |
+| Loop zum di ponsel (A6) | Dua tangkapan diam; klaim "berubah bentuk saat diperkecil" tidak terlihat | Gerak menjelaskan perubahan keadaan (NN/g 2020), dan ini satu-satunya gerak yang memang ada di produknya. Loop lebih dari 5 detik diberi tombol jeda (WCAG 2.2.2) |
+| Tetap tanpa pin | Sama | Topik keluarga dan waris masuk golongan sensitif di DESIGN.md. Pelajaran Jeda: pin dicabut untuk topik seperti ini |
+
+### Kit portofolio
+
+Dibandingkan dengan usulan kit di `docs/riset/2026-11-standar-portofolio.md` bagian 6.
+
+| Butir | Status | Celah |
+|---|---|---|
+| Ikon produk | Belum ada | Ikon 1024 px dari app AkarKita |
+| Sampul rakitan | Tangkapan pohon mentah | Sampul 16:10 dengan latar Tenun, ikon, nama, 2 sampai 3 layar |
+| Layar ≥4 | 2 | Kurang 2: lensa Minang, dan simulator faraid tanpa angka nominal |
+| Loop kartu | Belum ada | Loop zum yang sama dengan A6 bisa dipakai |
+| Tur | Belum ada | Opsional; loop sudah cukup untuk halaman tanpa babak gelap |
+| Angka bersumber | 0 | Tidak ditambah. Tidak ada angka terukur yang bisa dirujuk |
+
+### Aset yang perlu dibuat
+
+| Berkas | Isi | Catatan |
+|---|---|---|
+| `akarkita-zoom-ponsel.v1.mp4` dan `.poster.webp` | Rekaman layar ponsel: pohon contoh diperkecil dari orang per orang ke kelompok keluarga, tanpa suara, ≤30 detik | Keluarga fiktif yang sama dengan tangkapan sekarang |
+| `akarkita-ikon.v1.png` | Ikon produk 1024 px | Dari repo AkarKita bila ada; kalau belum, keputusan desain Farrez |
+| `akarkita-sampul.v1.webp` | Sampul rakitan 16:10 | Mengikuti templat sampul yang belum diputuskan (riset bagian 7 butir 1) |
+| `akarkita-lensa-minang.v1.webp` | Pohon dengan lensa Minang aktif | Keluarga fiktif |
+| `akarkita-faraid.v1.webp` | Layar simulator faraid | Hanya bila bisa direkam tanpa nominal, sesuai koreksi GK 5 |
+| Kutipan data A5 | Satu entri istilah Uwa dari `seed-data/terms.sunda.ts` | Dibaca ulang dari repo sebelum dibangun; belum dibuka di sesi ini |

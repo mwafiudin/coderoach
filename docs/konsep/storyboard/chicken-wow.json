@@ -1,0 +1,143 @@
+{
+  "slug": "chicken-wow",
+  "judul": "Chicken Wow",
+  "halaman": "/work/chicken-wow",
+  "satuPesan": "Menu dan gerai berubah dari panel, dan pengikut di media sosial mendarat di gerai terdekat lewat situs sendiri.",
+  "identitas": { "latar": "#fffdf2", "tinta": "#152477", "aksen": "#ffd400", "huruf": "Poppins 900 (judul), Nunito (teks)" },
+  "adegan": [
+    {
+      "id": "A1",
+      "nama": "Hero",
+      "scroll": [0, 100],
+      "koreografi": "none",
+      "tata": "hero",
+      "elemen": [
+        { "jenis": "logo", "label": "Logo Chicken Wow", "posisi": "atas" },
+        { "jenis": "judul", "label": "Chicken Wow", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Situs jaringan gerai ayam geprek, dari menu sampai gerai terdekat.", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Masalah, Solusi, Hasil", "posisi": "bawah" }
+      ],
+      "gerak": "Tidak ada.",
+      "ponsel": "Sama, ringkasan bertumpuk.",
+      "reducedMotion": "Sama.",
+      "aset": [ { "berkas": "logo Chicken Wow", "status": "belum" } ],
+      "baru": false
+    },
+    {
+      "id": "A2",
+      "nama": "Label di kaca",
+      "scroll": [100, 320],
+      "koreografi": "pin-scrub",
+      "tata": "artefak-pin",
+      "elemen": [
+        { "jenis": "judul", "label": "Ibarat label harga di kaca etalase, yang menulis pemiliknya sendiri.", "posisi": "kiri" },
+        { "jenis": "kartu", "label": "Kaca etalase: Sambal Nendang, Mulai 10K, 13 gerai di Jawa Timur", "posisi": "kanan" },
+        { "jenis": "teks", "label": "menu.json, outlets.json", "posisi": "kanan" }
+      ],
+      "gerak": "Label lama dicoret dan label baru naik satu per satu; di ujung scrub label berkas di sudut kaca menyala kuning.",
+      "ponsel": "Tanpa pin, label berganti saat lewat.",
+      "reducedMotion": "Label lama tercoret di atas label baru, label berkas sudah menyala.",
+      "aset": [ { "berkas": "HTML/CSS", "status": "ada" } ],
+      "baru": false
+    },
+    {
+      "id": "A3",
+      "nama": "Dari bio ke gerai",
+      "scroll": [320, 440],
+      "koreografi": "shared-element",
+      "tata": "split-kiri",
+      "elemen": [
+        { "jenis": "judul", "label": "Pengikut mendarat di situs sendiri, di gerai terdekat.", "posisi": "kiri" },
+        { "jenis": "kartu", "label": "Satu daftar empat gerai contoh dengan jarak", "posisi": "kanan" }
+      ],
+      "gerak": "Baris yang sama bergeser dari urutan daftar ke urutan terdekat; jarak muncul saat barisnya tiba.",
+      "ponsel": "Daftar muat satu layar, baris bergeser saat lewat.",
+      "reducedMotion": "Dua daftar berdampingan seperti halaman sekarang.",
+      "aset": [ { "berkas": "HTML/CSS", "status": "ada" } ],
+      "baru": true
+    },
+    {
+      "id": "A4",
+      "nama": "Halaman yang dulu 404",
+      "scroll": [440, 720],
+      "koreografi": "sticky-stack",
+      "tata": "tumpuk-kartu",
+      "elemen": [
+        { "jenis": "judul", "label": "Halaman yang dulu 404, sekarang ada isinya.", "posisi": "atas" },
+        { "jenis": "ponsel", "label": "Menu", "posisi": "tengah" },
+        { "jenis": "ponsel", "label": "Kemitraan", "posisi": "tengah" },
+        { "jenis": "ponsel", "label": "Lokasi", "posisi": "tengah" },
+        { "jenis": "ponsel", "label": "Karier", "posisi": "tengah" }
+      ],
+      "gerak": "Kartu menumpuk satu per satu; tanda 404 di pojok kartu tercoret saat kartunya menempel.",
+      "ponsel": "Setiap kartu lebih pendek dari layar, bergulir biasa.",
+      "reducedMotion": "Empat kartu tersusun, 404 sudah tercoret.",
+      "aset": [
+        { "berkas": "chicken-wow-menu.v1.webp", "status": "belum" },
+        { "berkas": "chicken-wow-kemitraan.v1.webp", "status": "belum" },
+        { "berkas": "chicken-wow-lokasi.v1.webp", "status": "belum" },
+        { "berkas": "chicken-wow-karier.v1.webp", "status": "belum" }
+      ],
+      "baru": true
+    },
+    {
+      "id": "A5",
+      "nama": "Situs yang tayang",
+      "scroll": [720, 820],
+      "koreografi": "quiet-reveal",
+      "tata": "split-kanan",
+      "elemen": [
+        { "jenis": "browser", "label": "Beranda chickenwow.id", "posisi": "kiri" },
+        { "jenis": "ponsel", "label": "/info", "posisi": "kanan" }
+      ],
+      "gerak": "Dua bingkai masuk pelan berurutan.",
+      "ponsel": "Bertumpuk, /info dulu.",
+      "reducedMotion": "Dua bingkai tampil diam.",
+      "aset": [ { "berkas": "chicken-wow-beranda.v1.webp", "status": "ada" }, { "berkas": "chicken-wow-info.v1.webp", "status": "belum" } ],
+      "baru": false
+    },
+    {
+      "id": "A6",
+      "nama": "Gambar dipangkas",
+      "scroll": [820, 900],
+      "koreografi": "number-reveal",
+      "tata": "angka",
+      "elemen": [
+        { "jenis": "judul", "label": "Gambarnya menyusut lebih dari separuh.", "posisi": "atas" },
+        { "jenis": "angka", "label": "20,3 MB jadi 9,4 MB", "posisi": "tengah" },
+        { "jenis": "teks", "label": "38 gambar diubah ke WebP.", "posisi": "bawah" }
+      ],
+      "gerak": "Nilai akhir sudah di HTML; batang aset memendek sekali dari panjang 20,3 ke 9,4 saat masuk layar, tanpa hitung mundur.",
+      "ponsel": "Batang selebar layar.",
+      "reducedMotion": "Batang sudah pendek, kedua angka tampil.",
+      "aset": [ { "berkas": "HTML/CSS", "status": "ada" } ],
+      "baru": true
+    },
+    {
+      "id": "A7",
+      "nama": "Dapurnya",
+      "scroll": [900, 960],
+      "koreografi": "none",
+      "tata": "split-kiri",
+      "elemen": [ { "jenis": "teks", "label": "Halaman 404 kini ada, panel multi-tenant, deploy Git di cPanel dengan CI tiga kali", "posisi": "kanan" } ],
+      "gerak": "Tidak ada.",
+      "ponsel": "Sama.",
+      "reducedMotion": "Sama.",
+      "aset": [],
+      "baru": false
+    },
+    {
+      "id": "A8",
+      "nama": "Sumber",
+      "scroll": [960, 1000],
+      "koreografi": "none",
+      "tata": "penutup",
+      "elemen": [ { "jenis": "teks", "label": "Sumber", "posisi": "tengah" } ],
+      "gerak": "Tidak ada.",
+      "ponsel": "Sama.",
+      "reducedMotion": "Sama.",
+      "aset": [],
+      "baru": false
+    }
+  ]
+}

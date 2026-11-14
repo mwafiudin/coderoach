@@ -194,3 +194,79 @@ per satu dengan reveal pendek), karena ceritanya beberapa modul setara dari satu
   cetakan jadi `h3`; nomor cetakan digelapkan ke 5,5:1 dan disembunyikan dari pembaca layar;
   tangkapan beranda ikut bergerak masuk; `!important` dibuang. Tanggal tangkapan 14 Oktober 2026
   dari catatan sampul di `projects.ts`.
+
+## Storyboard scroll (14 Nov 2026)
+
+Diminta Farrez: gerak scroll yang lebih memikat, direncanakan lewat storyboard dulu. Bagian di atas
+tidak diubah. Data sketsa: `docs/konsep/storyboard/the-global-review.json`. Izin IZN-2026-002
+(nama, logo, tangkapan menurut brief di atas; cakupan `logo` belum dicek di Coderoach OS, riset
+`docs/riset/2026-11-standar-portofolio.md` bagian 9).
+
+### Halaman sekarang
+
+Tinggi vh perkiraan dari kode, belum diukur.
+
+| # | vh (perkiraan) | Adegan | Koreografi | Berkas |
+|---|---|---|---|---|
+| 1 | 0–100 | Hero: nama dengan sorotan navy, tagline, Masalah/Solusi/Hasil | none | `_bespoke/the-global-review/TheGlobalReviewPage.tsx:73-101` |
+| 2 | 100–380 | Satu acuan, banyak cetakan: kartu acuan menempel di kolom kiri (≥1024 px), empat cetakan bergulir di kanan dan masuk sekali | sticky-stack tanpa menahan scroll | `TheGlobalReviewPage.tsx:103-226`, `the-global-review.css:58-60,119-120` |
+| 3 | 380–490 | Beranda yang tayang: satu tangkapan | reveal pendek | `TheGlobalReviewPage.tsx:228-244`, `the-global-review.css:126-127` |
+| 4 | 490–560 | Yang didapat redaksi: Statistik di wp-admin, teks | none | `TheGlobalReviewPage.tsx:247-263` |
+| 5 | 560–600 | Sumber (TourChapter kosong) | none | `TheGlobalReviewPage.tsx:265-266` |
+
+### Storyboard scroll
+
+| # | scroll vh | layar | koreografi | gerak | ponsel | reduced-motion | aset |
+|---|---|---|---|---|---|---|---|
+| A1 | 0–100 | Hero seperti sekarang, ditambah logo The Global Review di atas nama | none | Tidak ada; sorotan tidak dianimasikan | Sama | Sama | belum: logo klien |
+| A2 | 100–380 | Satu acuan, banyak cetakan (ada); kartu acuan diberi rel kecil 01 sampai 04 di bawahnya | sticky-stack | Cetakan masuk sekali seperti sekarang; (baru) nomor rel cetakan yang sedang dibaca terisi navy, setiap nomor tautan ke cetakannya | Rel disembunyikan, kartu acuan di atas cetakan | Rel diam dan tetap bisa diklik, cetakan tampil diam | ada (HTML) |
+| A3 | 380–560 | "Alamatnya sama, halamannya baru": satu bingkai browser dengan bilah alamat tetap, berisi halaman tulisan lama dan baru | wipe | Tirai tegak menyapu dari kiri ke kanan, halaman lama sebelum 24 Agustus 2026 berganti halaman baru; bilah alamat tidak bergerak sama sekali. Ditahan 160vh di ≥1024×900 | Tanpa pin: dua tangkapan bertumpuk, bilah alamat sama di keduanya | Dua tangkapan berdampingan, tanpa gerak | belum: `tgr-tulisan-lama.v1.webp`, `tgr-tulisan-baru.v1.webp` |
+| A4 | 560–700 | Yang tayang hari ini: beranda besar, di bawahnya tiga layar asli (halaman tulisan, /en, arsip rubrik tersaring) | quiet-reveal | Beranda masuk dulu, tiga layar menyusul pelan berurutan | Bertumpuk satu kolom | Diam | ada: `the-global-review-beranda.v1.webp`; belum: `tgr-en.v1.webp`, `tgr-arsip.v1.webp` |
+| A5 | 700–790 | Yang didapat redaksi: teks seperti sekarang dan tangkapan halaman Statistik di kanan | quiet-reveal | Tangkapan masuk pelan sekali | Tangkapan di bawah teks | Diam | belum (opsional): `tgr-statistik.v1.webp` |
+| A6 | 790–830 | Sumber | none | Tidak ada | Sama | Sama | ada |
+
+Teks layar baru (draf satu versi, lewat `references/kerajinan-kalimat.md` skill `bahasa-lisan`
+sebelum dibangun; sapaan "Anda"):
+
+- A3 judul: "Alamatnya sama, halamannya baru." Isi: "Tautan yang sudah beredar di grup tetap
+  membuka tulisan yang sama. Yang berganti hanya halaman di baliknya."
+- A2 rel: "01 Halaman tulisan", "02 /en", "03 Kartu pratinjau", "04 Arsip".
+
+### Yang membuat lebih menarik
+
+| Upgrade | Hari ini | Kenapa |
+|---|---|---|
+| A3 wipe di bingkai yang sama | "Alamat tulisan lama tidak berubah" hanya satu kalimat di cetakan 04 | Wipe di satu bingkai adalah bentuk sebelum dan sesudah di kosakata; bilah alamat yang diam membuktikan insight brief (redaksi takut kehilangan arsip). Konsep A dulu kalah karena hanya punya wipe; di sini wipe satu bab dari sebuah cerita yang sudah bergerak |
+| A2 rel pada kartu acuan | Kartu acuan diam, pembaca tidak tahu ada berapa cetakan | Progress rail kecil memberi peta empat cetakan dan bisa diklik, tanpa menutup konten |
+| A4 tiga layar asli | Hanya beranda | Kartu cetakan adalah ilustrasi; layar asli membuktikan keempatnya memang ada di situs. Layar naik dari 1 ke 4 |
+| A5 tangkapan Statistik | Statistik hanya teks | Satu bukti visual bahwa alat redaksi ada di dalam wp-admin. Angka trafik di tangkapan dikaburkan, karena itu data klien dan cakupan `angka` belum ada |
+| Logo di hero | Nama saja | Kit portofolio: tanda klien di atas judul |
+
+Pelajaran yang tetap dipegang: sorotan tidak pernah dianimasikan (pilihan redaksi); tidak meniru
+antarmuka wp-admin atau WhatsApp; judul contoh berlabel; pin hanya di A3 dan hanya ≥1024×900;
+tangkapan wp-admin harus tangkapan asli berizin, bukan gambar ulang.
+
+### Kit portofolio
+
+| Butir | Status | Catatan |
+|---|---|---|
+| Ikon atau logo produk | Belum | Favicon dan logo TGR ada di situs klien; belum ada di repo ini |
+| Sampul rakitan | Belum | Sampul tangkapan mentah beranda dipotong 16:10 |
+| ≥4 layar | 1 dari 4 | Jadi 6 dengan A3 dan A4 (7 dengan Statistik) |
+| Loop kartu | Belum | Loop ≤30 detik: arsip rubrik disaring, URL ikut berubah, dengan poster |
+| Logo klien di pita | Belum | Butuh unggahan logo di admin `Clients` setelah cakupan `logo` dicek |
+
+### Aset yang perlu dibuat
+
+| Berkas | Isi | Adegan |
+|---|---|---|
+| `tgr-tulisan-lama.v1.webp` | Satu tulisan di situs lama sebelum 24 Agustus 2026 (dari arsip Wayback Machine bila ada), bilah alamat terlihat | A3 |
+| `tgr-tulisan-baru.v1.webp` | Tulisan yang sama di situs baru, alamat sama | A3 |
+| `tgr-en.v1.webp` | Halaman /en | A4 |
+| `tgr-arsip.v1.webp` | Arsip rubrik tersaring dengan URL berparameter | A4 |
+| `tgr-statistik.v1.webp` (opsional) | Halaman Statistik di wp-admin, angka dikaburkan | A5 |
+| `tgr-arsip-loop.v1.mp4` + poster | Loop kartu ≤30 detik | kartu /work |
+| Logo dan favicon TGR | Dari klien | A1, ikon, pita |
+
+Catatan: tulisan untuk A3 dipilih yang netral (bukan isu sensitif), dan tangkapan lama hanya bisa
+dipakai bila Wayback Machine memang menyimpannya; kalau tidak ada, A3 dibuang, bukan digambar ulang.

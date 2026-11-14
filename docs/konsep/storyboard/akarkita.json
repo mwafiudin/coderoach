@@ -1,0 +1,141 @@
+{
+  "slug": "akarkita",
+  "judul": "AkarKita",
+  "halaman": "/work/akarkita",
+  "satuPesan": "Istilah kekerabatan dihitung dari siapa yang Anda pilih, menurut adat yang Anda pakai.",
+  "identitas": { "latar": "#eaf1f8", "tinta": "#16213a", "aksen": "#2a4a88", "huruf": "Archivo (wdth 118 judul, 82 label)" },
+  "adegan": [
+    {
+      "id": "A1",
+      "nama": "Hero",
+      "scroll": [0, 100],
+      "koreografi": "none",
+      "tata": "hero",
+      "elemen": [
+        { "jenis": "judul", "label": "AkarKita", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Pohon keluarga privat yang paham istilah kekerabatan Sunda dan Minangkabau.", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Masalah, Solusi, Hasil dalam tiga kolom", "posisi": "bawah" }
+      ],
+      "gerak": "Tidak ada gerak; jawabannya sudah di layar sebelum gambar apa pun.",
+      "ponsel": "Masalah, Solusi, Hasil bertumpuk satu kolom.",
+      "reducedMotion": "Sama.",
+      "aset": [],
+      "baru": false
+    },
+    {
+      "id": "A2",
+      "nama": "Keluarga Rahmat",
+      "scroll": [100, 150],
+      "koreografi": "quiet-reveal",
+      "tata": "split-kiri",
+      "elemen": [
+        { "jenis": "teks", "label": "Rahmat punya seorang kakak perempuan dan seorang adik laki-laki.", "posisi": "kiri" },
+        { "jenis": "diagram", "label": "Rahmat di tengah, kakak perempuan di kiri, adik laki-laki di kanan, anak mereka di bawah", "posisi": "kanan" }
+      ],
+      "gerak": "Garis keturunan tergambar sekali dari Rahmat ke tiap kerabat saat bagan masuk.",
+      "ponsel": "Bagan tegak satu kolom di bawah kalimatnya.",
+      "reducedMotion": "Bagan utuh dengan semua garis sudah tergambar.",
+      "aset": [ { "berkas": "bagan SVG di kode (tanpa berkas gambar)", "status": "belum" } ],
+      "baru": true
+    },
+    {
+      "id": "A3",
+      "nama": "Kain silsilah",
+      "scroll": [150, 290],
+      "koreografi": "quiet-reveal",
+      "tata": "grid",
+      "elemen": [
+        { "jenis": "judul", "label": "Rahmat dipanggil apa? Tergantung siapa yang bertanya, dan adat mana yang dipakai.", "posisi": "atas" },
+        { "jenis": "kartu", "label": "Tabel 4 penanya × Sunda dan Minangkabau", "posisi": "tengah" },
+        { "jenis": "teks", "label": "Keluarga contoh. Istilah dari data AkarKita sendiri.", "posisi": "bawah" }
+      ],
+      "gerak": "Lungsin tiap kolom adat tergambar ke bawah sekali saat tabel masuk, lalu benang emas tiap baris melebar seperti sekarang.",
+      "ponsel": "Tiap penanya jadi pita dengan dua istilah berdampingan; lungsin tidak digambar.",
+      "reducedMotion": "Kain utuh, lungsin dan pakan sudah ada.",
+      "aset": [],
+      "baru": false
+    },
+    {
+      "id": "A4",
+      "nama": "Aturannya",
+      "scroll": [290, 350],
+      "koreografi": "quiet-reveal",
+      "tata": "split-kiri",
+      "elemen": [
+        { "jenis": "teks", "label": "Sunda menimbang umur.", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Untuk saudara laki-laki ibu, tua atau muda tetap Mamak.", "posisi": "kiri" }
+      ],
+      "gerak": "Strip warna adat muncul pelan di samping kalimat aturannya.",
+      "ponsel": "Sama, satu kolom.",
+      "reducedMotion": "Strip langsung tampil.",
+      "aset": [],
+      "baru": false
+    },
+    {
+      "id": "A5",
+      "nama": "Aturan sebagai data",
+      "scroll": [350, 420],
+      "koreografi": "quiet-reveal",
+      "tata": "split-kanan",
+      "elemen": [
+        { "jenis": "kartu", "label": "Satu baris data istilah Uwa dari seed-data/terms.sunda.ts", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Sebutan Uwa yang dihasilkan baris itu", "posisi": "kanan" }
+      ],
+      "gerak": "Baris data muncul dulu, lalu sebutan Uwa menyala di sampingnya.",
+      "ponsel": "Baris data di atas, sebutan di bawah.",
+      "reducedMotion": "Keduanya tampil.",
+      "aset": [ { "berkas": "kutipan seed-data/terms.sunda.ts dari repo AkarKita", "status": "belum" } ],
+      "baru": true
+    },
+    {
+      "id": "A6",
+      "nama": "Kain yang sama, dilihat utuh",
+      "scroll": [420, 540],
+      "koreografi": "quiet-reveal",
+      "tata": "perangkat-penuh",
+      "elemen": [
+        { "jenis": "browser", "label": "Pohon contoh di canvas", "posisi": "kiri" },
+        { "jenis": "ponsel", "label": "Loop zum dari orang ke kelompok keluarga, dengan tombol jeda", "posisi": "kanan" }
+      ],
+      "gerak": "Bingkai naik pelan saat masuk; ponsel memutar loop zum.",
+      "ponsel": "Ponsel saja, poster dulu, tombol putar.",
+      "reducedMotion": "Poster diam dan tombol putar.",
+      "aset": [
+        { "berkas": "akarkita-pohon.v1.webp", "status": "ada" },
+        { "berkas": "akarkita-pohon-ponsel.v1.webp", "status": "ada" },
+        { "berkas": "akarkita-zoom-ponsel.v1.mp4", "status": "belum" },
+        { "berkas": "akarkita-zoom-ponsel.v1.poster.webp", "status": "belum" }
+      ],
+      "baru": false
+    },
+    {
+      "id": "A7",
+      "nama": "Warisan dengan pecahan eksak",
+      "scroll": [540, 610],
+      "koreografi": "none",
+      "tata": "split-kiri",
+      "elemen": [
+        { "jenis": "judul", "label": "Warisan dengan pecahan eksak.", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Edukatif, bukan fatwa. Bisa dibuka tanpa sinyal.", "posisi": "kanan" }
+      ],
+      "gerak": "Tidak ada; topik agama dibiarkan tenang.",
+      "ponsel": "Satu kolom.",
+      "reducedMotion": "Sama.",
+      "aset": [],
+      "baru": false
+    },
+    {
+      "id": "A8",
+      "nama": "Sumber",
+      "scroll": [610, 680],
+      "koreografi": "none",
+      "tata": "penutup",
+      "elemen": [ { "jenis": "teks", "label": "Catatan demo dan sumber", "posisi": "tengah" } ],
+      "gerak": "Tidak ada.",
+      "ponsel": "Sama.",
+      "reducedMotion": "Sama.",
+      "aset": [],
+      "baru": false
+    }
+  ]
+}

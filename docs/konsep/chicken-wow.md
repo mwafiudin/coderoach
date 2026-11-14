@@ -155,3 +155,82 @@ Koreksi wajib dan pemenuhannya:
   900 px seperti LocaScore; pil tidak membungkus; warna tinta lembut jadi token; `aria-label` di
   figure dibuang supaya figcaption jadi namanya. Dibiarkan: risiko CLS dari 220vh setelah hidrasi
   (pola bersama dengan LocaScore dan Laporta, di bawah lipatan).
+
+## Storyboard scroll (14 Nov 2026)
+
+Diminta Farrez: gerak scroll yang lebih memikat, direncanakan lewat storyboard dulu. Bagian di atas
+tidak diubah. Data sketsa: `docs/konsep/storyboard/chicken-wow.json`. Izin IZN-2026-001 (nama, logo,
+tangkapan menurut brief di atas; cakupan `logo` belum dicek di Coderoach OS, riset
+`docs/riset/2026-11-standar-portofolio.md` bagian 9).
+
+### Halaman sekarang
+
+Tinggi vh perkiraan dari kode, belum diukur.
+
+| # | vh (perkiraan) | Adegan | Koreografi | Berkas |
+|---|---|---|---|---|
+| 1 | 0–100 | Hero navy bergrid, nama, tagline, Masalah/Solusi/Hasil | none | `_bespoke/chicken-wow/ChickenWowPage.tsx:57-85` |
+| 2 | 100–320 | Label di kaca: tiga label lama dicoret, label baru naik | pin-scrub, 220vh di ≥1024×900 | `ChickenWowPage.tsx:87-125`, `chicken-wow.css:59-62` |
+| 3 | 320–420 | Dari bio ke gerai: dua daftar terpisah, urutan daftar dan setelah lokasi diizinkan; baris kanan masuk bergiliran | reveal pendek | `ChickenWowPage.tsx:127-160`, `chicken-wow.css:146-147` |
+| 4 | 420–530 | Situs yang tayang: satu tangkapan beranda | reveal pendek | `ChickenWowPage.tsx:162-176`, `chicken-wow.css:152` |
+| 5 | 530–600 | Yang dikerjakan di dapurnya: empat fakta | none | `ChickenWowPage.tsx:178-190` |
+| 6 | 600–640 | Sumber (TourChapter kosong) | none | `ChickenWowPage.tsx:192-193` |
+
+### Storyboard scroll
+
+| # | scroll vh | layar | koreografi | gerak | ponsel | reduced-motion | aset |
+|---|---|---|---|---|---|---|---|
+| A1 | 0–100 | Hero seperti sekarang, ditambah logo Chicken Wow di atas nama | none | Tidak ada | Sama | Sama | belum: logo klien |
+| A2 | 100–320 | Label di kaca (ada); di ujung scrub, label berkas "menu.json, outlets.json" di sudut kaca menyala kuning | pin-scrub | Label lama dicoret dan label baru naik seperti sekarang; label berkas menyala saat `--q` lewat 0,85 | Tanpa pin, seperti sekarang | Label lama tercoret di atas label baru, label berkas sudah menyala | ada (HTML) |
+| A3 | 320–440 | Dari bio ke gerai: **satu** daftar empat gerai contoh | shared-element | Baris yang sama bergeser ke posisi barunya, dari urutan daftar ke yang terdekat; jarak muncul di kanan tiap baris saat barisnya tiba | Daftar muat satu layar, baris bergeser saat lewat | Dua daftar berdampingan seperti sekarang | ada (HTML) |
+| A4 | 440–720 | "Halaman yang dulu 404": empat kartu Menu, Kemitraan, Lokasi, Karier, tiap kartu tangkapan ponsel halaman itu dengan tanda 404 tercoret di pojok | sticky-stack | Kartu menumpuk satu per satu, tanda 404 tercoret saat kartunya menempel | Kartu lebih pendek dari layar, bergulir biasa | Empat kartu tersusun, 404 sudah tercoret | belum: empat tangkapan |
+| A5 | 720–820 | Situs yang tayang: beranda desktop dan /info di ponsel berdampingan | quiet-reveal | Dua bingkai masuk pelan berurutan | Bertumpuk, /info dulu | Diam | ada: `chicken-wow-beranda.v1.webp`; belum: `chicken-wow-info.v1.webp` |
+| A6 | 820–900 | "Gambar dipangkas": 38 gambar ke WebP, 20,3 MB jadi 9,4 MB, batang aset memendek | number-reveal | Angka akhir sudah di HTML; batang memendek sekali dari panjang 20,3 ke 9,4 saat masuk layar, tanpa hitung mundur | Sama, batang selebar layar | Batang sudah pendek, kedua angka tampil | ada (copy `projects.ts`) |
+| A7 | 900–960 | Dapurnya: tiga fakta sisa (halaman 404, multi-tenant, deploy Git di cPanel dan CI tiga kali) | none | Tidak ada | Sama | Sama | ada |
+| A8 | 960–1000 | Sumber | none | Tidak ada | Sama | Sama | ada |
+
+Teks layar baru (draf satu versi, judul lewat `references/kerajinan-kalimat.md` skill
+`bahasa-lisan` sebelum dibangun; nada santai situs klien, sapaan "Anda" untuk teks Coderoach):
+
+- A4 judul: "Halaman yang dulu 404, sekarang ada isinya."
+- A6 judul: "Gambarnya menyusut lebih dari separuh." (kalimat `summary.result`) Isi: "38 gambar diubah ke WebP. Aset
+  turun dari 20,3 MB jadi 9,4 MB."
+
+### Yang membuat lebih menarik
+
+| Upgrade | Hari ini | Kenapa |
+|---|---|---|
+| A3 satu daftar yang menyusun ulang dirinya | Dua daftar terpisah, pembaca membandingkan sendiri | Shared element cocok untuk data yang sama dilihat dua cara; gerak baris yang pindah posisi adalah cara kerja /info itu sendiri. Konsep A awalnya sudah merencanakan shared element, belum dibangun |
+| A4 empat halaman yang dulu 404 | Disebut satu kalimat di daftar fakta | Empat modul setara, satu kartu masing-masing (sticky stack); sekaligus menambah layar asli dari 1 ke 5 |
+| A6 angka aset sebagai bab kecil | Satu butir di daftar fakta | Hasil terukur yang sudah bersumber di `projects.ts`; number reveal hanya untuk angka terukur |
+| A2 label berkas menyala di akhir | Label berkas diam sejak awal | Menutup scrub dengan sebabnya: label baru datang dari berkas yang diterbitkan panel |
+| A5 /info di ponsel | Hanya beranda desktop | Pembaca brief membaca di ponsel, dan /info adalah halaman yang dibuka dari bio |
+
+Pelajaran yang tetap dipegang: pin hanya di A2, 220vh, ≥1024×900 (audit Okt); label lama tetap
+terbaca 6:1 saat istirahat; nama gerai dan jarak contoh; tidak meniru antarmuka Instagram atau
+TikTok; tangkapan berizin tanpa foto produk buatan.
+
+### Kit portofolio
+
+| Butir | Status | Catatan |
+|---|---|---|
+| Ikon atau logo produk | Belum | Tidak ada berkas logo di repo; ambil dari situs atau klien |
+| Sampul rakitan | Belum | Sampul tangkapan mentah beranda dipotong 16:10 |
+| ≥4 layar | 1 dari 4 | Jadi 6 dengan A4 dan A5 |
+| Loop kartu | Belum | Loop ≤30 detik /info mengurutkan gerai, lokasi diemulasikan di titik contoh, tanpa lokasi pribadi |
+| Logo klien di pita | Belum | Butuh unggahan logo di admin `Clients` setelah cakupan `logo` dicek |
+
+### Aset yang perlu dibuat
+
+| Berkas | Isi | Adegan |
+|---|---|---|
+| `chicken-wow-menu.v1.webp` | Tangkapan ponsel halaman Menu | A4 |
+| `chicken-wow-kemitraan.v1.webp` | Tangkapan ponsel Kemitraan | A4 |
+| `chicken-wow-lokasi.v1.webp` | Tangkapan ponsel Lokasi | A4 |
+| `chicken-wow-karier.v1.webp` | Tangkapan ponsel Karier | A4 |
+| `chicken-wow-info.v1.webp` | Tangkapan ponsel /info | A5 |
+| `chicken-wow-info-loop.v1.mp4` + poster | Loop kartu ≤30 detik | kartu /work |
+| Logo Chicken Wow (SVG bila ada) | Dari klien | A1, ikon, pita |
+
+Catatan: situs live menolak akses agen saat konsep Okt ditulis; tangkapan baru mungkin perlu
+diambil lewat browser pane atau oleh Farrez.

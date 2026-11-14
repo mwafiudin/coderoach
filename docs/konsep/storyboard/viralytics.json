@@ -1,0 +1,139 @@
+{
+  "slug": "viralytics",
+  "judul": "Viralytics",
+  "halaman": "/work/viralytics",
+  "satuPesan": "Setiap langkah campaign punya pemilik dan gerbang, jadi semua orang melihat siapa yang sedang ditunggu.",
+  "identitas": { "latar": "#000000", "tinta": "#f8fafc", "aksen": "#2563eb", "huruf": "Satoshi dan Inter" },
+  "adegan": [
+    {
+      "id": "V1",
+      "nama": "Hero",
+      "scroll": [0, 100],
+      "koreografi": "none",
+      "tata": "hero",
+      "elemen": [
+        { "jenis": "ikon", "label": "Ikon Viralytics", "posisi": "kiri" },
+        { "jenis": "judul", "label": "Viralytics", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Operasional campaign KOL dari pemilihan influencer sampai laporan hasil, dalam satu alur bergerbang.", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Masalah, Solusi, Hasil", "posisi": "bawah" },
+        { "jenis": "diagram", "label": "Lintasan tipis, tongkat diam di garis start", "posisi": "bawah" }
+      ],
+      "gerak": "Tidak ada gerak.",
+      "ponsel": "Ringkasan satu kolom.",
+      "reducedMotion": "Sama seperti dengan gerak.",
+      "aset": [ { "berkas": "viralytics-ikon.v1.svg", "status": "belum" } ],
+      "baru": false
+    },
+    {
+      "id": "V2",
+      "nama": "Estafet",
+      "scroll": [100, 300],
+      "koreografi": "pin-scrub",
+      "tata": "artefak-pin",
+      "elemen": [
+        { "jenis": "judul", "label": "Semua orang melihat lintasan yang sama.", "posisi": "atas" },
+        { "jenis": "diagram", "label": "Lintasan dengan tongkat bercahaya", "posisi": "tengah" },
+        { "jenis": "kartu", "label": "Submission: memegang Brand, menunggu Agensi", "posisi": "bawah" },
+        { "jenis": "kartu", "label": "Drafting: memegang KOL, menunggu Brand", "posisi": "bawah" },
+        { "jenis": "kartu", "label": "Posting: memegang Tim agensi, menunggu KOL", "posisi": "bawah" },
+        { "jenis": "kartu", "label": "Laporan: memegang Brand, menunggu tidak ada", "posisi": "bawah" }
+      ],
+      "gerak": "Tongkat maju per zona; nama yang memegang di zona aktif menebal saat tongkat masuk.",
+      "ponsel": "Tidak dipin; zona jadi kartu bertumpuk, tongkat diam di garis finis.",
+      "reducedMotion": "Tongkat di garis finis, semua zona terbaca penuh.",
+      "aset": [],
+      "baru": false
+    },
+    {
+      "id": "V3",
+      "nama": "Lajur sejajar",
+      "scroll": [300, 390],
+      "koreografi": "none",
+      "tata": "grid",
+      "elemen": [
+        { "jenis": "judul", "label": "Bukan lomba: setiap KOL punya lajurnya sendiri.", "posisi": "atas" },
+        { "jenis": "kartu", "label": "@dita.contoh sampai Laporan, disorot", "posisi": "tengah" },
+        { "jenis": "kartu", "label": "@bima.contoh draft dikembalikan sekali", "posisi": "tengah" },
+        { "jenis": "kartu", "label": "@rani.contoh ditolak brand", "posisi": "tengah" }
+      ],
+      "gerak": "Tidak ada gerak; lajur Dita disorot karena dia yang diikuti di garis finis.",
+      "ponsel": "Lajur jadi kartu, kartu Dita paling atas.",
+      "reducedMotion": "Sama.",
+      "aset": [],
+      "baru": false
+    },
+    {
+      "id": "V4",
+      "nama": "Garis finis",
+      "scroll": [390, 520],
+      "koreografi": "shared-element",
+      "tata": "split-kanan",
+      "elemen": [
+        { "jenis": "judul", "label": "Satu link, diikuti sampai laporan.", "posisi": "kiri" },
+        { "jenis": "kartu", "label": "Link dikirim, diverifikasi, metrik ditarik, di laporan campaign", "posisi": "kiri" },
+        { "jenis": "angka", "label": "48.200 views, ER 6,1% (data contoh)", "posisi": "kiri" },
+        { "jenis": "browser", "label": "Tangkapan laporan campaign", "posisi": "kanan" }
+      ],
+      "gerak": "Chip angka muncul di langkah Metrik ditarik, turun ke langkah Di laporan campaign dan jadi baris kontribusi KOL; tangkapan laporan masuk di sampingnya.",
+      "ponsel": "Tanpa perpindahan; angka ditulis sekali di baris laporan, tangkapan di bawah.",
+      "reducedMotion": "Crossfade chip dari langkah 3 ke langkah 4; angka ada di DOM sekali.",
+      "aset": [ { "berkas": "viralytics-laporan.v1.webp", "status": "ada" } ],
+      "baru": true
+    },
+    {
+      "id": "V5",
+      "nama": "Di dalam Viralytics",
+      "scroll": [520, 920],
+      "koreografi": "sticky-stack",
+      "tata": "tumpuk-kartu",
+      "elemen": [
+        { "jenis": "browser", "label": "Papan campaign", "posisi": "kanan" },
+        { "jenis": "browser", "label": "Direktori dan shortlist KOL", "posisi": "kanan" },
+        { "jenis": "browser", "label": "Fase dan gerbang persetujuan", "posisi": "kanan" },
+        { "jenis": "browser", "label": "Laporan yang tidak disusun ulang", "posisi": "kanan" }
+      ],
+      "gerak": "Tiap kartu menempel, kartu berikutnya menumpuk di atasnya.",
+      "ponsel": "Kartu berurutan, tiap kartu lebih pendek dari layar.",
+      "reducedMotion": "Kartu berurutan tanpa menempel.",
+      "aset": [
+        { "berkas": "viralytics-campaign-board.v1.webp", "status": "ada" },
+        { "berkas": "viralytics-kol-discovery.v1.webp", "status": "ada" },
+        { "berkas": "viralytics-alur-konten.v1.webp", "status": "ada" },
+        { "berkas": "viralytics-laporan.v1.webp", "status": "ada" }
+      ],
+      "baru": true
+    },
+    {
+      "id": "V6",
+      "nama": "Tur",
+      "scroll": [920, 1040],
+      "koreografi": "none",
+      "tata": "perangkat-penuh",
+      "elemen": [
+        { "jenis": "judul", "label": "Satu campaign, dari shortlist sampai laporan.", "posisi": "tengah" },
+        { "jenis": "video", "label": "Tur 40 detik, tanpa suara", "posisi": "tengah" }
+      ],
+      "gerak": "Video tidak autoplay; poster tampil dulu.",
+      "ponsel": "Video 16:10 selebar layar.",
+      "reducedMotion": "Poster dan transkrip.",
+      "aset": [
+        { "berkas": "viralytics-tur.v1.mp4", "status": "ada" },
+        { "berkas": "viralytics-tur.v1.poster.webp", "status": "ada" }
+      ],
+      "baru": false
+    },
+    {
+      "id": "V7",
+      "nama": "Sumber",
+      "scroll": [1040, 1090],
+      "koreografi": "none",
+      "tata": "penutup",
+      "elemen": [ { "jenis": "teks", "label": "Catatan data fiktif", "posisi": "tengah" } ],
+      "gerak": "Tidak ada.",
+      "ponsel": "Sama.",
+      "reducedMotion": "Sama.",
+      "aset": [],
+      "baru": false
+    }
+  ]
+}

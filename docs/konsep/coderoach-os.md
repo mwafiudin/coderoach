@@ -139,3 +139,80 @@ Koreksi wajib dan pemenuhannya:
   dipindah ke bingkai supaya tidak ikut terpotong `clip-path`; nomor pemberhentian disembunyikan
   dari pembaca layar; tautan tur memakai electric-700 (5,3:1); tabel spreadsheet diberi nama dari
   judulnya. Dibiarkan: risiko CLS dari 200vh setelah hidrasi (pola bersama halaman bespoke lain).
+
+## Storyboard scroll (14 Nov 2026)
+
+Dasar: `docs/konsep/storyboard/FORMAT.md`, DESIGN.md "Motion vocabulary (bespoke pages)",
+`docs/riset/2026-10-koreografi-scroll.md`, dan `docs/riset/2026-11-standar-portofolio.md`. Data
+sketsa: `docs/konsep/storyboard/coderoach-os.json`. Belum ada kode yang diubah; ini rencana.
+
+### Halaman sekarang
+
+Dibaca dari `src/app/(frontend)/work/_bespoke/coderoach-os/CoderoachOsPage.tsx` dan `coderoach-os.css`.
+
+| Adegan | Isi | Koreografi | Rujukan |
+|---|---|---|---|
+| Hero | Nama, tagline, tautan "Tonton turnya", tiga kolom bernomor `[ 01 ]` | none, tanpa gambar | section pertama |
+| Buku yang menolak selisih | Spreadsheet tiga baris (Rp4.500.000, Rp4.200.000, 31%) lalu log `BEGIN`, dua `jurnal_line`, `COMMIT`, galat trigger | wipe 200vh, hanya ≥1024×900 (`clip-path` dari `--q`) | `.os-scene`, `coderoach-os.css:18-45` |
+| Satu sistem | Kode contoh CRO-2026-014 di enam pemberhentian, lalu empat fitur (tiga dengan tangkapan) | enter per baris | `os-thread`, `os-feature` |
+| Tur | Bab gelap, video 80 detik | none | `TourChapter` |
+| Sumber | Catatan data contoh; belum ada metrik | none | `Sources` |
+
+Celah yang terlihat: hero tidak memperlihatkan aplikasinya sama sekali; log galat tampil sekaligus,
+jadi pembaca tidak merasakan momen penolakannya; sesudah ditolak, cerita tidak menunjukkan apa yang
+terjadi pada jurnal yang seimbang; linimasa bertanggal dengan commit ada di `projects.ts` tapi tidak
+tampil di halaman bespoke; fitur keempat tidak punya layar.
+
+### Storyboard scroll
+
+| # | scroll vh | layar | koreografi | gerak | ponsel | reduced-motion | aset ada/belum |
+|---|---|---|---|---|---|---|---|
+| C1 | 0–110 | Hero: ikon, nama, tagline, tiga kolom; di bawahnya laptop CSS berisi Beranda | none | Tidak ada; laptop di bawah ringkasan supaya jawaban tetap tampil dulu | Laptop di bawah ringkasan, selebar layar | Sama | `coderoach-os-beranda.v2.webp` ada; `coderoach-os-ikon.v1.svg` belum |
+| C2 | 110–310 | Buku yang menolak selisih: spreadsheet kiri, log kanan, satu bingkai | wipe | Wipe membuka sisi Coderoach OS; baris log muncul berurutan `BEGIN`, dua baris, `COMMIT`, lalu galat merah di ujung; sesudah galat, dua `jurnal_line` meredup dan dicoret karena seluruh transaksi batal | Dua sisi bertumpuk, log utuh | Dua sisi berdampingan, log utuh, baris tidak dicoret | Digambar HTML, ada |
+| C3 | 310–420 | Yang seimbang lolos: dua baris jurnal debit dan kredit Rp4.500.000 berubah jadi baris laporan | shared-element | Baris mono `jurnal_line debit 4500000.00 biaya proyek` bergeser dan berganti format jadi baris "Biaya proyek Rp4.500.000" di laporan ringkas; baris kredit jadi "Kas berkurang Rp4.500.000" | Kedua keadaan bertumpuk: log di atas, laporan di bawah | Crossfade dari log ke laporan, keduanya di DOM | Digambar HTML, ada |
+| C4 | 420–500 | Satu kode proyek dari penawaran sampai Claude Code lewat MCP | none | Baris masuk satu per satu seperti sekarang | Sama | Daftar utuh | Tidak perlu aset |
+| C5 | 500–900 | Empat fitur, satu kartu per layar, tangkapan di kanan | sticky-stack | Kartu menempel dan berikutnya menumpuk, dari margin proyek, story, pembukuan, sampai tampilan staf | Kartu berurutan, tiap kartu lebih pendek dari layar | Kartu berurutan tanpa menempel | `coderoach-os-proyek-detail.v2.webp`, `coderoach-os-tugas.v2.webp`, `coderoach-os-laporan.v2.webp` ada; `coderoach-os-tampilan-staf.v1.webp` belum |
+| C6 | 900–1010 | Linimasa enam tanggal dengan commit, 21 Agu sampai 13 Okt 2026 | progress-rail | Rel 2px terisi electric sesuai posisi baca; titik di rel bisa diklik dan melompat ke barisnya | Rel vertikal di kiri, titik tetap bisa diklik | Rel penuh, tanpa isi bergerak | Tidak perlu aset |
+| C7 | 1010–1130 | Tur gelap 80 detik | none | Video tidak autoplay | Sama | Poster dan transkrip | `coderoach-os-tur.v2.mp4` dan poster ada |
+| C8 | 1130–1180 | Sumber | none | Tidak ada | Sama | Sama | Tidak perlu aset |
+
+Koreografi yang sengaja tidak dipakai: number reveal (belum ada metrik terukur di `projects.ts`),
+image sequence (tidak ada perangkat keras), pin baru (C2 sudah satu-satunya pin, 200vh).
+
+### Yang membuat lebih menarik
+
+| Perubahan | Sekarang | Sesudah | Kenapa |
+|---|---|---|---|
+| Galat datang terakhir (C2) | Log lengkap terlihat saat wipe mulai | Baris log berurutan, galat di ujung, lalu baris dicoret | Momen penolakan jadi klimaks; coretan menunjukkan "seluruh transaksi batal" sebagai perubahan keadaan, bukan kalimat |
+| Shared element jurnal ke laporan (C3) | Cerita berhenti di penolakan | Jurnal yang seimbang berubah jadi baris laporan | Pola "transformasi data" di riset koreografi; menutup pesan kedua: margin terbaca dari buku yang sama, tanpa rekap |
+| Laptop di hero (C1) | Tanpa gambar | Beranda asli di bingkai laptop | Pembaca melihat produknya di layar pertama tanpa menunggu tur |
+| Sticky stack fitur (C5) | Baris fitur biasa, satu tanpa layar | Empat modul setara, semua dengan layar | Jenis cerita "beberapa modul setara"; layar staf membuktikan penyaringan angka, bukan hanya mengklaimnya |
+| Linimasa dengan rel (C6) | Tidak tampil | Enam tanggal dan hash commit | "Proof over adjectives": setiap langkah bisa dicek di repo; jenis cerita "riwayat versi" di riset memakai timeline vertikal |
+
+Pelajaran lama yang dipakai: galat ditulis persis format trigger, tanpa kata "tidak bisa ditimpa"
+(koreksi GK 1 dan 3); garis wipe di bingkai, bukan ikut terpotong `clip-path` (audit 30 Okt); tidak
+ada pin baru, jadi risiko CLS dari tinggi pin setelah hidrasi tidak bertambah. Angka di C3 memakai
+Rp4.500.000 yang sudah tayang di C2, bukan angka baru; laporan ringkasnya ilustrasi berlabel data
+contoh, bukan tangkapan.
+
+### Kit portofolio
+
+| Butir kit | Keadaan | Celah |
+|---|---|---|
+| Ikon produk | Tidak ada di data | Ikon Coderoach OS dari repo coderoach-app, master 1024 px |
+| Sampul rakitan | Tangkapan Beranda mentah | Sampul dari templat: latar paper, ikon dan nama, Beranda dan laporan dalam bingkai generik |
+| ≥4 layar | 4 layar | Terpenuhi; tambah tampilan staf supaya keempat fitur punya layar |
+| Loop kartu | Tidak ada (tur ada, loop tidak) | Loop ≤30 detik dipotong dari tur: proyek ke laba rugi |
+
+### Aset yang perlu dibuat
+
+| Berkas | Isi | Sumber | Catatan |
+|---|---|---|---|
+| `coderoach-os-ikon.v1.svg` | Ikon produk | Repo coderoach-app | Belum dicek apakah app punya ikon sendiri atau memakai logo studio |
+| `coderoach-os-sampul.v1.webp` | Sampul rakitan 16:10 | Dirakit kode dari tangkapan v2 | Menunggu keputusan cara membuat sampul (riset standar §7 butir 1) |
+| `coderoach-os-tampilan-staf.v1.webp` | Proyek dilihat akun staf, tanpa rate, biaya, saldo | Database demo | Data contoh |
+| `coderoach-os-margin-loop.v1.mp4` dan poster | Loop kartu ≤30 detik | Potongan tur v2 | Tanpa suara |
+
+Copy: semua teks layar diambil dari `projects.ts` dan halaman sekarang. Baris laporan di C3
+("Biaya proyek", "Kas berkurang") dan judul linimasa belum ditulis final; judul seksi baru lewat
+prosedur `kerajinan-kalimat` skill `bahasa-lisan` sebelum dipakai.

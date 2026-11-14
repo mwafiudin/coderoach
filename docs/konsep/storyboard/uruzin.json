@@ -1,0 +1,124 @@
+{
+  "slug": "uruzin",
+  "judul": "Uruzin OS",
+  "halaman": "/work/uruzin",
+  "satuPesan": "Satu klien diikuti dari konsultasi pertama sampai izin terbit dan tagihan lunas, jadi yang tertahan terlihat sebelum klien bertanya.",
+  "identitas": { "latar": "#f7faf6", "tinta": "#141614", "aksen": "#21663a", "huruf": "Poppins (judul), Roboto (teks)" },
+  "adegan": [
+    {
+      "id": "A1",
+      "nama": "Hero",
+      "scroll": [0, 100],
+      "koreografi": "none",
+      "tata": "hero",
+      "elemen": [
+        { "jenis": "judul", "label": "Uruzin OS", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Dari konsultasi pertama sampai izin terbit dan tagihan lunas, di satu sistem.", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Masalah, Solusi, Hasil", "posisi": "bawah" },
+        { "jenis": "foto", "label": "Sampul papan presentasi", "posisi": "kanan" }
+      ],
+      "gerak": "Tidak ada; nama, tagline, dan ringkasan tampil dulu.",
+      "ponsel": "Sampul pindah ke bawah ringkasan, lebar penuh.",
+      "reducedMotion": "Sama dengan biasa.",
+      "aset": [ { "berkas": "portfolio-uruzin-os.webp", "status": "ada" } ],
+      "baru": false
+    },
+    {
+      "id": "A2",
+      "nama": "Satu berkas, banyak tangan",
+      "scroll": [100, 320],
+      "koreografi": "pin-scrub",
+      "tata": "artefak-pin",
+      "elemen": [
+        { "jenis": "judul", "label": "Satu klien, satu berkas yang berpindah tangan.", "posisi": "kiri" },
+        { "jenis": "diagram", "label": "Enam pos: Peluang masuk, Penawaran dikirim, Dokumen diurus, Izin terbit, Invoice dibuat, Tagihan lunas", "posisi": "atas" },
+        { "jenis": "kartu", "label": "Map berkas klien contoh", "posisi": "tengah" }
+      ],
+      "gerak": "Map bergeser dari pos ke pos mengikuti gulir; cap Izin terbit menempel di pos keempat, tanda invoice berganti jadi Lunas di pos terakhir.",
+      "ponsel": "Tanpa pin: enam pos jadi daftar tegak dengan map kecil di setiap pos.",
+      "reducedMotion": "Daftar enam pos, map diam di pos Tagihan lunas dengan cap Izin terbit.",
+      "aset": [ { "berkas": "ilustrasi HTML/CSS, tanpa berkas", "status": "belum" } ],
+      "baru": true
+    },
+    {
+      "id": "A3",
+      "nama": "Hari dibuka dari yang perlu ditagih",
+      "scroll": [320, 440],
+      "koreografi": "shared-element",
+      "tata": "split-kanan",
+      "elemen": [
+        { "jenis": "judul", "label": "Pagi dibuka dari yang perlu ditagih.", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Pendapatan bulan berjalan, invoice perlu ditagih dan lewat jatuh tempo, siap ditagih, total piutang, arus kas enam bulan", "posisi": "kiri" },
+        { "jenis": "browser", "label": "Dashboard Uruzin OS", "posisi": "kanan" }
+      ],
+      "gerak": "Kartu invoice dari A2 mengecil dan mendarat di baris perlu ditagih, lalu lima baris di kiri menyala berurutan.",
+      "ponsel": "Tangkapan dipotong ke kartu ringkasan; kartu invoice hanya muncul, tidak terbang.",
+      "reducedMotion": "Kartu invoice dan dashboard berdampingan, berganti dengan crossfade.",
+      "aset": [ { "berkas": "uruzin-dashboard.v1.webp", "status": "belum" } ],
+      "baru": true
+    },
+    {
+      "id": "A4",
+      "nama": "Yang tertahan terlihat lebih dulu",
+      "scroll": [440, 560],
+      "koreografi": "quiet-reveal",
+      "tata": "perangkat-penuh",
+      "elemen": [
+        { "jenis": "judul", "label": "Yang tertahan kelihatan sebelum klien bertanya.", "posisi": "atas" },
+        { "jenis": "browser", "label": "Papan tugas per tim, satu kartu lewat tenggat bercincin", "posisi": "penuh" }
+      ],
+      "gerak": "Kolom papan muncul pelan satu per satu, cincin pada kartu tertahan muncul terakhir.",
+      "ponsel": "Satu kolom saja dari potongan gambar.",
+      "reducedMotion": "Papan utuh dengan cincin sudah terpasang.",
+      "aset": [ { "berkas": "uruzin-tugas.v1.webp", "status": "belum" } ],
+      "baru": true
+    },
+    {
+      "id": "A5",
+      "nama": "Visibilitas, bukan pengawasan",
+      "scroll": [560, 680],
+      "koreografi": "quiet-reveal",
+      "tata": "grid",
+      "elemen": [
+        { "jenis": "judul", "label": "Visibilitas, bukan pengawasan.", "posisi": "atas" },
+        { "jenis": "browser", "label": "Kinerja saya", "posisi": "kiri" },
+        { "jenis": "browser", "label": "Laporan produktivitas", "posisi": "kanan" },
+        { "jenis": "teks", "label": "Setiap orang melihat tugas dan kinerjanya sendiri. Manajemen membaca gambaran yang sama, tanpa rapat status tambahan.", "posisi": "bawah" }
+      ],
+      "gerak": "Dua layar masuk pelan berurutan, hanya opasitas dan geser kecil.",
+      "ponsel": "Bertumpuk, kinerja dulu.",
+      "reducedMotion": "Dua layar tampil diam.",
+      "aset": [ { "berkas": "uruzin-kinerja.v1.webp", "status": "belum" }, { "berkas": "uruzin-produktivitas.v1.webp", "status": "belum" } ],
+      "baru": true
+    },
+    {
+      "id": "A6",
+      "nama": "Dari situs ke sistem",
+      "scroll": [680, 760],
+      "koreografi": "quiet-reveal",
+      "tata": "penutup",
+      "elemen": [
+        { "jenis": "judul", "label": "Mulai dari situs, lanjut ke sistem.", "posisi": "kiri" },
+        { "jenis": "diagram", "label": "Garis 2023 situs perusahaan, 2026 sistem harian", "posisi": "kanan" }
+      ],
+      "gerak": "Garis hijau digambar sekali dari 2023 ke 2026 saat masuk layar.",
+      "ponsel": "Garis tegak.",
+      "reducedMotion": "Garis sudah penuh.",
+      "aset": [ { "berkas": "uruzin-situs.v1.webp", "status": "belum" } ],
+      "baru": true
+    },
+    {
+      "id": "A7",
+      "nama": "Sumber",
+      "scroll": [760, 820],
+      "koreografi": "none",
+      "tata": "penutup",
+      "elemen": [ { "jenis": "teks", "label": "Sumber dan proyek lain", "posisi": "tengah" } ],
+      "gerak": "Tidak ada.",
+      "ponsel": "Sama.",
+      "reducedMotion": "Sama.",
+      "aset": [],
+      "baru": false
+    }
+  ]
+}
