@@ -170,6 +170,7 @@ export const PORTFOLIO: PortfolioEntry[] = [
     cover: {
       file: 'laporta-sampul.v2.webp',
       alt: 'Papan Laporta: setoran tunai di laptop dan daftar tutup shift di ponsel, dengan gulungan struk, terminal pembayaran, dan cangkir kopi',
+      focalX: 1,
     },
     metrics: LAPORTA_METRICS,
     summary: {
@@ -336,6 +337,7 @@ export const PORTFOLIO: PortfolioEntry[] = [
     cover: {
       file: 'locascore-sampul.v2.webp',
       alt: 'Papan LocaScore: kesimpulan kelayakan calon lokasi di laptop, dengan penanda peta, ruko, dan kaca pembesar',
+      focalX: 1,
     },
     // The bespoke page reads the real screen from here; the cover is the card photo.
     showcase: {
@@ -392,6 +394,7 @@ export const PORTFOLIO: PortfolioEntry[] = [
     cover: {
       file: 'the-global-review-sampul.v2.webp',
       alt: 'Papan The Global Review: beranda situs di laptop, dengan koran, globe, dan kacamata baca',
+      focalX: 1,
     },
     // The bespoke page reads the real screen from here; the cover is the card photo.
     showcase: {
@@ -478,6 +481,7 @@ export const PORTFOLIO: PortfolioEntry[] = [
     cover: {
       file: 'chicken-wow-sampul.v2.webp',
       alt: 'Papan Chicken Wow: beranda situs gerai di laptop, dengan paha ayam goreng, cabai, dan kotak makanan',
+      focalX: 1,
     },
     // The bespoke page reads the real screen from here; the cover is the card photo.
     showcase: {
@@ -522,6 +526,7 @@ export const PORTFOLIO: PortfolioEntry[] = [
     cover: {
       file: 'coderoach-os-sampul.v2.webp',
       alt: 'Papan Coderoach OS: beranda sistem studio di laptop, dengan buku besar, kalkulator, dan cangkir',
+      focalX: 1,
     },
     summary: {
       problem:
@@ -603,6 +608,7 @@ export const PORTFOLIO: PortfolioEntry[] = [
     cover: {
       file: 'viralytics-sampul.v2.webp',
       alt: 'Papan Viralytics: papan campaign di laptop, dengan ring light, ponsel di tripod, dan gelembung suka',
+      focalX: 1,
     },
     studio: {
       vizType: 'none',
@@ -694,6 +700,7 @@ export const PORTFOLIO: PortfolioEntry[] = [
     cover: {
       file: 'rencana-ro-sampul.v2.webp',
       alt: 'Papan Rencana RO: beranda mingguan di laptop dan ponsel, dengan tumpukan kardus, troli, dan papan jalan',
+      focalX: 1,
     },
     studio: {
       vizType: 'none',
@@ -798,6 +805,7 @@ export const PORTFOLIO: PortfolioEntry[] = [
     cover: {
       file: 'akarkita-sampul.v2.webp',
       alt: 'Papan AkarKita: pohon keluarga di laptop dan ponsel, dengan pohon berakar, bingkai foto, dan gulungan kain',
+      focalX: 1,
     },
     excerpt:
       'Silsilah keluarga besar di canvas sendiri, kalkulator kekerabatan menurut adat Sunda dan Minang, dan simulator faraid dengan pecahan eksak. Proyek lab yang dipakai sungguhan oleh satu keluarga.',
@@ -848,6 +856,7 @@ export const PORTFOLIO: PortfolioEntry[] = [
     cover: {
       file: 'jeda-sampul.v2.webp',
       alt: 'Papan Jeda: tabel catatan untuk psikolog di laptop dan catat cepat di ponsel, dengan buku catatan, teh, dan tanaman',
+      focalX: 1,
     },
     summary: {
       problem:
@@ -927,6 +936,7 @@ export const PORTFOLIO: PortfolioEntry[] = [
     cover: {
       file: 'd-day-sampul.v2.webp',
       alt: 'Papan d-day: layar Keadaan di laptop, dengan papan daftar periksa, gembok, dan stopwatch',
+      focalX: 1,
     },
     summary: {
       problem:
@@ -999,6 +1009,7 @@ export const PORTFOLIO: PortfolioEntry[] = [
     cover: {
       file: 'yiheecam-sampul.v2.webp',
       alt: 'Papan YiheeCam: layar merekam dengan pratinjau kamera ilustrasi dan layar setting di dua ponsel, dengan action cam, kartu microSD, dan dudukan stang',
+      focalX: 1,
     },
     summary: {
       problem:
@@ -1061,6 +1072,7 @@ export const PORTFOLIO: PortfolioEntry[] = [
     cover: {
       file: 'fifofun-sampul.v2.webp',
       alt: 'Papan FiFoFun: ringkasan keuangan di laptop dan ponsel, dengan celengan, kalkulator, dan rumah kecil',
+      focalX: 1,
     },
     summary: {
       problem:
@@ -1142,6 +1154,7 @@ export const PORTFOLIO: PortfolioEntry[] = [
     cover: {
       file: 'ridedeck-sampul.v2.webp',
       alt: 'Papan RideDeck: kokpit dan dasbor di dua ponsel, dengan helm, kompas, dan jeriken',
+      focalX: 1,
     },
     summary: {
       problem:
