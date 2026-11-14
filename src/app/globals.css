@@ -138,12 +138,6 @@
     [data-marquee] .marquee-track[aria-hidden] { display: none; }
   }
 
-  /* Octagon spinner (loading states) */
-  @keyframes octagonSpin {
-    to { transform: rotate(360deg); }
-  }
-  .animate-octagon-spin { animation: octagonSpin 1200ms linear infinite; transform-origin: center; }
-
   /* Hero watermark slow rotation */
   @keyframes octagonDrift {
     to { transform: rotate(45deg); }
@@ -177,7 +171,7 @@
   @media (prefers-reduced-motion: reduce) {
     .animate-pulse-dot, .animate-hero-in, .animate-draw-line,
     .animate-live-blink, .animate-faq-in, .animate-marquee,
-    .animate-octagon-spin, .animate-octagon-drift, .animate-ops-row-in {
+    .animate-octagon-drift, .animate-ops-row-in {
       animation: none;
     }
     .reveal, .reveal-stagger > * { opacity: 1; transform: none; transition: none; }
