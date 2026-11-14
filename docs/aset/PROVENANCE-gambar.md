@@ -91,7 +91,12 @@ jendela browser di belakangnya, dan ponsel bila produknya punya versi mobile. As
 - Rekaman situs live 14 Nov 2026 dengan Chrome headless, desktop 1440×900 dan ponsel 390×844 @2x:
   theglobal-review.com (beranda, Geopolitik, artikel), chickenwow.id (beranda, menu, lokasi,
   kemitraan), akarkita.vercel.app (beranda, warisan). Izin klien: IZN-2026-001, IZN-2026-002.
-- LocaScore tetap satu layar: layar lain hanya bisa direkam setelah login.
+- LocaScore (`locascore-sampul.v4.webp`): direkam 14 Nov 2026 dari LocaScore yang dijalankan lokal
+  dengan `MOCK_MODE=true` (data tiruan bawaan aplikasi) dan akun uji lokal: sembilan calon lokasi
+  bernama "Kandidat A–I" di area publik Bandung dan Yogyakarta, dua survei contoh. Halaman detail
+  direkam dalam posisi digulir ke bagian Kesimpulan, jadi banner "Mock mode aktif" tidak tampil;
+  label "Data mock" di halaman itu tetap asli. Produksi tidak dipakai karena berisi rencana ekspansi
+  klien.
 - RideDeck (`ridedeck-sampul.v4.webp`): ponsel `ridedeck-musik.v1` (pemutar media), `ridedeck-kokpit.v1`,
   `ridedeck-tangki.v2`; kartu peta adalah potongan widget PETA dari `ridedeck-dasbor.v1` (x 32–748,
   y 1205–1339) yang diperbesar 2x. Dasbor penuh tidak dipakai karena bagian atasnya peringatan
