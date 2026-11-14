@@ -479,8 +479,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
       'Situs untuk jaringan gerai Chicken Wow (Masaya Food), dengan menu dan daftar gerai yang dibaca dari berkas data dan halaman link-in-bio milik sendiri. Aset dipangkas dari 20,3 MB menjadi 9,4 MB.',
     // Situs produksi, 14 Okt 2026.
     cover: {
-      file: 'chicken-wow-sampul.v4.webp',
-      alt: 'Papan Chicken Wow: Situs waralaba ayam geprek, dari menu sampai gerai terdekat, untuk pelanggan dan calon mitra. Beranda, menu, dan lokasi gerai di jendela, menu di ponsel, dengan paha ayam',
+      file: 'chicken-wow-sampul.v5.webp',
+      alt: 'Papan Chicken Wow: Situs jaringan ayam geprek, dari menu sampai gerai terdekat, untuk pelanggan dan calon mitra. Beranda, menu, dan lokasi gerai di jendela, menu di ponsel, dengan paha ayam',
       focalX: 1,
     },
     // The bespoke page reads the real screen from here; the cover is the card photo.
