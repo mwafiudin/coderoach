@@ -168,10 +168,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
       'Menjembatani SPV dan Accounting di operasi F&B multi-cabang: tutup shift dari ponsel crew, serah terima kas sampai setoran bank, dan jurnal double-entry sampai tutup buku.',
     // From the demo database. The earlier cover showed a live outlet's sales and the production URL.
     cover: {
-      file: 'laporta-setoran.v2.webp',
-      alt: 'Laporta, halaman Setoran Tunai: uang yang sudah masuk bank, setoran yang perlu diperiksa, dan pembanding per rekening',
-      focalX: 30,
-      focalY: 0,
+      file: 'laporta-sampul.v1.webp',
+      alt: 'Ilustrasi: crew outlet memegang ponsel berisi daftar tutup shift Laporta di depan laci kas yang terbuka, kafe sudah tutup',
     },
     metrics: LAPORTA_METRICS,
     summary: {
@@ -336,10 +334,14 @@ export const PORTFOLIO: PortfolioEntry[] = [
       'Tempel satu link Google Maps, dapatkan skor kelayakan lokasi beserta alasannya. Kompetitor, demografi, dan kepadatan jalan dikumpulkan otomatis, lalu dikalibrasi dengan performa outlet yang sudah berjalan.',
     // Database demo dengan data Places tiruan (MOCK_MODE); nama outlet fiktif.
     cover: {
-      file: 'locascore-kelayakan.v1.webp',
-      alt: 'LocaScore, kesimpulan kelayakan satu calon lokasi dengan data contoh: skor 82 dari 100, rekomendasi GO, dan skor per faktor',
-      focalX: 1,
-      focalY: 1,
+      file: 'locascore-sampul.v1.webp',
+      alt: 'Ilustrasi: surveyor membuka kesimpulan kelayakan LocaScore di laptop, di seberang deretan ruko yang tutup',
+    },
+    // The bespoke page reads the real screen from here; the cover is the card photo.
+    showcase: {
+      frame: 'browser',
+      screen: { file: 'locascore-kelayakan.v1.webp', alt: 'LocaScore, kesimpulan kelayakan satu calon lokasi dengan data contoh: skor 82 dari 100, rekomendasi GO, dan skor per faktor' },
+      consent: 'studio',
     },
     studio: {
       vizType: 'none',
@@ -388,10 +390,14 @@ export const PORTFOLIO: PortfolioEntry[] = [
       'Situs baru untuk kanal analisis geopolitik milik Global Future Institute. Redaksi tetap bekerja di wp-admin; pembaca mendapat situs dua bahasa, dan redaksi mendapat halaman statistiknya sendiri.',
     // Situs produksi, 14 Okt 2026. Nama penulis di byline adalah byline terbit, bukan data pribadi.
     cover: {
-      file: 'the-global-review-beranda.v1.webp',
-      alt: 'Beranda The Global Review: isu utama dengan judul besar, kolom Sorotan, dan menu rubrik dua bahasa',
-      focalX: 1,
-      focalY: 1,
+      file: 'the-global-review-sampul.v1.webp',
+      alt: 'Ilustrasi: pembaca membuka artikel The Global Review di laptop, di meja baca dekat jendela dan rak buku',
+    },
+    // The bespoke page reads the real screen from here; the cover is the card photo.
+    showcase: {
+      frame: 'browser',
+      screen: { file: 'the-global-review-beranda.v1.webp', alt: 'Beranda The Global Review: isu utama dengan judul besar, kolom Sorotan, dan menu rubrik dua bahasa' },
+      consent: 'IZN-2026-002',
     },
     summary: {
       problem:
@@ -470,10 +476,14 @@ export const PORTFOLIO: PortfolioEntry[] = [
       'Situs untuk jaringan gerai Chicken Wow (Masaya Food), dengan menu dan daftar gerai yang dibaca dari berkas data dan halaman link-in-bio milik sendiri. Aset dipangkas dari 20,3 MB menjadi 9,4 MB.',
     // Situs produksi, 14 Okt 2026.
     cover: {
-      file: 'chicken-wow-beranda.v1.webp',
-      alt: 'Beranda Chicken Wow: judul Wow Sambelnya, Wow Rasanya, harga mulai 10 ribu, tombol GoFood dan ShopeeFood, dan foto paket nasi ayam geprek',
-      focalX: 1,
-      focalY: 50,
+      file: 'chicken-wow-sampul.v1.webp',
+      alt: 'Ilustrasi: manajer gerai membuka beranda situs Chicken Wow di laptop, di meja stainless dapur gerai',
+    },
+    // The bespoke page reads the real screen from here; the cover is the card photo.
+    showcase: {
+      frame: 'browser',
+      screen: { file: 'chicken-wow-beranda.v1.webp', alt: 'Beranda Chicken Wow: judul Wow Sambelnya, Wow Rasanya, harga mulai 10 ribu, tombol GoFood dan ShopeeFood, dan foto paket nasi ayam geprek' },
+      consent: 'IZN-2026-001',
     },
     summary: {
       problem:
@@ -510,10 +520,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
     excerpt:
       'Alat internal yang menjalankan studio dua orang: klien, penawaran, proyek dan story, jam kerja, invoice, kas, dan pembukuan double-entry yang dijaga database, ditambah server MCP supaya Claude Code membaca status story dari sumbernya.',
     cover: {
-      file: 'coderoach-os-beranda.v2.webp',
-      alt: 'Coderoach OS, Beranda: saldo kas, piutang, pendapatan dan laba bulan berjalan, tugas, dan proyek berjalan',
-      focalX: 1,
-      focalY: 1,
+      file: 'coderoach-os-sampul.v1.webp',
+      alt: 'Ilustrasi: beranda Coderoach OS di laptop, di meja kerja studio kecil sore hari',
     },
     summary: {
       problem:
@@ -593,10 +601,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
     excerpt:
       'Platform agensi untuk menjalankan campaign influencer: shortlist KOL, persetujuan brand per fase, draft dan verifikasi unggahan, pembayaran termin, sampai laporan hasil yang tidak perlu disusun ulang.',
     cover: {
-      file: 'viralytics-campaign-board.v1.webp',
-      alt: 'Daftar campaign Viralytics: ringkasan campaign aktif, budget, slot, dan views di atas tabel campaign',
-      focalX: 50,
-      focalY: 15,
+      file: 'viralytics-sampul.v1.webp',
+      alt: 'Ilustrasi: papan campaign Viralytics di laptop, di meja agensi dengan ring light dan catatan tempel',
     },
     studio: {
       vizType: 'none',
@@ -686,10 +692,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
     excerpt:
       'SaaS milik studio yang setiap jam menarik data jaringan distributor dari back office, lalu menjawab empat pertanyaan mingguan mereka lewat dashboard, email, kalender, dan push di ponsel.',
     cover: {
-      file: 'rencana-ro-dashboard.v2.webp',
-      alt: 'Beranda Rencana RO dengan empat kartu jawaban: bonus cair, saran pembelian, posisi untuk member baru, dan tiga repeat order prioritas dalam tiga hari ke depan',
-      focalX: 50,
-      focalY: 15,
+      file: 'rencana-ro-sampul.v1.webp',
+      alt: 'Ilustrasi: distributor memegang ponsel berisi beranda Rencana RO di lorong gudang penuh kardus',
     },
     studio: {
       vizType: 'none',
@@ -792,10 +796,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
     publishedYear: '2026',
     pills: ['NEXT.JS', 'CANVAS', 'PWA', 'POSTGRES'],
     cover: {
-      file: 'akarkita-pohon.v1.webp',
-      alt: 'AkarKita: pohon keluarga contoh di canvas, dari leluhur sampai cicit, dengan satu orang yang difokus',
-      focalX: 30,
-      focalY: 70,
+      file: 'akarkita-sampul.v1.webp',
+      alt: 'Ilustrasi: pohon keluarga AkarKita di ponsel, di meja makan bersama album foto keluarga lama',
     },
     excerpt:
       'Silsilah keluarga besar di canvas sendiri, kalkulator kekerabatan menurut adat Sunda dan Minang, dan simulator faraid dengan pecahan eksak. Proyek lab yang dipakai sungguhan oleh satu keluarga.',
@@ -844,10 +846,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
     excerpt:
       'Aplikasi thought record CBT yang dibangun bersama seorang psikolog: klien mencatat saat perasaan berubah, bahkan tanpa internet, lalu membagikan tautan baca-saja kepada psikolognya.',
     cover: {
-      file: 'jeda-tabel-psikolog.v1.webp',
-      alt: 'Tampilan psikolog di laptop: tabel catatan klien dengan bagian Baru sejak terakhir dibuka',
-      focalX: 50,
-      focalY: 20,
+      file: 'jeda-sampul.v1.webp',
+      alt: 'Ilustrasi: catatan cepat Jeda di ponsel, dipegang di kursi dekat jendela pada pagi hari',
     },
     summary: {
       problem:
@@ -925,10 +925,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
     excerpt:
       'Mesin yang menjalankan aturan trading milik mitra dengan disiplin: tiap keputusan tercatat, setiap posisi punya penjaga, dan semuanya bisa dihentikan dengan satu ketukan.',
     cover: {
-      file: 'd-day-keadaan.v1.webp',
-      alt: 'Dashboard d-day halaman Keadaan: status engine, tombol hentikan semua order, dan tabel engine simulasi',
-      focalX: 50,
-      focalY: 10,
+      file: 'd-day-sampul.v1.webp',
+      alt: 'Ilustrasi: layar Keadaan d-day di laptop, di meja rumah yang rapi pada siang hari',
     },
     summary: {
       problem:
@@ -999,10 +997,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
     excerpt:
       'Aplikasi Android untuk mengendalikan action cam keluaran 2016 saat touring motor, setelah aplikasi resminya ditarik dan tidak bisa lagi dipasang di Android 15.',
     cover: {
-      file: 'yiheecam-protokol.v1.webp',
-      alt: 'Diagram urutan pesan JSON antara klien uji dan kamera tiruan: mulai sesi, nyalakan live view, mulai dan hentikan rekam',
-      focalX: 50,
-      focalY: 50,
+      file: 'yiheecam-sampul.v1.webp',
+      alt: 'Ilustrasi: pengendara motor memegang ponsel berisi tampilan langsung YiheeCam di tepi jalan pegunungan',
     },
     summary: {
       problem:
@@ -1063,10 +1059,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
     excerpt:
       'Membaca e-Statement bank, mencocokkan setiap baris dengan saldo cetakan bank sampai ke sen, lalu menjadikannya patokan untuk anggaran, dana, dan ringkasan tiga bulan.',
     cover: {
-      file: 'fifofun-ringkasan.v1.webp',
-      alt: 'Halaman Ringkasan FiFoFun: kartu pemasukan, pengeluaran, tagihan, dan uang bisa dipakai di atas grafik air terjun',
-      focalX: 50,
-      focalY: 20,
+      file: 'fifofun-sampul.v1.webp',
+      alt: 'Ilustrasi: ringkasan FiFoFun di ponsel, di meja makan bersama kalkulator dan map tagihan',
     },
     summary: {
       problem:
@@ -1146,10 +1140,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
     excerpt:
       'Launcher Android untuk HP di dudukan stang: navigasi, musik, telepon, dan app touring dalam satu dasbor instrumen, dengan tombol pulang yang selalu ada.',
     cover: {
-      file: 'ridedeck-tangki.v2.webp',
-      alt: 'Dasbor RideDeck: dial lean, ketinggian, kartu tangki bensin dengan liter, persen, km lagi, dan km per liter, lalu cuaca dan suhu',
-      focalX: 50,
-      focalY: 45,
+      file: 'ridedeck-sampul.v1.webp',
+      alt: 'Ilustrasi: dasbor RideDeck di ponsel yang terpasang di stang motor, di tepi jalan pegunungan',
     },
     summary: {
       problem:

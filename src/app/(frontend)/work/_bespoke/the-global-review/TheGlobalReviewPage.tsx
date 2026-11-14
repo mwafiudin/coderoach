@@ -59,7 +59,7 @@ export async function TheGlobalReviewPage({ project }: { project: Project }) {
   const rootId = `story-${project.slug}`;
   const links = await linkViews(project.links ?? []);
   const metrics = project.metrics ?? [];
-  const cover = asMedia(project.coverImage);
+  const cover = asMedia(project.showcase?.screen) ?? asMedia(project.coverImage);
   const eyebrow = [KIND_LABELS[project.kind], industryLabel(project.industry), project.publishedYear].filter(Boolean);
   const summary = [
     ['Masalah', project.summary?.problem],
