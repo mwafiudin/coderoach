@@ -11,6 +11,7 @@ import { StoryEnhancer } from '../../_story/StoryEnhancer';
 import { TourChapter } from '../../_story/TourChapter';
 import { nunitoBody, poppins } from '../fonts';
 import './chicken-wow.css';
+import { FeatureCatalog } from '../../_story/FeatureCatalog';
 
 /**
  * Labels on the glass. The new ones are lines chickenwow.id itself carries (screenshots of
@@ -181,14 +182,13 @@ export async function ChickenWowPage({ project }: { project: Project }) {
             Yang dikerjakan di dapurnya.
           </h2>
           <ul className="m-0 p-0 list-none cw-facts">
-            <li>Halaman Menu, Kemitraan, Lokasi, dan Karier yang dulu berujung 404 kini ada, dan semuanya membaca berkas data.</li>
-            <li>38 gambar dikonversi ke WebP, sehingga aset turun dari 20,3 MB menjadi 9,4 MB.</li>
             <li>Panel Laravel dan Filament dibangun multi-tenant: satu aplikasi untuk beberapa klien, tiap situs batas tenantnya.</li>
             <li>Deploy lewat Git di cPanel, setelah FTP ternyata diblokir firewall penyedia hosting. CI menguji tiga kali deploy berturut-turut sebelum server menarik rilis.</li>
           </ul>
         </div>
       </section>
 
+      <FeatureCatalog slug={project.slug ?? ''} client={project.client} />
       <TourChapter project={project} />
       <Sources metrics={metrics} demoNote={project.showcase?.demoNote} />
       <StoryEnhancer rootId={rootId} />

@@ -2,15 +2,14 @@ import type { Project } from '@/payload-types';
 import { industryLabel, KIND_LABELS } from '@/lib/portfolio/taxonomy';
 import { Breadcrumbs } from '../../../_components/detail/Breadcrumbs';
 import { Meta } from '../../../_components/ui/Meta';
-import { DeviceFrame } from '../../_story/DeviceFrame';
 import { LinkChips } from '../../_story/LinkChips';
-import { asMedia, MediaImg } from '../../_story/MediaImg';
 import { linkViews } from '../../_story/ProjectStory';
 import { Sources } from '../../_story/Sources';
 import { StoryEnhancer } from '../../_story/StoryEnhancer';
 import { TourChapter } from '../../_story/TourChapter';
 import { plexSans } from '../fonts';
 import './fifofun.css';
+import { FeatureCatalog } from '../../_story/FeatureCatalog';
 
 /** The four checks reconcile() runs on every import (src/lib/statement in the FiFoFun repo). */
 const CHECKS = [
@@ -20,11 +19,6 @@ const CHECKS = [
   'Rantai saldo per baris: tiap baris diperiksa terhadap saldo yang dicetak bank pada baris sebelumnya, jadi satu baris yang hilang hanya memutus satu titik, dan satu saldo yang salah terbaca memutus dua.',
 ];
 
-/**
- * Screens that show the bank's name are left out here (docs/konsep/fifofun.md, GK correction 1);
- * only these show.
- */
-const CLEAN_SCREENS = ['fifofun-anggaran', 'fifofun-ringkasan-3-bulan'];
 
 /**
  * FiFoFun's own page (ADR 0013), concept "Posisi pasti" (docs/konsep/fifofun.md): your own notes
@@ -37,10 +31,6 @@ export async function FiFoFunPage({ project }: { project: Project }) {
   const rootId = `story-${project.slug}`;
   const links = await linkViews(project.links ?? []);
   const metrics = project.metrics ?? [];
-  const features = (project.features ?? []).filter((f) => {
-    const shot = asMedia(f.screen);
-    return shot && CLEAN_SCREENS.some((name) => shot.filename?.startsWith(name));
-  });
   const eyebrow = [KIND_LABELS[project.kind], industryLabel(project.industry), project.publishedYear].filter(Boolean);
   const summary = [
     ['Masalah', project.summary?.problem],
@@ -168,31 +158,10 @@ export async function FiFoFunPage({ project }: { project: Project }) {
             </div>
           </div>
 
-          {features.length > 0 && (
-            <ol className="m-0 mt-16 p-0 list-none">
-              {features.map((f, i) => {
-                const shot = asMedia(f.screen);
-                return (
-                  <li key={f.id ?? i} className="ff-feature" data-scene="enter">
-                    <div>
-                      <h3 className="m-0 text-[clamp(22px,2.4vw,28px)] font-semibold tracking-[-0.02em] leading-[1.2] text-balance">{f.title}</h3>
-                      {f.body && <p className="m-0 mt-3 max-w-[52ch] text-[17px] leading-[1.6] ff-muted text-pretty">{f.body}</p>}
-                    </div>
-                    {shot && (
-                      <figure className="m-0 ff-feature__shot">
-                        <DeviceFrame kind="browser">
-                          <MediaImg media={shot} sizes="(min-width: 1024px) 640px, 92vw" />
-                        </DeviceFrame>
-                      </figure>
-                    )}
-                  </li>
-                );
-              })}
-            </ol>
-          )}
         </div>
       </section>
 
+      <FeatureCatalog slug={project.slug ?? ''} client={project.client} />
       <TourChapter project={project} />
       <Sources metrics={metrics} demoNote={project.showcase?.demoNote} />
       <StoryEnhancer rootId={rootId} />

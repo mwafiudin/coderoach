@@ -2,14 +2,13 @@ import type { Project } from '@/payload-types';
 import { industryLabel, KIND_LABELS } from '@/lib/portfolio/taxonomy';
 import { Breadcrumbs } from '../../../_components/detail/Breadcrumbs';
 import { Meta } from '../../../_components/ui/Meta';
-import { DeviceFrame } from '../../_story/DeviceFrame';
 import { LinkChips } from '../../_story/LinkChips';
-import { asMedia, MediaImg } from '../../_story/MediaImg';
 import { linkViews } from '../../_story/ProjectStory';
 import { Sources } from '../../_story/Sources';
 import { StoryEnhancer } from '../../_story/StoryEnhancer';
 import { TourChapter } from '../../_story/TourChapter';
 import './coderoach-os.css';
+import { FeatureCatalog } from '../../_story/FeatureCatalog';
 
 /**
  * Sample numbers. The error line copies the format of the balance trigger in coderoach-app
@@ -43,7 +42,6 @@ export async function CoderoachOsPage({ project }: { project: Project }) {
   const rootId = `story-${project.slug}`;
   const links = await linkViews(project.links ?? []);
   const metrics = project.metrics ?? [];
-  const features = project.features ?? [];
   const eyebrow = [KIND_LABELS[project.kind], industryLabel(project.industry), project.publishedYear].filter(Boolean);
   const summary = [
     ['Masalah', project.summary?.problem],
@@ -171,32 +169,10 @@ export async function CoderoachOsPage({ project }: { project: Project }) {
           </ol>
           <p className="m-0 mt-4 text-[13px] text-mist-600">Kode contoh. Setiap jam kerja langsung menjadi biaya proyek, dan margin dihitung ulang setiap jurnal diposting.</p>
 
-          {features.length > 0 && (
-            <ol className="m-0 mt-16 p-0 list-none">
-              {features.map((f, i) => {
-                const shot = asMedia(f.screen);
-                return (
-                  <li key={f.id ?? i} className="os-feature" data-scene="enter">
-                    <p aria-hidden className="os-feature__no">[ {pad(i + 1)} ]</p>
-                    <div>
-                      <h3 className="m-0 text-[clamp(22px,2.4vw,30px)] font-bold tracking-[-0.02em] leading-[1.2] text-balance">{f.title}</h3>
-                      {f.body && <p className="m-0 mt-3 max-w-[56ch] text-[17px] leading-[1.6] text-ink/75 text-pretty">{f.body}</p>}
-                    </div>
-                    {shot && (
-                      <figure className="m-0 os-feature__shot">
-                        <DeviceFrame kind="browser">
-                          <MediaImg media={shot} sizes="(min-width: 1024px) 760px, 92vw" />
-                        </DeviceFrame>
-                      </figure>
-                    )}
-                  </li>
-                );
-              })}
-            </ol>
-          )}
         </div>
       </section>
 
+      <FeatureCatalog slug={project.slug ?? ''} client={project.client} />
       <TourChapter project={project} />
       <Sources metrics={metrics} demoNote={project.showcase?.demoNote} />
       <StoryEnhancer rootId={rootId} />

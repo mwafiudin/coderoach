@@ -2,14 +2,13 @@ import type { Project } from '@/payload-types';
 import { industryLabel, KIND_LABELS } from '@/lib/portfolio/taxonomy';
 import { Breadcrumbs } from '../../../_components/detail/Breadcrumbs';
 import { Meta } from '../../../_components/ui/Meta';
-import { DeviceFrame } from '../../_story/DeviceFrame';
 import { LinkChips } from '../../_story/LinkChips';
-import { asMedia, MediaImg } from '../../_story/MediaImg';
 import { linkViews } from '../../_story/ProjectStory';
 import { Sources } from '../../_story/Sources';
 import { StoryEnhancer } from '../../_story/StoryEnhancer';
 import { TourChapter } from '../../_story/TourChapter';
 import './rencana-ro.css';
+import { FeatureCatalog } from '../../_story/FeatureCatalog';
 
 /**
  * The four answers as the recorded phone home screen gives them (rencana-ro-dashboard-ponsel.v2, a
@@ -30,11 +29,6 @@ const LEGS: Array<{ leg: 'kiri' | 'kanan'; now: number; add: number }> = [
 ];
 const MAX = Math.max(...LEGS.map((l) => l.now + l.add));
 
-/**
- * Screens whose recordings still carry the principal's own terms are left out of this page; only
- * these show (docs/konsep/rencana-ro.md, GK correction 3).
- */
-const CLEAN_SCREENS = ['rencana-ro-kalender', 'rencana-ro-riwayat-run'];
 
 /**
  * Rencana RO's own page (ADR 0013), concept "Sebelum tutup mingguan" (docs/konsep/rencana-ro.md):
@@ -47,10 +41,6 @@ export async function RencanaRoPage({ project }: { project: Project }) {
   const rootId = `story-${project.slug}`;
   const links = await linkViews(project.links ?? []);
   const metrics = project.metrics ?? [];
-  const features = (project.features ?? []).filter((f) => {
-    const shot = asMedia(f.screen);
-    return shot && CLEAN_SCREENS.some((name) => shot.filename?.startsWith(name));
-  });
   const eyebrow = [KIND_LABELS[project.kind], industryLabel(project.industry), project.publishedYear].filter(Boolean);
   const summary = [
     ['Masalah', project.summary?.problem],
@@ -166,31 +156,10 @@ export async function RencanaRoPage({ project }: { project: Project }) {
           </dl>
           <p className="m-0 mt-4 text-[17px] ro-muted">Dari rekaman beranda ponsel, jaringan fiktif.</p>
 
-          {features.length > 0 && (
-            <ol className="m-0 mt-16 p-0 list-none">
-              {features.map((f, i) => {
-                const shot = asMedia(f.screen);
-                return (
-                  <li key={f.id ?? i} className="ro-feature" data-scene="enter">
-                    <div>
-                      <h3 className="m-0 text-[clamp(22px,2.4vw,28px)] font-bold tracking-[-0.02em] leading-[1.2] text-balance">{f.title}</h3>
-                      {f.body && <p className="m-0 mt-3 max-w-[52ch] text-[17px] leading-[1.6] ro-muted text-pretty">{f.body}</p>}
-                    </div>
-                    {shot && (
-                      <figure className="m-0 ro-feature__shot">
-                        <DeviceFrame kind="browser">
-                          <MediaImg media={shot} sizes="(min-width: 1024px) 640px, 92vw" />
-                        </DeviceFrame>
-                      </figure>
-                    )}
-                  </li>
-                );
-              })}
-            </ol>
-          )}
         </div>
       </section>
 
+      <FeatureCatalog slug={project.slug ?? ''} client={project.client} />
       <TourChapter project={project} />
       <Sources metrics={metrics} demoNote={project.showcase?.demoNote} />
       <StoryEnhancer rootId={rootId} />

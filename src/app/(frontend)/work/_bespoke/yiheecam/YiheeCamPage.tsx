@@ -9,6 +9,7 @@ import { Sources } from '../../_story/Sources';
 import { StoryEnhancer } from '../../_story/StoryEnhancer';
 import { barlowCondensed } from '../fonts';
 import './yiheecam.css';
+import { FeatureCatalog } from '../../_story/FeatureCatalog';
 
 /**
  * The board in the scene. Each word is shown first as the ASCII bytes of its own letters, so the
@@ -69,7 +70,6 @@ function Flap({ front, back, t }: { front: string; back: string; t: number }) {
 export async function YiheeCamPage({ project }: { project: Project }) {
   const rootId = `story-${project.slug}`;
   const links = await linkViews(project.links ?? []);
-  const features = project.features ?? [];
   const screen = asMedia(project.showcase?.screen);
   const eyebrow = [KIND_LABELS[project.kind], industryLabel(project.industry), project.publishedYear].filter(Boolean);
   const summary = [
@@ -177,35 +177,7 @@ export async function YiheeCamPage({ project }: { project: Project }) {
         </div>
       </section>
 
-      {features.length > 0 && (
-        <section aria-labelledby="fitur-judul" className="py-[clamp(72px,9vw,120px)]">
-          <div className="max-w-[1180px] mx-auto px-5 sm:px-8">
-            <h2 id="fitur-judul" className="m-0 yc-display text-[clamp(34px,5vw,60px)] leading-[1]">
-              Di dalam {project.client}.
-            </h2>
-            <div className="mt-12">
-              {features.map((f, i) => {
-                const shot = asMedia(f.screen);
-                return (
-                  <article key={f.id ?? i} className={`yc-feature ${i % 2 ? 'yc-feature--flip' : ''}`} data-scene="enter">
-                    <div>
-                      <p className="m-0 yc-label">{String(i + 1).padStart(2, '0')}</p>
-                      <h3 className="m-0 mt-2 yc-display text-[clamp(26px,2.8vw,36px)] leading-[1.05] text-balance">{f.title}</h3>
-                      {f.body && <p className="m-0 mt-3 max-w-[48ch] text-[17px] leading-[1.6] text-ink/75 text-pretty">{f.body}</p>}
-                    </div>
-                    {shot && (
-                      <figure className="m-0 yc-phone yc-feature__shot">
-                        <Shot media={shot} />
-                      </figure>
-                    )}
-                  </article>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-      )}
-
+      <FeatureCatalog slug={project.slug ?? ''} client={project.client} />
       <Sources metrics={project.metrics ?? []} demoNote={project.showcase?.demoNote} />
       <StoryEnhancer rootId={rootId} />
     </main>

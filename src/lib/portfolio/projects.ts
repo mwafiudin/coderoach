@@ -332,7 +332,7 @@ export const PORTFOLIO: PortfolioEntry[] = [
     publishedYear: '2026',
     pills: ['NEXT.JS', 'PRISMA', 'GOOGLE PLACES', 'OSM'],
     excerpt:
-      'Tempel satu link Google Maps, dapatkan skor kelayakan lokasi beserta alasannya. Kompetitor, demografi, dan kepadatan jalan dikumpulkan otomatis, lalu dikalibrasi dengan performa outlet yang sudah berjalan.',
+      'Tempel satu link Google Maps, dapatkan skor kelayakan lokasi beserta alasannya. Kompetitor, demografi, dan kepadatan jalan dikumpulkan otomatis, jadi rapat buka cabang dimulai dari data.',
     // Database demo dengan data Places tiruan (MOCK_MODE); nama outlet fiktif.
     cover: {
       file: 'locascore-sampul.v5.webp',
@@ -352,7 +352,7 @@ export const PORTFOLIO: PortfolioEntry[] = [
       bullets: [
         'Auto-collect 14 kategori titik sekitar',
         'Traffic dari hierarki jalan OSM',
-        'Skor dikalibrasi dari outlet berjalan',
+        'Proyeksi omset tiga skenario',
         'Laporan PDF dan share link publik',
       ],
     },
@@ -362,7 +362,7 @@ export const PORTFOLIO: PortfolioEntry[] = [
       solution:
         'Tempel satu link Google Maps: kompetitor, fasilitas sekitar, demografi kelurahan, dan arus jalan dikumpulkan otomatis, bisa dikoreksi surveyor, lalu dinilai jadi rekomendasi GO atau NO-GO.',
       result:
-        'Skor yang bisa dijelaskan alasannya, dikalibrasi dari performa outlet yang sudah berjalan, dan keluar sebagai laporan PDF serta tautan yang bisa dibagikan ke investor.',
+        'Skor yang bisa dijelaskan alasannya, sebagai bahan diskusi rapat, dan keluar sebagai laporan PDF serta tautan yang bisa dibagikan ke investor.',
     },
     body: [
       { h2: 'Keputusan mahal yang diambil cepat' },
@@ -371,9 +371,9 @@ export const PORTFOLIO: PortfolioEntry[] = [
       'Surveyor menempelkan satu link Google Maps. Dari koordinat itu, LocaScore mengumpulkan empat belas kategori titik di sekitarnya (kompetitor beserta ratingnya, modern market, bank, sekolah, fasilitas kesehatan, fasilitas publik) lalu melakukan reverse geocoding sampai tingkat kelurahan untuk menarik angka demografi.',
       'Traffic tidak ditebak dari "ramai atau tidak", tetapi diturunkan dari kecepatan arus bebas dan hierarki jalan OpenStreetMap di sekitar titik. Setiap titik dibobot per unit, bukan sekadar dihitung jumlahnya.',
       'Semua hasil tarikan itu boleh diubah surveyor sebelum skor dikunci, karena data otomatis adalah titik awal, bukan putusan. Skor bergerak setiap kali field diubah, dan berakhir pada satu rekomendasi GO atau NO-GO.',
-      { h2: 'Belajar dari jaringan yang memakainya' },
-      'Bobot skornya dikalibrasi terhadap outlet yang sudah berjalan. Masukkan performa aktualnya, dan seluruh lokasi yang pernah dinilai dihitung ulang.',
-      'Hasil akhirnya keluar sebagai laporan PDF untuk investor dan tautan publik yang bisa dibagikan tanpa membuat akun. Karena setiap panggilan ke Google Places ada biayanya (sekitar $1,35 per lokasi), pemakaiannya dipantau di halaman tersendiri supaya tagihan tidak jadi kejutan.',
+      { h2: 'Bahan untuk rapat keputusan' },
+      'Setiap angka membawa alasannya, dan faktor yang mengangkat atau menyeret skor terlihat di halaman yang sama. Skornya disusun untuk dibahas di rapat, tidak untuk menggantikan rapatnya.',
+      'Hasil akhirnya keluar sebagai laporan PDF untuk investor dan tautan publik yang bisa dibagikan tanpa membuat akun. Karena setiap panggilan ke Google Places ada biayanya, pemakaiannya dipantau di halaman tersendiri supaya tagihan tidak jadi kejutan.',
     ],
   },
   {

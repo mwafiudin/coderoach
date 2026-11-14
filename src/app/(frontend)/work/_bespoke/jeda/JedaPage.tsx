@@ -12,6 +12,7 @@ import { TourChapter } from '../../_story/TourChapter';
 import { nunitoSans } from '../fonts';
 import { Suasana } from '../Suasana';
 import './jeda.css';
+import { FeatureCatalog } from '../../_story/FeatureCatalog';
 
 /** A made-up entry, the same kind the tour records: nobody's real note. */
 const NOTE = {
@@ -37,7 +38,6 @@ const STEPS = ['Klien mencatat, di mana saja', 'Catatan menyeberang begitu ada s
 export async function JedaPage({ project }: { project: Project }) {
   const rootId = `story-${project.slug}`;
   const links = await linkViews(project.links ?? []);
-  const features = project.features ?? [];
   const phone = asMedia(project.showcase?.screenPhone);
   const eyebrow = [KIND_LABELS[project.kind], industryLabel(project.industry), project.publishedYear].filter(Boolean);
   const summary = [
@@ -175,37 +175,7 @@ export async function JedaPage({ project }: { project: Project }) {
         </div>
       </section>
 
-      {features.length > 0 && (
-        <section aria-labelledby="fitur-judul" className="py-[clamp(72px,9vw,120px)]">
-          <div className="max-w-[1120px] mx-auto px-5 sm:px-8">
-            <h2 id="fitur-judul" className="m-0 text-[clamp(28px,3.6vw,44px)] font-semibold tracking-[-0.015em] leading-[1.2]">
-              Di dalam {project.client}.
-            </h2>
-            <div className="mt-12">
-              {features.map((f, i) => {
-                const shot = asMedia(f.screen);
-                const tall = Boolean(shot?.width && shot.height && shot.height > shot.width);
-                return (
-                  <article key={f.id ?? i} className={`jd-feature ${i % 2 ? 'jd-feature--flip' : ''}`} data-scene="enter">
-                    <div className="jd-feature__text">
-                      <h3 className="m-0 text-[clamp(22px,2.2vw,28px)] font-semibold leading-[1.3] text-balance">{f.title}</h3>
-                      {f.body && <p className="m-0 mt-3 max-w-[46ch] text-[17px] leading-[1.7] text-ink/75 text-pretty">{f.body}</p>}
-                    </div>
-                    {shot && (
-                      <figure className={`m-0 jd-feature__shot ${tall ? 'jd-feature__shot--tall' : ''}`}>
-                        <DeviceFrame kind={tall ? 'phone' : 'browser'}>
-                          <MediaImg media={shot} sizes={tall ? '260px' : '(min-width: 1024px) 560px, 92vw'} />
-                        </DeviceFrame>
-                      </figure>
-                    )}
-                  </article>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-      )}
-
+      <FeatureCatalog slug={project.slug ?? ''} client={project.client} />
       <TourChapter project={project} />
       <Sources metrics={project.metrics ?? []} demoNote={project.showcase?.demoNote} />
       <StoryEnhancer rootId={rootId} />

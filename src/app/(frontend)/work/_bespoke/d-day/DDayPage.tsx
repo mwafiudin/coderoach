@@ -4,14 +4,13 @@ import type { Project } from '@/payload-types';
 import { industryLabel, KIND_LABELS } from '@/lib/portfolio/taxonomy';
 import { Breadcrumbs } from '../../../_components/detail/Breadcrumbs';
 import { Meta } from '../../../_components/ui/Meta';
-import { DeviceFrame } from '../../_story/DeviceFrame';
 import { LinkChips } from '../../_story/LinkChips';
-import { asMedia, MediaImg } from '../../_story/MediaImg';
 import { linkViews } from '../../_story/ProjectStory';
 import { Sources } from '../../_story/Sources';
 import { StoryEnhancer } from '../../_story/StoryEnhancer';
 import { TourChapter } from '../../_story/TourChapter';
 import './d-day.css';
+import { FeatureCatalog } from '../../_story/FeatureCatalog';
 
 /**
  * The conditions Lanjutkan checks, in the order syaratLanjutkan() in the d-day repo checks them
@@ -41,7 +40,6 @@ export async function DDayPage({ project }: { project: Project }) {
   const rootId = `story-${project.slug}`;
   const links = await linkViews(project.links ?? []);
   const metrics = project.metrics ?? [];
-  const features = project.features ?? [];
   const eyebrow = [KIND_LABELS[project.kind], industryLabel(project.industry), project.publishedYear].filter(Boolean);
   const summary = [
     ['Masalah', project.summary?.problem],
@@ -152,37 +150,7 @@ export async function DDayPage({ project }: { project: Project }) {
         </div>
       </section>
 
-      {features.length > 0 && (
-        <section aria-labelledby="fitur-judul" className="py-[clamp(72px,9vw,120px)] dd-calm">
-          <div className="max-w-[1120px] mx-auto px-5 sm:px-8">
-            <h2 id="fitur-judul" className="m-0 text-[clamp(28px,4vw,46px)] font-bold tracking-[-0.03em] leading-[1.08]">
-              Di dalam {project.client}.
-            </h2>
-            <ol className="m-0 mt-12 p-0 list-none">
-              {features.map((f, i) => {
-                const shot = asMedia(f.screen);
-                return (
-                  <li key={f.id ?? i} className="dd-feature" data-scene="enter">
-                    <div>
-                      <h3 className="m-0 text-[clamp(22px,2.4vw,28px)] font-bold tracking-[-0.02em] leading-[1.2] text-balance">{f.title}</h3>
-                      {f.body && <p className="m-0 mt-3 max-w-[52ch] text-[17px] leading-[1.6] dd-muted text-pretty">{f.body}</p>}
-                    </div>
-                    {shot && (
-                      <figure className="m-0 dd-feature__shot">
-                        <DeviceFrame kind="browser">
-                          <MediaImg media={shot} sizes="(min-width: 1024px) 640px, 92vw" />
-                        </DeviceFrame>
-                        <figcaption className="mt-2 text-[13px] dd-muted">Tangkapan dalam tema terang aplikasinya. Data simulasi.</figcaption>
-                      </figure>
-                    )}
-                  </li>
-                );
-              })}
-            </ol>
-          </div>
-        </section>
-      )}
-
+      <FeatureCatalog slug={project.slug ?? ''} client={project.client} />
       <TourChapter project={project} />
       <Sources metrics={metrics} demoNote={project.showcase?.demoNote} />
       <StoryEnhancer rootId={rootId} />

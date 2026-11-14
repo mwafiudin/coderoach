@@ -12,6 +12,7 @@ import { StoryEnhancer } from '../../_story/StoryEnhancer';
 import { TourChapter } from '../../_story/TourChapter';
 import { nunito, ptSans } from '../fonts';
 import './locascore.css';
+import { FeatureCatalog } from '../../_story/FeatureCatalog';
 
 /**
  * Everything on the sheet comes from the cover screenshot (MOCK_MODE, outlet name made up), so the
@@ -275,24 +276,7 @@ export async function LocaScorePage({ project }: { project: Project }) {
         </section>
       )}
 
-      <section aria-labelledby="kalibrasi-judul" className="py-[clamp(72px,9vw,120px)] border-t border-paper-200 bg-paper-50">
-        <div className="max-w-[1180px] mx-auto px-5 sm:px-8 grid grid-cols-1 md:grid-cols-[1fr_1.2fr] gap-8 md:gap-16">
-          <h2 id="kalibrasi-judul" className="m-0 lc-display text-[clamp(28px,3.6vw,44px)] leading-[1.08] tracking-[-0.03em] text-balance">
-            Belajar dari outlet yang sudah berjalan.
-          </h2>
-          <div className="space-y-5 text-[17px] leading-[1.6] text-pretty">
-            <p className="m-0">
-              Bobot skornya dikalibrasi terhadap outlet yang sudah beroperasi. Masukkan performa aktualnya, dan seluruh
-              lokasi yang pernah dinilai dihitung ulang dengan bobot baru.
-            </p>
-            <p className="m-0 text-ink/75">
-              Hasilnya keluar sebagai laporan PDF untuk investor dan tautan publik yang bisa dibuka tanpa akun. Setiap
-              panggilan Google Places ada biayanya, jadi pemakaiannya dipantau di halaman sendiri.
-            </p>
-          </div>
-        </div>
-      </section>
-
+      <FeatureCatalog slug={project.slug ?? ''} client={project.client} />
       <TourChapter project={project} />
       <Sources metrics={metrics} demoNote={project.showcase?.demoNote} />
       <StoryEnhancer rootId={rootId} />
