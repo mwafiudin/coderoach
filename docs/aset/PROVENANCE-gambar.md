@@ -74,7 +74,40 @@ Prompt klip: motor diam [0-1s]; mulai dari hub roda depan terurai jadi partikel 
 mengalir melengkung [1-4s]; aliran terkumpul ke HP dan layarnya menyala amber [4-5.5s]; diam [5.5-6s];
 satu motor, satu HP, tanpa teks, logo, atau orang.
 
-## Sampul kartu /work, papan berlapis dengan ornamen (14 Nov 2026)
+## Sampul kartu /work, struktur B (14 Nov 2026)
+
+Tiga belas berkas `scripts/portfolio-assets/<slug>-sampul.v4.webp` atau `.v5.webp` (versi naik satu
+dari papan berlapis di bawah). Susunan mengikuti Uruzin OS: judul kategori, merek kecil, baris
+dukung, label pembaca, jendela UI datar, satu ornamen clay. Teks dirender dari HTML; layar adalah
+**tangkapan asli** dari rekaman ulang dengan data contoh di `_referensi/portofolio/_kerja/sampul-v5/`
+(README dan `gerbang.json` per produk: nama klien, nama orang, nama bank, dan handle diperiksa
+sebelum dipakai). Templat, bahan, dan 26 papan PNG (ID dan EN) di `_kerja/sampul-v5/papan/`;
+perakit `_alat/sampul/rakit-papan5.mts`. Ornamen sama dengan papan berlapis (Flow, Nano Banana).
+
+- Rekaman ulang lokal, data fiktif: Coderoach OS (DB `coderoach_os_demo`, repo fiktif
+  `studio-contoh/*`), Viralytics (handle berakhiran `.contoh`), Rencana RO (Supabase lokal, jaringan
+  distributor fiktif), AkarKita (`keluargaContoh`, sebutan Sunda), Jeda (`seed-contoh`), FiFoFun
+  (snapshot v5, "Bank Contoh"), LocaScore (lihat butir di bawah).
+- d-day: candle BTCUSDT 1 jam asli dari mirror data publik `data-api.binance.vision`; engine,
+  posisi, dan log fiktif. Layar kill switch di jendela belakang masih menyebut "Binance" dan
+  "testnet" sebagai nama bursa.
+- YiheeCam: emulator dengan kamera tiruan (`mock_camera.py`). Gambar kamera, pratinjau di layar
+  merekam, dan thumbnail galeri adalah **ilustrasi AI** helm-POV jalan kebun teh; alt menyebutnya.
+- RideDeck: dua ponsel dari emulator (AVD `pova6`, build debug x86_64), satu perjalanan contoh
+  Stasiun Tanjung Priok ke Kebun Raya Bogor dengan jam emulator 15 Nov 2026 10.00 dan tema Malam.
+  Rute dari Valhalla publik, cuaca sepanjang rute dan cuaca setempat dari Open-Meteo saat itu
+  (prakiraan asli untuk jam tersebut), kartu e-money dan bensin fiktif. Ponsel portrait memakai
+  susunan tanpa Cuaca dan Kartu e-money, dengan Tangki bensin (estimasi isi, km lagi, campuran
+  bensin) di atas peta. Di ponsel landscape, lencana merah "NFC tidak ada" (emulator tanpa NFC)
+  ditutup warna latar kartu; di HP ber-NFC lencana itu tidak tampil.
+  Kokpit (kompas dengan motor 3D) dan kartu musik adalah potongan `ridedeck-kokpit.v1` dan
+  `ridedeck-musik.v1` dari HP sungguhan, yang sudah tayang di halaman RideDeck; Filament 3D tidak
+  jalan di renderer emulator. Judul video di kartu musik milik kreator lain di YouTube, tanpa
+  thumbnail.
+- FiFoFun halaman detail: `fifofun-impor.v2` dan `fifofun-rekonsiliasi.v2` menggantikan v1 (v1
+  memuat nama bank sungguhan), dari rekaman v5 yang sama.
+
+## Sampul kartu /work, papan berlapis dengan ornamen (14 Nov 2026, diganti struktur B)
 
 Tiga belas berkas `scripts/portfolio-assets/<slug>-sampul.v3.webp`: papan presentasi seperti sampul
 Uruzin dan RPN OS. Ikon, nama, `tagline`, dan chip dirender dari HTML; layar laptop dan ponsel

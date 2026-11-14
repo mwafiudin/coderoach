@@ -1,8 +1,30 @@
 # Look-dev: sampul kartu portofolio /work
 
-Tanggal: 2026-11-14, direvisi hari yang sama.
+Tanggal: 2026-11-14, direvisi hari yang sama (struktur B, versi sampul v4/v5).
 
-## Keputusan
+## Struktur B (yang tayang sejak v4/v5)
+
+Keputusan Farrez 14 Nov 2026: papan mengikuti susunan Uruzin OS ("System Operations and Finance").
+Yang dibaca pertama adalah **apa produknya**, bukan nama mereknya.
+
+| Butir | Aturan |
+|---|---|
+| Ukuran | 1600×1000, webp q84 ≤300 KB; versi EN dirender dari templat yang sama untuk /en nanti |
+| Judul | kategori produk, Archivo 800 64 px huruf besar, maksimal 470 px (mengecil otomatis bila satu kata lebih lebar) |
+| Merek | ikon 42 px dan nama 34 px warna aksen, di atas judul |
+| Baris dukung | satu baris JetBrains Mono 19 px huruf besar, satu pembeda yang ada buktinya |
+| Label pembaca | kanan atas, mono 17 px, garis kiri, pembagian baris seimbang |
+| Grid | garis tipis y 250/760 dan x 440/1480 dengan tanda silang |
+| Layar | jendela UI datar dimiringkan (rotateY -13°), tanpa bingkai laptop; ponsel berbingkai tipis. App yang hanya ada di HP memakai susunan khusus (YiheeCam: gambar kamera dan dua ponsel; RideDeck: ponsel landscape dan portrait, kokpit, cuaca rute, dan musik diperbesar) |
+| Ornamen | **satu** benda clay di kiri bawah, dekat judul |
+| Teks | label tiap produk lewat prosedur kerajinan kalimat `bahasa-lisan`, 2–3 pilihan, Farrez memilih; klaim tanpa bukti diganti versi yang bisa dibuktikan |
+| Templat | `_referensi/portofolio/_kerja/sampul-v5/papan/papan5.html` (beserta bahan dan 26 papan PNG ID/EN), dirakit `_referensi/portofolio/_alat/sampul/rakit-papan5.mts` |
+
+Kartu katalog memotong papan: kartu pertama (feature) memakai rasio 3:2 atau tinggi bebas dengan
+`focalX: 1`, kartu terakhir kadang lebar 2:1. Judul di kiri bawah dan label kanan atas harus tetap
+terbaca di potongan itu.
+
+## Keputusan versi v3 (diganti struktur B)
 
 1. **Kartu depan: papan presentasi** seperti Uruzin OS dan RPN OS (keputusan Farrez, 14 Nov 2026,
    setelah 13 sampul foto balik bahu tayang: "agak aneh kalau semua tampilan di bagian depannya ...
