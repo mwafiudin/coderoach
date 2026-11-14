@@ -335,8 +335,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
       'Tempel satu link Google Maps, dapatkan skor kelayakan lokasi beserta alasannya. Kompetitor, demografi, dan kepadatan jalan dikumpulkan otomatis, lalu dikalibrasi dengan performa outlet yang sudah berjalan.',
     // Database demo dengan data Places tiruan (MOCK_MODE); nama outlet fiktif.
     cover: {
-      file: 'locascore-sampul.v3.webp',
-      alt: 'Papan LocaScore: kesimpulan kelayakan calon lokasi di laptop, dengan ruko, kaca pembesar, dan penanda peta',
+      file: 'locascore-sampul.v4.webp',
+      alt: 'Papan LocaScore dengan data contoh: kesimpulan kelayakan skor 82 GO dan radar faktor di laptop, dashboard dan daftar calon lokasi di jendela belakang, skor di ponsel, dengan ruko, kaca pembesar, dan penanda peta',
       focalX: 1,
     },
     // The bespoke page reads the real screen from here; the cover is the card photo.
