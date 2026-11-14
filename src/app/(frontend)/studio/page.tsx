@@ -9,7 +9,6 @@ import { Icon, type IconName } from '@/lib/icons';
 import { Badge } from '../_components/ui/Badge';
 import { Meta } from '../_components/ui/Meta';
 import { jakartaQuarter } from '@/lib/quarter';
-import { AnimatedCount } from '../_components/ui/AnimatedCount';
 import { PayloadImage } from '../_components/ui/PayloadImage';
 import { StudioTimeline } from '../_components/studio/StudioTimeline';
 
@@ -98,7 +97,7 @@ export default async function StudioPage() {
                     <div
                       className={`relative ${numSize} font-bold leading-[0.95] tracking-[-0.03em] tabular ${numColor}`}
                     >
-                      <AnimatedCount value={s.num} />
+                      {s.num}
                       {s.accent && <span className="text-electric">{s.accent}</span>}
                     </div>
                     <div

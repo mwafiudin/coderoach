@@ -28,7 +28,6 @@ export function Hero({ data, clients }: { data: HeroData | null; clients: Client
       <div
         className="absolute inset-0 opacity-55 pointer-events-none bg-cover bg-center"
         style={{ backgroundImage: 'url(/assets/bg-grid-clean.png)' }}
-        data-hero-bg
       />
 
       {/* Octagon watermark — bleeds off top-right */}
