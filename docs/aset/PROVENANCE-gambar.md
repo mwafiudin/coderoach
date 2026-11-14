@@ -96,8 +96,10 @@ perakit `_alat/sampul/rakit-papan5.mts`. Ornamen sama dengan papan berlapis (Flo
 - RideDeck: dua ponsel dari emulator (AVD `pova6`, build debug x86_64), satu perjalanan contoh
   Stasiun Tanjung Priok ke Kebun Raya Bogor dengan jam emulator 15 Nov 2026 10.00 dan tema Malam.
   Rute dari Valhalla publik, cuaca sepanjang rute dan cuaca setempat dari Open-Meteo saat itu
-  (prakiraan asli untuk jam tersebut), kartu e-money dan bensin fiktif. Lencana merah "NFC tidak
-  ada" (emulator tanpa NFC) ditutup warna latar kartu; di HP ber-NFC lencana itu tidak tampil.
+  (prakiraan asli untuk jam tersebut), kartu e-money dan bensin fiktif. Ponsel portrait memakai
+  susunan tanpa Cuaca dan Kartu e-money, dengan Tangki bensin (estimasi isi, km lagi, campuran
+  bensin) di atas peta. Di ponsel landscape, lencana merah "NFC tidak ada" (emulator tanpa NFC)
+  ditutup warna latar kartu; di HP ber-NFC lencana itu tidak tampil.
   Kokpit (kompas dengan motor 3D) dan kartu musik adalah potongan `ridedeck-kokpit.v1` dan
   `ridedeck-musik.v1` dari HP sungguhan, yang sudah tayang di halaman RideDeck; Filament 3D tidak
   jalan di renderer emulator. Judul video di kartu musik milik kreator lain di YouTube, tanpa

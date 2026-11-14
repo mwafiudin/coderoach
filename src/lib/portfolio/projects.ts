@@ -1153,7 +1153,7 @@ export const PORTFOLIO: PortfolioEntry[] = [
       'Launcher Android untuk HP di dudukan stang: navigasi, musik, telepon, dan app touring dalam satu dasbor instrumen, dengan tombol pulang yang selalu ada.',
     cover: {
       file: 'ridedeck-sampul.v5.webp',
-      alt: 'Papan RideDeck dengan data contoh: Dasbor HP untuk pemotor, kompas, kemiringan, peta, kartu, musik, untuk pemotor harian dan touring. Dasbor landscape dan portrait dengan peta rute Tanjung Priok ke Kebun Raya Bogor, kecepatan, cuaca, dan saldo kartu, lalu kokpit dengan kompas dan motor 3D, cuaca sepanjang rute dari 4 sampai 61 persen, dan pemutar musik, dengan helm',
+      alt: 'Papan RideDeck dengan data contoh: Dasbor HP untuk pemotor, kompas, kemiringan, peta, kartu, musik, dan masih banyak lagi, untuk pemotor harian dan touring. Dasbor landscape dengan kecepatan, cuaca, tujuan, dan saldo kartu, dasbor portrait dengan estimasi bensin, keduanya memetakan rute Tanjung Priok ke Kebun Raya Bogor, lalu kokpit dengan kompas dan motor 3D, cuaca sepanjang rute dari 4 sampai 61 persen, dan pemutar musik, dengan helm',
       focalX: 1,
     },
     summary: {
