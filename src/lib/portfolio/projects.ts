@@ -1152,8 +1152,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
     excerpt:
       'Launcher Android untuk HP di dudukan stang: navigasi, musik, telepon, dan app touring dalam satu dasbor instrumen, dengan tombol pulang yang selalu ada.',
     cover: {
-      file: 'ridedeck-sampul.v3.webp',
-      alt: 'Papan RideDeck: dasbor, kokpit, dan tangki di tiga ponsel, dengan helm, jeriken, dan kompas',
+      file: 'ridedeck-sampul.v4.webp',
+      alt: 'Papan RideDeck: pemutar media yang sedang memutar YouTube dengan pilihan Spotify, kokpit, dan tangki di tiga ponsel, peta dasbor diperbesar, dengan helm dan jeriken',
       focalX: 1,
     },
     summary: {
