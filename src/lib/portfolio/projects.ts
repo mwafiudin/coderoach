@@ -168,8 +168,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
       'Menjembatani SPV dan Accounting di operasi F&B multi-cabang: tutup shift dari ponsel crew, serah terima kas sampai setoran bank, dan jurnal double-entry sampai tutup buku.',
     // From the demo database. The earlier cover showed a live outlet's sales and the production URL.
     cover: {
-      file: 'laporta-sampul.v3.webp',
-      alt: 'Papan Laporta: laba rugi di laptop, setoran tunai dan stock opname di jendela belakang, tutup shift crew di ponsel, dengan gulungan struk, cangkir kopi, dan terminal pembayaran',
+      file: 'laporta-sampul.v4.webp',
+      alt: 'Papan Laporta: Operasional & keuangan F&B, dari tutup shift sampai buku besar, untuk jaringan outlet F&B multi-cabang. Laba rugi, setoran tunai, dan stock opname di jendela, tutup shift crew di ponsel, dengan mesin EDC',
       focalX: 1,
     },
     metrics: LAPORTA_METRICS,
@@ -335,8 +335,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
       'Tempel satu link Google Maps, dapatkan skor kelayakan lokasi beserta alasannya. Kompetitor, demografi, dan kepadatan jalan dikumpulkan otomatis, lalu dikalibrasi dengan performa outlet yang sudah berjalan.',
     // Database demo dengan data Places tiruan (MOCK_MODE); nama outlet fiktif.
     cover: {
-      file: 'locascore-sampul.v4.webp',
-      alt: 'Papan LocaScore dengan data contoh: kesimpulan kelayakan skor 82 GO dan radar faktor di laptop, dashboard dan daftar calon lokasi di jendela belakang, skor di ponsel, dengan ruko, kaca pembesar, dan penanda peta',
+      file: 'locascore-sampul.v5.webp',
+      alt: 'Papan LocaScore dengan data contoh: Penilaian lokasi outlet, sebelum kontrak sewa diteken, untuk brand F&B yang sedang buka cabang. Skor kelayakan calon lokasi, daftar lokasi, dan dashboard di jendela, skor di ponsel, dengan penanda peta',
       focalX: 1,
     },
     // The bespoke page reads the real screen from here; the cover is the card photo.
@@ -392,8 +392,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
       'Situs baru untuk kanal analisis geopolitik milik Global Future Institute. Redaksi tetap bekerja di wp-admin; pembaca mendapat situs dua bahasa, dan redaksi mendapat halaman statistiknya sendiri.',
     // Situs produksi, 14 Okt 2026. Nama penulis di byline adalah byline terbit, bukan data pribadi.
     cover: {
-      file: 'the-global-review-sampul.v3.webp',
-      alt: 'Papan The Global Review: kategori Geopolitik di laptop, beranda dan artikel di jendela belakang, artikel di ponsel, dengan koran, kacamata, dan globe',
+      file: 'the-global-review-sampul.v4.webp',
+      alt: 'Papan The Global Review: Situs berita geopolitik, redaksi tetap menulis di WordPress, untuk media daring dengan arsip panjang. Kategori Geopolitik, beranda, dan artikel di jendela, artikel di ponsel, dengan globe',
       focalX: 1,
     },
     // The bespoke page reads the real screen from here; the cover is the card photo.
@@ -479,8 +479,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
       'Situs untuk jaringan gerai Chicken Wow (Masaya Food), dengan menu dan daftar gerai yang dibaca dari berkas data dan halaman link-in-bio milik sendiri. Aset dipangkas dari 20,3 MB menjadi 9,4 MB.',
     // Situs produksi, 14 Okt 2026.
     cover: {
-      file: 'chicken-wow-sampul.v3.webp',
-      alt: 'Papan Chicken Wow: beranda di laptop, menu dan galeri gerai di jendela belakang, halaman kemitraan di ponsel, dengan paha ayam, cabai, dan kotak makanan',
+      file: 'chicken-wow-sampul.v4.webp',
+      alt: 'Papan Chicken Wow: Situs waralaba ayam geprek, dari menu sampai gerai terdekat, untuk pelanggan dan calon mitra. Beranda, menu, dan lokasi gerai di jendela, menu di ponsel, dengan paha ayam',
       focalX: 1,
     },
     // The bespoke page reads the real screen from here; the cover is the card photo.
@@ -524,8 +524,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
     excerpt:
       'Alat internal yang menjalankan studio dua orang: klien, penawaran, proyek dan story, jam kerja, invoice, kas, dan pembukuan double-entry yang dijaga database, ditambah server MCP supaya Claude Code membaca status story dari sumbernya.',
     cover: {
-      file: 'coderoach-os-sampul.v3.webp',
-      alt: 'Papan Coderoach OS: beranda di laptop, papan tugas dan laporan laba rugi di jendela belakang, dengan buku besar, cangkir, dan kalkulator',
+      file: 'coderoach-os-sampul.v4.webp',
+      alt: 'Papan Coderoach OS: Operasional & keuangan studio, dari penawaran sampai buku besar, dipakai tim Coderoach sendiri. Peta arsitektur, timeline tugas, dan aliran keuangan di jendela, beranda di ponsel, dengan buku',
       focalX: 1,
     },
     summary: {
@@ -606,8 +606,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
     excerpt:
       'Platform agensi untuk menjalankan campaign influencer: shortlist KOL, persetujuan brand per fase, draft dan verifikasi unggahan, pembayaran termin, sampai laporan hasil yang tidak perlu disusun ulang.',
     cover: {
-      file: 'viralytics-sampul.v3.webp',
-      alt: 'Papan Viralytics: papan campaign di laptop, pencarian KOL dan laporan di jendela belakang, dengan ponsel di tripod, gelembung suka, dan ring light',
+      file: 'viralytics-sampul.v4.webp',
+      alt: 'Papan Viralytics: Operasional campaign KOL, dari pilih KOL sampai laporan hasil, untuk agensi influencer marketing. Daftar campaign, alur konten, dan metrik di jendela, laporan di ponsel, dengan gelembung suka',
       focalX: 1,
     },
     studio: {
@@ -698,8 +698,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
     excerpt:
       'SaaS milik studio yang setiap jam menarik data jaringan distributor dari back office, lalu menjawab empat pertanyaan mingguan mereka lewat dashboard, email, kalender, dan push di ponsel.',
     cover: {
-      file: 'rencana-ro-sampul.v4.webp',
-      alt: 'Papan Rencana RO: empat jawaban mingguan di laptop, kalender dan daftar taruh di mana di jendela belakang, beranda di ponsel, dengan kardus, troli, dan papan jalan',
+      file: 'rencana-ro-sampul.v5.webp',
+      alt: 'Papan Rencana RO dengan data contoh: Asisten bisnis distributor, bonus, beli berapa, taruh di mana, untuk distributor independen. Peta jalan titik, kalender, dan grafik pencapaian di jendela, beranda di ponsel, dengan kardus',
       focalX: 1,
     },
     studio: {
@@ -803,8 +803,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
     publishedYear: '2026',
     pills: ['NEXT.JS', 'CANVAS', 'PWA', 'POSTGRES'],
     cover: {
-      file: 'akarkita-sampul.v3.webp',
-      alt: 'Papan AkarKita: pohon keluarga di laptop, beranda dan simulator warisan di jendela belakang, pohon di ponsel, dengan gulungan kain, bingkai foto, dan pohon berakar',
+      file: 'akarkita-sampul.v4.webp',
+      alt: 'Papan AkarKita dengan data contoh: Pohon keluarga privat, paham sebutan Sunda dan Minang, untuk keluarga besar lintas generasi. Pohon lima generasi dengan sebutan Sunda, halaman depan, dan hasil hitung warisan di jendela, pohon di ponsel, dengan pohon berakar',
       focalX: 1,
     },
     excerpt:
@@ -854,8 +854,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
     excerpt:
       'Aplikasi thought record CBT yang dibangun bersama seorang psikolog: klien mencatat saat perasaan berubah, bahkan tanpa internet, lalu membagikan tautan baca-saja kepada psikolognya.',
     cover: {
-      file: 'jeda-sampul.v3.webp',
-      alt: 'Papan Jeda: ringkasan untuk psikolog dengan grafik di laptop, tabel catatan di jendela belakang, catatan baru di ponsel, dengan buku catatan, teh, dan tanaman',
+      file: 'jeda-sampul.v4.webp',
+      alt: 'Papan Jeda dengan data contoh: Catatan pikiran antar sesi konseling, tetap jalan tanpa sinyal, untuk klien dan psikolognya. Ringkasan bergrafik, tabel catatan, dan daftar klien psikolog di jendela, catatan emosi di ponsel, dengan buku catatan',
       focalX: 1,
     },
     summary: {
@@ -934,8 +934,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
     excerpt:
       'Mesin yang menjalankan aturan trading milik mitra dengan disiplin: tiap keputusan tercatat, setiap posisi punya penjaga, dan semuanya bisa dihentikan dengan satu ketukan.',
     cover: {
-      file: 'd-day-sampul.v3.webp',
-      alt: 'Papan d-day: layar Keadaan di laptop, log dan rekonsiliasi di jendela belakang, dengan papan daftar periksa, gembok, dan stopwatch',
+      file: 'd-day-sampul.v4.webp',
+      alt: 'Papan d-day dengan data contoh: Eksekusi trading otomatis, berjalan sendiri dengan rem darurat, untuk trader dengan aturan tertulis. Grafik candle BTC, layar Keadaan, dan kill switch di jendela, Keadaan di ponsel, dengan stopwatch',
       focalX: 1,
     },
     summary: {
@@ -1007,8 +1007,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
     excerpt:
       'Aplikasi Android untuk mengendalikan action cam keluaran 2016 saat touring motor, setelah aplikasi resminya ditarik dan tidak bisa lagi dipasang di Android 15.',
     cover: {
-      file: 'yiheecam-sampul.v3.webp',
-      alt: 'Papan YiheeCam: layar merekam dengan pratinjau kamera ilustrasi, setting, dan layar terputus di tiga ponsel, dengan action cam, kartu microSD, dan dudukan stang',
+      file: 'yiheecam-sampul.v4.webp',
+      alt: 'Papan YiheeCam: Pengendali action cam, dibangun ulang dari protokolnya, untuk kamera yang ditinggal vendornya. Gambar kamera (ilustrasi), layar sedang merekam dengan gambar yang sama, dan galeri di dua ponsel, dengan action cam',
       focalX: 1,
     },
     summary: {
@@ -1070,8 +1070,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
     excerpt:
       'Membaca e-Statement bank, mencocokkan setiap baris dengan saldo cetakan bank sampai ke sen, lalu menjadikannya patokan untuk anggaran, dana, dan ringkasan tiga bulan.',
     cover: {
-      file: 'fifofun-sampul.v4.webp',
-      alt: 'Papan FiFoFun: ringkasan tiga bulan di laptop, anggaran dan ringkasan bulanan di jendela belakang, ringkasan di ponsel, dengan celengan, rumah kecil, dan kalkulator',
+      file: 'fifofun-sampul.v5.webp',
+      alt: 'Papan FiFoFun dengan data contoh: Perencana keuangan keluarga, dicocokkan dengan mutasi bank, untuk keluarga yang mengatur uang bersama. Aliran uang, peta kepadatan belanja, dan rencana di jendela, ringkasan tiga bulan di ponsel, dengan celengan',
       focalX: 1,
     },
     summary: {
@@ -1100,12 +1100,12 @@ export const PORTFOLIO: PortfolioEntry[] = [
       {
         title: 'Impor yang membuktikan dirinya',
         body: 'Rekonsiliasi berlapis menelusuri rantai saldo baris demi baris, jadi kesalahan menunjuk transaksinya, bukan sekadar totalnya selisih. Kalau tidak cocok, tidak satu baris pun disimpan.',
-        screen: { file: 'fifofun-impor.v1.webp', alt: 'Hasil impor e-Statement: transaksi masuk dan saldonya cocok sampai ke sen terakhir' },
+        screen: { file: 'fifofun-impor.v2.webp', alt: 'Hasil impor e-Statement: transaksi masuk dan saldonya cocok sampai ke sen terakhir' },
       },
       {
         title: 'Satu angka yang dicek ke luar',
         body: 'Saldo hitungan aplikasi ditaruh di samping saldo cetakan bank. Saldo dompet digital yang meleset dicatat sebagai penyesuaian, bukan dihapus diam-diam.',
-        screen: { file: 'fifofun-rekonsiliasi.v1.webp', alt: 'Bagian Uangnya ada di mana: saldo hitungan aplikasi sama dengan saldo cetakan bank' },
+        screen: { file: 'fifofun-rekonsiliasi.v2.webp', alt: 'Bagian Uangnya ada di mana: saldo hitungan aplikasi sama dengan saldo cetakan bank' },
       },
       {
         title: 'Anggaran dengan bukti di sampingnya',
@@ -1152,8 +1152,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
     excerpt:
       'Launcher Android untuk HP di dudukan stang: navigasi, musik, telepon, dan app touring dalam satu dasbor instrumen, dengan tombol pulang yang selalu ada.',
     cover: {
-      file: 'ridedeck-sampul.v4.webp',
-      alt: 'Papan RideDeck: pemutar media yang sedang memutar YouTube dengan pilihan Spotify, kokpit, dan tangki di tiga ponsel, peta dasbor diperbesar, dengan helm dan jeriken',
+      file: 'ridedeck-sampul.v5.webp',
+      alt: 'Papan RideDeck dengan data contoh: Dasbor HP untuk pemotor, kompas, kemiringan, peta, kartu, musik, untuk pemotor harian dan touring. Dasbor landscape dan portrait dengan peta rute Tanjung Priok ke Kebun Raya Bogor, kecepatan, cuaca, dan saldo kartu, lalu kokpit dengan kompas dan motor 3D, cuaca sepanjang rute dari 4 sampai 61 persen, dan pemutar musik, dengan helm',
       focalX: 1,
     },
     summary: {

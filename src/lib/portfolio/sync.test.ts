@@ -35,22 +35,24 @@ function databaseMissing(file: string) {
 }
 
 describe('portfolio sync dry run', () => {
+  // Read from the data so the test follows the cover version instead of breaking on every bump.
+  const cover = PORTFOLIO.find((e) => e.slug === 'locascore')!.cover!.file;
   const grants = assumedGrants(
     refsIn(PORTFOLIO),
     PORTFOLIO.flatMap((e) => (e.metrics ?? []).map((m) => m.key)),
   );
 
   test('reports the project whose new cover is still to be uploaded, and writes nothing', async () => {
-    const { payload, writes } = databaseMissing('locascore-sampul.v4.webp');
+    const { payload, writes } = databaseMissing(cover);
     const lines: string[] = [];
     await syncPortfolio(payload, { apply: false, assetsDir: 'scripts/portfolio-assets', grants, log: (l) => lines.push(l) });
-    assert.ok(lines.includes('upload     media   locascore-sampul.v4.webp'), lines.join('\n'));
+    assert.ok(lines.includes(`upload     media   ${cover}`), lines.join('\n'));
     assert.ok(lines.includes('update     project locascore (coverImage)'), lines.join('\n'));
     assert.deepEqual(writes, []);
   });
 
   test('leaves every other project as it is', async () => {
-    const { payload } = databaseMissing('locascore-sampul.v4.webp');
+    const { payload } = databaseMissing(cover);
     const lines: string[] = [];
     await syncPortfolio(payload, { apply: false, assetsDir: 'scripts/portfolio-assets', grants, log: (l) => lines.push(l) });
     const changed = lines.filter((l) => /^(update|create) +project/.test(l));
