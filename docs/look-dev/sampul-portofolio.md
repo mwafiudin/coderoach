@@ -1,5 +1,43 @@
 # Look-dev: sampul kartu portofolio /work
 
+Tanggal: 2026-11-14, direvisi hari yang sama.
+
+## Keputusan
+
+1. **Kartu depan: papan presentasi** seperti Uruzin OS dan RPN OS (keputusan Farrez, 14 Nov 2026,
+   setelah 13 sampul foto balik bahu tayang: "agak aneh kalau semua tampilan di bagian depannya ...
+   baiknya mungkin di detail landing page-nya"). Ikon, nama, kalimat, chip, layar asli dalam bingkai
+   laptop atau ponsel, di atas warna produk.
+2. **Ornamen 3D clay** (pilihan B dari dua styleframe di `docs/konsep/sampul/gaya-ornamen-laporta.html`):
+   tiga benda konteks per proyek, matte seperti tanah liat, warna dari palet produk.
+3. **Foto balik bahu** (bagian di bawah) pindah ke halaman detail; berkasnya disimpan di
+   `_referensi/portofolio/sampul-balik-bahu/` sampai storyboard tiap halaman diimplementasikan.
+
+## Papan
+
+| Butir | Aturan |
+|---|---|
+| Ukuran | 1600×1000, webp ≤300 KB |
+| Kiri | ikon 96 px radius 22, nama 88 px huruf produk, kalimat = `tagline` di projects.ts, 3 chip mono (bidang, platform, tahun) |
+| Kanan | laptop miring 9° dan/atau ponsel; layar selalu tangkapan asli |
+| Latar | warna latar produk + sinar radial lembut di belakang perangkat |
+| Ornamen | 3 benda clay: satu di belakang laptop, satu di depan bawah, satu di tepi ponsel; tidak menutupi angka atau judul di layar |
+| Templat | `_referensi/portofolio/_alat/sampul/papan.html` |
+
+## Blok gaya ornamen untuk prompt Flow
+
+> Soft 3D render, wide 16:9, of three separate objects spaced well apart in a row, each fully
+> visible with empty space around it, matte clay-like materials in {PALET}, rounded friendly forms,
+> gentle studio light, isolated on a perfectly flat solid chroma {green (#00FF00) | magenta (#FF00FF)}
+> background with no floor and no shadows on the background: {TIGA BENDA}. No text, no logos, no numbers.
+
+Latar magenta untuk proyek yang bendanya hijau. Potong latar dengan `kunci.mts` (chroma key +
+despill), satu PNG per benda.
+
+---
+
+# Versi pertama (foto balik bahu, dipindah ke halaman detail)
+
 Tanggal: 2026-11-14. Gaya dipilih Farrez: **dari balik bahu, di tempat kerjanya** (styleframe 1 dari
 tiga di `docs/konsep/sampul/styleframe-laporta.html`). Riset dasarnya ada di
 `docs/riset/2026-11-standar-portofolio.md` dan laporan riset gambar marketing di sesi yang sama.

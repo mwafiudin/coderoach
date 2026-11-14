@@ -74,33 +74,23 @@ Prompt klip: motor diam [0-1s]; mulai dari hub roda depan terurai jadi partikel 
 mengalir melengkung [1-4s]; aliran terkumpul ke HP dan layarnya menyala amber [4-5.5s]; diam [5.5-6s];
 satu motor, satu HP, tanpa teks, logo, atau orang.
 
-## Sampul kartu /work (14 Nov 2026)
+## Sampul kartu /work, papan dengan ornamen (14 Nov 2026)
 
-Tiga belas berkas `scripts/portfolio-assets/<slug>-sampul.v1.webp` (laporta, locascore,
-the-global-review, chicken-wow, coderoach-os, viralytics, rencana-ro, akarkita, jeda, d-day,
-yiheecam, fifofun, ridedeck). Berbeda dari foto suasana di atas, sampul ini **memuat layar produk**:
-adegannya buatan AI dengan layar putih kosong, lalu tangkapan layar asli dari folder yang sama
-ditempel lewat transformasi perspektif (deteksi empat sudut bidang putih, `matrix3d`, render Chrome
-headless 1600×1000, WebP kualitas 82). AI tidak menggambar isi layar.
+Tiga belas berkas `scripts/portfolio-assets/<slug>-sampul.v2.webp`: papan presentasi seperti sampul
+Uruzin dan RPN OS. Ikon, nama, `tagline`, dan chip dirender dari HTML; layar laptop dan ponsel
+**tangkapan asli** dari folder ini; ornamen 3D clay buatan AI. Templat dan alat di
+`_referensi/portofolio/_alat/sampul/` (`papan.html`, `rakit-papan.mts`, `kunci.mts`).
 
-- Alat: Google Flow, Nano Banana 2.1, 16:9 1376×768, akun Google AI Pro farrez, 0 kredit.
-- Gaya dan blok prompt: `docs/look-dev/sampul-portofolio.md` (dari balik bahu, tanpa wajah).
-- Keterangan: alt teks setiap sampul diawali "Ilustrasi:". Tidak ada keterangan terlihat di kartu.
-  Orang di gambar tidak pernah disebut sebagai klien atau pengguna.
-- Uruzin dan RPN OS tetap memakai sampul lama: izinnya `legacy`, gambar baru menunggu izin tercatat.
+- Ornamen: Google Flow, Nano Banana 2.1, 16:9, 0 kredit, akun Google AI Pro farrez. Tiga benda
+  per gambar di latar hijau (#00FF00) atau magenta (#FF00FF, untuk AkarKita dan Jeda), dipotong
+  dengan chroma key dan despill. Prompt ada di `docs/look-dev/sampul-portofolio.md`.
+- **YiheeCam:** layar "merekam" memakai `yiheecam-yakin.v1.webp`. Area pratinjau kamera
+  (x 0–780, y 118–558) yang di tangkapan demo berisi pola warna diganti foto POV kamera helm buatan
+  Flow. Antarmuka di sekitarnya tetap asli. Alt teks menyebut pratinjau itu ilustrasi.
+- Ikon Rencana RO: monogram "RO" buatan studio untuk sampul ini; ikon lama repo NDS-ETL tidak
+  dipakai karena memuat singkatan portal prinsipal.
+- Uruzin dan RPN OS tetap memakai sampul lama (izin legacy).
 
-| Sampul | Adegan | Layar asli yang ditempel |
-|---|---|---|
-| laporta | crew di kafe yang sudah tutup, laci kas terbuka | `laporta-tutup-shift-loop.v2.poster.webp` |
-| locascore | meja di trotoar, seberang deretan ruko tutup | `locascore-kelayakan.v1.webp` |
-| the-global-review | meja baca dekat jendela dan rak buku | `the-global-review-beranda.v1.webp` |
-| chicken-wow | meja stainless dapur gerai ayam | `chicken-wow-beranda.v1.webp` |
-| coderoach-os | meja kerja studio kecil, sore | `coderoach-os-beranda.v2.webp` |
-| viralytics | meja agensi, ring light, catatan tempel | `viralytics-campaign-board.v1.webp` |
-| rencana-ro | lorong gudang distributor | `rencana-ro-dashboard-ponsel.v2.webp` |
-| akarkita | meja makan, album foto keluarga | `akarkita-pohon-ponsel.v1.webp` |
-| jeda | kursi dekat jendela, pagi | `jeda-catat-cepat-loop.v1.poster.webp` |
-| d-day | meja rumah yang rapi, siang | `d-day-keadaan.v1.webp` |
-| yiheecam | pengendara di tepi jalan pegunungan | `yiheecam-yakin.v1.webp` |
-| fifofun | meja makan, kalkulator, map tagihan | `fifofun-ringkasan-hp-loop.v1.poster.webp` |
-| ridedeck | ponsel di dudukan stang motor | `ridedeck-dasbor.v1.webp` |
+Versi sebelumnya (`<slug>-sampul.v1.webp`, foto dari balik bahu) dikeluarkan dari repo dan disimpan
+di `_referensi/portofolio/sampul-balik-bahu/` untuk halaman detail. Media-nya di produksi masih ada
+karena sync tidak menghapus Media.
