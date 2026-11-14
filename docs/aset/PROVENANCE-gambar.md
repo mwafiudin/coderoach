@@ -92,6 +92,11 @@ jendela browser di belakangnya, dan ponsel bila produknya punya versi mobile. As
   theglobal-review.com (beranda, Geopolitik, artikel), chickenwow.id (beranda, menu, lokasi,
   kemitraan), akarkita.vercel.app (beranda, warisan). Izin klien: IZN-2026-001, IZN-2026-002.
 - LocaScore tetap satu layar: layar lain hanya bisa direkam setelah login.
+- RideDeck (`ridedeck-sampul.v4.webp`): ponsel `ridedeck-musik.v1` (pemutar media), `ridedeck-kokpit.v1`,
+  `ridedeck-tangki.v2`; kartu peta adalah potongan widget PETA dari `ridedeck-dasbor.v1` (x 32–748,
+  y 1205–1339) yang diperbesar 2x. Dasbor penuh tidak dipakai karena bagian atasnya peringatan
+  aksesibilitas. Tangkapan `rideDeck-lab/panel.png` dan `yt.png` tidak dipakai: memuat lokasi sekitar
+  rumah dan thumbnail YouTube kreator lain.
 
 - Ornamen: Google Flow, Nano Banana 2.1, 16:9, 0 kredit, akun Google AI Pro farrez. Tiga benda
   per gambar di latar hijau (#00FF00) atau magenta (#FF00FF, untuk AkarKita dan Jeda), dipotong
