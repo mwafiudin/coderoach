@@ -185,7 +185,7 @@ Sumber; layar yang tampil cuma dua.
 | R3 | 310–420 | Empat jawaban di ponsel: kalimat saran dari R2 menyusut jadi kartu "Beli berapa unit: 49 unit" | shared-element | Kalimat "Beli 49 unit" tampil di atas, lalu bergeser dan mengecil ke kartu kedua; tiga kartu lain masuk di sekitarnya, tiap kartu dengan tanggal datanya | Tanpa perpindahan; empat kartu satu kolom | Crossfade dari kalimat ke kartu; angka ada di DOM sekali | Digambar HTML, ada |
 | R4 | 420–720 | Fitur: rencana dengan alasan, pengingat dan kalender, tarikan per jam, push pagi di ponsel | sticky-stack | Kartu menempel dan berikutnya menumpuk | Kartu berurutan, tiap kartu lebih pendek dari layar | Kartu berurutan tanpa menempel | `rencana-ro-kalender.v2.webp`, `rencana-ro-riwayat-run.v2.webp` ada; `rencana-ro-rencana.v3.webp` dan `rencana-ro-push-ponsel.v1.webp` belum |
 | R5 | 720–800 | Satu angka terukur: cek sesi per request, 137 ms ke 27 ms sesudah pindah ke Singapura, catatan kaki ke Sumber | number-reveal | Angka 27 ms sudah di HTML; saat masuk, bilah pembanding menyusut dari panjang 137 ke 27 dan 137 dicoret | Sama, bilah selebar layar | Bilah sudah di 27, 137 tertulis sebagai pembanding | Tidak perlu aset |
-| R6 | 800–920 | Tur gelap 50 detik | none | Video tidak autoplay | Sama | Poster dan transkrip | `rencana-ro-tur.v2.mp4` dan poster ada |
+| R6 | 800–920 | Tur gelap 50 detik | none | Video tidak autoplay | Sama | Poster dan transkrip | `rencana-ro-tur.v3.mp4` dan poster ada |
 | R7 | 920–970 | Sumber, dengan metode dan `rencana-ro@cca37ff` | none | Tidak ada | Sama | Sama | Tidak perlu aset |
 
 Koreografi yang sengaja tidak dipakai: image sequence (tidak ada perangkat keras), progress rail

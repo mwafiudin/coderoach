@@ -106,6 +106,12 @@ perakit `_alat/sampul/rakit-papan5.mts`. Ornamen sama dengan papan berlapis (Flo
   thumbnail.
 - FiFoFun halaman detail: `fifofun-impor.v2` dan `fifofun-rekonsiliasi.v2` menggantikan v1 (v1
   memuat nama bank sungguhan), dari rekaman v5 yang sama.
+- Rencana RO `rencana-ro-tur.v3.mp4` dan posternya (15 Nov 2026): direkam ulang dengan
+  `_alat/rekam-nds.mjs tur` (`REKAM_VERSI=v3`) dari Supabase lokal `ndsdemo` dan build lokal yang
+  sama dengan v2, jaringan fiktif dari `nds-demo-data.mts`. Peta istilah v5 mengganti "Valid
+  Period", "VP", "SP BC", dan "double duty" yang lolos di v2. Gerbang lulus; pembanding nama asli
+  kosong karena snapshot `scraped-*.json` sudah tidak ada di mesin, jadi jaminan nama datang dari
+  generatornya (PRNG ber-seed, nama belakang tak lazim, nomor 91xxxxx). 1920×1200, 30 fps, CRF 28.
 - Rencana RO `rencana-ro-sampul.v6.webp` (15 Nov 2026): layar sama dengan v5; teks diganti ke
   narasi skema bonus dan ornamen kardus (`orn/rencana-ro-1.png`) diganti papan klip
   (`orn/rencana-ro-3.png`, set Flow yang sama), karena kardus memberi kesan stok gudang.
