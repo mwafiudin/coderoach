@@ -689,22 +689,22 @@ export const PORTFOLIO: PortfolioEntry[] = [
     order: 11,
     kind: 'studio',
     client: 'Rencana RO',
-    tagline: 'Asisten mingguan untuk distributor independen: bonus cair, beli berapa, taruh di mana, kapan repeat order.',
+    tagline: 'Aturan bonus yang berlapis diterjemahkan jadi langkah minggu ini: bonus cair, beli berapa, posisi baru di bawah siapa, dan kapan repeat order.',
     meta: 'SAAS · STUDIO PRODUCT',
     industry: 'other',
     service: 'automate',
     publishedYear: '2026',
     pills: ['PLAYWRIGHT', 'NEXT.JS', 'SUPABASE', 'GITHUB ACTIONS'],
     excerpt:
-      'SaaS milik studio yang setiap jam menarik data jaringan distributor dari back office, lalu menjawab empat pertanyaan mingguan mereka lewat dashboard, email, kalender, dan push di ponsel.',
+      'SaaS milik studio yang setiap jam menarik data jaringan dari back office prinsipal, lalu menerjemahkan aturan bonusnya jadi empat jawaban mingguan lewat dashboard, email, kalender, dan push di ponsel.',
     cover: {
-      file: 'rencana-ro-sampul.v5.webp',
-      alt: 'Papan Rencana RO dengan data contoh: Asisten bisnis distributor, bonus, beli berapa, taruh di mana, untuk distributor independen. Peta jalan titik, kalender, dan grafik pencapaian di jendela, beranda di ponsel, dengan kardus',
+      file: 'rencana-ro-sampul.v6.webp',
+      alt: 'Papan Rencana RO dengan data contoh: Penerjemah skema bonus, bonus cair, beli berapa, di bawah siapa, untuk program bonus berjenjang. Peta jalan titik, kalender, dan grafik pencapaian di jendela, beranda di ponsel, dengan papan klip',
       focalX: 1,
     },
     studio: {
       vizType: 'none',
-      usage: 'DISTRIBUTOR SAAS',
+      usage: 'SAAS SKEMA BONUS',
       externalLink: null,
       bullets: [
         'Tarikan data back office tiap jam',
@@ -729,9 +729,9 @@ export const PORTFOLIO: PortfolioEntry[] = [
     ],
     summary: {
       problem:
-        'Back office distributor hanya menerbitkan data mentah: bagan jaringan, tabel kaki, buku bonus, dan masa aktif. Siapa yang perlu repeat order sebelum tutup mingguan harus dihitung sendiri, dan salah hitung berarti poin hangus.',
+        'Back office prinsipal hanya menerbitkan data mentah: bagan jaringan, tabel kaki, buku bonus, dan masa aktif. Siapa yang perlu repeat order sebelum tutup mingguan harus dihitung sendiri, dan salah hitung berarti poin hangus.',
       solution:
-        'Penarik data terjadwal menyimpan jaringan tiap distributor secara terpisah, lalu mesin aturan menyimulasikan pembelian di atas pohon jaringannya dan mengirim rencananya ke tempat distributor membaca.',
+        'Penarik data terjadwal menyimpan jaringan tiap anggota secara terpisah, lalu mesin aturan menyimulasikan pembelian di atas pohon jaringannya dan mengirim rencananya ke tempat anggota membaca.',
       result:
         'Satu layar menjawab bonus yang sudah cair, pembelian yang disarankan, posisi untuk member baru, dan tenggat repeat order, dengan tanggal data di setiap angka.',
     },
@@ -744,7 +744,7 @@ export const PORTFOLIO: PortfolioEntry[] = [
       tourTranscript:
         'Tur tanpa suara, sekitar 50 detik. Beranda dengan tiga tenggat repeat order terdekat, lalu bonus yang sudah cair. Daftar pengingat repeat order satu sampai tiga hari ke depan. Kalender repeat order bulanan. Riwayat dan log tarikan data per jam. Pengaturan pengingat dan jadwal tarikan, lalu lonceng notifikasi berisi pengingat yang sama.',
       demoNote:
-        'Direkam dari build lokal di atas jaringan fiktif: nama, nomor anggota, poin, dan rupiah dibangkitkan mesin. Tidak ada data atau akun distributor sungguhan.',
+        'Direkam dari build lokal di atas jaringan fiktif: nama, nomor anggota, poin, dan rupiah dibangkitkan mesin. Tidak ada data atau akun anggota sungguhan.',
       consent: 'studio',
     },
     features: [
@@ -755,18 +755,18 @@ export const PORTFOLIO: PortfolioEntry[] = [
       },
       {
         title: 'Rencana repeat order dengan alasan',
-        body: 'Mesin aturan berlapis menyimulasikan pembelian di atas pohon jaringan distributor sendiri: siapa di kaki mana, berapa unit, berapa biayanya, dan kenapa. Rencana disimpan terstruktur per run, jadi tampilan baru berlaku mundur ke run lama.',
+        body: 'Mesin aturan berlapis menyimulasikan pembelian di atas pohon jaringan anggota sendiri: siapa di kaki mana, berapa unit, berapa biayanya, dan kenapa. Rencana disimpan terstruktur per run, jadi tampilan baru berlaku mundur ke run lama.',
         // Tangkapannya ditarik 30 Okt 2026: masih memuat istilah skema prinsipal. Cara memulihkan:
         // docs/portfolio-arsip/rencana-ro.md.
       },
       {
         title: 'Pengingat yang diatur sendiri',
-        body: 'Distributor memilih hari pengingat, target yang dikejar, kanal, dan jam tarikan otomatis. Kalender repeat order bulanan bisa diekspor ke aplikasi kalender.',
+        body: 'Anggota memilih hari pengingat, target yang dikejar, kanal, dan jam tarikan otomatis. Kalender repeat order bulanan bisa diekspor ke aplikasi kalender.',
         screen: { file: 'rencana-ro-kalender.v2.webp', alt: 'Kalender repeat order bulanan dengan nama fiktif per tanggal, berwarna menurut status' },
       },
       {
         title: 'Tarikan per jam yang bisa diaudit',
-        body: 'Penjadwal berdetak tiap jam untuk distributor yang jadwalnya jatuh. Satu login hanya boleh punya satu sesi, jadi run yang berjalan sekaligus menjadi kunci, dan setiap run mencatat log, durasi per fase, dan laporan.',
+        body: 'Penjadwal berdetak tiap jam untuk anggota yang jadwalnya jatuh. Satu login hanya boleh punya satu sesi, jadi run yang berjalan sekaligus menjadi kunci, dan setiap run mencatat log, durasi per fase, dan laporan.',
         screen: { file: 'rencana-ro-riwayat-run.v2.webp', alt: 'Riwayat proses: tarikan terjadwal berstatus berhasil dengan tautan log dan ekspor laporan' },
       },
     ],
@@ -785,8 +785,8 @@ export const PORTFOLIO: PortfolioEntry[] = [
     },
     body: [
       { h2: 'Saran, bukan sekadar data' },
-      'Distributor sudah punya datanya; yang tidak mereka punya adalah waktu untuk menghitung aturan bonus yang berlapis setiap minggu. Rencana RO mengerjakan hitungan itu dan menjawab dengan bahasa sehari-hari, di ponsel tempat mereka membacanya.',
-      { h2: 'Setiap distributor terpisah di database' },
+      'Penggunanya anggota sebuah usaha penjualan langsung berjenjang. Yang mereka kelola setiap minggu adalah poin dan bonus di jaringannya, dengan aturan yang berlapis: siklus, masa aktif, dan posisi di kaki kiri atau kanan. Datanya sudah ada di back office. Yang tidak mereka punya adalah waktu untuk menghitung aturan itu setiap minggu. Rencana RO mengerjakan hitungan itu dan menjawab dengan bahasa sehari-hari, di ponsel tempat mereka membacanya.',
+      { h2: 'Setiap anggota terpisah di database' },
       'Data tiap pengguna dipisahkan row level security, kredensial back office disimpan terenkripsi, dan kuota serta kunci run dijaga fungsi di database. Satu perintah pemeriksaan menjalankan typecheck, tes mesin dan parser, tes pemisahan tenant, dan kontras tema sebelum rilis.',
     ],
   },

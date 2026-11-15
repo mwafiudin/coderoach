@@ -103,7 +103,7 @@ export const KATALOG: Partial<Record<string, Catalog>> = {
     cta: { eyebrow: 'Punya beberapa cabang?', heading: 'Ceritakan cara tim Anda menutup hari.' },
   },
   'yiheecam': {
-    heading: 'Kamera lama yang ditinggal vendornya kembali dikendalikan dari HP.', // bukti: README.md baris 3 (pengganti YI Action untuk YI 4K rilis 2016); projects.ts summary.problem (aplikasi resmi ditarik, ditolak Android 15)
+    heading: 'Dari berangkat sampai pulang, kamera cukup dikendalikan dari HP.', // bukti: PRODUCT.md "Sukses berarti pemilik tidak perlu menyentuh action cam selama perjalanan"; session/CameraLibrary.kt (isi kartu pindah lewat WiFi kamera sesudah riding)
     groups: [
       {
         role: 'Di stang motor',
@@ -161,7 +161,7 @@ export const KATALOG: Partial<Record<string, Catalog>> = {
     cta: { eyebrow: 'Punya alat yang aplikasinya sudah mati?', heading: 'Ceritakan alatnya dan apa yang perlu dikendalikan dari HP.' },
   },
   'fifofun': {
-    heading: 'Setiap angka bisa dicek ke mutasi bank.', // bukti: README.md "Here the check is your bank statement"; projects.ts summary.solution
+    heading: 'Keluarga tahu ke mana uangnya pergi, tanpa menebak.', // bukti: README.md "Shows where the money went"; README.md "Here the check is your bank statement" (empat lapis rekonsiliasi ke mutasi)
     groups: [
       {
         role: 'Dari mutasi bank',
@@ -219,7 +219,7 @@ export const KATALOG: Partial<Record<string, Catalog>> = {
     cta: { eyebrow: 'Masih mencocokkan mutasi dengan tangan?', heading: 'Ceritakan bagaimana kas dan bank Anda dicek setiap bulan.' },
   },
   'ridedeck': {
-    heading: 'Semua yang perlu dilirik pemotor ada di satu layar.', // bukti: README.md baris 3 (satu layar untuk navigasi, musik, telepon, app touring); projects.ts tagline
+    heading: 'Rute, bensin, dan cuaca terbaca dalam satu lirikan.', // bukti: README.md baris 3 (navigasi di satu layar); docs/decisions/0038-real-time-fuel-rate.md; layar rute-cuaca-penuh.png "CUACA SEPANJANG RUTE"
     groups: [
       {
         role: 'Di stang motor',
@@ -279,7 +279,7 @@ export const KATALOG: Partial<Record<string, Catalog>> = {
     cta: { eyebrow: 'Tim Anda bekerja di jalan?', heading: 'Ceritakan apa yang perlu mereka lihat sekilas.' },
   },
   'akarkita': {
-    heading: 'Kerabat menemukan tempatnya, data keluarga tetap di dalam keluarga.', // bukti: PRODUCT.md "Product Purpose" (menemukan dirinya di pohon) dan "Privat lewat arsitektur, bukan janji"
+    heading: 'Silsilah keluarga besar tercatat rapi, hanya untuk yang diundang.', // bukti: PRODUCT.md "Akses hanya lewat undangan, tanpa pendaftaran umum"; app/(app)/pengaturan/page.tsx:151 "Hanya email di daftar ini yang bisa masuk"
     groups: [
       {
         role: 'Untuk kerabat',
@@ -396,7 +396,7 @@ export const KATALOG: Partial<Record<string, Catalog>> = {
     cta: { eyebrow: 'Klien Anda mencatat di antara pertemuan?', heading: 'Ceritakan siapa yang mencatat dan siapa yang membaca.' },
   },
   'd-day': {
-    heading: 'Strategi berjalan tanpa ditunggui, berhenti cukup satu ketukan.', // bukti: README.md "Runtime: satu tick per bar" (systemd timer); projects.ts timeline d-day@fe0cba2 "Kill switch satu ketukan"
+    heading: 'Aturan trading berjalan sendiri, dan berhenti begitu Anda minta.', // bukti: README.md "Runtime: satu tick per bar" (systemd timer); projects.ts timeline d-day@fe0cba2 "Kill switch satu ketukan"
     groups: [
       {
         role: 'Saat darurat',
@@ -444,7 +444,7 @@ export const KATALOG: Partial<Record<string, Catalog>> = {
     cta: { eyebrow: 'Ada aturan yang Anda jalankan manual setiap hari?', heading: 'Ceritakan aturannya, dan kapan ia harus berhenti.' },
   },
   'coderoach-os': {
-    heading: 'Penawaran, jam kerja, tagihan, dan kas studio ini tercatat di satu tempat.', // bukti: projects.ts coderoach-os summary.solution "Satu aplikasi dari penawaran sampai buku besar"; body "Coderoach OS menjalankan studio ini"
+    heading: 'Margin setiap proyek terbaca kapan saja, tanpa menunggu tutup buku.', // bukti: coderoach-app:src/lib/margin.ts:5-13 (marginRiil dihitung ulang setiap ada biaya atau jam kerja baru); tests/margin.test.ts
     groups: [
       {
         role: 'Kas dan laba',
@@ -502,7 +502,7 @@ export const KATALOG: Partial<Record<string, Catalog>> = {
     cta: { eyebrow: 'Menjalankan studio atau agensi?', heading: 'Ceritakan bagaimana Anda tahu sebuah proyek untung.' },
   },
   'viralytics': {
-    heading: 'Brand, agensi, dan KOL bekerja di satu alur campaign.', // bukti: projects.ts viralytics summary.solution "Satu alur bergerbang untuk agensi dan brand"; viralytics:components.jsx:58-150 (sidebar per peran brand, specialist, kol)
+    heading: 'Brand menyetujui, KOL mengunggah, agensi memegang angkanya.', // bukti: viralytics:apps/api/src/db/campaign-phases.ts:18-28 (persetujuan brand per fase); campaign-detail.jsx:469-560 (KOL mengunggah draft); layar campaigns.png (budget dan views per campaign)
     groups: [
       {
         role: 'Alur campaign',
@@ -568,7 +568,7 @@ export const KATALOG: Partial<Record<string, Catalog>> = {
         more: [
           { name: 'Rencana repeat order berurutan', body: 'Daftar minggu ini diurutkan dari yang mendesak, lengkap dengan siapa, berapa unit, dan alasannya.' }, // bukti: rencana-ro:src/engine/roStrategy.ts:90,100,160 (rencana dengan tenggat mingguan, diurutkan menurut tingkat prioritas); web/app/(app)/KesimpulanCard.tsx; web/lib/planView.ts; projects.ts features "siapa di kaki mana, berapa unit, berapa biayanya, dan kenapa"
           { name: 'Mode tanya jawab', body: 'Satu pertanyaan per layar, lalu berakhir di rencana yang siap dijalankan.' }, // bukti: rencana-ro:web/app/(app)/tanya/page.tsx:27 ("one question per screen, then the solver"); web/lib/tanya.ts:5,21
-          { name: 'Data ditarik dengan login sendiri', body: 'Dengan login distributor sendiri, data jaringan ditarik terjadwal atau saat diminta. Data loginnya disimpan tersandi.' }, // bukti: rencana-ro:cron-worker/src/index.ts:2-4 (detak tiap jam); web/app/api/schedule-tick/route.ts; web/app/(app)/jalankan/page.tsx dan web/app/api/run/route.ts (tarikan manual); web/lib/serverCrypto.ts dan src/utils/crypto.ts (AES-256-GCM)
+          { name: 'Data ditarik dengan login sendiri', body: 'Dengan login anggota sendiri, data jaringan ditarik terjadwal atau saat diminta. Data loginnya disimpan tersandi.' }, // bukti: rencana-ro:cron-worker/src/index.ts:2-4 (detak tiap jam); web/app/api/schedule-tick/route.ts; web/app/(app)/jalankan/page.tsx dan web/app/api/run/route.ts (tarikan manual); web/lib/serverCrypto.ts dan src/utils/crypto.ts (AES-256-GCM)
           { name: 'Huruf besar, tombol lebar', body: 'Ukuran huruf bisa dinaikkan sampai 150 persen, dan tombol di HP cukup besar untuk jempol.' }, // bukti: rencana-ro:web/lib/zoom.ts:41 (ZOOM_STEPS 0.8 sampai 1.5); web/app/(app)/TextZoom.tsx; web/app/globals.css (pointer: coarse, min-height 2.75rem = 44px); DESIGN.md §3
         ],
       },
@@ -578,7 +578,7 @@ export const KATALOG: Partial<Record<string, Catalog>> = {
         body: 'Kalender bulanan menandai siapa yang harus repeat order dan kapan. Sekali diunduh ke kalender HP, pengingatnya muncul tiga hari dan sehari sebelumnya.', // bukti: rencana-ro:web/app/api/export/calendar/route.ts (?fmt=ics); web/lib/ics.ts:15 ("Every non-terminated event carries two VALARMs, TRIGGER:-P3D and -P1D"), :179-184; web/app/(app)/CalendarView.tsx:225-228 (tautan unduh .ics)
         shot: { file: 'rencana-ro-kalender.v1.webp', alt: 'Kalender repeat order Rencana RO bulan November dengan data contoh: nama member di setiap tanggal, diberi warna menurut status', width: 1200, height: 750, frame: 'browser' },
         more: [
-          { name: 'Pengingat pagi di HP', body: 'Setiap pukul enam pagi, daftar repeat order terdekat dikirim ke notifikasi HP, email, atau lonceng di aplikasi. Distributor memilih sendiri jalurnya.' }, // bukti: rencana-ro:.github/workflows/notify-ro.yml:26 (cron 23:00 UTC = 06:00 WIB); web/scripts/notifyDailyRo.ts (email, web push, lonceng); web/lib/roDigest.ts; web/app/(app)/pengaturan/PushToggle.tsx; projects.ts features "Distributor memilih hari pengingat, target yang dikejar, kanal"
+          { name: 'Pengingat pagi di HP', body: 'Setiap pukul enam pagi, daftar repeat order terdekat dikirim ke notifikasi HP, email, atau lonceng di aplikasi. Anggota memilih sendiri jalurnya.' }, // bukti: rencana-ro:.github/workflows/notify-ro.yml:26 (cron 23:00 UTC = 06:00 WIB); web/scripts/notifyDailyRo.ts (email, web push, lonceng); web/lib/roDigest.ts; web/app/(app)/pengaturan/PushToggle.tsx; projects.ts features "Distributor memilih hari pengingat, target yang dikejar, kanal"
           { name: 'Daftar siap kirim ke WhatsApp', body: 'Daftar repeat order dan rencana minggu ini tersusun jadi teks yang tinggal dikirim lewat WhatsApp.' }, // bukti: rencana-ro:web/app/(app)/WaRoButton.tsx:5,29 ("Kirim daftar RO ke WhatsApp", tidak pernah terkirim otomatis); web/app/(app)/CopyReport.tsx
           { name: 'Laporan lewat email', body: 'Ringkasan rencana masuk ke email. Kalau nomor WhatsApp diisi, ada tombol untuk meneruskannya.' }, // bukti: rencana-ro:src/notify/email.ts:2-17 (tombol "Kirim ringkasan ke WhatsApp" bila nomor WA diisi); src/notify/whatsapp.ts:19
         ],
@@ -597,16 +597,15 @@ export const KATALOG: Partial<Record<string, Catalog>> = {
       },
     ],
     fitsFor: [
-      { field: 'Agen asuransi', example: 'Polis yang jatuh tempo minggu ini tersusun per nasabah, dengan pengingat sebelum tenggatnya.' },
-      { field: 'Jaringan reseller', example: 'Reseller yang perlu restok minggu ini terdaftar, lengkap dengan teks siap kirim ke WhatsApp.' },
-      { field: 'Salon dan klinik kecantikan', example: 'Pelanggan yang paket perawatannya hampir habis diingatkan lewat kalender dan WhatsApp.' },
-      { field: 'Koperasi simpan pinjam', example: 'Anggota yang jatuh tempo angsuran diingatkan tiga hari dan sehari sebelumnya.' },
+      { field: 'Tim sales dengan insentif berjenjang', example: 'Insentif tiap sales dihitung dari aturan perusahaan, dan yang hampir lolos target tahu kekurangannya sebelum periode tutup.' }, // bukti: pola README.md aturan 4 (selisih tiap kaki ke ambang berikutnya, bertenggat tutup mingguan)
+      { field: 'Agen asuransi', example: 'Bonus produksi tiap agen dihitung ulang setiap minggu, lengkap dengan target yang tinggal sedikit lagi.' }, // bukti: pola tarikan terjadwal dan mesin aturan (roStrategy.ts generateActionPlan)
+      { field: 'Reseller berjenjang', example: 'Bonus tiap tingkat dihitung otomatis, lalu daftar yang perlu order ulang minggu ini siap dikirim ke WhatsApp.' }, // bukti: pola WaRoButton.tsx (daftar siap kirim ke WhatsApp)
+      { field: 'Program poin pelanggan', example: 'Poin yang hampir hangus diingatkan tiga hari dan sehari sebelumnya.' }, // bukti: pola web/lib/ics.ts:15 (VALARM -P3D dan -P1D); README.md risiko poin hangus
     ],
-    cta: { eyebrow: 'Punya jaringan mitra atau reseller?', heading: 'Ceritakan hitungan yang masih Anda kerjakan sendiri setiap minggu.' },
+    cta: { eyebrow: 'Punya skema insentif yang berlapis?', heading: 'Ceritakan hitungan yang masih Anda kerjakan sendiri setiap minggu.' },
   },
   'locascore': {
-    // alternatif heading: 'Calon lokasi dinilai dengan data, sebelum kontrak sewa diteken.' / 'Rapat buka cabang dimulai dari angka dan alasannya.'
-    heading: 'Setiap calon lokasi datang ke rapat dengan angka dan alasannya.', // bukti: components/SiteDossier.tsx:53-61,254-303 (bagian 01 Kesimpulan Kelayakan + alasan satu baris :170-194)
+    heading: 'Calon lokasi datang ke rapat dengan angka dan alasannya.', // bukti: components/SiteDossier.tsx:53-61,254-303 (bagian 01 Kesimpulan Kelayakan + alasan satu baris :170-194)
     groups: [
       {
         role: 'Tim ekspansi',
@@ -662,8 +661,7 @@ export const KATALOG: Partial<Record<string, Catalog>> = {
     cta: { eyebrow: 'Sedang memilih lokasi baru?', heading: 'Ceritakan cara tim Anda memilih tempat buka cabang.' },
   },
   'the-global-review': {
-    // alternatif heading: 'Redaksi menulis seperti biasa, pembaca mendapat situs baru.' / 'Situs berganti wajah, kebiasaan redaksi tetap.'
-    heading: 'Redaksi menulis di tempat yang sama, situsnya berganti wajah.', // bukti: src/lib/wp/articles.ts (konten dibaca dari WordPress); docs/laporan-lengkap.md:68-85
+    heading: 'Redaksi mengurus isinya sendiri, dari artikel sampai jajak pendapat.', // bukti: HL:32-94,487-489 (podcast, galeri, dan jajak pendapat diisi redaksi); src/lib/wp/articles.ts (artikel dari WordPress redaksi)
     groups: [
       {
         role: 'Untuk redaksi',
@@ -718,7 +716,6 @@ export const KATALOG: Partial<Record<string, Catalog>> = {
     cta: { eyebrow: 'Punya arsip tulisan bertahun-tahun?', heading: 'Ceritakan cara redaksi Anda menulis hari ini.' },
   },
   'chicken-wow': {
-    // alternatif heading: 'Dari bio Instagram sampai ke gerai, tanpa nyasar.' / 'Pelanggan, calon mitra, dan pelamar tahu harus menghubungi siapa.'
     heading: 'Pembeli, calon mitra, dan pelamar langsung tahu harus ke mana.', // bukti: /info (gerai dan pesan), /kemitraan dan /karier (WhatsApp), page_root.html:519,583,615,721
     groups: [
       {
