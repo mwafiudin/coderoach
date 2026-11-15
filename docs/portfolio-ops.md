@@ -82,7 +82,8 @@ Coderoach OS.
    seketika, purge URL-nya di dashboard Cloudflare (Caching, Custom Purge).
    Sudah dihapus per 15 Nov 2026: `fifofun-impor.v1.webp` dan `fifofun-rekonsiliasi.v1.webp`
    (memuat nama bank sungguhan), dan `rencana-ro-rencana-ro.v2.webp` (memuat istilah skema
-   prinsipal; salinannya di arsip, lihat `docs/portfolio-arsip/rencana-ro.md`). Berkas yang dulu
+   prinsipal; salinannya di arsip, lihat `docs/portfolio-arsip/rencana-ro.md`), lalu
+   `rencana-ro-tur.v2.mp4` dan posternya setelah tur v3 tayang. Berkas yang dulu
    terdaftar di sini, yaitu `portfolio-laporta.webp`, `nds-etl-*`, dan `rencana-ro-*.v1.*`, sudah
    tidak ada di Media saat dicek tanggal yang sama.
 6. Katalog fitur di akhir halaman bespoke tidak lewat sync: datanya di

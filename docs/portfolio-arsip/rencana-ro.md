@@ -43,4 +43,4 @@ badge "SP BC utama" di daftar repeat order, kalimat "Valid Period-nya lewat", da
 di kalender serta katalog paket masih terlihat. Istilah itu termasuk yang ditolak gerbang
 `ISTILAH_ASLI` sejak tambahan v5 (14 Nov 2026). Hari yang sama tur direkam ulang sebagai
 `rencana-ro-tur.v3.mp4` dengan peta v5 (gerbang lulus, frame dicek) dan menggantikan v2 di halaman.
-Berkas v2 masih ada di Media produksi sampai dihapus manual.
+Video dan poster v2 dihapus dari Media produksi pada hari yang sama (izin Farrez).
