@@ -35,6 +35,10 @@ netral, jadi tetap dipakai.
 
 ## Yang tetap publik
 
-Sync tidak pernah menghapus Media, jadi berkas lama tetap bisa dibuka lewat
-`/api/media/file/rencana-ro-rencana-ro.v2.webp` sampai dihapus manual di admin (Media). Tur
-`rencana-ro-tur.v2.mp4` direkam dengan peta yang sama; belum diperiksa per frame.
+`rencana-ro-rencana-ro.v2.webp` dihapus dari Media produksi pada 15 Nov 2026 (izin Farrez).
+Salinannya tetap di folder arsip di atas, jadi langkah pemulihan masih berlaku.
+
+Tur `rencana-ro-tur.v2.mp4` direkam dengan peta yang sama dan masih tayang di halaman. Diperiksa
+per frame pada 15 Nov 2026: badge "SP BC utama" di daftar repeat order, kalimat "Valid
+Period-nya lewat", dan kolom "VP" di kalender serta katalog paket masih terlihat. Istilah itu
+termasuk yang ditolak gerbang `ISTILAH_ASLI` sejak tambahan v5 (14 Nov 2026).

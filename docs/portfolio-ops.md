@@ -72,13 +72,19 @@ Coderoach OS.
    `portfolio-sync.ts` dan `scripts/portfolio-assets` lewat stdin `railway ssh`, mencocokkan
    sha256 di container, lalu menjalankannya di sana. Rahasia produksi tidak keluar dari Railway.
 5. Sync tidak pernah menghapus Media. Berkas yang tidak dipakai lagi dihapus manual di admin
-   (Media), karena `/api/media/file/...` tetap publik selama berkasnya ada. Saat ini:
-   `portfolio-laporta.webp` (sampul lama Laporta, memuat data outlet sungguhan dan URL produksi),
-   dan tujuh berkas `nds-etl-*` (aset Rencana RO dengan nama lama; namanya menyebut singkatan
-   portal prinsipal), dan tujuh berkas `rencana-ro-*.v1.*` (rekaman lama yang masih memuat
-   istilah skema bonus prinsipal; diganti `.v2`).
-   Juga `fifofun-impor.v1.webp` dan `fifofun-rekonsiliasi.v1.webp` (memuat nama bank sungguhan;
-   diganti `.v2` pada 14 Nov 2026).
+   (Media, menu titik tiga di halaman berkas, Delete), karena `/api/media/file/...` tetap publik
+   selama berkasnya ada. Sebelum menghapus, cek lewat API admin bahwa tidak ada proyek, halaman,
+   layanan, atau klien yang merujuk ID-nya. Nama yang sama bisa ada di `public/assets/katalog/`;
+   itu berkas lain dan tidak ikut terhapus.
+   Sesudah dihapus, asal membalas 500 (bukan 404), tetapi Cloudflare masih menyajikan salinan
+   yang sempat diminta sampai `max-age=14400` habis (4 jam). Jangan membuka atau `curl` berkas
+   yang akan dihapus tanpa parameter acak: permintaan itu mengisi cache edge. Untuk hilang
+   seketika, purge URL-nya di dashboard Cloudflare (Caching, Custom Purge).
+   Sudah dihapus per 15 Nov 2026: `fifofun-impor.v1.webp` dan `fifofun-rekonsiliasi.v1.webp`
+   (memuat nama bank sungguhan), dan `rencana-ro-rencana-ro.v2.webp` (memuat istilah skema
+   prinsipal; salinannya di arsip, lihat `docs/portfolio-arsip/rencana-ro.md`). Berkas yang dulu
+   terdaftar di sini, yaitu `portfolio-laporta.webp`, `nds-etl-*`, dan `rencana-ro-*.v1.*`, sudah
+   tidak ada di Media saat dicek tanggal yang sama.
 6. Katalog fitur di akhir halaman bespoke tidak lewat sync: datanya di
    `src/lib/portfolio/katalog.ts`, layarnya di `public/assets/katalog/`, dan keduanya ikut deploy
    biasa. Layar dipotong dari rekaman demo dengan `_referensi/portofolio/_alat/katalog/potong.py`
