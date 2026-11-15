@@ -32,7 +32,7 @@ const MAX = Math.max(...LEGS.map((l) => l.now + l.add));
 
 /**
  * Rencana RO's own page (ADR 0013), concept "Sebelum tutup mingguan" (docs/konsep/rencana-ro.md):
- * one number followed from a dated raw row to the sentence a distributor acts on, with the points
+ * one number followed from a dated raw row to the sentence a member acts on, with the points
  * bar moving from now to after, then the four weekly answers in large type. Apple-style utility
  * look from the app: system font, raised text sizes for older readers, one blue. Without motion
  * each leg shows both rows, now and after, with their numbers.
@@ -95,7 +95,7 @@ export async function RencanaRoPage({ project }: { project: Project }) {
               <li className="ro-card ro-step" style={{ '--t': 0 } as React.CSSProperties}>
                 <p className="ro-step__label">Data mentah dari portal</p>
                 <p className="ro-mono">bagan jaringan, tabel kaki, buku bonus, masa aktif</p>
-                <p className="m-0 mt-2 text-[17px] ro-muted">Disimpan per distributor, lalu disimulasikan di atas pohon jaringannya sendiri.</p>
+                <p className="m-0 mt-2 text-[17px] ro-muted">Disimpan per anggota, lalu disimulasikan di atas pohon jaringannya sendiri.</p>
               </li>
               <li className="ro-card ro-step" style={{ '--t': 0.3 } as React.CSSProperties}>
                 <p className="ro-step__label">Saran minggu ini</p>
@@ -136,7 +136,7 @@ export async function RencanaRoPage({ project }: { project: Project }) {
                 </div>
               </li>
             </ol>
-            <p className="m-0 mt-4 text-[17px] ro-muted">Jaringan fiktif; poin awal contoh. Setiap angka di aplikasinya menyebut tanggal datanya.</p>
+            <p className="m-0 mt-4 text-[17px] ro-muted">Setiap angka di aplikasinya menyebut tanggal datanya.</p>
           </div>
         </div>
       </section>
@@ -154,8 +154,6 @@ export async function RencanaRoPage({ project }: { project: Project }) {
               </div>
             ))}
           </dl>
-          <p className="m-0 mt-4 text-[17px] ro-muted">Dari rekaman beranda ponsel, jaringan fiktif.</p>
-
         </div>
       </section>
 

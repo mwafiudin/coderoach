@@ -14,7 +14,7 @@
       "elemen": [
         { "jenis": "ikon", "label": "Ikon Rencana RO", "posisi": "kiri" },
         { "jenis": "judul", "label": "Rencana RO", "posisi": "kiri" },
-        { "jenis": "teks", "label": "Asisten mingguan untuk distributor independen: bonus cair, beli berapa, taruh di mana, kapan repeat order.", "posisi": "kiri" },
+        { "jenis": "teks", "label": "Aturan bonus yang berlapis diterjemahkan jadi langkah minggu ini: bonus cair, beli berapa, posisi baru di bawah siapa, dan kapan repeat order.", "posisi": "kiri" },
         { "jenis": "teks", "label": "Masalah, Solusi, Hasil", "posisi": "bawah" },
         { "jenis": "ponsel", "label": "Beranda ponsel versi bersih", "posisi": "kanan" }
       ],

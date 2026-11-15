@@ -25,6 +25,14 @@ Kartu katalog memotong papan: kartu pertama (feature) memakai rasio 3:2 atau tin
 `focalX: 1`, kartu terakhir kadang lebar 2:1. Judul di kiri bawah dan label kanan atas harus tetap
 terbaca di potongan itu.
 
+Rencana RO v6 (15 Nov 2026): penggunanya anggota usaha penjualan langsung berjenjang yang tidak
+menyimpan stok, jadi "Asisten bisnis distributor" dan ornamen kardus membuat pemilik usaha membaca
+bisnis gudang. Farrez memilih narasi "skema bonus berlapis": judul "Penerjemah skema bonus", dukung
+"Bonus cair, beli berapa, di bawah siapa" (dua baris), label "Untuk program bonus berjenjang",
+ornamen papan klip. Jangan pakai "distributor" (sebutan resmi banyak perusahaan MLM, terbaca sebagai
+pemilik stok), "MLM" (stigma), atau "mitra" (lekat dengan pengemudi ojol). Peraturan memakai
+"anggota" (Permendag 70/2019 Pasal 1 angka 7).
+
 ## Keputusan versi v3 (diganti struktur B)
 
 1. **Kartu depan: papan presentasi** seperti Uruzin OS dan RPN OS (keputusan Farrez, 14 Nov 2026,
@@ -68,7 +76,7 @@ tiga di `docs/konsep/sampul/styleframe-laporta.html`). Riset dasarnya ada di
 ## Konteks
 
 - **Cerita:** setiap sampul menjawab "dipakai siapa, di mana, untuk pekerjaan apa" dalam satu
-  pandangan: crew di outlet saat tutup shift, surveyor di depan deretan ruko, distributor di gudang.
+  pandangan: crew di outlet saat tutup shift, surveyor di depan deretan ruko, anggota jaringan yang menyusun rencana bonus minggu ini.
 - **Pembaca:** pemilik usaha yang menilai apakah studio pernah membangun sistem untuk pekerjaan
   seperti miliknya. Konteks harus memberi informasi, bukan suasana (NN/g, Photos as Web Content).
 - **Tetangga:** kartu katalog /work (paper `#F7F8F9`, hairline, satu aksen biru situs). Nama dan

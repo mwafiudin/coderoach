@@ -86,7 +86,7 @@ perakit `_alat/sampul/rakit-papan5.mts`. Ornamen sama dengan papan berlapis (Flo
 
 - Rekaman ulang lokal, data fiktif: Coderoach OS (DB `coderoach_os_demo`, repo fiktif
   `studio-contoh/*`), Viralytics (handle berakhiran `.contoh`), Rencana RO (Supabase lokal, jaringan
-  distributor fiktif), AkarKita (`keluargaContoh`, sebutan Sunda), Jeda (`seed-contoh`), FiFoFun
+  anggota fiktif), AkarKita (`keluargaContoh`, sebutan Sunda), Jeda (`seed-contoh`), FiFoFun
   (snapshot v5, "Bank Contoh"), LocaScore (lihat butir di bawah).
 - d-day: candle BTCUSDT 1 jam asli dari mirror data publik `data-api.binance.vision`; engine,
   posisi, dan log fiktif. Layar kill switch di jendela belakang masih menyebut "Binance" dan
@@ -106,6 +106,9 @@ perakit `_alat/sampul/rakit-papan5.mts`. Ornamen sama dengan papan berlapis (Flo
   thumbnail.
 - FiFoFun halaman detail: `fifofun-impor.v2` dan `fifofun-rekonsiliasi.v2` menggantikan v1 (v1
   memuat nama bank sungguhan), dari rekaman v5 yang sama.
+- Rencana RO `rencana-ro-sampul.v6.webp` (15 Nov 2026): layar sama dengan v5; teks diganti ke
+  narasi skema bonus dan ornamen kardus (`orn/rencana-ro-1.png`) diganti papan klip
+  (`orn/rencana-ro-3.png`, set Flow yang sama), karena kardus memberi kesan stok gudang.
 
 ## Sampul kartu /work, papan berlapis dengan ornamen (14 Nov 2026, diganti struktur B)
 
