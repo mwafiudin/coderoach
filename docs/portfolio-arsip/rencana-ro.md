@@ -38,7 +38,9 @@ netral, jadi tetap dipakai.
 `rencana-ro-rencana-ro.v2.webp` dihapus dari Media produksi pada 15 Nov 2026 (izin Farrez).
 Salinannya tetap di folder arsip di atas, jadi langkah pemulihan masih berlaku.
 
-Tur `rencana-ro-tur.v2.mp4` direkam dengan peta yang sama dan masih tayang di halaman. Diperiksa
-per frame pada 15 Nov 2026: badge "SP BC utama" di daftar repeat order, kalimat "Valid
-Period-nya lewat", dan kolom "VP" di kalender serta katalog paket masih terlihat. Istilah itu
-termasuk yang ditolak gerbang `ISTILAH_ASLI` sejak tambahan v5 (14 Nov 2026).
+Tur `rencana-ro-tur.v2.mp4` direkam dengan peta yang sama. Diperiksa per frame pada 15 Nov 2026:
+badge "SP BC utama" di daftar repeat order, kalimat "Valid Period-nya lewat", dan kolom "VP"
+di kalender serta katalog paket masih terlihat. Istilah itu termasuk yang ditolak gerbang
+`ISTILAH_ASLI` sejak tambahan v5 (14 Nov 2026). Hari yang sama tur direkam ulang sebagai
+`rencana-ro-tur.v3.mp4` dengan peta v5 (gerbang lulus, frame dicek) dan menggantikan v2 di halaman.
+Berkas v2 masih ada di Media produksi sampai dihapus manual.

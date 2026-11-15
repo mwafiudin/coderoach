@@ -739,10 +739,10 @@ export const PORTFOLIO: PortfolioEntry[] = [
       frame: 'browser',
       screen: { file: 'rencana-ro-dashboard.v2.webp', alt: 'Beranda Rencana RO dengan empat kartu jawaban: bonus cair, saran pembelian, posisi untuk member baru, dan tiga repeat order prioritas dalam tiga hari ke depan' },
       screenPhone: { file: 'rencana-ro-dashboard-ponsel.v2.webp', alt: 'Beranda yang sama di ponsel: kartu jawaban ditumpuk satu kolom dengan navigasi bawah' },
-      tour: { file: 'rencana-ro-tur.v2.mp4', alt: 'Tur Rencana RO: beranda, bonus cair, rencana repeat order, kalender, riwayat tarikan, dan pengaturan pengingat' },
-      tourPoster: { file: 'rencana-ro-tur.v2.poster.webp', alt: 'Beranda Rencana RO' },
+      tour: { file: 'rencana-ro-tur.v3.mp4', alt: 'Tur Rencana RO: beranda, bonus cair, rencana repeat order, kalender, riwayat tarikan, dan pengaturan pengingat' },
+      tourPoster: { file: 'rencana-ro-tur.v3.poster.webp', alt: 'Beranda Rencana RO' },
       tourTranscript:
-        'Tur tanpa suara, sekitar 50 detik. Beranda dengan tiga tenggat repeat order terdekat, lalu bonus yang sudah cair. Daftar pengingat repeat order satu sampai tiga hari ke depan. Kalender repeat order bulanan. Riwayat dan log tarikan data per jam. Pengaturan pengingat dan jadwal tarikan, lalu lonceng notifikasi berisi pengingat yang sama.',
+        'Tur tanpa suara, sekitar 50 detik. Beranda dengan empat tenggat repeat order terdekat, lalu bonus yang sudah cair. Daftar pengingat repeat order satu sampai tiga hari ke depan. Kalender repeat order bulanan. Riwayat dan log tarikan data per jam. Pengaturan pengingat dan jadwal tarikan, lalu lonceng notifikasi berisi pengingat yang sama.',
       demoNote:
         'Direkam dari build lokal di atas jaringan fiktif: nama, nomor anggota, poin, dan rupiah dibangkitkan mesin. Tidak ada data atau akun anggota sungguhan.',
       consent: 'studio',
